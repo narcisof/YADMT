@@ -1,0 +1,265 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package moduledefault.clustering.kohonen;
+
+/**
+ *
+ * @author Thiago
+ */
+public final class RedeKohonen {
+
+    private int iteracoes;
+    private int raioInicial;
+    private double raio;
+    private double alfa;
+    private double alfaInicial;
+    private Neuronio[][] rede;
+    private Base dataSet;
+    private int gridX = 0;
+    private int gridY = 0;
+    private double t1;
+    private double t2 = 500;
+    private String distancia;
+    private String vizinhanca;
+    private String atualiza;
+
+    public RedeKohonen() {
+        this.raioInicial = 0;
+        this.iteracoes = 0;
+        this.alfa = 0;
+    }
+
+    public RedeKohonen(int x, int y) {
+        this.gridX = x;
+        this.gridY = y;
+    }
+
+    public RedeKohonen(int x, int y, int raioI, int t, float apredizagem, Base data, String dis, String viz, String at) {
+        setGridX(x);
+        setGridY(y);
+        rede = new Neuronio[x][y]; //crio a rede 
+
+        setRaio(raioI); //raio inicial da rede
+        raio = raioI;
+        t1 = Math.log(500 / raioI);
+
+        setAlfa(apredizagem); //apredizagem inicial da rede
+        alfaInicial = apredizagem;
+
+        setIteracoes(t); //numero de iteracoes
+        dataSet = data; //base de dados 
+
+        distancia = dis;
+        vizinhanca = viz;
+        atualiza = at;
+
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                Neuronio n = new Neuronio(dataSet.getDataSet().get(0).getAtributos().size(), i + "-" + j); //coloco os neuronios na rede
+                rede[i][j] = n;
+            }
+        }
+    }
+
+    public void startRede(int x) {
+        OpMath math = new OpMath();
+
+       // for (int x = 0; x < this.getIteracoes(); x++) { //numero de iterações
+        
+            for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
+                double menorDis = 1000000;
+                String nVencedor = "";
+                int posI = 0, posJ = 0;
+
+                //FASE COMPETITIVA
+                double result = 0;
+                for (int i = 0; i < getGridX(); i++) {
+                    for (int j = 0; j < getGridY(); j++) {
+                        switch (distancia) {
+                            case "euclidiana":
+                                result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
+                                break;
+                        }
+
+                        if (result < menorDis) {
+                            menorDis = result;
+                            nVencedor = rede[i][j].getNomeNeuronio();
+                            posI = i;
+                            posJ = j;
+                        }
+                    }
+                }
+                //Encontrou o neuronio vencedor
+
+                //FASE COOPERATIVA
+                //Atualiza Vizinhos
+                int ci = raioInicial;
+                int cj = raioInicial;
+                int c2i = raioInicial;
+                int c2j = raioInicial;
+                int si = posI;
+                int sj = posJ;
+
+                while (si - ci < 0) {
+                    --ci;
+                }
+                while (si + c2i >= getGridX()) {
+                    --c2i;
+                }
+                while (sj - cj < 0) {
+                    --cj;
+                }
+                while (sj + c2j >= getGridY()) {
+                    --c2j;
+                }
+
+                for (int i = si - ci; i <= si + c2i; i++) {
+                    for (int j = sj - cj; j <= sj + c2j; j++) {
+                        //FASE ADAPTATIVA
+                        atualizaPesos(i, j, y, posI, posJ);
+                    }
+                }
+            }
+
+            //ATUALIZAÇÃO
+            //Atualiza Raio
+            raio = raioInicial * Math.exp((-x) / (t1));
+
+            //Atualiza Aprendizagem
+            switch (atualiza) {
+                case "linear":
+                    alfa = alfaInicial * (1 - (x / t2));
+                    break;
+                case "exponencial":
+                    alfa = (alfaInicial * Math.exp((-x) / (t2)));
+                    break;
+                case "reciproca":
+                    alfa = alfaInicial / (1 + ((100 * x) / t2));
+                    break;
+            }
+           
+       // } //Fim Kohonen
+
+      //  carregaPadroes();
+    }
+
+    public void atualizaPesos(int i, int j, int pad, int posI, int posJ) {
+        OpMath math = new OpMath();
+        double d = math.euclidiana(posI, posJ, i, j);
+        double h = 0;
+        switch (vizinhanca) {
+            case "gaussiana":
+                h = Math.exp((-Math.pow(d, 2)) / (2 * Math.pow(raio, 2)));
+                break;
+        }
+
+        for (int k = 0; k < dataSet.getDataSet().get(0).getAtributos().size(); k++) {
+            double result = rede[i][j].getPesos().get(k) + alfa * h * (dataSet.getDataSet().get(pad).getAtributos().get(k) - rede[i][j].getPesos().get(k));
+            rede[i][j].getPesos().set(k, result);
+        }
+    }
+
+    public void carregaPadroes() {
+        OpMath math = new OpMath();
+
+        for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
+
+            double menorDis = 1000000;
+            String nVencedor = "";
+            int posI = 0, posJ = 0;
+
+            double result = 0;
+            for (int i = 0; i < getGridX(); i++) {
+                for (int j = 0; j < getGridY(); j++) {
+                    switch (distancia) {
+                        case "euclidiana":
+                            result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
+                            break;
+                    }
+
+                    if (result < menorDis) {
+                        menorDis = result;
+                        nVencedor = rede[i][j].getNomeNeuronio();
+                        posI = i;
+                        posJ = j;
+                    }
+                }
+            }
+            //Encontrou o neuronio vencedor
+            rede[posI][posJ].addPadrao(dataSet.getDataSet().get(y));
+        }
+    }
+
+    public Base getDataSet() {
+        return dataSet;
+    }
+
+    public void setDataSet(Base dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    public double getAlfa() {
+        return alfa;
+    }
+
+    public void setAlfa(float alfa) {
+        this.alfa = alfa;
+    }
+
+    public int getIteracoes() {
+        return iteracoes;
+    }
+
+    public void setIteracoes(int iteracoes) {
+        this.iteracoes = iteracoes;
+    }
+
+    public int getRaioInicial() {
+        return raioInicial;
+    }
+
+    public void setRaio(int raioInicial) {
+        this.raioInicial = raioInicial;
+    }
+
+    public Neuronio[][] getRede() {
+        return rede;
+    }
+
+    public void setRede(Neuronio[][] rede) {
+        this.rede = rede;
+    }
+
+    public int getGridX() {
+        return gridX;
+    }
+
+    public void setGridX(int gridX) {
+        this.gridX = gridX;
+    }
+
+    public int getGridY() {
+        return gridY;
+    }
+
+    public void setGridY(int gridY) {
+        this.gridY = gridY;
+    }
+
+    public Neuronio getNeuronio(int i, int j) {
+        if ((i >= 0) && (j >= 0)) {
+            return rede[i][j];
+        } else {
+            return null;
+        }
+    }
+
+    public void setNeuronio(int i, int j, Neuronio n) {
+        if ((i >= 0) && (j >= 0)) {
+            rede[i][j] = n;
+        }
+
+    }
+}
