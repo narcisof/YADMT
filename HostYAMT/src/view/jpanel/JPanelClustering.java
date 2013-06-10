@@ -95,11 +95,11 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         panelFundo.setLayout(panelFundoLayout);
         panelFundoLayout.setHorizontalGroup(
             panelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 654, Short.MAX_VALUE)
         );
         panelFundoLayout.setVerticalGroup(
             panelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGap(0, 419, Short.MAX_VALUE)
         );
 
         buttonVisualizacao.setText("Visualização");
@@ -137,8 +137,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     .addComponent(jButtonConfiguracao)
                     .addComponent(buttonVisualizacao))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
