@@ -13,6 +13,7 @@ import moduledefault.clustering.kohonen.OpMath;
 import moduledefault.clustering.kohonen.Padrao;
 import moduledefault.clustering.kohonen.RedeKohonen;
 import moduledefault.clustering.kohonen.visualization.FrameVisualization;
+import moduledefault.clustering.view.frames.JFrameKohonen;
 
 /**
  *
@@ -38,10 +39,12 @@ public final class PanelKohonen extends javax.swing.JPanel {
     //
     Thread t;
     private static int sleep = 0;
+    //
+    JFrameKohonen frameKohonen;
     
-    public PanelKohonen(ArrayList<interfaces.Base> b) {
+    public PanelKohonen(ArrayList<interfaces.Base> b, JFrameKohonen fk) {
         initComponents();
-
+        frameKohonen = fk;
         arrayListBases = b;
         carregaBase();
 
@@ -108,7 +111,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
 
         jLabel5.setText("Número de Colunas:");
 
-        jLabel13.setText("Tipo da Grade:");
+        jLabel13.setText("Tipo de Vizinhança:");
 
         grupoGrade.add(jRadioButton1);
         jRadioButton1.setSelected(true);
