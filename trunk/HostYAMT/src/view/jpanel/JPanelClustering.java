@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.view.frames.JFrameKmeans;
+import moduledefault.clustering.view.frames.JFrameKohonen;
 import moduledefault.clustering.view.frames.JFrameVisualizacoes;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 import moduledefault.clustering.view.jpanel.PanelHierarquicos;
@@ -35,6 +36,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     JFrameFormigas frameFormigas;
     JFrameKmeans frameKmeans;
     JFrameVisualizacoes frameVisualizacoes = null;
+    JFrameKohonen frameKohonen;
 
     /**
      * Creates new form JPanelClustering
@@ -190,8 +192,9 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             }
         }
         if (jComboBoxMetodos.getSelectedIndex() == 3) { //Kohonen
+            frameKohonen = new JFrameKohonen();
             panelFundo.removeAll();
-            PanelKohonen kohonen = new PanelKohonen(arrayListBases);
+            PanelKohonen kohonen = new PanelKohonen(arrayListBases, frameKohonen);
             kohonen.setSize(panelFundo.getSize());
             kohonen.setPreferredSize(panelFundo.getPreferredSize());
             panelFundo.add(kohonen);
@@ -226,6 +229,9 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         }
         if (jComboBoxMetodos.getSelectedIndex() == 2) {
             frameKmeans.setVisible(true);
+        }
+        if (jComboBoxMetodos.getSelectedIndex() == 3) {
+            frameKohonen.setVisible(true);
         }
     }//GEN-LAST:event_jButtonConfiguracaoActionPerformed
 
