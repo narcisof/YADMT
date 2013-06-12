@@ -505,6 +505,8 @@ public final class FrameVisualization extends javax.swing.JFrame {
         int[] mCornersY = new int[NUM_HEX_CORNERS];
         HexGrid mCellMetrics = new HexGrid(valueDensidade);
 
+        boolean aux = false;
+
         for (int i = 0; i < gridX; i++) {
             for (int j = 0; j < gridY; j++) {
                 mCellMetrics.setCellIndex(i, j);
@@ -514,6 +516,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
                     neuronioX = i;
                     neuronioY = j;
                     click = true;
+                    aux = true;
                     textNeuronio.setText("");
                     textNeuronio.append("Neurônio: " + i + " - " + j);
                     textNeuronio.append("\nPesos:\n");
@@ -529,6 +532,10 @@ public final class FrameVisualization extends javax.swing.JFrame {
             }
         }
 
+        if(!aux){
+            neuronioX = -1;
+            neuronioY = -1;
+        }
         repaint();
     }//GEN-LAST:event_panelDensidadeMouseReleased
 
