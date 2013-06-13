@@ -261,7 +261,6 @@ public class Índices {
                 }
             }
         }
-
         //////////////AJUSTA NOME DOS GRUPOS
         int posi = 0, posj = 0, padmaior = 0, conta = 0, q = 0;
         for (int i = 0; i < numpad; i++) {
@@ -328,40 +327,18 @@ public class Índices {
 //            string3.append("\n");
 //
 //        }
-
-
-        int mConfusaoAuxiliar[][] = new int[numpad][contgrupo + 2];
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
-                mConfusaoAuxiliar[i][j] = mconfusao[i][j];
-            }
-        }
-
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < 2; j++) {
-                mConfusaoAuxiliar[i][contgrupo + j] = mconfusao[i][j];
-            }
-        }
         int somaacertos = 0;
         porcentagem = 0;
-        int melhorAcerto = Integer.MIN_VALUE;
-        for (int i = 0; i < contgrupo; i++) {
-            for (int w = 0; w < contgrupo; w++) {
-                for (int j = 0; j < contgrupo; j++) {
-                    if (w == j) {
-                        somaacertos += mConfusaoAuxiliar[w][j + i];
-                        System.out.println(w + " " + (j + i) + " valor = " + mConfusaoAuxiliar[w][j + i] + "\nsomaacerto = " + somaacertos);
-                    }
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                if (i == j) {
+                    somaacertos += mconfusao[i][j];
                 }
             }
-            if (somaacertos > melhorAcerto) {
-                melhorAcerto = somaacertos;
-            }
-            somaacertos = 0;
         }
 
-        System.out.println("melhorAcertos: " + melhorAcerto);
-        porcentagem = (melhorAcerto * 100) / x.getArquivo().getLinhas();
+        porcentagem = (somaacertos * 100) / x.getArquivo().getLinhas();
+
 
         //
 //        x.string.append("\nPorcentagem de Acerto; ").append(porcentagem).append("\n\n");

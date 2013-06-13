@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.view.frames.JFrameKmeans;
 import moduledefault.clustering.view.frames.JFrameKohonen;
-import moduledefault.clustering.view.frames.JFrameVisualizacoes;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 import moduledefault.clustering.view.jpanel.PanelHierarquicos;
 import moduledefault.clustering.view.jpanel.PanelKmeans;
@@ -35,7 +34,6 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     static int fundoHeight;
     JFrameFormigas frameFormigas;
     JFrameKmeans frameKmeans;
-    JFrameVisualizacoes frameVisualizacoes = null;
     JFrameKohonen frameKohonen;
 
     /**
@@ -64,7 +62,6 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         jButtonConfiguracao = new javax.swing.JButton();
         jLabelMetodosDisponiveis = new javax.swing.JLabel();
         panelFundo = new javax.swing.JPanel();
-        buttonVisualizacao = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(666, 499));
 
@@ -104,13 +101,6 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             .addGap(0, 419, Short.MAX_VALUE)
         );
 
-        buttonVisualizacao.setText("Visualização");
-        buttonVisualizacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonVisualizacaoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -123,10 +113,8 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                         .addGap(10, 10, 10)
                         .addComponent(jComboBoxMetodos, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonVisualizacao, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                        .addComponent(jButtonConfiguracao, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(173, Short.MAX_VALUE))
             .addComponent(panelFundo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -136,8 +124,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxMetodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonConfiguracao)
-                    .addComponent(buttonVisualizacao))
+                    .addComponent(jButtonConfiguracao))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -235,20 +222,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         }
     }//GEN-LAST:event_jButtonConfiguracaoActionPerformed
 
-    private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
-
-        if (frameVisualizacoes == null) {
-            System.out.println("entrou 1");
-            frameVisualizacoes = new JFrameVisualizacoes();
-            frameVisualizacoes.setVisible(true);
-        } else {
-            System.out.println("entrou 2");
-            frameVisualizacoes.setVisible(true);
-        }
-
-    }//GEN-LAST:event_buttonVisualizacaoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonVisualizacao;
     private javax.swing.ButtonGroup grupoDistancias;
     private javax.swing.ButtonGroup grupoRec;
     private javax.swing.JButton jButtonConfiguracao;

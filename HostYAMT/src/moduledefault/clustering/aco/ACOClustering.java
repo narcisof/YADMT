@@ -12,6 +12,7 @@ import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.MatrizDados;
 import moduledefault.clustering.uteis.Operações_Mat;
+import moduledefault.clustering.visualization.ClusteringFrameVisualization;
 
 /**
  *
@@ -41,7 +42,7 @@ public class ACOClustering {
     int[][] matriz_padrao;
     MatrizDados arquivo;
     double vetorMaiorF[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+    MatrizDados dados;
     public ACOClustering(MatrizDados teste, int teste_distancia, int[][] _matriz_padrao) throws IOException {
         arquivo = teste;
         matematica = new Operações_Mat();
@@ -53,6 +54,7 @@ public class ACOClustering {
                 matriz_padrao[i][j] = _matriz_padrao[i][j];
             }
         }
+        cont = 0;
         if (teste_distancia == 1) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
@@ -154,30 +156,37 @@ public class ACOClustering {
 
     public void opera_inicial(MatrizDados matriz_dados) throws IOException, InterruptedException {
         matematica.PA_PG(cont2, percent1, sigmaminimo, sigmamaximo, alfaminimo, alfamaximo, controlesigma, controlealfa);
-        while ((cont < cont2)) {
-            memset(distâncias);
-            memset(distâncias2);
-            índice = 0;
-            índice2 = 0;
-            opera(matriz_dados);
-            if (cont >= (cont2 * percent1)) {
-                sigma_auxiliar *= matematica.getQmenos();
-                sigma = (int) sigma_auxiliar;
-                alfa = alfa + matematica.getRmenos();
-                teste_fases = false;
-            } else {
-                teste_fases = true;
+        dados = matriz_dados;
+        //   while ((cont < cont2)) {
 
-                sigma_auxiliar *= matematica.getQmais();
-                sigma = (int) sigma_auxiliar;
-                if (alfa >= 1) {
-                    alfa = alfa + matematica.getRmais() - 0.01;
-                } else {
-                    alfa = alfa + matematica.getRmais();
-                }
+        //     }
+        //     cont++;
+
+    }
+
+    public void iteracao() throws IOException {
+        memset(distâncias);
+        memset(distâncias2);
+        índice = 0;
+        índice2 = 0;
+        opera(dados);
+        if (cont >= (cont2 * percent1)) {
+            sigma_auxiliar *= matematica.getQmenos();
+            sigma = (int) sigma_auxiliar;
+            alfa = alfa + matematica.getRmenos();
+            teste_fases = false;
+        } else {
+            teste_fases = true;
+
+            sigma_auxiliar *= matematica.getQmais();
+            sigma = (int) sigma_auxiliar;
+            if (alfa >= 1) {
+                alfa = alfa + matematica.getRmais() - 0.01;
+            } else {
+                alfa = alfa + matematica.getRmais();
             }
-            cont++;
         }
+
     }
 
     private void opera(MatrizDados matriz_dados) throws IOException {
@@ -253,39 +262,39 @@ public class ACOClustering {
 //            pad = form[indice_auxiliar]; 	//sorteio padrao
         pad = (random.nextInt(matriz_dados.getLinhas())) + 1;
 //        for (int w = 0; w < 10; w++) {
-            principal = pad;
-            buscaant(pad, matriz_padrao, matriz_dados);
-            linha_sorteada = random.nextInt(matriz_dados.getDimensão_matriz());
-            coluna_sorteada =random.nextInt(matriz_dados.getDimensão_matriz());
-            ci = sigma;
-            cj = sigma;
-            c2i = sigma;
-            c2j = sigma;
-            si = linha_sorteada;
-            sj = coluna_sorteada;
-            while (si - ci < 0) {
-                --ci;
-            }
-            while (si + c2i >= matriz_dados.getDimensão_matriz()) {
-                --c2i;
-            }
-            while (sj - cj < 0) {
-                --cj;
-            }
-            while (sj + c2j >= matriz_dados.getDimensão_matriz()) {
-                --c2j;
-            }
+        principal = pad;
+        buscaant(pad, matriz_padrao, matriz_dados);
+        linha_sorteada = random.nextInt(matriz_dados.getDimensão_matriz());
+        coluna_sorteada = random.nextInt(matriz_dados.getDimensão_matriz());
+        ci = sigma;
+        cj = sigma;
+        c2i = sigma;
+        c2j = sigma;
+        si = linha_sorteada;
+        sj = coluna_sorteada;
+        while (si - ci < 0) {
+            --ci;
+        }
+        while (si + c2i >= matriz_dados.getDimensão_matriz()) {
+            --c2i;
+        }
+        while (sj - cj < 0) {
+            --cj;
+        }
+        while (sj + c2j >= matriz_dados.getDimensão_matriz()) {
+            --c2j;
+        }
 
-            for (i = si - ci; i <= si + c2i; i++) {
-                for (j = sj - cj; j <= sj + c2j; j++) {
-                    if (matriz_padrao[i][j] != 0) {
-                        aux = matriz_padrao[i][j];
-                        analisairis(principal, aux, 2, matriz_dados);
-                        cont_vizinhos++;
-                    }
+        for (i = si - ci; i <= si + c2i; i++) {
+            for (j = sj - cj; j <= sj + c2j; j++) {
+                if (matriz_padrao[i][j] != 0) {
+                    aux = matriz_padrao[i][j];
+                    analisairis(principal, aux, 2, matriz_dados);
+                    cont_vizinhos++;
                 }
             }
-            matematica.calculos(2, cont_vizinhos, matriz_dados, distâncias2, sigma, alfa, índice2);
+        }
+        matematica.calculos(2, cont_vizinhos, matriz_dados, distâncias2, sigma, alfa, índice2);
 //            vetorMaiorF[w] = matematica.getFun2();
 //        }
 
@@ -520,6 +529,10 @@ public class ACOClustering {
 
     public int getCont() {
         return cont;
+    }
+
+    public void setCont() {
+        cont++;
     }
 
     public double getSigmaminimo() {
