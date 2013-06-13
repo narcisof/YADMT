@@ -59,7 +59,7 @@ public class KMeansPrincipal {
             this.centroides = calcularNewCentroides();
         } while (this.lock);
         mConfusao();
-//        imprimiHistorico();
+        imprimiHistorico();
 
      // this.Arquivo.escreve_arquivo();
 

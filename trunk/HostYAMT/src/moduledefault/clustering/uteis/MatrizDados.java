@@ -13,7 +13,7 @@ public class MatrizDados {
     int linhas = 0;
     int colunas = 0;
     int dimensão_matriz = 0;
-
+    String []grupos;
     public double[][] getMatriz_dados() {
         return matriz_dados;
     }
@@ -49,6 +49,14 @@ public class MatrizDados {
 
     public void setDimensão_matriz() {
        dimensão_matriz = (int) Math.sqrt((10 * linhas));
+    }
+
+    public String[] getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(String[] grupos) {
+        this.grupos = grupos;
     }
 
 

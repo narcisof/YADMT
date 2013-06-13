@@ -26,7 +26,6 @@ public class SOMVisualization extends javax.swing.JPanel {
 
         int width = FrameVisualization.getPanelSOM().getWidth();
         int height = FrameVisualization.getPanelSOM().getHeight();
-
         float w = width / 2;
         float h = height / 2;
 
