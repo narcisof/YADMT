@@ -6,22 +6,21 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import moduledefault.clustering.aco.ACOClustering;
-import sun.security.util.Length;
+import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Operações_Mat;
 
 /**
  *
  * @author Mateus
  */
-public class GraficoDispersao extends javax.swing.JPanel {
+public class GraficoDispersaoGrupo extends javax.swing.JPanel {
 
     /**
-     * Creates new form GraficoDispersao
+     * Creates new form GraficoDispersaoGrupo
      */
-    private static int [][] matrizPadroes;
+    private static int[][] grupos;
 
-    GraficoDispersao(int[][]  a) {
-        matrizPadroes = a;
+    public GraficoDispersaoGrupo() {
         initComponents();
     }
 
@@ -56,30 +55,21 @@ public class GraficoDispersao extends javax.swing.JPanel {
         g.drawLine(x0, y2, x2, y2);
 //        787
 //                525
-        System.out.println("vai fazer");
-        for (int i = 0; i < ClusteringFrameVisualization.getDados().getDimensão_matriz(); i++) {
-            for (int j = 0; j < ClusteringFrameVisualization.getDados().getDimensão_matriz(); j++) {
-                if (matrizPadroes[i][j] != 0) {
-//                    int x = 50 + (int) ((ClusteringFrameVisualization.getDados().getMatriz_dados()[i][1] / 10) * (width - 120));
-//                    int y = (height - 70) - (int) ((ClusteringFrameVisualization.getDados().getMatriz_dados()[i][2] / 10) * (height - 120));
-                    int x = x0 +i *( (((width-100)/ClusteringFrameVisualization.getDados().getDimensão_matriz())));
-                    int y = y0 + j* ((((height-100)/ClusteringFrameVisualization.getDados().getDimensão_matriz()))) ;
-                    switch (ClusteringFrameVisualization.getDados().getGrupos()[(matrizPadroes[i][j]-1)]) {
-                        case "Iris-setosa":
-                            g.setColor(Color.red);
-                            break;
-                        case "Iris-versicolor":
-                            g.setColor(Color.blue);
-                            break;
-                        default:
-                            g.setColor(Color.green);
-                            break;
-                    }
-                    g.fillOval(x, y, 10, 10);
-                }
-            }
-        }
-        g.setColor(Color.black);
+        System.out.println("entrou panel");
+//        for (int i = 0; i <; i++) {
+//            System.out.println("aaaaaaaaaaaa");
+//            if ( {
+//                
+//            }
+//            [i
+//            
+//                ][1] == 1) {
+//                System.out.println("asiuffasdf");
+//                int x = 50 + (int) (matrizDados.getMatriz_dados()[grupos[i][0]][1] * (width - 120));
+//                int y = (height - 70) - (int) (matrizDados.getMatriz_dados()[grupos[i][0]][2] * (height - 120));
+//                g.fillOval(x, y, 10, 10);
+//            }
+//        }
 
 //        if (rede != null) {
 //            for (int i = 0; i < rede.getGridX(); i++) {
@@ -120,8 +110,6 @@ public class GraficoDispersao extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,8 +124,7 @@ public class GraficoDispersao extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    void setACO(int[][] a) {
-        matrizPadroes = a;
-        repaint();
+    void setGrupos(int[][] a) {
+        grupos = a;
     }
 }
