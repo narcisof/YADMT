@@ -15,7 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.kohonen.visualization.FrameVisualization;
 import moduledefault.clustering.recuperacaogrupos.LigacaoCompleta;
@@ -24,9 +26,11 @@ import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
 import moduledefault.clustering.recuperacaogrupos.MFaino;
 import moduledefault.clustering.recuperacaogrupos.Ward;
 import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.visualization.ClusteringFrameVisualization;
+import moduledefault.clustering.visualization.GraficoDispersaoGeral;
 import view.jpanel.JPanelClustering;
 
 /**
@@ -44,15 +48,25 @@ public class PanelFormigas extends javax.swing.JPanel {
         teste = new MatrizDados();
         this.grupos = grupos;
         setMatrizDados();
+        Operações_Mat mat = new Operações_Mat();
+        mat.Padronização(teste);
         listaObjetos = new ArrayList<ACOClustering>();
+        listaGrupos = new ArrayList<int[][]>();
         listaText = new ArrayList<>();
         frameFormigas = j;
         System.out.println("antes = " + frameFormigas.getSigma());
         this.objetoAtual = 0;
+        for (int i = 0; i < teste.getLinhas(); i++) {
+            for (int w = 0; w < teste.getColunas(); w++) {
+                System.out.print(" " + teste.getMatriz_dados()[i][w]);
+            }
+            System.out.println();
+        }
     }
     /**
      *
      */
+    ArrayList<int[][]> listaGrupos;
     ArrayList<ACOClustering> listaObjetos;
     double melhorconfusao = Integer.MIN_VALUE;
     int numpad = 0;
@@ -82,13 +96,16 @@ public class PanelFormigas extends javax.swing.JPanel {
     MFaino achagrupos;
     double[][] matrizDados;
     String[] grupos;
-    MatrizDados teste;
+    static MatrizDados teste;
     int teste_distancia = 0;
     JFrameFormigas frameFormigas;
     StringBuffer buffer;
     ArrayList<StringBuffer> listaText;
     int teste_recuperação = 0;
     int objetoAtual;
+    static int sleep;
+    int numeroExecucoes = 0;
+    private static GraficoDispersaoGeral GDG;
 
     synchronized public ACOClustering getOperar() {
         return operar;
@@ -133,11 +150,18 @@ public class PanelFormigas extends javax.swing.JPanel {
         Mahalanobis = new javax.swing.JRadioButton();
         Correlacao = new javax.swing.JRadioButton();
         Executar_formigas = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
         buttonVisualizacao = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        fundoSimulacao = new javax.swing.JPanel();
+        sliderVelocidade = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        statusProgresso = new javax.swing.JProgressBar();
+        jLabel2 = new javax.swing.JLabel();
+        labelProgresso = new javax.swing.JLabel();
 
         Panel_medidas1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
 
@@ -447,11 +471,6 @@ public class PanelFormigas extends javax.swing.JPanel {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Resultados")));
 
         listResultados.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -485,6 +504,66 @@ public class PanelFormigas extends javax.swing.JPanel {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jTabbedPane1.addTab("Resultado", jScrollPane1);
+
+        fundoSimulacao.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                fundoSimulacaoComponentResized(evt);
+            }
+        });
+
+        sliderVelocidade.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderVelocidadeStateChanged(evt);
+            }
+        });
+
+        jLabel1.setText("Velocidade:");
+
+        jLabel2.setText("Progresso:");
+
+        javax.swing.GroupLayout fundoSimulacaoLayout = new javax.swing.GroupLayout(fundoSimulacao);
+        fundoSimulacao.setLayout(fundoSimulacaoLayout);
+        fundoSimulacaoLayout.setHorizontalGroup(
+            fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fundoSimulacaoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fundoSimulacaoLayout.createSequentialGroup()
+                        .addComponent(statusProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(sliderVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        fundoSimulacaoLayout.setVerticalGroup(
+            fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fundoSimulacaoLayout.createSequentialGroup()
+                .addContainerGap(352, Short.MAX_VALUE)
+                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fundoSimulacaoLayout.createSequentialGroup()
+                        .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sliderVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(statusProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelProgresso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Simulação", fundoSimulacao);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -497,8 +576,8 @@ public class PanelFormigas extends javax.swing.JPanel {
                     .addComponent(Executar_formigas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -506,7 +585,6 @@ public class PanelFormigas extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -516,8 +594,9 @@ public class PanelFormigas extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonVisualizacao)
                         .addGap(13, 13, 13)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTabbedPane1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -601,13 +680,14 @@ public class PanelFormigas extends javax.swing.JPanel {
                 imprimiAgrupamento();
                 imprimiRecuperacao(teste_recuperação);
                 setListaResultados();
+                jTextArea1.setText(getBuffer().toString());
+                ClusteringFrameVisualization.setGrupos(listaGrupos.get(getObjetoAtual()));
                 setObjetoAtual();
 
-                jTextArea1.setText(getBuffer().toString());
                 Executar_formigas.setEnabled(true);
             }
         }.start();//inicia a thread.
-
+        numeroExecucoes++;
 
     }//GEN-LAST:event_Executar_formigasActionPerformed
 
@@ -755,14 +835,20 @@ public class PanelFormigas extends javax.swing.JPanel {
     }//GEN-LAST:event_listResultadosMouseClicked
 
     private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
+    }//GEN-LAST:event_buttonVisualizacaoActionPerformed
+
+    private void fundoSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoSimulacaoComponentResized
         if (matriz_padrao == null) {
             matriz_padrao = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
             pmat(matriz_padrao);
         }
-        ClusteringFrameVisualization.setMatrizPadroes(matriz_padrao);
-        ClusteringFrameVisualization.setDados(teste);
-        ClusteringFrameVisualization.getInstance(getOperar()).setVisible(true);
-    }//GEN-LAST:event_buttonVisualizacaoActionPerformed
+        dispersaoGeral();
+        setDispersao(matriz_padrao);
+    }//GEN-LAST:event_fundoSimulacaoComponentResized
+
+    private void sliderVelocidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderVelocidadeStateChanged
+        setSleep(100 - sliderVelocidade.getValue());
+    }//GEN-LAST:event_sliderVelocidadeStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Completa;
     private javax.swing.JRadioButton Correlacao;
@@ -785,11 +871,14 @@ public class PanelFormigas extends javax.swing.JPanel {
     private javax.swing.JRadioButton Ward;
     private javax.swing.JButton buttonVisualizacao;
     private javax.swing.JFrame fMetodos;
+    private static javax.swing.JPanel fundoSimulacao;
     private javax.swing.JTextField iteracoes;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JRadioButton jCompleta;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jMeans;
     private javax.swing.JRadioButton jMedia;
     private javax.swing.JPanel jPanel1;
@@ -797,9 +886,13 @@ public class PanelFormigas extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton jSimples;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JRadioButton jWard;
+    private static javax.swing.JLabel labelProgresso;
     private java.awt.List listResultados;
+    private javax.swing.JSlider sliderVelocidade;
+    private static javax.swing.JProgressBar statusProgresso;
     // End of variables declaration//GEN-END:variables
 
     void Agrupamento() throws IOException, InterruptedException {
@@ -838,19 +931,14 @@ public class PanelFormigas extends javax.swing.JPanel {
 
             try {
                 getOperar().iteracao();
-                ClusteringFrameVisualization.setDispersao(getOperar().getMatriz_padrao());
+                setDispersao(getOperar().getMatriz_padrao());
                 repaint();
+                Thread.sleep(sleep);
             } catch (IOException ex) {
                 Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
-
-                
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    System.out.println(e);
-                }
             }
             getOperar().setCont();
+          //  vai(getOperar().getCont());
         }
 
         matriz_padrao = null;
@@ -926,27 +1014,32 @@ public class PanelFormigas extends javax.swing.JPanel {
         if (teste_recuperação == 1) {
             ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaS.inicio();
+            listaGrupos.add(ligaS.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 2) {
             ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaM.inicio();
+            listaGrupos.add(ligaM.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 3) {
             ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaC.inicio();
+            listaGrupos.add(ligaC.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 4) {
             ward = new Ward(getOperar().getMatriz_padrao(), teste, getOperar());
             ward.inicio();
+            listaGrupos.add(ward.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
             indice.inicio();
 
         } else if (teste_recuperação == 5) {
             achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
             achagrupos.inicio();
+            listaGrupos.add(achagrupos.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, achagrupos.get_mpos(), achagrupos.get_contgrupos(), achagrupos.getPos(), getOperar());
             indice.inicio();
         }
@@ -1040,12 +1133,6 @@ public class PanelFormigas extends javax.swing.JPanel {
         System.out.println("li " + teste.getLinhas());
         System.out.println("di " + teste.getDimensão_matriz());
 
-        for (int i = 0; i < base.length; i++) {
-            for (int j = 0; j < base[0].length; j++) {
-                System.out.print(" " + teste.getMatriz_dados()[i][j]);
-            }
-            System.out.println();
-        }
     }
 
     private void setListaResultados() {
@@ -1106,5 +1193,75 @@ public class PanelFormigas extends javax.swing.JPanel {
 
     synchronized public void setBuffer(StringBuffer buffer) {
         this.buffer = buffer;
+    }
+
+    public static void setSleep(int s) {
+        sleep = s;
+    }
+
+    private static void dispersaoGeral() {
+        if (GDG == null) {
+            GDG = new GraficoDispersaoGeral();
+        }
+        GDG.setSize(fundoSimulacao.getWidth(), fundoSimulacao.getHeight());
+        fundoSimulacao.add(GDG);
+        GDG.setVisible(true);
+    }
+
+    public static void setDispersao(int[][] a) {
+        if (GDG == null) {
+            GDG = new GraficoDispersaoGeral();
+        }
+        GDG.setACO(a);
+    }
+
+    public static JPanel getFundoSimulacao() {
+        return fundoSimulacao;
+    }
+
+    public static void setFundoSimulacao(JPanel fundoSimulacao) {
+        PanelFormigas.fundoSimulacao = fundoSimulacao;
+    }
+
+    public static MatrizDados getDados() {
+        return teste;
+    }
+
+    public void vai(final int i) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                 setStatus(i);
+            }
+        });
+    }
+
+    public static void setStatus(int i) {
+        if (statusProgresso != null) {
+            statusProgresso.setValue(i);
+            if (i == statusProgresso.getMaximum() - 1) {
+                labelProgresso.setText("Finalizado.");
+            } else {
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        switch (labelProgresso.getText()) {
+                            case "Executando":
+                                labelProgresso.setText("Executando.");
+                                break;
+                            case "Executando.":
+                                labelProgresso.setText("Executando..");
+                                break;
+                            case "Executando..":
+                                labelProgresso.setText("Executando...");
+                                break;
+                            case "Executando...":
+                                labelProgresso.setText("Executando");
+                                break;
+                        }
+                    }
+                };
+                t.start();
+            }
+        }
     }
 }
