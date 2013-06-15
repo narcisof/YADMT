@@ -78,9 +78,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private static SOMVisualization som;
     //
     private static FrameVisualization INSTANCE;
-    int teste = 0;
-    //
-    private boolean clear = false;
 
     public FrameVisualization() {
         initComponents();
@@ -648,6 +645,34 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private static javax.swing.JProgressBar statusProgesso;
     private javax.swing.JTextArea textNeuronio;
     // End of variables declaration//GEN-END:variables
+    public static void som() {
+        if (som == null) {
+            som = new SOMVisualization(null);
+        }
+        som.setSize(panelSOM.getWidth(), panelSOM.getHeight());
+        panelSOM.add(som);
+    }
+
+    public static void matrizU3D() {
+        calc3D();
+        verificaCantos();
+        drawMatrizU();
+        u3d = new MatrizU3D();
+        u3d.setSize(panel3D.getWidth(), panel3D.getHeight());
+        panel3D.add(u3d);
+    }
+
+    public static void matrizU2D() {
+        u2d = new MatrizU2D();
+        u2d.setSize(panel2D.getWidth(), panel2D.getHeight());
+        panel2D.add(u2d);
+    }
+
+    private static void densidade() {
+        den = new MatrizDensidade();
+        den.setSize(panelDensidade.getWidth(), panelDensidade.getHeight());
+        panelDensidade.add(den);
+    }
 
     public static void setStatus(int i) {
         if (statusProgesso != null) {
@@ -690,35 +715,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
         if (statusProgesso != null) {
             statusProgesso.setMaximum(i);
         }
-    }
-
-    public static void som() {
-        if (som == null) {
-            som = new SOMVisualization(null);
-        }
-        som.setSize(panelSOM.getWidth(), panelSOM.getHeight());
-        panelSOM.add(som);
-    }
-
-    public static void matrizU3D() {
-        calc3D();
-        verificaCantos();
-        drawMatrizU();
-        u3d = new MatrizU3D();
-        u3d.setSize(panel3D.getWidth(), panel3D.getHeight());
-        panel3D.add(u3d);
-    }
-
-    public static void matrizU2D() {
-        u2d = new MatrizU2D();
-        u2d.setSize(panel2D.getWidth(), panel2D.getHeight());
-        panel2D.add(u2d);
-    }
-
-    private static void densidade() {
-        den = new MatrizDensidade();
-        den.setSize(panelDensidade.getWidth(), panelDensidade.getHeight());
-        panelDensidade.add(den);
     }
 
     public static void calc3D() {
@@ -911,7 +907,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     public static void setMatrizU(double[][] n) {
         matrizU = n;
     }
-    
+
     public static int getGridMUX() {
         return gridMUX;
     }
