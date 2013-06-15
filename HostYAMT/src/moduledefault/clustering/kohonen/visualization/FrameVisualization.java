@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.vecmath.Point3d;
 import moduledefault.clustering.kohonen.Base;
 import moduledefault.clustering.kohonen.RedeKohonen;
@@ -61,7 +60,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private static int centroY;
     private static int numPontos;
     private static RedeKohonen rede;
-    private static Base dados;
+    private static Base dados = null;
     //Fim Variaveis para o Desenho da Rede
     private static boolean click = false;
     /*Direção do desenho
@@ -80,33 +79,43 @@ public final class FrameVisualization extends javax.swing.JFrame {
     //
     private static FrameVisualization INSTANCE;
     int teste = 0;
+    //
+    private boolean clear = false;
 
     public FrameVisualization() {
         initComponents();
         repaint();
     }
 
-    public static synchronized FrameVisualization getInstance(RedeKohonen r, double m[][]) {
+    public static synchronized FrameVisualization getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new FrameVisualization();
-            setRede(r, m);
-            som();
-            if (m != null) {
-                matrizU3D();
-                matrizU2D();
-                densidade();
-            }
-        } else {
-            setRede(r, m);
-            som();
-            if (m != null) {
-                matrizU3D();
-                matrizU2D();
-                densidade();
-            }
         }
-        INSTANCE.repaint();
         return INSTANCE;
+    }
+
+    public void setVisualization(RedeKohonen r, double m[][]) {
+        rede = r;
+        gridX = r.getGridX();
+        gridY = r.getGridY();
+        matrizU = m;
+        gridMUX = (gridX * 2) - 1;
+        gridMUY = (gridY * 2) - 1;
+        numPontos = gridMUX * gridMUY;
+
+        float cX = gridMUX / 2;
+        float cY = gridMUY / 2;
+        centroX = (int) cX;
+        centroY = (int) cY;
+
+        P[0] = centroX;
+        P[1] = centroY;
+
+        som();
+        matrizU3D();
+        matrizU2D();
+        densidade();
+        INSTANCE.repaint();
     }
 
     /**
@@ -471,7 +480,9 @@ public final class FrameVisualization extends javax.swing.JFrame {
     }//GEN-LAST:event_panel3DMouseReleased
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        panel3D.getComponent(0).setSize(panel3D.getWidth(), panel3D.getHeight());
+        if (panel3D.getComponentCount() > 0) {
+            panel3D.getComponent(0).setSize(panel3D.getWidth(), panel3D.getHeight());
+        }
     }//GEN-LAST:event_formComponentResized
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -532,7 +543,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
             }
         }
 
-        if(!aux){
+        if (!aux) {
             neuronioX = -1;
             neuronioY = -1;
         }
@@ -678,26 +689,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
     public static void setMaxStatus(int i) {
         if (statusProgesso != null) {
             statusProgesso.setMaximum(i);
-        }
-    }
-
-    public static void setRede(RedeKohonen r, double m[][]) {
-        if (r != null) {
-            rede = r;
-            gridX = r.getGridX();
-            gridY = r.getGridY();
-            matrizU = m;
-            gridMUX = (gridX * 2) - 1;
-            gridMUY = (gridY * 2) - 1;
-            numPontos = gridMUX * gridMUY;
-
-            float cX = gridMUX / 2;
-            float cY = gridMUY / 2;
-            centroX = (int) cX;
-            centroY = (int) cY;
-
-            P[0] = centroX;
-            P[1] = centroY;
         }
     }
 
@@ -909,6 +900,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         if (som == null) {
             som = new SOMVisualization(r);
         }
+        rede = r;
         som.setRede(r);
     }
 
@@ -916,6 +908,10 @@ public final class FrameVisualization extends javax.swing.JFrame {
         return matrizU;
     }
 
+    public static void setMatrizU(double[][] n) {
+        matrizU = n;
+    }
+    
     public static int getGridMUX() {
         return gridMUX;
     }

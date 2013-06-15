@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import moduledefault.clustering.kohonen.Base;
+import moduledefault.clustering.kohonen.ClusteringSOM;
 import moduledefault.clustering.kohonen.OpMath;
 import moduledefault.clustering.kohonen.Padrao;
 import moduledefault.clustering.kohonen.RedeKohonen;
@@ -23,7 +24,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
 
     //Variaveis Kohonen
     private ArrayList<interfaces.Base> arrayListBases = new ArrayList<>();
-    private Base dados = new Base();
+    private Base dados;
     private RedeKohonen rede = null;
     private int gridX = 0;
     private int gridY = 0;
@@ -47,7 +48,6 @@ public final class PanelKohonen extends javax.swing.JPanel {
         frameKohonen = fk;
         arrayListBases = b;
         carregaBase();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -321,15 +321,17 @@ public final class PanelKohonen extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel6))
+                    .add(jLabel6)
+                    .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(inicio)
+                    .add(bVisualizacao))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(bVisualizacao)
-                    .add(inicio))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(12, 12, 12))
         );
 
         jTextArea1.setEditable(false);
@@ -408,8 +410,8 @@ public final class PanelKohonen extends javax.swing.JPanel {
     }//GEN-LAST:event_campoIteracoesStateChanged
 
     private void bVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVisualizacaoActionPerformed
-        FrameVisualization.setDados(dados);
-        FrameVisualization.getInstance(rede, matrizU).setVisible(true);
+        FrameVisualization.getInstance().setDados(dados);
+        FrameVisualization.getInstance().setVisible(true);
     }//GEN-LAST:event_bVisualizacaoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -460,16 +462,16 @@ public final class PanelKohonen extends javax.swing.JPanel {
         rede = new RedeKohonen(gridX, gridY, raio, iteracoes, alfa, dados, distancia, vizinhanca, atualiza); //cria a Rede
         jProgressBar1.setMaximum(iteracoes);
         
-        FrameVisualization.setMaxStatus(iteracoes);
-        FrameVisualization.setLabel("Executando");
+        FrameVisualization.getInstance().setMaxStatus(iteracoes);
+        FrameVisualization.getInstance().setLabel("Executando");
         
         t = new Thread() {
             @Override
             public void run() {
                 for (int i = 0; i < iteracoes; i++) {
-                    vai(i);
+                    atualizaStatus(i);
                     rede.startRede(i); //inicia o Kohonen
-                    FrameVisualization.setRede(rede);
+                    FrameVisualization.getInstance().setRede(rede);
                     repaint();
                     try {
                         Thread.sleep(sleep);
@@ -482,8 +484,11 @@ public final class PanelKohonen extends javax.swing.JPanel {
                 OpMath math = new OpMath();
                 matrizU = math.matrizU(gridX, gridY, rede);
                 //
-                FrameVisualization.getInstance(rede, matrizU);
+                FrameVisualization.getInstance().setVisualization(rede, matrizU);
                 inicio.setEnabled(true);
+                
+                ClusteringSOM cluster = new ClusteringSOM(rede);
+                cluster.clusteringDensidade(0.1);
                 
             }
         };
@@ -491,7 +496,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
         
     }
 
-    public void vai(final int i) {
+    public void atualizaStatus(final int i) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 jProgressBar1.setValue(i);
@@ -501,6 +506,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
     }
 
     public void carregaBase() {
+        dados = new Base();
         double base[][] = new double[arrayListBases.get(arrayListBases.size() - 1).getInput().length][arrayListBases.get(arrayListBases.size() - 1).getInput()[0].length]; //= arrayListBases.get(arrayListBases.size() - 1).getInput();
         for (int i = 0; i < base.length; i++) {
             for (int j = 0; j < base[0].length; j++) {
@@ -521,17 +527,18 @@ public final class PanelKohonen extends javax.swing.JPanel {
             p.setGrupo(arrayListBases.get(arrayListBases.size() - 1).getOutput()[i].toString());
             dados.addDataSet(p);
         }
-
-
+        
+        FrameVisualization.getInstance().setDados(dados);
+        FrameVisualization.getInstance().setRede(null);
+        FrameVisualization.getInstance().setMatrizU(null);
+        FrameVisualization.getInstance().repaint();
     }
 
     public void padronizacao(double matriz[][]) {
-        double menor;
-        double maior;
+        double menor = Double.MAX_VALUE;
+        double maior = Double.MIN_VALUE;
         int cont = 0;
         while (cont < matriz[0].length) {
-            menor = 10000;
-            maior = -10000;
             for (int i = 0; i < matriz.length; i++) {
                 if (matriz[i][cont] < menor) {
                     menor = matriz[i][cont];
@@ -550,6 +557,10 @@ public final class PanelKohonen extends javax.swing.JPanel {
             }
             cont++;
         }
+    }
+    public void addBase(interfaces.Base b){
+        arrayListBases.add(b);
+        carregaBase();
     }
 
     public Base getDados() {

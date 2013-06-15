@@ -28,28 +28,30 @@ public final class MatrizU2D extends javax.swing.JPanel {
      */
     public MatrizU2D() {
         initComponents();
-       
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        gridMUX = FrameVisualization.getGridMUX();
-        gridMUY = FrameVisualization.getGridMUY();
-        calcIntervalo();
-        
-        ArrayList<Polygon> poligonos = new ArrayList<>();
-        mCellMetrics = new HexGrid(FrameVisualization.getValueU2D());
+        if (FrameVisualization.getInstance().getMatrizU() != null) {
+            gridMUX = FrameVisualization.getGridMUX();
+            gridMUY = FrameVisualization.getGridMUY();
+            calcIntervalo();
 
-        for (int i = 0; i < gridMUX; i++) {
-            for (int j = 0; j < gridMUY; j++) {
-                mCellMetrics.setCellIndex(i, j);
-                mCellMetrics.computeCorners(mCornersX, mCornersY);
-                g.setColor(getColor(i, j));
-                g.drawPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                poligonos.add(new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS));
+            ArrayList<Polygon> poligonos = new ArrayList<>();
+            mCellMetrics = new HexGrid(FrameVisualization.getValueU2D());
+
+            for (int i = 0; i < gridMUX; i++) {
+                for (int j = 0; j < gridMUY; j++) {
+                    mCellMetrics.setCellIndex(i, j);
+                    mCellMetrics.computeCorners(mCornersX, mCornersY);
+                    g.setColor(getColor(i, j));
+                    g.drawPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                    g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                    poligonos.add(new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS));
+                }
             }
         }
     }
