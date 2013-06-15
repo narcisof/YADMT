@@ -35,6 +35,7 @@ public class MatrizDensidade extends javax.swing.JPanel {
         super.paintComponent(g);
 
         if (FrameVisualization.getInstance().getRede() != null) {
+            
             gridX = FrameVisualization.getGridX();
             gridY = FrameVisualization.getGridY();
 
