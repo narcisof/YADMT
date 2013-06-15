@@ -174,11 +174,4 @@ public final class Projetor {
         return pontos;
     }
 
-//    public double[][] getTP() {
-//        return TP;
-//    }
-//
-//    public void setTP(double[][] TP) {
-//        this.TP = TP;
-//    }
 }

@@ -27,48 +27,32 @@ public class ClusteringSOM {
         }
     }
 
-    public void clusteringDensidade(double e) {
+    public ArrayList<Cluster> clusteringDensidade(double e) {
         OpMath math = new OpMath();
         double erro = e;
 
-//        for (int i = 0; i < neuronios.size(); i++) {
-//            System.out.println(neuronios.get(i).getNomeNeuronio() + " " + neuronios.get(i).getPadroes().size());
-//        }
         SelectionSort();
-        Collections.reverse(neuronios);
-        //System.out.println("=======================================");
-        for (int i = 0; i < neuronios.size(); i++) {
-            System.out.println(neuronios.get(i).getNomeNeuronio() + " " + neuronios.get(i).getPadroes().size());
-        }
 
-
-        System.out.println("======================================");
         ArrayList<Cluster> clusters = new ArrayList<>();
- 
-        //OU FAZER UM WHILE REMOVENDO OS NEURONIOS, ATE Q A LISTA SEJA VAZIA
-        
-        int size = neuronios.size();
-        for (int i = 0; i < size - 2; i++) {
-            Cluster cl = new Cluster();
-            cl.addNeuronio(neuronios.get(i));
-            for (int j = i+1; j < size - 1; j++) {
-                if (math.euclidiana(neuronios.get(i).getPesos(), neuronios.get(j).getPesos()) < erro) {
-                    cl.addNeuronio(neuronios.get(j));
-                    // neuronios.set(j, null);
-                    neuronios.remove(j);
-                    size = neuronios.size();
+
+        for (int i = 0; i < neuronios.size() - 1; i++) {
+            if (neuronios.get(i) != null) {
+                Cluster cl = new Cluster();
+                cl.addNeuronio(neuronios.get(i));
+                for (int j = i + 1; j < neuronios.size(); j++) {
+                    if (neuronios.get(j) != null) {
+                        if (math.euclidiana(neuronios.get(i).getPesos(), neuronios.get(j).getPesos()) < erro) {
+                            cl.addNeuronio(neuronios.get(j));
+                            neuronios.set(j, null);
+                        }
+                    }
                 }
-            }
-            clusters.add(cl);
-        }
-
-
-        for (int i = 0; i < clusters.size(); i++) {
-            System.out.println("Cluster " + i);
-            for (int j = 0; j < clusters.get(i).getNeuronios().size(); j++) {
-                System.out.println(clusters.get(i).getNeuronios().get(j).getNomeNeuronio() + "");
+                neuronios.set(i, null);
+                clusters.add(cl);
             }
         }
+
+        return clusters;
     }
 
     public void SelectionSort() { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
@@ -88,5 +72,6 @@ public class ClusteringSOM {
                 neuronios.set(i, aux);
             }
         }
+        Collections.reverse(neuronios);
     }
 }

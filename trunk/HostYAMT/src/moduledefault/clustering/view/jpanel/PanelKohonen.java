@@ -9,12 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import moduledefault.clustering.kohonen.Base;
+import moduledefault.clustering.kohonen.Cluster;
 import moduledefault.clustering.kohonen.ClusteringSOM;
 import moduledefault.clustering.kohonen.OpMath;
 import moduledefault.clustering.kohonen.Padrao;
 import moduledefault.clustering.kohonen.RedeKohonen;
 import moduledefault.clustering.kohonen.visualization.FrameVisualization;
-import moduledefault.clustering.view.frames.JFrameKohonen;
+import moduledefault.clustering.view.frames.JFrameKohonenConfig;
+import moduledefault.clustering.view.frames.JFrameKohonenConfigDensidade;
 
 /**
  *
@@ -31,6 +33,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
     private String distancia;
     private String vizinhanca;
     private String atualiza;
+    private String agrupamento;
     private int raio;
     private int iteracoes;
     private float alfa;
@@ -41,9 +44,11 @@ public final class PanelKohonen extends javax.swing.JPanel {
     Thread t;
     private static int sleep = 0;
     //
-    JFrameKohonen frameKohonen;
-    
-    public PanelKohonen(ArrayList<interfaces.Base> b, JFrameKohonen fk) {
+    JFrameKohonenConfig frameKohonen;
+    //
+    JFrameKohonenConfigDensidade densidadeConfig = null;
+
+    public PanelKohonen(ArrayList<interfaces.Base> b, JFrameKohonenConfig fk) {
         initComponents();
         frameKohonen = fk;
         arrayListBases = b;
@@ -63,23 +68,12 @@ public final class PanelKohonen extends javax.swing.JPanel {
         campoGridX = new javax.swing.JSpinner();
         campoGridY = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         campoAprendizagem = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        opLinear = new javax.swing.JRadioButton();
-        opReciproca = new javax.swing.JRadioButton();
-        opExponencial = new javax.swing.JRadioButton();
-        jPanel9 = new javax.swing.JPanel();
-        opEuclidiana = new javax.swing.JRadioButton();
         jPanel8 = new javax.swing.JPanel();
-        opGaussiana = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
         campoRaio = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         inicio = new javax.swing.JButton();
@@ -87,7 +81,10 @@ public final class PanelKohonen extends javax.swing.JPanel {
         bVisualizacao = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextArea = new javax.swing.JTextArea();
+        jPanel3 = new javax.swing.JPanel();
+        agrupamentoDensidade = new javax.swing.JRadioButton();
+        jButtonConfigDensidade = new javax.swing.JButton();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -111,15 +108,6 @@ public final class PanelKohonen extends javax.swing.JPanel {
 
         jLabel5.setText("Número de Colunas:");
 
-        jLabel13.setText("Tipo de Vizinhança:");
-
-        grupoGrade.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Retangular");
-
-        grupoGrade.add(jRadioButton2);
-        jRadioButton2.setText("Hexagonal");
-
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,33 +115,25 @@ public final class PanelKohonen extends javax.swing.JPanel {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel13)
-                    .add(jLabel4)
-                    .add(jLabel5))
+                    .add(jLabel5)
+                    .add(jLabel4))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(campoGridX, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jRadioButton1)
-                    .add(jRadioButton2)
-                    .add(campoGridY, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, campoGridX, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, campoGridY, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel13)
-                    .add(jRadioButton1))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jRadioButton2)
-                .add(1, 1, 1)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4)
                     .add(campoGridX, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(campoGridY, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel5))
-                .addContainerGap())
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel5)
+                    .add(campoGridY, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(0, 11, Short.MAX_VALUE))
         );
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Aprendizagem"));
@@ -162,37 +142,16 @@ public final class PanelKohonen extends javax.swing.JPanel {
 
         campoAprendizagem.setText("0.1");
 
-        jLabel11.setText("Função de Atualização:");
-
-        grupoAprendizagem.add(opLinear);
-        opLinear.setText("Linear");
-
-        grupoAprendizagem.add(opReciproca);
-        opReciproca.setText("Recíproca");
-
-        grupoAprendizagem.add(opExponencial);
-        opExponencial.setSelected(true);
-        opExponencial.setText("Exponencial");
-
         org.jdesktop.layout.GroupLayout jPanel10Layout = new org.jdesktop.layout.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel11)
-                    .add(jLabel2))
-                .add(jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(opLinear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(opReciproca)
-                    .add(jPanel10Layout.createSequentialGroup()
-                        .add(10, 10, 10)
-                        .add(campoAprendizagem, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel10Layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(opExponencial)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(jLabel2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(campoAprendizagem, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -200,49 +159,14 @@ public final class PanelKohonen extends javax.swing.JPanel {
                 .add(jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(campoAprendizagem, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel2))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel11)
-                    .add(opExponencial))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(opReciproca)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(opLinear))
-        );
-
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Distância"));
-
-        grupoDistancia.add(opEuclidiana);
-        opEuclidiana.setSelected(true);
-        opEuclidiana.setText("Euclidiana");
-
-        org.jdesktop.layout.GroupLayout jPanel9Layout = new org.jdesktop.layout.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(opEuclidiana)
-                .addContainerGap(155, Short.MAX_VALUE))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel9Layout.createSequentialGroup()
-                .add(opEuclidiana)
-                .add(0, 0, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Vizinhança"));
 
-        grupoVizinhanca.add(opGaussiana);
-        opGaussiana.setSelected(true);
-        opGaussiana.setText("Gaussiana");
-
         jLabel3.setText("Raio inicial:");
 
         campoRaio.setText("2");
-
-        jLabel12.setText("Função de Vizinhança:");
 
         org.jdesktop.layout.GroupLayout jPanel8Layout = new org.jdesktop.layout.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -250,16 +174,10 @@ public final class PanelKohonen extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel8Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel8Layout.createSequentialGroup()
-                        .add(jLabel3)
-                        .add(18, 18, 18)
-                        .add(campoRaio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel8Layout.createSequentialGroup()
-                        .add(jLabel12)
-                        .add(18, 18, 18)
-                        .add(opGaussiana)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .add(jLabel3)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(campoRaio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -267,10 +185,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
                 .add(jPanel8Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(campoRaio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel8Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(opGaussiana)
-                    .add(jLabel12)))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -312,21 +227,21 @@ public final class PanelKohonen extends javax.swing.JPanel {
                             .add(jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel2Layout.createSequentialGroup()
-                                .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(0, 0, Short.MAX_VALUE))
-                            .add(inicio, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
+                            .add(inicio, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .add(0, 0, Short.MAX_VALUE)
+                                .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel6)
                     .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(inicio)
                     .add(bVisualizacao))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -334,10 +249,42 @@ public final class PanelKohonen extends javax.swing.JPanel {
                 .add(12, 12, 12))
         );
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea.setEditable(false);
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jScrollPane1.setViewportView(jTextArea);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Agrupamento"));
+
+        agrupamentoDensidade.setSelected(true);
+        agrupamentoDensidade.setText("Matriz de Densidade");
+
+        jButtonConfigDensidade.setText("Config");
+        jButtonConfigDensidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConfigDensidadeActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(agrupamentoDensidade)
+                .add(18, 18, 18)
+                .add(jButtonConfigDensidade)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(agrupamentoDensidade)
+                    .add(jButtonConfigDensidade))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -345,55 +292,63 @@ public final class PanelKohonen extends javax.swing.JPanel {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel10, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel9, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel10, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 124, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jScrollPane1)
+                .addContainerGap())
+            .add(layout.createSequentialGroup()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane1)
-                .addContainerGap())
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(23, 78, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioActionPerformed
-        if (opEuclidiana.isSelected()) {
+        //função de distanicia
+        if (frameKohonen.getOpEuclidiana().isSelected()) {
             distancia = "euclidiana";
         }
-        if (opGaussiana.isSelected()) {
+        if (frameKohonen.getOpGaussiana().isSelected()) {
             vizinhanca = "gaussiana";
         }
         //Funcao de Atualização
-        if (opExponencial.isSelected()) {
+        if (frameKohonen.getOpExponencial().isSelected()) {
             atualiza = "exponencial";
         }
-        if (opLinear.isSelected()) {
+        if (frameKohonen.getOpLinear().isSelected()) {
             atualiza = "linear";
         }
-        if (opReciproca.isSelected()) {
+        if (frameKohonen.getOpReciproca().isSelected()) {
             atualiza = "reciproca";
+        }
+        //Agrupamento
+        if (agrupamentoDensidade.isSelected()) {
+            agrupamento = "densidade";
+            if (densidadeConfig == null) {
+                densidadeConfig = new JFrameKohonenConfigDensidade();
+            }
         }
 
         inicio.setEnabled(false);
-        
         startKohonen();
+
         repaint();
     }//GEN-LAST:event_inicioActionPerformed
 
@@ -414,7 +369,14 @@ public final class PanelKohonen extends javax.swing.JPanel {
         FrameVisualization.getInstance().setVisible(true);
     }//GEN-LAST:event_bVisualizacaoActionPerformed
 
+    private void jButtonConfigDensidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfigDensidadeActionPerformed
+        if (densidadeConfig == null) {
+            densidadeConfig = new JFrameKohonenConfigDensidade();
+        }
+        densidadeConfig.setVisible(true);
+    }//GEN-LAST:event_jButtonConfigDensidadeActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton agrupamentoDensidade;
     private javax.swing.JButton bVisualizacao;
     private javax.swing.JTextField campoAprendizagem;
     private javax.swing.JSpinner campoGridX;
@@ -426,9 +388,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
     private javax.swing.ButtonGroup grupoGrade;
     private javax.swing.ButtonGroup grupoVizinhanca;
     private javax.swing.JButton inicio;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JButton jButtonConfigDensidade;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -437,18 +397,11 @@ public final class PanelKohonen extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JRadioButton opEuclidiana;
-    private javax.swing.JRadioButton opExponencial;
-    private javax.swing.JRadioButton opGaussiana;
-    private javax.swing.JRadioButton opLinear;
-    private javax.swing.JRadioButton opReciproca;
+    private javax.swing.JTextArea jTextArea;
     // End of variables declaration//GEN-END:variables
 
     public void startKohonen() {
@@ -461,10 +414,10 @@ public final class PanelKohonen extends javax.swing.JPanel {
 
         rede = new RedeKohonen(gridX, gridY, raio, iteracoes, alfa, dados, distancia, vizinhanca, atualiza); //cria a Rede
         jProgressBar1.setMaximum(iteracoes);
-        
+
         FrameVisualization.getInstance().setMaxStatus(iteracoes);
         FrameVisualization.getInstance().setLabel("Executando");
-        
+
         t = new Thread() {
             @Override
             public void run() {
@@ -486,14 +439,37 @@ public final class PanelKohonen extends javax.swing.JPanel {
                 //
                 FrameVisualization.getInstance().setVisualization(rede, matrizU);
                 inicio.setEnabled(true);
-                
-                ClusteringSOM cluster = new ClusteringSOM(rede);
-                cluster.clusteringDensidade(0.1);
-                
+
+                //AGRUPAMENTO
+                clusterig();
             }
         };
         t.start();
-        
+
+    }
+
+    public void clusterig() {
+        ClusteringSOM cluster = new ClusteringSOM(rede);
+        ArrayList<Cluster> clusters = new ArrayList<>();
+
+        switch (agrupamento) {
+            case "densidade":
+                clusters = cluster.clusteringDensidade(Double.parseDouble(densidadeConfig.getCampoErro().getText()));
+                break;
+        }
+
+        //imprime em tela o agrupamento realizado
+        jTextArea.setText("");
+        for (int i = 0; i < clusters.size(); i++) {
+            jTextArea.append("Cluster " + i + ":\n");
+            for (int j = 0; j < clusters.get(i).getNeuronios().size(); j++) {
+                for (int k = 0; k < clusters.get(i).getNeuronios().get(j).getPadroes().size(); k++) {
+                    jTextArea.append(clusters.get(i).getNeuronios().get(j).getPadroes().get(k).getNumero() + " ");
+
+                }
+            }
+            jTextArea.append("\n");
+        }
     }
 
     public void atualizaStatus(final int i) {
@@ -527,7 +503,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
             p.setGrupo(arrayListBases.get(arrayListBases.size() - 1).getOutput()[i].toString());
             dados.addDataSet(p);
         }
-        
+
         FrameVisualization.getInstance().setDados(dados);
         FrameVisualization.getInstance().setRede(null);
         FrameVisualization.getInstance().setMatrizU(null);
@@ -558,7 +534,8 @@ public final class PanelKohonen extends javax.swing.JPanel {
             cont++;
         }
     }
-    public void addBase(interfaces.Base b){
+
+    public void addBase(interfaces.Base b) {
         arrayListBases.add(b);
         carregaBase();
     }
@@ -570,5 +547,4 @@ public final class PanelKohonen extends javax.swing.JPanel {
     public static void setSleep(int sleep) {
         PanelKohonen.sleep = sleep;
     }
-    
 }
