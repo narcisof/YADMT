@@ -13,6 +13,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import moduledefault.clustering.kohonen.visualization.FrameVisualization;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.view.frames.JFrameKmeans;
 import moduledefault.clustering.view.frames.JFrameKohonen;
@@ -32,6 +33,12 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     private String[] grupos;
     static int fundoWidth;
     static int fundoHeight;
+    //
+    PanelFormigas formigas = null;
+    PanelKmeans K = null;
+    PanelKohonen kohonen = null;
+    PanelHierarquicos hierarquicos = null;
+    //
     JFrameFormigas frameFormigas;
     JFrameKmeans frameKmeans;
     JFrameKohonen frameKohonen;
@@ -43,7 +50,6 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         FacadeHost.getHost().addObserver(this);
         initComponents();
         jButtonConfiguracao.setEnabled(false);
-
     }
 
     /**
@@ -142,61 +148,67 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxMetodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMetodosActionPerformed
-        fundoWidth = panelFundo.getWidth();
-        fundoHeight = panelFundo.getHeight();
+        try {
+            fundoWidth = panelFundo.getWidth();
+            fundoHeight = panelFundo.getHeight();
 
-        if (jComboBoxMetodos.getSelectedIndex() == 0) {
-            jButtonConfiguracao.setEnabled(false);
-            panelFundo.removeAll();
-            panelFundo.updateUI();
-            panelFundo.repaint();
-        } else {
-            jButtonConfiguracao.setEnabled(true);
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 1) { //Colônia de Fomigas
-            panelFundo.removeAll();
-            frameFormigas = new JFrameFormigas();
-            PanelFormigas formigas = new PanelFormigas(base, grupos, frameFormigas);
-            formigas.setSize(panelFundo.getSize());
-            formigas.setPreferredSize(panelFundo.getPreferredSize());
-            panelFundo.add(formigas);
-            panelFundo.updateUI();
-            panelFundo.repaint();
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 2) {
-            try {
-                //K-means
-                frameKmeans = new JFrameKmeans();
-                panelFundo.removeAll();
-                PanelKmeans K = new PanelKmeans(base, grupos, frameKmeans);
-                K.setSize(panelFundo.getSize());
-                K.setPreferredSize(panelFundo.getPreferredSize());
-                panelFundo.add(K);
-                panelFundo.updateUI();
-                panelFundo.repaint();
-            } catch (IOException ex) {
-                Logger.getLogger(JPanelClustering.class.getName()).log(Level.SEVERE, null, ex);
+            FrameVisualization.getInstance().setVisible(false);
+
+            switch (jComboBoxMetodos.getSelectedIndex()) {
+                case 0: //Nenhum selecionado
+                    jButtonConfiguracao.setEnabled(false);
+                    panelFundo.removeAll();
+                    panelFundo.updateUI();
+                    panelFundo.repaint();
+                    break;
+                case 1: //Formigas
+                    jButtonConfiguracao.setEnabled(true);
+                    panelFundo.removeAll();
+                    frameFormigas = new JFrameFormigas();
+                    formigas = new PanelFormigas(base, grupos, frameFormigas);
+                    formigas.setSize(panelFundo.getSize());
+                    formigas.setPreferredSize(panelFundo.getPreferredSize());
+                    panelFundo.add(formigas);
+                    panelFundo.updateUI();
+                    panelFundo.repaint();
+                    break;
+                case 2: //Kmeans
+                    jButtonConfiguracao.setEnabled(true);
+                    frameKmeans = new JFrameKmeans();
+                    panelFundo.removeAll();
+                    K = new PanelKmeans(base, grupos, frameKmeans);
+                    K.setSize(panelFundo.getSize());
+                    K.setPreferredSize(panelFundo.getPreferredSize());
+                    panelFundo.add(K);
+                    panelFundo.updateUI();
+                    panelFundo.repaint();
+                    break;
+                case 3: //Kohonen
+                    if (kohonen == null) {
+                        kohonen = new PanelKohonen(arrayListBases, frameKohonen);
+                        frameKohonen = new JFrameKohonen();
+                    }
+                    jButtonConfiguracao.setEnabled(true);
+                    panelFundo.removeAll();
+                    kohonen.setSize(panelFundo.getSize());
+                    kohonen.setPreferredSize(panelFundo.getPreferredSize());
+                    panelFundo.add(kohonen);
+                    panelFundo.updateUI();
+                    panelFundo.repaint();
+                    break;
+                case 4: //Hierarquicos
+                    jButtonConfiguracao.setEnabled(true);
+                    panelFundo.removeAll();
+                    hierarquicos = new PanelHierarquicos();
+                    hierarquicos.setSize(panelFundo.getSize());
+                    hierarquicos.setPreferredSize(panelFundo.getPreferredSize());
+                    panelFundo.add(hierarquicos);
+                    panelFundo.updateUI();
+                    panelFundo.repaint();
+                    break;
             }
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 3) { //Kohonen
-            frameKohonen = new JFrameKohonen();
-            panelFundo.removeAll();
-            PanelKohonen kohonen = new PanelKohonen(arrayListBases, frameKohonen);
-            kohonen.setSize(panelFundo.getSize());
-            kohonen.setPreferredSize(panelFundo.getPreferredSize());
-            panelFundo.add(kohonen);
-            panelFundo.updateUI();
-            panelFundo.repaint();
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 4) { //Hierarquicos
-            panelFundo.removeAll();
-
-            PanelHierarquicos hierarquicos = new PanelHierarquicos();
-            hierarquicos.setSize(panelFundo.getSize());
-            hierarquicos.setPreferredSize(panelFundo.getPreferredSize());
-            panelFundo.add(hierarquicos);
-            panelFundo.updateUI();
-            panelFundo.repaint();
+        } catch (IOException ex) {
+            Logger.getLogger(JPanelClustering.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jComboBoxMetodosActionPerformed
 
@@ -211,17 +223,18 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     }//GEN-LAST:event_jPanel2ComponentResized
 
     private void jButtonConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfiguracaoActionPerformed
-        if (jComboBoxMetodos.getSelectedIndex() == 1) { //Colônia de Fomigas
-            frameFormigas.setVisible(true);
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 2) {
-            frameKmeans.setVisible(true);
-        }
-        if (jComboBoxMetodos.getSelectedIndex() == 3) {
-            frameKohonen.setVisible(true);
+        switch (jComboBoxMetodos.getSelectedIndex()) {
+            case 1:
+                frameFormigas.setVisible(true);
+                break;
+            case 2:
+                frameKmeans.setVisible(true);
+                break;
+            case 3:
+                frameKohonen.setVisible(true);
+                break;
         }
     }//GEN-LAST:event_jButtonConfiguracaoActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup grupoDistancias;
     private javax.swing.ButtonGroup grupoRec;
@@ -244,15 +257,51 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         for (int i = 0; i < base.length; i++) {
             grupos[i] = arrayListBases.get(arrayListBases.size() - 1).getOutput()[i].toString();
         }
+
+        updateBase();
+    }
+
+    public void updateBase() {
+        if (formigas != null) {
+            formigas.setMatrizDados(base);
+            formigas.setGrupos(grupos);
+            formigas.startMatrizDados();
+        }
+        if (K != null) {
+            K.setMatrizDados(base);
+            K.setGrupos(grupos);
+            K.startMatrizDados();
+        }
+        if (kohonen != null) {
+            kohonen.addBase(arrayListBases.get(arrayListBases.size() - 1));
+        }
     }
 
     public void update(Observable o, Object o1) {
         if (o instanceof Host) {
             if ((o1 instanceof Base) && ((Base) o1).hasMeta()) {
-                arrayListBases.add((Base) o1); //PEGO A BASE
-                carregaBase();
+                if (verificaBase((Base) o1)) {
+                    arrayListBases.add((Base) o1); //PEGO A BASE
+                    carregaBase();
+                }
             }
         }
+    }
+
+    //Verfifica se a base é composta somente por atributos numéricos
+    public boolean verificaBase(Base b) {
+        double teste = 0;
+        boolean base = true;
+        for (int i = 0; i < b.getInput().length; i++) {
+            for (int j = 0; j < b.getInput()[0].length; j++) {
+                try {
+                    teste = Double.valueOf(b.getInput()[i][j] + "").doubleValue();
+                } catch (NumberFormatException e) {
+                    base = false;
+                }
+            }
+        }
+        return base;
     }
 
     public static int getFundoWidth() {

@@ -6,6 +6,8 @@ package moduledefault.clustering.kohonen.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  *
@@ -21,132 +23,135 @@ public final class MatrizU3D extends javax.swing.JPanel {
 
     public MatrizU3D() {
         initComponents();
-        
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        gridMUX = FrameVisualization.getGridMUX();
-        gridMUY = FrameVisualization.getGridMUY();
-        calcIntervalo();
-        //////////////////////////////CANTO 1
-        if (FrameVisualization.getCanto1() == 1 && FrameVisualization.getCanto2() == 2) {
-            for (int i = 0; i < (gridMUX)-1; i++) {
-                for (int j = 0; j < (gridMUY)-1; j++) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x, 
-                        FrameVisualization.getPontosDraw(i + 1, j + 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y, 
-                        FrameVisualization.getPontosDraw(i + 1, j + 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
-                    g.setColor(getColor(i, i + 1, j, j + 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
-                }
-            }
-        }
-        if (FrameVisualization.getCanto1() == 1 && FrameVisualization.getCanto2() == 3) {
-            for (int j = 0; j < (gridMUY) - 1; j++) {
+
+        if (FrameVisualization.getInstance().getMatrizU() != null) {
+
+            gridMUX = FrameVisualization.getGridMUX();
+            gridMUY = FrameVisualization.getGridMUY();
+            calcIntervalo();
+            //////////////////////////////CANTO 1
+            if (FrameVisualization.getCanto1() == 1 && FrameVisualization.getCanto2() == 2) {
                 for (int i = 0; i < (gridMUX) - 1; i++) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x, 
-                        FrameVisualization.getPontosDraw(i + 1, j + 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y, 
-                        FrameVisualization.getPontosDraw(i + 1, j + 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
-                    g.setColor(getColor(i, i + 1, j, j + 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
+                    for (int j = 0; j < (gridMUY) - 1; j++) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x,
+                            FrameVisualization.getPontosDraw(i + 1, j + 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y,
+                            FrameVisualization.getPontosDraw(i + 1, j + 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
+                        g.setColor(getColor(i, i + 1, j, j + 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
                 }
             }
-        }
-        ///////////////////////////////// CANTO 2
-        if (FrameVisualization.getCanto1() == 2 && FrameVisualization.getCanto2() == 1) {
-            for (int i = 0; i < (gridMUX) - 1; i++) {
-                for (int j = (gridMUY) - 1; j > 0; j--) {
-                   int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x, 
-                        FrameVisualization.getPontosDraw(i + 1, j - 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y, 
-                        FrameVisualization.getPontosDraw(i + 1, j - 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
-                    g.setColor(getColor(i, i + 1, j, j - 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
-                }
-            }
-        }
-        if (FrameVisualization.getCanto1() == 2 && FrameVisualization.getCanto2() == 4) {
-            for (int j = (gridMUY) - 1; j > 0; j--) {
-                for (int i = 0; i < (gridMUX) - 1; i++) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x,
-                        FrameVisualization.getPontosDraw(i + 1, j - 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y, 
-                        FrameVisualization.getPontosDraw(i + 1, j - 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
-                    g.setColor(getColor(i, i + 1, j, j - 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
-                }
-            }
-        }
-        //////////////////////////////CANTO 3
-        if (FrameVisualization.getCanto1() == 3 && FrameVisualization.getCanto2() == 1) { // 
-            for (int j = 0; j < (gridMUY) - 1; j++) {
-                for (int i = (gridMUX) - 1; i > 0; i--) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x, 
-                        FrameVisualization.getPontosDraw(i - 1, j + 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y, 
-                        FrameVisualization.getPontosDraw(i - 1, j + 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
-                    g.setColor(getColor(i, i - 1, j, j + 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
-                }
-            }
-        }
-        if (FrameVisualization.getCanto1() == 3 && FrameVisualization.getCanto2() == 4) {
-            for (int i = (gridMUX) - 1; i > 0; i--) {
+            if (FrameVisualization.getCanto1() == 1 && FrameVisualization.getCanto2() == 3) {
                 for (int j = 0; j < (gridMUY) - 1; j++) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x, 
-                        FrameVisualization.getPontosDraw(i - 1, j + 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y, 
-                        FrameVisualization.getPontosDraw(i - 1, j + 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
-                    g.setColor(getColor(i, i - 1, j, j + 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
+                    for (int i = 0; i < (gridMUX) - 1; i++) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x,
+                            FrameVisualization.getPontosDraw(i + 1, j + 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y,
+                            FrameVisualization.getPontosDraw(i + 1, j + 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
+                        g.setColor(getColor(i, i + 1, j, j + 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
                 }
             }
-        }
-        ///////////////////////////////// CANTO 4
-        if (FrameVisualization.getCanto1() == 4 && FrameVisualization.getCanto2() == 2) {
-            for (int j = (gridMUY) - 1; j > 0; j--) {
-                for (int i = (gridMUX) - 1; i > 0; i--) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x, 
-                        FrameVisualization.getPontosDraw(i - 1, j - 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y, 
-                        FrameVisualization.getPontosDraw(i - 1, j - 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
-                    g.setColor(getColor(i, i - 1, j, j - 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
+            ///////////////////////////////// CANTO 2
+            if (FrameVisualization.getCanto1() == 2 && FrameVisualization.getCanto2() == 1) {
+                for (int i = 0; i < (gridMUX) - 1; i++) {
+                    for (int j = (gridMUY) - 1; j > 0; j--) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x,
+                            FrameVisualization.getPontosDraw(i + 1, j - 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y,
+                            FrameVisualization.getPontosDraw(i + 1, j - 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
+                        g.setColor(getColor(i, i + 1, j, j - 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
                 }
             }
-        }
-        if (FrameVisualization.getCanto1() == 4 && FrameVisualization.getCanto2() == 3) {
-            for (int i = (gridMUX) - 1; i > 0; i--) {
+            if (FrameVisualization.getCanto1() == 2 && FrameVisualization.getCanto2() == 4) {
                 for (int j = (gridMUY) - 1; j > 0; j--) {
-                    int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x, 
-                        FrameVisualization.getPontosDraw(i - 1, j - 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
-                    int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y, 
-                        FrameVisualization.getPontosDraw(i - 1, j - 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
-                    g.setColor(getColor(i, i - 1, j, j - 1));
-                    g.fillPolygon(xx, yy, 4);
-                    g.setColor(FrameVisualization.getCor_linha());
-                    g.drawPolygon(xx, yy, 4);
+                    for (int i = 0; i < (gridMUX) - 1; i++) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x,
+                            FrameVisualization.getPontosDraw(i + 1, j - 1).x, FrameVisualization.getPontosDraw(i + 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y,
+                            FrameVisualization.getPontosDraw(i + 1, j - 1).y, FrameVisualization.getPontosDraw(i + 1, j).y};
+                        g.setColor(getColor(i, i + 1, j, j - 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
                 }
             }
-        }
-        ////////////////////////////////////////////////////////
+            //////////////////////////////CANTO 3
+            if (FrameVisualization.getCanto1() == 3 && FrameVisualization.getCanto2() == 1) { // 
+                for (int j = 0; j < (gridMUY) - 1; j++) {
+                    for (int i = (gridMUX) - 1; i > 0; i--) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x,
+                            FrameVisualization.getPontosDraw(i - 1, j + 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y,
+                            FrameVisualization.getPontosDraw(i - 1, j + 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
+                        g.setColor(getColor(i, i - 1, j, j + 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
+                }
+            }
+            if (FrameVisualization.getCanto1() == 3 && FrameVisualization.getCanto2() == 4) {
+                for (int i = (gridMUX) - 1; i > 0; i--) {
+                    for (int j = 0; j < (gridMUY) - 1; j++) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j + 1).x,
+                            FrameVisualization.getPontosDraw(i - 1, j + 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j + 1).y,
+                            FrameVisualization.getPontosDraw(i - 1, j + 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
+                        g.setColor(getColor(i, i - 1, j, j + 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
+                }
+            }
+            ///////////////////////////////// CANTO 4
+            if (FrameVisualization.getCanto1() == 4 && FrameVisualization.getCanto2() == 2) {
+                for (int j = (gridMUY) - 1; j > 0; j--) {
+                    for (int i = (gridMUX) - 1; i > 0; i--) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x,
+                            FrameVisualization.getPontosDraw(i - 1, j - 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y,
+                            FrameVisualization.getPontosDraw(i - 1, j - 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
+                        g.setColor(getColor(i, i - 1, j, j - 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
+                }
+            }
+            if (FrameVisualization.getCanto1() == 4 && FrameVisualization.getCanto2() == 3) {
+                for (int i = (gridMUX) - 1; i > 0; i--) {
+                    for (int j = (gridMUY) - 1; j > 0; j--) {
+                        int xx[] = {FrameVisualization.getPontosDraw(i, j).x, FrameVisualization.getPontosDraw(i, j - 1).x,
+                            FrameVisualization.getPontosDraw(i - 1, j - 1).x, FrameVisualization.getPontosDraw(i - 1, j).x};
+                        int yy[] = {FrameVisualization.getPontosDraw(i, j).y, FrameVisualization.getPontosDraw(i, j - 1).y,
+                            FrameVisualization.getPontosDraw(i - 1, j - 1).y, FrameVisualization.getPontosDraw(i - 1, j).y};
+                        g.setColor(getColor(i, i - 1, j, j - 1));
+                        g.fillPolygon(xx, yy, 4);
+                        g.setColor(FrameVisualization.getCor_linha());
+                        g.drawPolygon(xx, yy, 4);
+                    }
+                }
+            }
+            ////////////////////////////////////////////////////////
 
 
 //
@@ -164,7 +169,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
 //        }
 
 
-
+        }
 
     }
 
@@ -181,14 +186,14 @@ public final class MatrizU3D extends javax.swing.JPanel {
                 }
             }
         }
-        
+
         intervalo = (max - min) / 10;
     }
 
     public Color getColor(int i1, int i2, int j1, int j2) {
         Color cor = null;
-        double media = (FrameVisualization.getMatrizU()[i1][j1] + FrameVisualization.getMatrizU()[i1][j2] + 
-                FrameVisualization.getMatrizU()[i2][j1] + FrameVisualization.getMatrizU()[i2][j2]) / 4;
+        double media = (FrameVisualization.getMatrizU()[i1][j1] + FrameVisualization.getMatrizU()[i1][j2]
+                + FrameVisualization.getMatrizU()[i2][j1] + FrameVisualization.getMatrizU()[i2][j2]) / 4;
         if ((media > 0) && (media <= intervalo)) { //Cor 1
             cor = new Color(25, 25, 112);
         } else if ((media > intervalo) && (media <= intervalo * 2)) { //Cor 2

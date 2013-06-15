@@ -37,7 +37,7 @@ public class PanelKmeans extends javax.swing.JPanel {
         teste = new MatrizDados();
         teste = new MatrizDados();
         this.grupos = grupos;
-        setMatrizDados();
+        startMatrizDados();
         frameKmeans = k;
     }
 
@@ -222,7 +222,15 @@ public class PanelKmeans extends javax.swing.JPanel {
     private javax.swing.JTextArea jTextArea3;
     // End of variables declaration//GEN-END:variables
 
-    private void setMatrizDados() {
+    public void setMatrizDados(double[][] matrizDados) {
+        this.matrizDados = matrizDados;
+    }
+
+    public void setGrupos(String[] grupos) {
+        this.grupos = grupos;
+    }
+
+    public void startMatrizDados() {
         String grupo;
         grupo = grupos[0];
         double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];

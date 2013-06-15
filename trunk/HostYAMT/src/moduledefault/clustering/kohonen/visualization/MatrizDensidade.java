@@ -27,19 +27,20 @@ public class MatrizDensidade extends javax.swing.JPanel {
      */
     public MatrizDensidade() {
         initComponents();
-       
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        gridX = FrameVisualization.getGridX();
-        gridY = FrameVisualization.getGridY();
-        
-        mCellMetrics = new HexGrid(FrameVisualization.getValueDensidade()); //tamanho hex
 
-        Polygon poligonos[][] = new Polygon[gridX][gridY];
+        if (FrameVisualization.getInstance().getRede() != null) {
+            gridX = FrameVisualization.getGridX();
+            gridY = FrameVisualization.getGridY();
+
+            mCellMetrics = new HexGrid(FrameVisualization.getValueDensidade()); //tamanho hex
+
+            Polygon poligonos[][] = new Polygon[gridX][gridY];
 
             for (int i = 0; i < gridX; i++) {
                 for (int j = 0; j < gridY; j++) {
@@ -79,7 +80,7 @@ public class MatrizDensidade extends javax.swing.JPanel {
                 }
 
             }
-        
+        }
     }
 
     /**

@@ -37,7 +37,7 @@ import view.jpanel.JPanelClustering;
  *
  * @author Mateus
  */
-public class PanelFormigas extends javax.swing.JPanel {
+public final class PanelFormigas extends javax.swing.JPanel {
 
     /**
      * Creates new form panelFormigas
@@ -47,7 +47,7 @@ public class PanelFormigas extends javax.swing.JPanel {
         this.matrizDados = base;
         teste = new MatrizDados();
         this.grupos = grupos;
-        setMatrizDados();
+        startMatrizDados();
         Operações_Mat mat = new Operações_Mat();
         mat.Padronização(teste);
         listaObjetos = new ArrayList<ACOClustering>();
@@ -1104,7 +1104,15 @@ public class PanelFormigas extends javax.swing.JPanel {
         }
     }
 
-    private void setMatrizDados() {
+    public void setGrupos(String[] grupos) {
+        this.grupos = grupos;
+    }
+
+    public void setMatrizDados(double[][] matrizDados) {
+        this.matrizDados = matrizDados;
+    }
+
+    public void startMatrizDados() {
         String grupo;
         grupo = grupos[0];
         double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];

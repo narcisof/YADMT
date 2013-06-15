@@ -39,58 +39,60 @@ public class SOMVisualization extends javax.swing.JPanel {
         int y2 = height - 50;
 
         g.setColor(Color.black);
-        g.drawString("1",x0, y0);
-        g.drawString("2",x2, y0);
-        g.drawString("3",x0, y2);
-        g.drawString("4",x2, y2);
-        
+        g.drawString("1", x0, y0);
+        g.drawString("2", x2, y0);
+        g.drawString("3", x0, y2);
+        g.drawString("4", x2, y2);
+
         g.drawLine(x0, y0, x2, y0);
         g.drawLine(x0, y0, x0, y2);
         g.drawLine(x2, y0, x2, y2);
         g.drawLine(x0, y2, x2, y2);
-        
-        for (int i = 0; i < FrameVisualization.getDados().getDataSet().size(); i++) {
-            int x = 50 + (int) (FrameVisualization.getDados().getDataSet().get(i).getAtributos().get(0) * (width-120));
-            int y = (height-70) - (int) (FrameVisualization.getDados().getDataSet().get(i).getAtributos().get(1) * (height-120));
-            switch (FrameVisualization.getDados().getDataSet().get(i).getGrupo()) {
-                case "Iris-setosa":
-                    g.setColor(Color.red);
-                    break;
-                case "Iris-versicolor":
-                    g.setColor(Color.blue);
-                    break;
-                default:
-                    g.setColor(Color.green);
-                    break;
-            }
-            g.fillOval(x, y, 10, 10);
-        }
-        g.setColor(Color.black);
 
+        if (FrameVisualization.getDados() != null) {
+            for (int i = 0; i < FrameVisualization.getDados().getDataSet().size(); i++) {
+                int x = 50 + (int) (FrameVisualization.getDados().getDataSet().get(i).getAtributos().get(0) * (width - 120));
+                int y = (height - 70) - (int) (FrameVisualization.getDados().getDataSet().get(i).getAtributos().get(1) * (height - 120));
+                switch (FrameVisualization.getDados().getDataSet().get(i).getGrupo()) {
+                    case "Iris-setosa":
+                        g.setColor(Color.red);
+                        break;
+                    case "Iris-versicolor":
+                        g.setColor(Color.blue);
+                        break;
+                    default:
+                        g.setColor(Color.green);
+                        break;
+                }
+                g.fillOval(x, y, 10, 10);
+            }
+            g.setColor(Color.black);
+        }
         if (rede != null) {
+        
             for (int i = 0; i < rede.getGridX(); i++) {
                 for (int j = 0; j < rede.getGridY(); j++) {
-                    int x = 50 +(int) (rede.getNeuronio(i, j).getPesos().get(0) * (width-120));
-                    int y = (height-70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height-120));
+                    int x = 50 + (int) (rede.getNeuronio(i, j).getPesos().get(0) * (width - 120));
+                    int y = (height - 70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height - 120));
                     g.fillOval(x, y, 8, 8);
                 }
             }
             for (int i = 0; i < rede.getGridX(); i++) {
                 for (int j = 0; j < rede.getGridY() - 1; j++) {
-                    int x = 50 +(int) (rede.getNeuronio(i, j).getPesos().get(0) * (width-120));
-                    int y = (height-70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height-120));
-                    int x1 = 50 +(int) (rede.getNeuronio(i, j + 1).getPesos().get(0) * (width-120));
-                    int y1 = (height-70) - (int) (rede.getNeuronio(i, j + 1).getPesos().get(1) * (height-120));
+                    int x = 50 + (int) (rede.getNeuronio(i, j).getPesos().get(0) * (width - 120));
+                    int y = (height - 70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height - 120));
+                    int x1 = 50 + (int) (rede.getNeuronio(i, j + 1).getPesos().get(0) * (width - 120));
+                    int y1 = (height - 70) - (int) (rede.getNeuronio(i, j + 1).getPesos().get(1) * (height - 120));
                     g.drawLine(x, y, x1, y1);
                 }
             }
 
             for (int i = 0; i < rede.getGridX() - 1; i++) {
                 for (int j = 0; j < rede.getGridY(); j++) {
-                    int x = 50 +(int) (rede.getNeuronio(i, j).getPesos().get(0) * (width-120));
-                    int y = (height-70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height-120));
-                    int x1 = 50 +(int) (rede.getNeuronio(i + 1, j).getPesos().get(0) * (width-120));
-                    int y1 = (height-70) - (int) (rede.getNeuronio(i + 1, j).getPesos().get(1) * (height-120));
+                    int x = 50 + (int) (rede.getNeuronio(i, j).getPesos().get(0) * (width - 120));
+                    int y = (height - 70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height - 120));
+                    int x1 = 50 + (int) (rede.getNeuronio(i + 1, j).getPesos().get(0) * (width - 120));
+                    int y1 = (height - 70) - (int) (rede.getNeuronio(i + 1, j).getPesos().get(1) * (height - 120));
                     g.drawLine(x, y, x1, y1);
                 }
             }
