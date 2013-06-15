@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import moduledefault.clustering.kohonen.visualization.FrameVisualization;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.view.frames.JFrameKmeans;
-import moduledefault.clustering.view.frames.JFrameKohonen;
+import moduledefault.clustering.view.frames.JFrameKohonenConfig;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 import moduledefault.clustering.view.jpanel.PanelHierarquicos;
 import moduledefault.clustering.view.jpanel.PanelKmeans;
@@ -41,7 +41,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     //
     JFrameFormigas frameFormigas;
     JFrameKmeans frameKmeans;
-    JFrameKohonen frameKohonen;
+    JFrameKohonenConfig frameKohonen;
 
     /**
      * Creates new form JPanelClustering
@@ -185,8 +185,8 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     break;
                 case 3: //Kohonen
                     if (kohonen == null) {
+                        frameKohonen = new JFrameKohonenConfig();
                         kohonen = new PanelKohonen(arrayListBases, frameKohonen);
-                        frameKohonen = new JFrameKohonen();
                     }
                     jButtonConfiguracao.setEnabled(true);
                     panelFundo.removeAll();
