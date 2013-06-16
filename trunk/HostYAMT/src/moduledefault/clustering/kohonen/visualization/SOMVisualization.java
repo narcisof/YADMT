@@ -17,6 +17,7 @@ public class SOMVisualization extends javax.swing.JPanel {
     private RedeKohonen rede = null;
 
     public SOMVisualization(RedeKohonen r) {
+        initComponents();
         rede = r;
     }
 
@@ -32,6 +33,11 @@ public class SOMVisualization extends javax.swing.JPanel {
         int centroWidth = (int) w;
         int centroHeight = (int) h;
 
+        if(width > height){ //ARRUMAR ESSAS VARIAVEIS GAMBI
+            width = height;
+        }else{
+            height = width;
+        }
 
         int x0 = width - (width - 50);
         int y0 = height - (height - 50);
@@ -39,16 +45,27 @@ public class SOMVisualization extends javax.swing.JPanel {
         int y2 = height - 50;
 
         g.setColor(Color.black);
-        g.drawString("1", x0, y0);
-        g.drawString("2", x2, y0);
-        g.drawString("3", x0, y2);
-        g.drawString("4", x2, y2);
+        g.drawString("Y", x0 - 10, y0 - 10);
+       // g.drawString("2", x2, y0);
+       // g.drawString("3", x0, y2);
+        g.drawString("X", x2 + 10, y2 + 10);
 
-        g.drawLine(x0, y0, x2, y0);
-        g.drawLine(x0, y0, x0, y2);
-        g.drawLine(x2, y0, x2, y2);
-        g.drawLine(x0, y2, x2, y2);
+        //g.drawLine(x0, y0, x2, y0);//1-2
+        g.drawLine(x0, y0, x0, y2);//1-3
+        //g.drawLine(x2, y0, x2, y2);//2-4
+        g.drawLine(x0, y2, x2, y2);//3-4
 
+        int escala = (int) height/10;
+        for (int i = 0; i < height; i++) {
+            if(i == escala){
+                g.drawLine(x0 - 5, i, x0 +5, i);
+                escala+=escala;
+            }
+        }
+        float m = width / 100;
+        int tamPixel = (int) m;
+        
+        
         if (FrameVisualization.getDados() != null) {
             for (int i = 0; i < FrameVisualization.getDados().getDataSet().size(); i++) {
                 int x = 50 + (int) (FrameVisualization.getDados().getDataSet().get(i).getAtributos().get(0) * (width - 120));
@@ -64,7 +81,7 @@ public class SOMVisualization extends javax.swing.JPanel {
                         g.setColor(Color.green);
                         break;
                 }
-                g.fillOval(x, y, 10, 10);
+                g.fillOval(x, y, tamPixel, tamPixel);
             }
             g.setColor(Color.black);
         }
@@ -74,7 +91,7 @@ public class SOMVisualization extends javax.swing.JPanel {
                 for (int j = 0; j < rede.getGridY(); j++) {
                     int x = 50 + (int) (rede.getNeuronio(i, j).getPesos().get(0) * (width - 120));
                     int y = (height - 70) - (int) (rede.getNeuronio(i, j).getPesos().get(1) * (height - 120));
-                    g.fillOval(x, y, 8, 8);
+                    g.fillOval(x, y, tamPixel, tamPixel);
                 }
             }
             for (int i = 0; i < rede.getGridX(); i++) {
@@ -107,7 +124,6 @@ public class SOMVisualization extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -118,11 +134,11 @@ public class SOMVisualization extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 398, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 298, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
