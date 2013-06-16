@@ -23,6 +23,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     //Variaveis para o Desenho Rede
     private static Point3d[][] pontos3D;
     private static ArrayList<Point> pontos2D = new ArrayList<>();
+    private static ArrayList<Point> pontos2DBase = null;
     private static ArrayList<Point> eixos = new ArrayList<>();
     private static Point[][] pontosDraw;
     private static Color cor_fundo = Color.WHITE;
@@ -43,7 +44,8 @@ public final class FrameVisualization extends javax.swing.JFrame {
         {0, 0, 20, 0},
         {0, 0, 0, 20},
         {1, 1, 1, 1}}; //Coordenadas para desenho do eixo
-    private static double Mpontos[][];
+    private static double Mpontos[][]; //Pontos da rede 3D
+    private static double Mbase[][];  //Pontos da base  3D
     private static boolean exibirEixos = true;
     private static double matrizU[][];
     //
@@ -81,6 +83,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
 
     public FrameVisualization() {
         initComponents();
+        setLocationRelativeTo(null);
         repaint();
     }
 
@@ -112,6 +115,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         matrizU3D();
         matrizU2D();
         densidade();
+        calcBase3D();
         INSTANCE.repaint();
     }
 
@@ -146,6 +150,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         textNeuronio = new javax.swing.JTextArea();
         sliderDensidade = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
+        jPanelBase3D = new Base3D();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -173,7 +178,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panelFundoSom.setBackground(new java.awt.Color(255, 255, 255));
 
         panelSOM.setBackground(new java.awt.Color(255, 255, 255));
-        panelSOM.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelSOM.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 panelSOMComponentResized(evt);
@@ -188,11 +192,11 @@ public final class FrameVisualization extends javax.swing.JFrame {
         );
         panelSOMLayout.setVerticalGroup(
             panelSOMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 404, Short.MAX_VALUE)
+            .addGap(0, 420, Short.MAX_VALUE)
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
         sliderVelocidade.setBackground(new java.awt.Color(255, 255, 255));
         sliderVelocidade.setValue(100);
@@ -218,7 +222,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
                 .addComponent(statusProgesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sliderVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -247,10 +251,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panelFundoSomLayout.setHorizontalGroup(
             panelFundoSomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panelFundoSomLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelSOM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelSOM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelFundoSomLayout.setVerticalGroup(
             panelFundoSomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +315,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel3DLayout.setHorizontalGroup(
             panel3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel3DLayout.createSequentialGroup()
-                .addContainerGap(297, Short.MAX_VALUE)
+                .addContainerGap(301, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
@@ -327,7 +328,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel3DLayout.setVerticalGroup(
             panel3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3DLayout.createSequentialGroup()
-                .addContainerGap(414, Short.MAX_VALUE)
+                .addContainerGap(428, Short.MAX_VALUE)
                 .addGroup(panel3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(sliderU3D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -371,7 +372,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel2DLayout.setHorizontalGroup(
             panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel2DLayout.createSequentialGroup()
-                .addContainerGap(411, Short.MAX_VALUE)
+                .addContainerGap(415, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sliderU2D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -380,7 +381,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel2DLayout.setVerticalGroup(
             panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel2DLayout.createSequentialGroup()
-                .addContainerGap(408, Short.MAX_VALUE)
+                .addContainerGap(422, Short.MAX_VALUE)
                 .addGroup(panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderU2D, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -429,7 +430,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panelDensidade.setLayout(panelDensidadeLayout);
         panelDensidadeLayout.setHorizontalGroup(
             panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidadeLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -440,7 +441,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panelDensidadeLayout.setVerticalGroup(
             panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidadeLayout.createSequentialGroup()
-                .addGap(0, 312, Short.MAX_VALUE)
+                .addGap(0, 326, Short.MAX_VALUE)
                 .addGroup(panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderDensidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -449,6 +450,21 @@ public final class FrameVisualization extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Matriz Densidade", panelDensidade);
+
+        jPanelBase3D.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanelBase3DLayout = new javax.swing.GroupLayout(jPanelBase3D);
+        jPanelBase3D.setLayout(jPanelBase3DLayout);
+        jPanelBase3DLayout.setHorizontalGroup(
+            jPanelBase3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 659, Short.MAX_VALUE)
+        );
+        jPanelBase3DLayout.setVerticalGroup(
+            jPanelBase3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 464, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("tab5", jPanelBase3D);
 
         jMenu1.setText("Arquivo");
         jMenuBar1.add(jMenu1);
@@ -462,7 +478,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTabbedPane2)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -618,6 +634,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         drawMatrizU();
         repaint();
     }//GEN-LAST:event_panel3DMouseWheelMoved
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -630,6 +647,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelBase3D;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private static javax.swing.JLabel labelStatus;
@@ -645,6 +663,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private static javax.swing.JProgressBar statusProgesso;
     private javax.swing.JTextArea textNeuronio;
     // End of variables declaration//GEN-END:variables
+
     public static void som() {
         if (som == null) {
             som = new SOMVisualization(null);
@@ -740,6 +759,21 @@ public final class FrameVisualization extends javax.swing.JFrame {
             }
         }
 
+    }
+
+    public void calcBase3D() {
+         project = new Projetor(jPanelBase3D.getWidth(), jPanelBase3D.getHeight());
+        Mbase = new double[4][dados.getDataSet().size()];
+
+        for (int i = 0; i < dados.getDataSet().size(); i++) {
+            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0)*10;
+            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1)*10;
+            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2)*10;
+            Mbase[3][i] = 1;
+            
+        }
+        pontos2DBase = new ArrayList<>();
+        pontos2DBase = project.convert3Dto2D(Mbase, dados.getDataSet().size(), VRP, Dvalue, P);
     }
 
     private static void verificaCantos() {
@@ -886,6 +920,10 @@ public final class FrameVisualization extends javax.swing.JFrame {
             }
         }
         repaint();
+    }
+
+    public static ArrayList<Point> getPontos2DBase() {
+        return pontos2DBase;
     }
 
     public static void setDados(Base r) {

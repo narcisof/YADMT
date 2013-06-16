@@ -367,6 +367,7 @@ public final class PanelKohonen extends javax.swing.JPanel {
     private void bVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVisualizacaoActionPerformed
         FrameVisualization.getInstance().setDados(dados);
         FrameVisualization.getInstance().setVisible(true);
+        FrameVisualization.getInstance().calcBase3D();
     }//GEN-LAST:event_bVisualizacaoActionPerformed
 
     private void jButtonConfigDensidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfigDensidadeActionPerformed
