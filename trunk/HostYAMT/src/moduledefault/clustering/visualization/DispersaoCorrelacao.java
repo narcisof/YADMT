@@ -6,26 +6,24 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import moduledefault.clustering.kohonen.visualization.FrameVisualization;
-import moduledefault.clustering.uteis.MatrizDados;
-import moduledefault.clustering.uteis.Operações_Mat;
-import sun.security.x509.CRLDistributionPointsExtension;
 
 /**
  *
  * @author Mateus
  */
-public class GraficoDispersaoGrupo extends javax.swing.JPanel {
+public class DispersaoCorrelacao extends javax.swing.JPanel {
 
     /**
-     * Creates new form GraficoDispersaoGrupo
+     * Creates new form DispersaoCorrelacao
      */
-    private static int[][] grupos;
-
-    public GraficoDispersaoGrupo() {
+    public DispersaoCorrelacao() {
         initComponents();
     }
-
+    
+     /**
+     *
+     * @param g
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -77,7 +75,7 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
                     System.out.println("Atributo = "+(ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1));
                     System.out.println("Grupo = "+ClusteringFrameVisualization.getMatrizGrupos()[1][i]);
                     System.out.println("Eixo X = "+ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoX()]);
-                    System.out.println("Eixo Y = "+ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoY()]);
+                    System.out.println("Eixo Y = "+ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoX()]);
                     int x = 50 + (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoX()] * (width - 120));
                     int y = (height - 70) - (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoY()] * (height - 120));
                     switch (ClusteringFrameVisualization.getMatrizDados().getGrupos()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1]) {

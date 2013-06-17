@@ -56,12 +56,13 @@ public final class PanelFormigas extends javax.swing.JPanel {
         frameFormigas = j;
         System.out.println("antes = " + frameFormigas.getSigma());
         this.objetoAtual = 0;
-        for (int i = 0; i < teste.getLinhas(); i++) {
-            for (int w = 0; w < teste.getColunas(); w++) {
-                System.out.print(" " + teste.getMatriz_dados()[i][w]);
-            }
-            System.out.println();
-        }
+//        for (int i = 0; i < teste.getLinhas(); i++) {
+//            for (int w = 0; w < teste.getColunas(); w++) {
+//                System.out.print(" " + teste.getMatriz_dados()[i][w]);
+//            }
+//            System.out.println();
+//        }
+        buttonVisualizacao.setEnabled(false);
     }
     /**
      *
@@ -157,11 +158,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         fundoSimulacao = new javax.swing.JPanel();
-        sliderVelocidade = new javax.swing.JSlider();
-        jLabel1 = new javax.swing.JLabel();
-        statusProgresso = new javax.swing.JProgressBar();
-        jLabel2 = new javax.swing.JLabel();
-        labelProgresso = new javax.swing.JLabel();
 
         Panel_medidas1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
 
@@ -517,49 +513,15 @@ public final class PanelFormigas extends javax.swing.JPanel {
             }
         });
 
-        sliderVelocidade.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sliderVelocidadeStateChanged(evt);
-            }
-        });
-
-        jLabel1.setText("Velocidade:");
-
-        jLabel2.setText("Progresso:");
-
         javax.swing.GroupLayout fundoSimulacaoLayout = new javax.swing.GroupLayout(fundoSimulacao);
         fundoSimulacao.setLayout(fundoSimulacaoLayout);
         fundoSimulacaoLayout.setHorizontalGroup(
             fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fundoSimulacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(fundoSimulacaoLayout.createSequentialGroup()
-                        .addComponent(statusProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(sliderVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGap(0, 534, Short.MAX_VALUE)
         );
         fundoSimulacaoLayout.setVerticalGroup(
             fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fundoSimulacaoLayout.createSequentialGroup()
-                .addContainerGap(352, Short.MAX_VALUE)
-                .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fundoSimulacaoLayout.createSequentialGroup()
-                        .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sliderVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(statusProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(labelProgresso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGap(0, 408, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Simulação", fundoSimulacao);
@@ -602,6 +564,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     private void Executar_formigasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Executar_formigasActionPerformed
         this.Executar_formigas.setEnabled(false);
+        buttonVisualizacao.setEnabled(false);
         if (!Euclidiana.isSelected() && !Correlacao.isSelected() && !Cosseno.isSelected() && !Mahalanobis.isSelected()) {
             JOptionPane.showMessageDialog(null, "Selecione uma Medida", "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
             return;
@@ -681,10 +644,9 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 imprimiRecuperacao(teste_recuperação);
                 setListaResultados();
                 jTextArea1.setText(getBuffer().toString());
-                ClusteringFrameVisualization.setGrupos(listaGrupos.get(getObjetoAtual()));
                 setObjetoAtual();
-
                 Executar_formigas.setEnabled(true);
+                buttonVisualizacao.setEnabled(true);
             }
         }.start();//inicia a thread.
         numeroExecucoes++;
@@ -835,6 +797,9 @@ public final class PanelFormigas extends javax.swing.JPanel {
     }//GEN-LAST:event_listResultadosMouseClicked
 
     private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
+        ClusteringFrameVisualization.getInstance().setMatrizDados(teste);
+        ClusteringFrameVisualization.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual()-1));
+        ClusteringFrameVisualization.getInstance().setVisible(true);
     }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
     private void fundoSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoSimulacaoComponentResized
@@ -845,10 +810,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         dispersaoGeral();
         setDispersao(matriz_padrao);
     }//GEN-LAST:event_fundoSimulacaoComponentResized
-
-    private void sliderVelocidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderVelocidadeStateChanged
-        setSleep(100 - sliderVelocidade.getValue());
-    }//GEN-LAST:event_sliderVelocidadeStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Completa;
     private javax.swing.JRadioButton Correlacao;
@@ -876,9 +837,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JRadioButton jCompleta;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jMeans;
     private javax.swing.JRadioButton jMedia;
     private javax.swing.JPanel jPanel1;
@@ -889,10 +848,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JRadioButton jWard;
-    private static javax.swing.JLabel labelProgresso;
     private java.awt.List listResultados;
-    private javax.swing.JSlider sliderVelocidade;
-    private static javax.swing.JProgressBar statusProgresso;
     // End of variables declaration//GEN-END:variables
 
     void Agrupamento() throws IOException, InterruptedException {
@@ -909,10 +865,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
         ACOClustering c = null;
         try {
             c = new ACOClustering(teste, teste_distancia, matriz_padrao);
+
         } catch (IOException ex) {
             Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
         }
         setOperar(c);
+        ClusteringFrameVisualization.getInstance().setVisible(false);
         listaObjetos.add(getOperar());
         getOperar().set_percent1((frameFormigas.getFase()));
         getOperar().set_cont2(matrizDados[0].length, matrizDados.length);
@@ -938,7 +896,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
             }
             getOperar().setCont();
-          //  vai(getOperar().getCont());
+            //  vai(getOperar().getCont());
         }
 
         matriz_padrao = null;
@@ -1234,42 +1192,40 @@ public final class PanelFormigas extends javax.swing.JPanel {
     public static MatrizDados getDados() {
         return teste;
     }
-
-    public void vai(final int i) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                 setStatus(i);
-            }
-        });
-    }
-
-    public static void setStatus(int i) {
-        if (statusProgresso != null) {
-            statusProgresso.setValue(i);
-            if (i == statusProgresso.getMaximum() - 1) {
-                labelProgresso.setText("Finalizado.");
-            } else {
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        switch (labelProgresso.getText()) {
-                            case "Executando":
-                                labelProgresso.setText("Executando.");
-                                break;
-                            case "Executando.":
-                                labelProgresso.setText("Executando..");
-                                break;
-                            case "Executando..":
-                                labelProgresso.setText("Executando...");
-                                break;
-                            case "Executando...":
-                                labelProgresso.setText("Executando");
-                                break;
-                        }
-                    }
-                };
-                t.start();
-            }
-        }
-    }
+//    public void vai(final int i) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                 setStatus(i);
+//            }
+//        });
+//    }
+//    public static void setStatus(int i) {
+//        if (statusProgresso != null) {
+//            statusProgresso.setValue(i);
+//            if (i == statusProgresso.getMaximum() - 1) {
+//                labelProgresso.setText("Finalizado.");
+//            } else {
+//                Thread t = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        switch (labelProgresso.getText()) {
+//                            case "Executando":
+//                                labelProgresso.setText("Executando.");
+//                                break;
+//                            case "Executando.":
+//                                labelProgresso.setText("Executando..");
+//                                break;
+//                            case "Executando..":
+//                                labelProgresso.setText("Executando...");
+//                                break;
+//                            case "Executando...":
+//                                labelProgresso.setText("Executando");
+//                                break;
+//                        }
+//                    }
+//                };
+//                t.start();
+//            }
+//        }
+//    }
 }

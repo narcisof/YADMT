@@ -19,22 +19,22 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
      * Creates new form ClusteringFrameVisualization
      */
     private static GraficoDispersaoGrupo GDGr;
+    private static DispersaoCorrelacao DC;
     private static ClusteringFrameVisualization INSTANCE;
-    private static MatrizDados dados;
-    private static double matrizDados[][];
-    private static int matrizPadroes[][];
+    private static MatrizDados matrizDados;
     private static int[][] matrizGrupos;
+    private static int grupoEscolhido = 1;
+    private static int eixoX = 1;
+    private static int eixoY = 2;
 
     public ClusteringFrameVisualization() {
         initComponents();
         repaint();
     }
 
-    public static synchronized ClusteringFrameVisualization getInstance(ACOClustering a) {
+    public static synchronized ClusteringFrameVisualization getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ClusteringFrameVisualization();
-            dispersaoGrupos();
-        } else {
         }
         INSTANCE.repaint();
         return INSTANCE;
@@ -44,14 +44,15 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         panelGuias = new javax.swing.JTabbedPane();
         panelGraficoDispersao = new javax.swing.JPanel();
         fundoDispersão = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        graficoDispersao = new javax.swing.JCheckBox();
-        grafoDispersao = new javax.swing.JCheckBox();
-        dispersaoCorrelacao = new javax.swing.JCheckBox();
+        graficoDispersao = new javax.swing.JRadioButton();
+        grafoDispersao = new javax.swing.JRadioButton();
+        dispersaoCorrelacao = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         checkGeral = new javax.swing.JCheckBox();
         checkGrupos = new javax.swing.JCheckBox();
@@ -75,6 +76,12 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
+        panelGuias.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                panelGuiasComponentResized(evt);
+            }
+        });
+
         fundoDispersão.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 fundoDispersãoComponentResized(evt);
@@ -85,7 +92,7 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         fundoDispersão.setLayout(fundoDispersãoLayout);
         fundoDispersãoLayout.setHorizontalGroup(
             fundoDispersãoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 755, Short.MAX_VALUE)
         );
         fundoDispersãoLayout.setVerticalGroup(
             fundoDispersãoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,49 +103,34 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Tipo"));
 
+        buttonGroup1.add(graficoDispersao);
         graficoDispersao.setText("Gráfico de Dispersão");
-        graficoDispersao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                graficoDispersaoActionPerformed(evt);
-            }
-        });
 
+        buttonGroup1.add(grafoDispersao);
         grafoDispersao.setText("Grafo de Dispersão");
-        grafoDispersao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grafoDispersaoActionPerformed(evt);
-            }
-        });
 
+        buttonGroup1.add(dispersaoCorrelacao);
         dispersaoCorrelacao.setText("Dispersão de Correlação");
-        dispersaoCorrelacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dispersaoCorrelacaoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(graficoDispersao)
                     .addComponent(grafoDispersao)
-                    .addComponent(dispersaoCorrelacao))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(dispersaoCorrelacao)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(graficoDispersao)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(grafoDispersao, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dispersaoCorrelacao)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(grafoDispersao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
+                .addComponent(dispersaoCorrelacao))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Amostra Para Visualização"));
@@ -215,7 +207,7 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(comboEixoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                         .addComponent(buttonVisualizar)))
                 .addContainerGap())
         );
@@ -227,16 +219,16 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelGraficoDispersaoLayout = new javax.swing.GroupLayout(panelGraficoDispersao);
@@ -399,63 +391,47 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void graficoDispersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficoDispersaoActionPerformed
-        if (graficoDispersao.isSelected()) {
-            grafoDispersao.setEnabled(false);
-            dispersaoCorrelacao.setEnabled(false);
-        } else {
-            grafoDispersao.setEnabled(true);
-            dispersaoCorrelacao.setEnabled(true);
-        }
-    }//GEN-LAST:event_graficoDispersaoActionPerformed
-
-    private void grafoDispersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grafoDispersaoActionPerformed
-        if (grafoDispersao.isSelected()) {
-            graficoDispersao.setEnabled(false);
-            dispersaoCorrelacao.setEnabled(false);
-        } else {
-            graficoDispersao.setEnabled(true);
-            dispersaoCorrelacao.setEnabled(true);
-        }
-    }//GEN-LAST:event_grafoDispersaoActionPerformed
-
-    private void dispersaoCorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dispersaoCorrelacaoActionPerformed
-        if (dispersaoCorrelacao.isSelected()) {
-            graficoDispersao.setEnabled(false);
-            grafoDispersao.setEnabled(false);
-        } else {
-            graficoDispersao.setEnabled(true);
-            grafoDispersao.setEnabled(true);
-        }
-    }//GEN-LAST:event_dispersaoCorrelacaoActionPerformed
-
     private void comboEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEixoYActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboEixoYActionPerformed
 
     private void buttonVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizarActionPerformed
-
-        if (graficoDispersao.isSelected()) {
-            if (checkGrupos.isSelected()) {
-                setGrupos(getMatrizGrupos());
-                GDGr.setVisible(true);
-                GDGr.repaint();
-            }
-        }
+//
+//        if (graficoDispersao.isSelected()) {
+//            if (checkGrupos.isSelected()) {
+//                setGrupos(getMatrizGrupos());
+//                GDGr.setVisible(true);
+//                GDGr.repaint();
+//            }
+//        }
 
 
     }//GEN-LAST:event_buttonVisualizarActionPerformed
 
     private void fundoDispersãoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoDispersãoComponentResized
 
+        
         fundoDispersão.removeAll();
-        GDGr.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
-        fundoDispersão.add(GDGr);
+        DC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+        fundoDispersão.add(DC);
         fundoDispersão.updateUI();
+        DC.setVisible(true);
+//        fundoDispersão.removeAll();
+//        GDGr.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+//        fundoDispersão.add(GDGr);
+//        fundoDispersão.updateUI();
+//        GDGr.setVisible(true);
         repaint();
     }//GEN-LAST:event_fundoDispersãoComponentResized
+
+    private void panelGuiasComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelGuiasComponentResized
+        dispersaoGrupos();
+        dispersaoCorrelacao();
+    }//GEN-LAST:event_panelGuiasComponentResized
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox andrewCurve;
+    private javax.swing.ButtonGroup buttonGroup1;
     private static javax.swing.JButton buttonVisualizar;
     private static javax.swing.JCheckBox checkGeral;
     private static javax.swing.JCheckBox checkGrupos;
@@ -463,12 +439,12 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
     private static javax.swing.JComboBox comboEixoY;
     private javax.swing.JCheckBox coordenadasParalelas2D;
     private javax.swing.JCheckBox coordenadasParalelas3D;
-    private javax.swing.JCheckBox dispersaoCorrelacao;
+    private javax.swing.JRadioButton dispersaoCorrelacao;
     private static javax.swing.JPanel fundoDispersão;
     private static javax.swing.JPanel fundoDistribuicao;
     private static javax.swing.JPanel fundoProjecoes;
-    private static javax.swing.JCheckBox graficoDispersao;
-    private javax.swing.JCheckBox grafoDispersao;
+    private javax.swing.JRadioButton graficoDispersao;
+    private javax.swing.JRadioButton grafoDispersao;
     private javax.swing.JCheckBox gravitationalForce;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -495,12 +471,13 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         fundoDispersão.add(GDGr);
         GDGr.setVisible(false);
     }
-
-    public static void setGrupos(int[][] b) {
-        if (GDGr == null) {
-            GDGr = new GraficoDispersaoGrupo();
+    private static void dispersaoCorrelacao() {
+        if (DC == null) {
+            DC = new DispersaoCorrelacao();
         }
-        GDGr.setGrupos(b);
+        DC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+        fundoDispersão.add(DC);
+        DC.setVisible(false);
     }
 
     public static JPanel getFundoDispersão() {
@@ -527,20 +504,12 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         this.fundoProjecoes = fundoProjecoes;
     }
 
-    public static MatrizDados getDados() {
-        return dados;
+    public static MatrizDados getMatrizDados() {
+        return matrizDados;
     }
 
-    public static void setDados(MatrizDados d) {
-        dados = d;
-    }
-
-    public static void setMatrizPadroes(int[][] m) {
-        matrizPadroes = m;
-    }
-
-    public static int[][] getMatrizPadroes() {
-        return matrizPadroes;
+    public static void setMatrizDados(MatrizDados m) {
+        matrizDados = m;
     }
 
     public static int[][] getMatrizGrupos() {
@@ -551,11 +520,29 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         ClusteringFrameVisualization.matrizGrupos = matrizGrupos;
     }
 
-    public static double[][] getMatrizDados() {
-        return matrizDados;
+    public static int getGrupoEscolhido() {
+        return grupoEscolhido;
     }
 
-    public static void setMatrizDados(double[][] matrizDados) {
-        ClusteringFrameVisualization.matrizDados = matrizDados;
+    public static void setGrupoEscolhido(int grupoEscolhido) {
+        ClusteringFrameVisualization.grupoEscolhido = grupoEscolhido;
     }
+
+    public static int getEixoX() {
+        return eixoX;
+    }
+
+    public static void setEixoX(int eixoX) {
+        ClusteringFrameVisualization.eixoX = eixoX;
+    }
+
+    public static int getEixoY() {
+        return eixoY;
+    }
+
+    public static void setEixoY(int eixoY) {
+        ClusteringFrameVisualization.eixoY = eixoY;
+    }
+    
+    
 }
