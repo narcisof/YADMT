@@ -15,9 +15,13 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class Correlação extends DistanciaPrincipal{
 
     
-
+    double [][] grupo;
     public Correlação(MatrizDados teste) {
         setMatrizDistancias(teste.getLinhas());
+    }
+    public Correlação(double[][]grupos ) {
+        setMatrizDistancias(grupos.length);
+        this.grupo = grupos;
     }
 
 
@@ -62,6 +66,65 @@ public class Correlação extends DistanciaPrincipal{
                     d4[i - 1] = (teste.getMatriz_dados()[w][i] - media2) / desvpad2;
                 }
                 for (int i = 0; i < teste.getColunas() - 1; i++) {
+                    correlacao += d3[i] * d4[i];
+                }
+                matrizDistancias[y][w] = (1 - correlacao);
+                somador = 0;
+                media1 = 0;
+                media2 = 0;
+                somatoriodesv1 = 0;
+                somatoriodesvquad1 = 0;
+                somatoriodesv2 = 0;
+                somatoriodesvquad2 = 0;
+                variancia1 = 0;
+                variancia2 = 0;
+                desvpad1 = 0;
+                desvpad2 = 0;
+                correlacao = 0;
+            }
+
+        }
+    }
+    public void distancia()  {
+        double[] d3 = new double[getMatrizDistancias()[0].length];
+        double[] d4 = new double[getMatrizDistancias()[0].length];
+        double somador = 0;
+        double media1 = 0;
+        double media2 = 0;
+        double somatoriodesv1 = 0;
+        double somatoriodesvquad1 = 0;
+        double somatoriodesv2 = 0;
+        double somatoriodesvquad2 = 0;
+        double variancia1 = 0;
+        double variancia2 = 0;
+        double desvpad1 = 0;
+        double desvpad2 = 0;
+        double correlacao = 0;
+
+        for (int y = 0; y < getMatrizDistancias().length; y++) {
+            for (int w = 0; w < getMatrizDistancias().length; w++) {
+                for (int i = 1; i < getMatrizDistancias()[0].length; i++) {
+                    somador += grupo[y][i];
+                    somatoriodesvquad1 += Math.pow(grupo[y][i], 2);
+                }
+                media1 = somador / (getMatrizDistancias()[0].length - 1);
+                somatoriodesv1 = Math.pow(somador, 2);
+                somador = 0;
+                for (int i = 1; i < getMatrizDistancias()[0].length; i++) {
+                    somador += grupo[w][i];
+                    somatoriodesvquad2 += Math.pow(grupo[w][i], 2);
+                }
+                media2 = somador / (getMatrizDistancias()[0].length - 1);
+                somatoriodesv2 = Math.pow(somador, 2);
+                variancia1 = (somatoriodesvquad1 - (somatoriodesv1 / (getMatrizDistancias()[0].length - 1))) / ((getMatrizDistancias()[0].length - 1) - 1);
+                variancia2 = (somatoriodesvquad2 - (somatoriodesv2 / (getMatrizDistancias()[0].length - 1))) / ((getMatrizDistancias()[0].length - 1) - 1);
+                desvpad1 = Math.sqrt(variancia1);
+                desvpad2 = Math.sqrt(variancia2);
+                for (int i = 1; i < getMatrizDistancias()[0].length; i++) {
+                    d3[i - 1] = (grupo[y][i] - media1) / desvpad1;
+                    d4[i - 1] = (grupo[w][i] - media2) / desvpad2;
+                }
+                for (int i = 0; i < getMatrizDistancias()[0].length - 1; i++) {
                     correlacao += d3[i] * d4[i];
                 }
                 matrizDistancias[y][w] = (1 - correlacao);
