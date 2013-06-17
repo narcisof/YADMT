@@ -30,7 +30,7 @@ import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.visualization.ClusteringFrameVisualization;
-import moduledefault.clustering.visualization.GraficoDispersaoGeral;
+import moduledefault.clustering.visualization.GraficoDispersaoSimulacao;
 import view.jpanel.JPanelClustering;
 
 /**
@@ -106,7 +106,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     int objetoAtual;
     static int sleep;
     int numeroExecucoes = 0;
-    private static GraficoDispersaoGeral GDG;
+    private static GraficoDispersaoSimulacao GDG;
 
     synchronized public ACOClustering getOperar() {
         return operar;
@@ -870,7 +870,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
         }
         setOperar(c);
-        ClusteringFrameVisualization.getInstance().setVisible(false);
+      //  ClusteringFrameVisualization.getInstance().setVisible(false);
         listaObjetos.add(getOperar());
         getOperar().set_percent1((frameFormigas.getFase()));
         getOperar().set_cont2(matrizDados[0].length, matrizDados.length);
@@ -1167,7 +1167,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     private static void dispersaoGeral() {
         if (GDG == null) {
-            GDG = new GraficoDispersaoGeral();
+            GDG = new GraficoDispersaoSimulacao();
         }
         GDG.setSize(fundoSimulacao.getWidth(), fundoSimulacao.getHeight());
         fundoSimulacao.add(GDG);
@@ -1176,7 +1176,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     public static void setDispersao(int[][] a) {
         if (GDG == null) {
-            GDG = new GraficoDispersaoGeral();
+            GDG = new GraficoDispersaoSimulacao();
         }
         GDG.setACO(a);
     }

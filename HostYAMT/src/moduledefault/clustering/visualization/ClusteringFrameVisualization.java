@@ -6,6 +6,7 @@ package moduledefault.clustering.visualization;
 
 import javax.swing.JPanel;
 import moduledefault.clustering.aco.ACOClustering;
+import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.uteis.MatrizDados;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 
@@ -19,7 +20,9 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
      * Creates new form ClusteringFrameVisualization
      */
     private static GraficoDispersaoGrupo GDGr;
+    private static GraficoDispersaoGeral GDG;
     private static DispersaoCorrelacao DC;
+    private static MatrizCorrelacao MC;
     private static ClusteringFrameVisualization INSTANCE;
     private static MatrizDados matrizDados;
     private static int[][] matrizGrupos;
@@ -405,17 +408,26 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
 //            }
 //        }
 
-
+        dispersaoGrupos();
+        dispersaoCorrelacao();
+        disersaoGeral();
+        matrizCorrelacao();
+        setMatrizGruposCorrelacao(getMatrizDadosCorrelacao());
     }//GEN-LAST:event_buttonVisualizarActionPerformed
 
     private void fundoDispersãoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoDispersãoComponentResized
 
-        
-        fundoDispersão.removeAll();
-        DC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
-        fundoDispersão.add(DC);
-        fundoDispersão.updateUI();
-        DC.setVisible(true);
+
+//        fundoDispersão.removeAll();
+//        GDG.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+//        fundoDispersão.add(GDG);
+//        fundoDispersão.updateUI();
+//        GDG.setVisible(true);
+//        fundoDispersão.removeAll();
+//        DC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+//        fundoDispersão.add(DC);
+//        fundoDispersão.updateUI();
+//        DC.setVisible(true);
 //        fundoDispersão.removeAll();
 //        GDGr.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
 //        fundoDispersão.add(GDGr);
@@ -425,10 +437,7 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
     }//GEN-LAST:event_fundoDispersãoComponentResized
 
     private void panelGuiasComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelGuiasComponentResized
-        dispersaoGrupos();
-        dispersaoCorrelacao();
     }//GEN-LAST:event_panelGuiasComponentResized
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox andrewCurve;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -471,6 +480,7 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         fundoDispersão.add(GDGr);
         GDGr.setVisible(false);
     }
+
     private static void dispersaoCorrelacao() {
         if (DC == null) {
             DC = new DispersaoCorrelacao();
@@ -543,6 +553,61 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
     public static void setEixoY(int eixoY) {
         ClusteringFrameVisualization.eixoY = eixoY;
     }
-    
-    
+
+    private void disersaoGeral() {
+        if (GDG == null) {
+            GDG = new GraficoDispersaoGeral();
+        }
+        GDG.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+        fundoDispersão.add(GDG);
+        GDG.setVisible(false);
+    }
+
+    private void matrizCorrelacao() {
+        if (MC == null) {
+            MC = new MatrizCorrelacao();
+        }
+        MC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+        fundoDispersão.add(MC);
+        MC.setVisible(false);
+    }
+
+    private void setMatrizGruposCorrelacao(double[][] grupos) {
+        if (MC == null) {
+            MC = new MatrizCorrelacao();
+        } else {
+                Correlação cor = new Correlação(grupos);
+                cor.distancia();
+            MC.setMatrizGrupos(cor.getMatrizDistancias());
+        }
+    }
+
+    private double[][] getMatrizDadosCorrelacao() {
+        int grupo = grupoEscolhido;
+        int numElemento = 0;
+        for (int i = 0; i < getMatrizDados().getLinhas(); i++) {
+            if (getMatrizGrupos()[1][i] == grupo) {
+                numElemento++;
+            }
+        }
+        double[][] resultado = new double[numElemento][getMatrizDados().getColunas()];
+        int contadorResultado = 0;
+        for (int j = 0; j < getMatrizDados().getLinhas(); j++) {
+            if (getMatrizGrupos()[1][j] == grupo) {
+                for (int k = 0; k < getMatrizDados().getColunas(); k++) {
+                    resultado[contadorResultado][k] = getMatrizDados().getMatriz_dados()[getMatrizGrupos()[0][j] - 1][k];
+                }
+                contadorResultado++;
+            }
+        }
+//        System.out.println("resultado");
+//
+//        for (int i = 0; i < numElemento; i++) {
+//            for (int j = 0; j < getMatrizDados().getColunas(); j++) {
+//                System.out.print(resultado[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
+        return resultado;
+    }
 }

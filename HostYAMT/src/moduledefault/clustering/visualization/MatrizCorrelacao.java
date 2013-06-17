@@ -11,16 +11,16 @@ import java.awt.Graphics;
  *
  * @author Mateus
  */
-public class GraficoDispersaoGeral extends javax.swing.JPanel {
-
+public class MatrizCorrelacao extends javax.swing.JPanel {
+    private double grupos[][];
     /**
-     * Creates new form GraficoDispersaoGeral
+     * Creates new form MatrizCorrelacao
      */
-    public GraficoDispersaoGeral() {
+    public MatrizCorrelacao() {
         initComponents();
     }
 
-    @Override
+      @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -64,32 +64,13 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
         float m = width / 100;
         int tamPixel = (int) m;
         System.out.println("fezzzzzz\n\n");
-
+        
         if (ClusteringFrameVisualization.getMatrizGrupos() != null) {
-            for (int i = 0; i < ClusteringFrameVisualization.getMatrizDados().getLinhas(); i++) {
-                int x = 50 + (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[i][1] * (width - 120));
-                int y = (height - 70) - (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[i][2] * (height - 120));
-                switch (ClusteringFrameVisualization.getMatrizDados().getGrupos()[ClusteringFrameVisualization.getMatrizGrupos()[0][i] - 1]) {
-                    case "Iris-setosa":
-                        g.setColor(Color.red);
-                        break;
-                    case "Iris-versicolor":
-                        g.setColor(Color.blue);
-                        //  System.out.println("Atributo = "+(ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1+" AZUULLLLL"));
-                        break;
-                    default:
-                        g.setColor(Color.green);
-                        break;
-                }
-                g.fillOval(x, y, tamPixel, tamPixel);
-
-            }
-
+            
             g.setColor(Color.black);
         }
 
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,4 +93,8 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    void setMatrizGrupos(double[][] grupos) {
+        this.grupos = grupos;
+    }
 }
