@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.distancias;
 
-
 import java.io.IOException;
 import moduledefault.clustering.uteis.MatrizDados;
 
@@ -12,14 +11,12 @@ import moduledefault.clustering.uteis.MatrizDados;
  *
  * @author Mateus
  */
-public class DistanciaEuclidiana extends DistanciaPrincipal{
+public class DistanciaEuclidiana extends DistanciaPrincipal {
 
     public DistanciaEuclidiana(MatrizDados teste) {
         System.out.println("euclidiana");
         setMatrizDistancias(teste.getLinhas());
     }
-
-
 
     public void distancia(MatrizDados teste) throws IOException {
         double acumulador = 0;
@@ -36,6 +33,4 @@ public class DistanciaEuclidiana extends DistanciaPrincipal{
         }
         padronizacaDistancias(matrizDistancias);
     }
-
-
 }

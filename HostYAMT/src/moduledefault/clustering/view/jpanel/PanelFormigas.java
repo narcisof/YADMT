@@ -54,8 +54,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         listaGrupos = new ArrayList<int[][]>();
         listaText = new ArrayList<>();
         frameFormigas = j;
-        System.out.println("antes = " + frameFormigas.getSigma());
-        this.objetoAtual = 0;
+//        System.out.println("antes = " + frameFormigas.getSigma());
+//        this.objetoAtual = 0;
 //        for (int i = 0; i < teste.getLinhas(); i++) {
 //            for (int w = 0; w < teste.getColunas(); w++) {
 //                System.out.print(" " + teste.getMatriz_dados()[i][w]);

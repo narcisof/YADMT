@@ -12,7 +12,9 @@ import java.awt.Graphics;
  * @author Mateus
  */
 public class MatrizCorrelacao extends javax.swing.JPanel {
+
     private double grupos[][];
+
     /**
      * Creates new form MatrizCorrelacao
      */
@@ -20,7 +22,7 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
         initComponents();
     }
 
-      @Override
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -29,30 +31,21 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
         float w = width / 2;
         float h = height / 2;
 
-        int centroWidth = (int) w;
-        int centroHeight = (int) h;
-
-        if (width > height) { //ARRUMAR ESSAS VARIAVEIS GAMBI
-            width = height;
-        } else {
-            height = width;
-        }
-
         int x0 = width - (width - 50);
         int y0 = height - (height - 50);
         int x2 = width - 50;
         int y2 = height - 50;
 
         g.setColor(Color.black);
-        g.drawString("Y", x0 - 10, y0 - 10);
-        // g.drawString("2", x2, y0);
-        // g.drawString("3", x0, y2);
-        g.drawString("X", x2 + 10, y2 + 10);
+        g.drawString("1", x0, y0);
+        g.drawString("2", x2, y0);
+        g.drawString("3", x0, y2);
+        g.drawString("4", x2, y2);
 
-        //g.drawLine(x0, y0, x2, y0);//1-2
-        g.drawLine(x0, y0, x0, y2);//1-3
-        //g.drawLine(x2, y0, x2, y2);//2-4
-        g.drawLine(x0, y2, x2, y2);//3-4
+        g.drawLine(x0, y0, x2, y0);
+        g.drawLine(x0, y0, x0, y2);
+        g.drawLine(x2, y0, x2, y2);
+        g.drawLine(x0, y2, x2, y2);
 
         int escala = (int) height / 10;
         for (int i = 0; i < height; i++) {
@@ -61,16 +54,44 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                 escala += escala;
             }
         }
-        float m = width / 100;
-        int tamPixel = (int) m;
-        System.out.println("fezzzzzz\n\n");
-        
-        if (ClusteringFrameVisualization.getMatrizGrupos() != null) {
-            
+
+        int linhas = width - x0 - x2;
+        int colunas = height - y0 - y2;
+        int inicioX = width / 2 - grupos.length / 2;
+        int inicioY = height / 2 - grupos.length / 2;
+        int tamPixel = (width / grupos.length) / (height / grupos.length)+10;
+
+        if (this.grupos != null) {
+            for (int i = 0; i < grupos.length; i++) {
+                inicioX = width / 2 - grupos.length / 2;
+                for (int j = 0; j < grupos.length; j++) {
+                    int x = inicioX;
+                    int y = inicioY;
+                    if (grupos[i][j] > 0 && grupos[i][j] <= 0.24) {
+                        g.setColor(Color.blue);
+                    }
+                    if (grupos[i][j] >= 0.25 && grupos[i][j] <= 0.49) {
+                        g.setColor(Color.yellow);
+                    }
+                    if (grupos[i][j] >= 0.50 && grupos[i][j] <= 0.74) {
+                        g.setColor(Color.orange);
+                    }
+                    if (grupos[i][j] >= 0.75 && grupos[i][j] < 1) {
+                        g.setColor(Color.red);
+                    }
+                    if (i == j) {
+                        g.setColor(Color.black);
+                    }
+                    g.fillOval(x, y, tamPixel, tamPixel);
+                    inicioX += tamPixel;
+                }
+                inicioY += tamPixel;
+            }
             g.setColor(Color.black);
         }
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,5 +117,6 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
 
     void setMatrizGrupos(double[][] grupos) {
         this.grupos = grupos;
+
     }
 }
