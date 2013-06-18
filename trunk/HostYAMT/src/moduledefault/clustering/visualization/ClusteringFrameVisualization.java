@@ -413,6 +413,11 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         disersaoGeral();
         matrizCorrelacao();
         setMatrizGruposCorrelacao(getMatrizDadosCorrelacao());
+        fundoDispersão.removeAll();
+        MC.setSize(fundoDispersão.getWidth(), fundoDispersão.getHeight());
+        fundoDispersão.add(MC);
+        fundoDispersão.updateUI();
+        MC.setVisible(true);
     }//GEN-LAST:event_buttonVisualizarActionPerformed
 
     private void fundoDispersãoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoDispersãoComponentResized
@@ -572,17 +577,18 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
         MC.setVisible(false);
     }
 
-    private void setMatrizGruposCorrelacao(double[][] grupos) {
+    private void setMatrizGruposCorrelacao(MatrizDados grupos) {
         if (MC == null) {
             MC = new MatrizCorrelacao();
         } else {
-                Correlação cor = new Correlação(grupos);
-                cor.distancia();
+
+            Correlação cor = new Correlação(grupos);
+            cor.distancia(grupos);
             MC.setMatrizGrupos(cor.getMatrizDistancias());
         }
     }
 
-    private double[][] getMatrizDadosCorrelacao() {
+    private MatrizDados getMatrizDadosCorrelacao() {
         int grupo = grupoEscolhido;
         int numElemento = 0;
         for (int i = 0; i < getMatrizDados().getLinhas(); i++) {
@@ -590,6 +596,10 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
                 numElemento++;
             }
         }
+        System.out.println("Elmentos = " + numElemento);
+        MatrizDados aux = new MatrizDados();
+        aux.setLinhas(numElemento);
+        aux.setColunas(getMatrizDados().getColunas());
         double[][] resultado = new double[numElemento][getMatrizDados().getColunas()];
         int contadorResultado = 0;
         for (int j = 0; j < getMatrizDados().getLinhas(); j++) {
@@ -600,14 +610,14 @@ public final class ClusteringFrameVisualization extends javax.swing.JFrame {
                 contadorResultado++;
             }
         }
-//        System.out.println("resultado");
-//
-//        for (int i = 0; i < numElemento; i++) {
-//            for (int j = 0; j < getMatrizDados().getColunas(); j++) {
-//                System.out.print(resultado[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-        return resultado;
+        System.out.println("resultado");
+        aux.setMatriz_dados(resultado);
+        for (int i = 0; i < numElemento; i++) {
+            for (int j = 0; j < getMatrizDados().getColunas(); j++) {
+                System.out.print(resultado[i][j] + " ");
+            }
+            System.out.println();
+        }
+        return aux;
     }
 }

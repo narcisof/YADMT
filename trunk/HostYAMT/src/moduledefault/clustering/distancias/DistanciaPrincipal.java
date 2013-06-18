@@ -14,7 +14,7 @@ public class DistanciaPrincipal {
 
     double[][] matrizDistancias;
 
-    void padronizacaDistancias(double[][] matriz) throws IOException {
+   public void padronizacaDistancias(double[][] matriz){
         double menor = 0;
         double maior = 0;
         int cont = 0;
