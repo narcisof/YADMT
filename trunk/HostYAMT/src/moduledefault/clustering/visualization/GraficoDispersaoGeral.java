@@ -24,8 +24,8 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int width = ClusteringFrameVisualization.getFundoDispersão().getWidth();
-        int height = ClusteringFrameVisualization.getFundoDispersão().getHeight();
+        int width = TecnicasDispersao.getFundoDispersaoGeral().getWidth();
+        int height = TecnicasDispersao.getFundoDispersaoGeral().getHeight();
         float w = width / 2;
         float h = height / 2;
 
@@ -65,11 +65,11 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
         int tamPixel = (int) m;
         System.out.println("fezzzzzz\n\n");
 
-        if (ClusteringFrameVisualization.getMatrizGrupos() != null) {
-            for (int i = 0; i < ClusteringFrameVisualization.getMatrizDados().getLinhas(); i++) {
-                int x = 50 + (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[i][1] * (width - 120));
-                int y = (height - 70) - (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[i][2] * (height - 120));
-                switch (ClusteringFrameVisualization.getMatrizDados().getGrupos()[ClusteringFrameVisualization.getMatrizGrupos()[0][i] - 1]) {
+        if (TecnicasDispersao.getMatrizGrupos() != null) {
+            for (int i = 0; i < TecnicasDispersao.getMatrizDados().getLinhas(); i++) {
+                int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[i][1] * (width - 120));
+                int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[i][2] * (height - 120));
+                switch (TecnicasDispersao.getMatrizDados().getGrupos()[TecnicasDispersao.getMatrizGrupos()[0][i] - 1]) {
                     case "Iris-setosa":
                         g.setColor(Color.red);
                         break;
@@ -98,6 +98,8 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

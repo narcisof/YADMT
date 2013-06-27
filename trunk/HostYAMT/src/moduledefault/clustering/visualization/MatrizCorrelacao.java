@@ -26,8 +26,8 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int width = ClusteringFrameVisualization.getFundoDispersão().getWidth();
-        int height = ClusteringFrameVisualization.getFundoDispersão().getHeight();
+        int width = TecnicasDispersao.getFundoMatrizCorrelacao().getWidth();
+        int height = TecnicasDispersao.getFundoMatrizCorrelacao().getHeight();
         float w = width / 2;
         float h = height / 2;
 
@@ -55,41 +55,56 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
             }
         }
 
-        int linhas = width - x0 - x2;
-        int colunas = height - y0 - y2;
-        int inicioX = width / 2 - grupos.length / 2;
-        int inicioY = height / 2 - grupos.length / 2;
-        int tamPixel = (width / grupos.length) / (height / grupos.length)+10;
-
+        System.out.println("Linhas da tela = " + height);
+        System.out.println("Colunas da tela = " + width);
+        System.out.println("Inicio area = " + x0 + " " + y0);
+        System.out.println("Fim da area = " + x2 + " " + y0);
+        int linhas = y2 - y0;
+        int colunas = x2 - x0;
+        System.out.println("linhas = " + linhas);
+        System.out.println("colunas = " + colunas);
+        int inicioX = x0 + 50;
+        int inicioY = y0 + 50;
+        System.out.println("Ponto Inicial = " + inicioX + " " + inicioY);
+        int tamPixelX = (colunas - 100) / grupos.length;
+        int tamPixelY = (linhas - 100) / grupos.length;
+        System.out.println("tampixel = " + tamPixelX + " x " + tamPixelY);
         if (this.grupos != null) {
             for (int i = 0; i < grupos.length; i++) {
-                inicioX = width / 2 - grupos.length / 2;
+                inicioX = x0 + 50;
                 for (int j = 0; j < grupos.length; j++) {
                     int x = inicioX;
                     int y = inicioY;
-                    if (grupos[i][j] > 0 && grupos[i][j] <= 0.24) {
-                        g.setColor(Color.blue);
-                    }
-                    if (grupos[i][j] >= 0.25 && grupos[i][j] <= 0.49) {
-                        g.setColor(Color.yellow);
-                    }
-                    if (grupos[i][j] >= 0.50 && grupos[i][j] <= 0.74) {
-                        g.setColor(Color.orange);
-                    }
-                    if (grupos[i][j] >= 0.75 && grupos[i][j] < 1) {
-                        g.setColor(Color.red);
-                    }
+                    g.setColor(Color.GREEN);
                     if (i == j) {
                         g.setColor(Color.black);
+                        System.out.println("i = " + i + " j = " + j);
+                    } else {
+                        if (grupos[i][j] >= 0 && grupos[i][j] < 0.25) {
+                            g.setColor(Color.blue);
+                        } else {
+                            if (grupos[i][j] >= 0.25 && grupos[i][j] < 0.50) {
+                                g.setColor(Color.yellow);
+                            } else {
+                                if (grupos[i][j] >= 0.50 && grupos[i][j] < 0.75) {
+                                    g.setColor(Color.orange);
+                                } else {
+                                    if (grupos[i][j] >= 0.75 && grupos[i][j] < 1) {
+                                        g.setColor(Color.red);
+                                    } else {
+                                        System.out.println("nao entrou em porra nenhuma = " + grupos[i][j] + " linha = " + i + " coluna" + j);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    g.fillOval(x, y, tamPixel, tamPixel);
-                    inicioX += tamPixel;
+                    g.fillOval(x, y, tamPixelY, tamPixelY);
+                    inicioX += tamPixelY;
                 }
-                inicioY += tamPixel;
+                inicioY += tamPixelY;
             }
-            g.setColor(Color.black);
         }
-
+        System.out.println("final Y= " + inicioY);
     }
 
     /**
@@ -100,6 +115,8 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -117,6 +134,5 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
 
     void setMatrizGrupos(double[][] grupos) {
         this.grupos = grupos;
-
     }
 }

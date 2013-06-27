@@ -29,7 +29,7 @@ import moduledefault.clustering.uteis.MatrizDados;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
-import moduledefault.clustering.visualization.ClusteringFrameVisualization;
+import moduledefault.clustering.visualization.TecnicasDispersao;
 import moduledefault.clustering.visualization.GraficoDispersaoSimulacao;
 import view.jpanel.JPanelClustering;
 
@@ -644,12 +644,20 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 imprimiRecuperacao(teste_recuperação);
                 setListaResultados();
                 jTextArea1.setText(getBuffer().toString());
+                System.out.println("Matriz Grupos");
+                for (int i = 0; i < listaGrupos.get(getObjetoAtual()).length; i++) {
+                    for (int j = 0; j < listaGrupos.get(getObjetoAtual())[0].length; j++) {
+                        System.out.print(listaGrupos.get(getObjetoAtual())[i][j]+";");
+                    }
+                    System.out.println("");
+                }
                 setObjetoAtual();
                 Executar_formigas.setEnabled(true);
                 buttonVisualizacao.setEnabled(true);
             }
         }.start();//inicia a thread.
         numeroExecucoes++;
+        
 
     }//GEN-LAST:event_Executar_formigasActionPerformed
 
@@ -797,9 +805,9 @@ public final class PanelFormigas extends javax.swing.JPanel {
     }//GEN-LAST:event_listResultadosMouseClicked
 
     private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
-        ClusteringFrameVisualization.getInstance().setMatrizDados(teste);
-        ClusteringFrameVisualization.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual()-1));
-        ClusteringFrameVisualization.getInstance().setVisible(true);
+        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual()-1));
+        TecnicasDispersao.getInstance().setVisible(true);
     }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
     private void fundoSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoSimulacaoComponentResized
