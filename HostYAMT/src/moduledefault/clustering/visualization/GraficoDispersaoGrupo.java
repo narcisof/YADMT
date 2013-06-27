@@ -30,8 +30,8 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int width = ClusteringFrameVisualization.getFundoDispersão().getWidth();
-        int height = ClusteringFrameVisualization.getFundoDispersão().getHeight();
+        int width = TecnicasDispersao.getFundoDispersaoGrupos().getWidth();
+        int height = TecnicasDispersao.getFundoDispersaoGrupos().getHeight();
         float w = width / 2;
         float h = height / 2;
 
@@ -71,16 +71,16 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int tamPixel = (int) m;
         System.out.println("fezzzzzz\n\n");
 
-        if (ClusteringFrameVisualization.getMatrizGrupos() != null) {
-            for (int i = 0; i < ClusteringFrameVisualization.getMatrizDados().getLinhas(); i++) {
-                if (ClusteringFrameVisualization.getMatrizGrupos()[1][i] == (ClusteringFrameVisualization.getGrupoEscolhido())) {
-                    System.out.println("Atributo = "+(ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1));
-                    System.out.println("Grupo = "+ClusteringFrameVisualization.getMatrizGrupos()[1][i]);
-                    System.out.println("Eixo X = "+ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoX()]);
-                    System.out.println("Eixo Y = "+ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoY()]);
-                    int x = 50 + (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoX()] * (width - 120));
-                    int y = (height - 70) - (int) (ClusteringFrameVisualization.getMatrizDados().getMatriz_dados()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1][ClusteringFrameVisualization.getEixoY()] * (height - 120));
-                    switch (ClusteringFrameVisualization.getMatrizDados().getGrupos()[ClusteringFrameVisualization.getMatrizGrupos()[0][i]-1]) {
+        if (TecnicasDispersao.getMatrizGrupos() != null) {
+            for (int i = 0; i < TecnicasDispersao.getMatrizDados().getLinhas(); i++) {
+                if (TecnicasDispersao.getMatrizGrupos()[1][i] == (TecnicasDispersao.getGrupoEscolhido())) {
+                    System.out.println("Atributo = "+(TecnicasDispersao.getMatrizGrupos()[0][i]-1));
+                    System.out.println("Grupo = "+TecnicasDispersao.getMatrizGrupos()[1][i]);
+                    System.out.println("Eixo X = "+TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i]-1][TecnicasDispersao.getEixoX()]);
+                    System.out.println("Eixo Y = "+TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i]-1][TecnicasDispersao.getEixoY()]);
+                    int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i]-1][TecnicasDispersao.getEixoX()] * (width - 120));
+                    int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i]-1][TecnicasDispersao.getEixoY()] * (height - 120));
+                    switch (TecnicasDispersao.getMatrizDados().getGrupos()[TecnicasDispersao.getMatrizGrupos()[0][i]-1]) {
                         case "Iris-setosa":
                             g.setColor(Color.red);
                             break;
