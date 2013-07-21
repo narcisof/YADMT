@@ -6,8 +6,8 @@ package moduledefault.clustering.kohonen.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -31,7 +31,19 @@ public final class MatrizU3D extends javax.swing.JPanel {
         super.paintComponent(g);
 
         if (FrameVisualization.getInstance().getMatrizU() != null) {
-
+            //DESENHA OS EIXOS
+//            for (int i = 1; i < FrameVisualization.getEixos().size(); i++) {
+//                g.drawLine(FrameVisualization.getEixos().get(0).x, FrameVisualization.getEixos().get(0).y, FrameVisualization.getEixos().get(i).x, FrameVisualization.getEixos().get(i).y);
+//
+//            }
+//
+//            if (FrameVisualization.getEixos().size() == 4) {
+//                g.drawString("0", FrameVisualization.getEixos().get(0).x, FrameVisualization.getEixos().get(0).y);
+//                g.drawString("X", FrameVisualization.getEixos().get(1).x, FrameVisualization.getEixos().get(1).y);
+//                g.drawString("Y", FrameVisualization.getEixos().get(2).x, FrameVisualization.getEixos().get(2).y);
+//                g.drawString("Z", FrameVisualization.getEixos().get(3).x, FrameVisualization.getEixos().get(3).y);
+//            }
+            ///////////////////
             gridMUX = FrameVisualization.getGridMUX();
             gridMUY = FrameVisualization.getGridMUY();
             calcIntervalo();
@@ -152,23 +164,6 @@ public final class MatrizU3D extends javax.swing.JPanel {
                 }
             }
             ////////////////////////////////////////////////////////
-
-
-//
-//        g.setColor(gui.getCor_eixo());
-//        for (int i = 1; i < gui.getEixos().size(); i++) {
-//            g.drawLine(gui.getEixos().get(0).x, gui.getEixos().get(0).y, gui.getEixos().get(i).x, gui.getEixos().get(i).y);
-//
-//        }
-//        
-//        if (gui.getEixos().size() == 4) {
-//            g.drawString("0", gui.getEixos().get(0).x, gui.getEixos().get(0).y);
-//            g.drawString("X", gui.getEixos().get(1).x, gui.getEixos().get(1).y);
-//            g.drawString("Y", gui.getEixos().get(2).x, gui.getEixos().get(2).y);
-//            g.drawString("Z", gui.getEixos().get(3).x, gui.getEixos().get(3).y);
-//        }
-
-
         }
 
     }
@@ -186,14 +181,21 @@ public final class MatrizU3D extends javax.swing.JPanel {
                 }
             }
         }
-
         intervalo = (max - min) / 10;
     }
 
     public Color getColor(int i1, int i2, int j1, int j2) {
         Color cor = null;
-        double media = (FrameVisualization.getMatrizU()[i1][j1] + FrameVisualization.getMatrizU()[i1][j2]
-                + FrameVisualization.getMatrizU()[i2][j1] + FrameVisualization.getMatrizU()[i2][j2]) / 4;
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(FrameVisualization.getMatrizU()[i1][j1]);
+        list.add(FrameVisualization.getMatrizU()[i1][j2]);
+        list.add(FrameVisualization.getMatrizU()[i2][j1]);
+        list.add(FrameVisualization.getMatrizU()[i2][j2]);
+
+        Collections.sort(list);
+
+        double media = (list.get(2) + list.get(3)) / 2;
+
         if ((media > 0) && (media <= intervalo)) { //Cor 1
             cor = new Color(25, 25, 112);
         } else if ((media > intervalo) && (media <= intervalo * 2)) { //Cor 2

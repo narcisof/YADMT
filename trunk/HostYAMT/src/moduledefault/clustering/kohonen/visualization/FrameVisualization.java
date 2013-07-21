@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 import moduledefault.clustering.kohonen.Base;
@@ -42,7 +43,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
     private static Projetor project;
     private static double Mcartesiano[][] = {{0, 20, 0, 0},
         {0, 0, 20, 0},
-        {0, 0, 0, 20},
+        {0, 0, 0, 10},
         {1, 1, 1, 1}}; //Coordenadas para desenho do eixo
     private static double Mpontos[][]; //Pontos da rede 3D
     private static double Mbase[][];  //Pontos da base  3D
@@ -85,6 +86,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         repaint();
+
     }
 
     public static synchronized FrameVisualization getInstance() {
@@ -137,6 +139,13 @@ public final class FrameVisualization extends javax.swing.JFrame {
         statusProgesso = new javax.swing.JProgressBar();
         jLabel5 = new javax.swing.JLabel();
         labelStatus = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jComboBoxEixoX = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBoxEixoY = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBoxEixoZ = new javax.swing.JComboBox();
         panel3D = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -150,7 +159,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
         textNeuronio = new javax.swing.JTextArea();
         sliderDensidade = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
-        jPanelBase3D = new Base3D();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -192,7 +200,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         );
         panelSOMLayout.setVerticalGroup(
             panelSOMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+            .addGap(0, 378, Short.MAX_VALUE)
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -246,17 +254,79 @@ public final class FrameVisualization extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jComboBoxEixoX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxEixoXActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Eixo X:");
+
+        jLabel7.setText("Eixo Y:");
+
+        jComboBoxEixoY.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxEixoYActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Eixo Z:");
+
+        jComboBoxEixoZ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxEixoZActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxEixoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxEixoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxEixoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBoxEixoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jComboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout panelFundoSomLayout = new javax.swing.GroupLayout(panelFundoSom);
         panelFundoSom.setLayout(panelFundoSomLayout);
         panelFundoSomLayout.setHorizontalGroup(
             panelFundoSomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelSOM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelFundoSomLayout.setVerticalGroup(
             panelFundoSomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFundoSomLayout.createSequentialGroup()
                 .addComponent(panelSOM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -328,7 +398,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel3DLayout.setVerticalGroup(
             panel3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3DLayout.createSequentialGroup()
-                .addContainerGap(428, Short.MAX_VALUE)
+                .addContainerGap(434, Short.MAX_VALUE)
                 .addGroup(panel3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(sliderU3D, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -381,7 +451,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panel2DLayout.setVerticalGroup(
             panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel2DLayout.createSequentialGroup()
-                .addContainerGap(422, Short.MAX_VALUE)
+                .addContainerGap(428, Short.MAX_VALUE)
                 .addGroup(panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderU2D, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -441,7 +511,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         panelDensidadeLayout.setVerticalGroup(
             panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidadeLayout.createSequentialGroup()
-                .addGap(0, 326, Short.MAX_VALUE)
+                .addGap(0, 332, Short.MAX_VALUE)
                 .addGroup(panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderDensidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -450,21 +520,6 @@ public final class FrameVisualization extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Matriz Densidade", panelDensidade);
-
-        jPanelBase3D.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanelBase3DLayout = new javax.swing.GroupLayout(jPanelBase3D);
-        jPanelBase3D.setLayout(jPanelBase3DLayout);
-        jPanelBase3DLayout.setHorizontalGroup(
-            jPanelBase3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 659, Short.MAX_VALUE)
-        );
-        jPanelBase3DLayout.setVerticalGroup(
-            jPanelBase3DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("tab5", jPanelBase3D);
 
         jMenu1.setText("Arquivo");
         jMenuBar1.add(jMenu1);
@@ -632,22 +687,41 @@ public final class FrameVisualization extends javax.swing.JFrame {
             }
         }
         drawMatrizU();
+        drawEixos();
         repaint();
     }//GEN-LAST:event_panel3DMouseWheelMoved
+
+    private void jComboBoxEixoZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoZActionPerformed
+        repaint();
+    }//GEN-LAST:event_jComboBoxEixoZActionPerformed
+
+    private void jComboBoxEixoXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoXActionPerformed
+        repaint();
+    }//GEN-LAST:event_jComboBoxEixoXActionPerformed
+
+    private void jComboBoxEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoYActionPerformed
+        repaint();
+    }//GEN-LAST:event_jComboBoxEixoYActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private static javax.swing.JComboBox jComboBoxEixoX;
+    private static javax.swing.JComboBox jComboBoxEixoY;
+    private static javax.swing.JComboBox jComboBoxEixoZ;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelBase3D;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private static javax.swing.JLabel labelStatus;
@@ -676,6 +750,7 @@ public final class FrameVisualization extends javax.swing.JFrame {
         calc3D();
         verificaCantos();
         drawMatrizU();
+        drawEixos();
         u3d = new MatrizU3D();
         u3d.setSize(panel3D.getWidth(), panel3D.getHeight());
         panel3D.add(u3d);
@@ -762,15 +837,15 @@ public final class FrameVisualization extends javax.swing.JFrame {
     }
 
     public void calcBase3D() {
-         project = new Projetor(jPanelBase3D.getWidth(), jPanelBase3D.getHeight());
+        project = new Projetor(panelSOM.getWidth(), panelSOM.getHeight());
         Mbase = new double[4][dados.getDataSet().size()];
 
         for (int i = 0; i < dados.getDataSet().size(); i++) {
-            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0)*10;
-            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1)*10;
-            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2)*10;
+            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0) * 10;
+            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1) * 10;
+            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2) * 10;
             Mbase[3][i] = 1;
-            
+
         }
         pontos2DBase = new ArrayList<>();
         pontos2DBase = project.convert3Dto2D(Mbase, dados.getDataSet().size(), VRP, Dvalue, P);
@@ -874,6 +949,12 @@ public final class FrameVisualization extends javax.swing.JFrame {
         Mpontos = UtilKohonenVisualization.multiMatriz(rotZ, Mpontos, 4, numPontos);
         Mpontos = UtilKohonenVisualization.multiMatriz(pos, Mpontos, 4, numPontos);
 
+        eixos.clear();
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(origem, Mcartesiano, 4, 4);
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(rotZ, Mcartesiano, 4, 4);
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(pos, Mcartesiano, 4, 4);
+        eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
+        
         verificaCantos();
 
         pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
@@ -908,6 +989,12 @@ public final class FrameVisualization extends javax.swing.JFrame {
         Mpontos = UtilKohonenVisualization.multiMatriz(rotZ, Mpontos, 4, numPontos);
         Mpontos = UtilKohonenVisualization.multiMatriz(pos, Mpontos, 4, numPontos);
 
+        eixos.clear();
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(origem, Mcartesiano, 4, 4);
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(rotZ, Mcartesiano, 4, 4);
+        Mcartesiano = UtilKohonenVisualization.multiMatriz(pos, Mcartesiano, 4, 4);
+        eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
+                
         verificaCantos();
 
         pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
@@ -928,6 +1015,21 @@ public final class FrameVisualization extends javax.swing.JFrame {
 
     public static void setDados(Base r) {
         dados = r;
+
+        jComboBoxEixoX.removeAllItems();
+        jComboBoxEixoY.removeAllItems();
+        jComboBoxEixoZ.removeAllItems();
+
+        jComboBoxEixoZ.addItem("");
+        for (int i = 0; i < dados.getDataSet().get(0).getAtributos().size(); i++) {
+            jComboBoxEixoX.addItem(dados.getAtributo(i));
+            jComboBoxEixoY.addItem(dados.getAtributo(i));
+            jComboBoxEixoZ.addItem(dados.getAtributo(i));
+        }
+        
+        jComboBoxEixoX.setSelectedIndex(0);
+        jComboBoxEixoY.setSelectedIndex(1);
+        jComboBoxEixoZ.setSelectedIndex(0);
     }
 
     public static void setRede(RedeKohonen r) {
@@ -1009,4 +1111,21 @@ public final class FrameVisualization extends javax.swing.JFrame {
     public static JPanel getPanelSOM() {
         return panelSOM;
     }
+
+    public static JComboBox getjComboBoxEixoX() {
+        return jComboBoxEixoX;
+    }
+
+    public static JComboBox getjComboBoxEixoY() {
+        return jComboBoxEixoY;
+    }
+
+    public static JComboBox getjComboBoxEixoZ() {
+        return jComboBoxEixoZ;
+    }
+
+    public static ArrayList<Point> getEixos() {
+        return eixos;
+    }
+
 }

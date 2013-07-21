@@ -14,21 +14,27 @@ import java.util.Random;
  */
 public final class Neuronio {
 
-    private String nomeNeuronio;
+    private int i;
+    private int j;
     private int numPesos;
-    private List<Double> pesos = new ArrayList<Double>();
-    private List<Padrao> padroes = new ArrayList<Padrao>();
+    private List<Double> pesos = new ArrayList<>();
+    private List<Padrao> padroes = new ArrayList<>();
 
-    public Neuronio(int numeroPesos, String nome) {
+    public Neuronio(int numeroPesos, int lin, int col) {
         pesos.clear();
         padroes.clear();
         numPesos = numeroPesos;
-        nomeNeuronio = nome;
+        i = lin;
+        j = col;
         startNeuronio();
     }
 
-    public String getNomeNeuronio() {
-        return nomeNeuronio;
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
     }
 
     public int getNumPesos() {
