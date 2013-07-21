@@ -24,16 +24,25 @@ public final class RedeKohonen {
     private String distancia;
     private String vizinhanca;
     private String atualiza;
+    //
+    private float erroQuantização;
+    private float erroTopologico;
 
     public RedeKohonen() {
         this.raioInicial = 0;
         this.iteracoes = 0;
         this.alfa = 0;
+        //
+        this.erroQuantização = 0;
+        this.erroTopologico = 0;
     }
 
     public RedeKohonen(int x, int y) {
         this.gridX = x;
         this.gridY = y;
+        //
+        this.erroQuantização = 0;
+        this.erroTopologico = 0;
     }
 
     public RedeKohonen(int x, int y, int raioI, int t, float apredizagem, Base data, String dis, String viz, String at) {
@@ -57,92 +66,87 @@ public final class RedeKohonen {
 
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                Neuronio n = new Neuronio(dataSet.getDataSet().get(0).getAtributos().size(), i + "-" + j); //coloco os neuronios na rede
+                Neuronio n = new Neuronio(dataSet.getDataSet().get(0).getAtributos().size(), i, j); //coloco os neuronios na rede
                 rede[i][j] = n;
             }
         }
+
+        //
+        this.erroQuantização = 0;
+        this.erroTopologico = 0;
     }
 
     public void startRede(int x) {
         OpMath math = new OpMath();
 
-       // for (int x = 0; x < this.getIteracoes(); x++) { //numero de iterações
-        
-            for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
-                double menorDis = 1000000;
-                String nVencedor = "";
-                int posI = 0, posJ = 0;
+        for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
+            double menorDis = Double.MAX_VALUE;
+            int posI = 0, posJ = 0;
 
-                //FASE COMPETITIVA
-                double result = 0;
-                for (int i = 0; i < getGridX(); i++) {
-                    for (int j = 0; j < getGridY(); j++) {
-                        switch (distancia) {
-                            case "euclidiana":
-                                result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
-                                break;
-                        }
-
-                        if (result < menorDis) {
-                            menorDis = result;
-                            nVencedor = rede[i][j].getNomeNeuronio();
-                            posI = i;
-                            posJ = j;
-                        }
+            //FASE COMPETITIVA
+            double result = 0;
+            for (int i = 0; i < getGridX(); i++) {
+                for (int j = 0; j < getGridY(); j++) {
+                    switch (distancia) {
+                        case "euclidiana":
+                            result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
+                            break;
                     }
-                }
-                //Encontrou o neuronio vencedor
-
-                //FASE COOPERATIVA
-                //Atualiza Vizinhos
-                int ci = raioInicial;
-                int cj = raioInicial;
-                int c2i = raioInicial;
-                int c2j = raioInicial;
-                int si = posI;
-                int sj = posJ;
-
-                while (si - ci < 0) {
-                    --ci;
-                }
-                while (si + c2i >= getGridX()) {
-                    --c2i;
-                }
-                while (sj - cj < 0) {
-                    --cj;
-                }
-                while (sj + c2j >= getGridY()) {
-                    --c2j;
-                }
-
-                for (int i = si - ci; i <= si + c2i; i++) {
-                    for (int j = sj - cj; j <= sj + c2j; j++) {
-                        //FASE ADAPTATIVA
-                        atualizaPesos(i, j, y, posI, posJ);
-                    }
+                    if (result < menorDis) {
+                        menorDis = result;
+                        posI = i;
+                        posJ = j;
+                    } 
                 }
             }
+            //Encontrou o neuronio vencedor
 
-            //ATUALIZAÇÃO
-            //Atualiza Raio
-            raio = raioInicial * Math.exp((-x) / (t1));
+            //FASE COOPERATIVA
+            //Atualiza Vizinhos
+            int ci = raioInicial;
+            int cj = raioInicial;
+            int c2i = raioInicial;
+            int c2j = raioInicial;
+            int si = posI;
+            int sj = posJ;
 
-            //Atualiza Aprendizagem
-            switch (atualiza) {
-                case "linear":
-                    alfa = alfaInicial * (1 - (x / t2));
-                    break;
-                case "exponencial":
-                    alfa = (alfaInicial * Math.exp((-x) / (t2)));
-                    break;
-                case "reciproca":
-                    alfa = alfaInicial / (1 + ((100 * x) / t2));
-                    break;
+            while (si - ci < 0) {
+                --ci;
             }
-           
-       // } //Fim Kohonen
+            while (si + c2i >= getGridX()) {
+                --c2i;
+            }
+            while (sj - cj < 0) {
+                --cj;
+            }
+            while (sj + c2j >= getGridY()) {
+                --c2j;
+            }
 
-      //  carregaPadroes();
+            for (int i = si - ci; i <= si + c2i; i++) {
+                for (int j = sj - cj; j <= sj + c2j; j++) {
+                    //FASE ADAPTATIVA
+                    atualizaPesos(i, j, y, posI, posJ);
+                }
+            }
+        }
+
+        //ATUALIZAÇÃO
+        //Atualiza Raio
+        raio = raioInicial * Math.exp((-x) / (t1));
+
+        //Atualiza Aprendizagem
+        switch (atualiza) {
+            case "linear":
+                alfa = alfaInicial * (1 - (x / t2));
+                break;
+            case "exponencial":
+                alfa = (alfaInicial * Math.exp((-x) / (t2)));
+                break;
+            case "reciproca":
+                alfa = alfaInicial / (1 + ((100 * x) / t2));
+                break;
+        }
     }
 
     public void atualizaPesos(int i, int j, int pad, int posI, int posJ) {
@@ -167,7 +171,6 @@ public final class RedeKohonen {
         for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
 
             double menorDis = 1000000;
-            String nVencedor = "";
             int posI = 0, posJ = 0;
 
             double result = 0;
@@ -181,7 +184,6 @@ public final class RedeKohonen {
 
                     if (result < menorDis) {
                         menorDis = result;
-                        nVencedor = rede[i][j].getNomeNeuronio();
                         posI = i;
                         posJ = j;
                     }
@@ -190,6 +192,80 @@ public final class RedeKohonen {
             //Encontrou o neuronio vencedor
             rede[posI][posJ].addPadrao(dataSet.getDataSet().get(y));
         }
+    }
+
+    public void calcErro() {
+        OpMath math = new OpMath();
+        for (int y = 0; y < dataSet.getDataSet().size(); y++) {//apresento os padroes a rede
+            double menorDis = Double.MAX_VALUE;
+            double menorDis2 = Double.MAX_VALUE;
+            Neuronio BMU = null;
+            Neuronio BMU2 = null;
+            int posI = 0, posJ = 0;
+
+            //FASE COMPETITIVA
+            double result = 0;
+            for (int i = 0; i < getGridX(); i++) {
+                for (int j = 0; j < getGridY(); j++) {
+                    result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
+                    if (result < menorDis) {
+                        menorDis = result;
+                        BMU = rede[i][j];
+                    } else if (result < menorDis2) {
+                        menorDis2 = result;
+                        BMU2 = rede[i][j];
+                    }
+                }
+            }
+            //Calcula o Erro
+            erroQuantização += menorDis;
+            erroTopologico += neroniosAdjacentes(BMU, BMU2);
+        }
+        
+        erroQuantização = erroQuantização/dataSet.getDataSet().size();
+        erroTopologico = erroTopologico/dataSet.getDataSet().size();
+    }
+
+    public int neroniosAdjacentes(Neuronio n1, Neuronio n2) {
+        int adj = 1;
+        if (n1.getI() == n2.getI() - 1 && n1.getJ() == n2.getJ() - 1) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() - 1 && n1.getJ() == n2.getJ()) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() - 1 && n1.getJ() == n2.getJ() + 1) {
+            adj = 0;
+        }
+        //
+        if (n1.getI() == n2.getI() && n1.getJ() == n2.getJ() - 1) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() && n1.getJ() == n2.getJ()) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() && n1.getJ() == n2.getJ() + 1) {
+            adj = 0;
+        }
+        //
+        if (n1.getI() == n2.getI() + 1 && n1.getJ() == n2.getJ() - 1) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() + 1 && n1.getJ() == n2.getJ()) {
+            adj = 0;
+        }
+        if (n1.getI() == n2.getI() + 1 && n1.getJ() == n2.getJ() + 1) {
+            adj = 0;
+        }
+        return adj;
+    }
+
+    public float getErroQuantização() {
+        return erroQuantização;
+    }
+
+    public float getErroTopologico() {
+        return erroTopologico;
     }
 
     public Base getDataSet() {

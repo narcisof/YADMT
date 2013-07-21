@@ -14,14 +14,13 @@ import java.util.List;
 public class Base {
 
     String Nome;
-    List<Padrao> dataSet = new ArrayList<Padrao>();
-   // int numPadroes, numAtributos;
+    List<Padrao> dataSet = new ArrayList<>();
+    List<String> atributos = new ArrayList<>();
     
     public Base() {
        this.Nome = null;
        this.dataSet.clear();
-     //  this.numAtributos = 0;
-     //  this.numPadroes = 0;
+       this.atributos.clear();
     }
 
     public String getNome() {
@@ -43,41 +42,16 @@ public class Base {
     public void addDataSet(Padrao pad) {
         this.dataSet.add(pad);
     }
-    
-//    public int getNumAtributos() {
-//        return numAtributos;
-//    }
-//
-//    public void setNumAtributos(int numAtributos) {
-//        this.numAtributos = numAtributos;
-//    }
-//
-//    public int getNumPadroes() {
-//        return numPadroes;
-//    }
-//
-//    public void setNumPadroes(int numPadroes) {
-//        this.numPadroes = numPadroes;
-//    }
-    
-//    public StringBuffer toStringData() {
-//        StringBuffer saida = new StringBuffer();
-//        
-//        for (int i = 0; i < this.numPadroes; i++) {
-//            StringBuffer append = saida.append(String.valueOf(this.getDataSet().get(i).getGrupo())).append(" | ");
-//            for (int j = 0; j < this.numAtributos; j++) {
-//                append = saida.append(String.valueOf(this.getDataSet().get(i).getAtributos().get(j))).append(" ");
-//            }
-//            saida.append("\n");
-//        }
-//        
-//        return saida;
-//    }
 
-//    @Override
-//    public String toString() {
-//        return "Data{" + "Nome=" + Nome + ", dataSet=" + dataSet + ", numPadroes=" + numPadroes + ", numAtributos=" + numAtributos + '}';
-//    }
-
+    public List<String> getAtributos() {
+        return atributos;
+    }
     
+    public void addAtributos(String att){
+        atributos.add(att);
+    }
+    
+    public String getAtributo(int i){
+        return atributos.get(i);
+    }
 }
