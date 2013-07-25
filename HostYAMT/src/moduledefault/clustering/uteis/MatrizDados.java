@@ -1,6 +1,5 @@
 package moduledefault.clustering.uteis;
 
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,15 +12,17 @@ public class MatrizDados {
     int linhas = 0;
     int colunas = 0;
     int dimensão_matriz = 0;
-    String []grupos;
+    String[] grupos;
+    private String[] classes;
+
     public double[][] getMatriz_dados() {
         return matriz_dados;
     }
 
     public void setMatriz_dados(double[][] matriz_dados) {
         this.matriz_dados = new double[matriz_dados.length][matriz_dados[0].length];
-        for(int i = 0;i < matriz_dados.length;i++){
-            for(int j = 0;j < matriz_dados[0].length;j++){
+        for (int i = 0; i < matriz_dados.length; i++) {
+            for (int j = 0; j < matriz_dados[0].length; j++) {
                 this.matriz_dados[i][j] = matriz_dados[i][j];
             }
         }
@@ -48,7 +49,7 @@ public class MatrizDados {
     }
 
     public void setDimensão_matriz() {
-       dimensão_matriz = (int) Math.sqrt((10 * linhas));
+        dimensão_matriz = (int) Math.sqrt((10 * linhas));
     }
 
     public String[] getGrupos() {
@@ -59,8 +60,11 @@ public class MatrizDados {
         this.grupos = grupos;
     }
 
+    public void setClasses(String[] aux) {
+        this.classes = aux;
+    }
 
-
-
-   
+    public String[] getClasses() {
+        return this.classes;
+    }
 }

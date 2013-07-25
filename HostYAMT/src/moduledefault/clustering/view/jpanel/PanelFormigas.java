@@ -42,8 +42,10 @@ public final class PanelFormigas extends javax.swing.JPanel {
     /**
      * Creates new form panelFormigas
      */
-    public PanelFormigas(double[][] base, String[] grupos, JFrameFormigas j) {
+    public PanelFormigas(double[][] base, String[] grupos, JFrameFormigas j, String[] aa) {
+
         initComponents();
+        nomesClasses = aa;
         this.matrizDados = base;
         teste = new MatrizDados();
         this.grupos = grupos;
@@ -54,19 +56,20 @@ public final class PanelFormigas extends javax.swing.JPanel {
         listaGrupos = new ArrayList<int[][]>();
         listaText = new ArrayList<>();
         frameFormigas = j;
-//        System.out.println("antes = " + frameFormigas.getSigma());
-//        this.objetoAtual = 0;
-//        for (int i = 0; i < teste.getLinhas(); i++) {
-//            for (int w = 0; w < teste.getColunas(); w++) {
-//                System.out.print(" " + teste.getMatriz_dados()[i][w]);
-//            }
-//            System.out.println();
-//        }
+        System.out.println("antes = " + frameFormigas.getSigma());
+        this.objetoAtual = 0;
+        for (int i = 0; i < teste.getLinhas(); i++) {
+            for (int w = 0; w < teste.getColunas(); w++) {
+                System.out.print(" " + teste.getMatriz_dados()[i][w]);
+            }
+            System.out.println();
+        }
         buttonVisualizacao.setEnabled(false);
     }
     /**
      *
      */
+    String[] nomesClasses;
     ArrayList<int[][]> listaGrupos;
     ArrayList<ACOClustering> listaObjetos;
     double melhorconfusao = Integer.MIN_VALUE;
@@ -107,6 +110,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     static int sleep;
     int numeroExecucoes = 0;
     private static GraficoDispersaoSimulacao GDG;
+    int qntGrupos;
 
     synchronized public ACOClustering getOperar() {
         return operar;
@@ -647,7 +651,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 System.out.println("Matriz Grupos");
                 for (int i = 0; i < listaGrupos.get(getObjetoAtual()).length; i++) {
                     for (int j = 0; j < listaGrupos.get(getObjetoAtual())[0].length; j++) {
-                        System.out.print(listaGrupos.get(getObjetoAtual())[i][j]+";");
+                        System.out.print(listaGrupos.get(getObjetoAtual())[i][j] + ";");
                     }
                     System.out.println("");
                 }
@@ -657,7 +661,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             }
         }.start();//inicia a thread.
         numeroExecucoes++;
-        
+
 
     }//GEN-LAST:event_Executar_formigasActionPerformed
 
@@ -806,7 +810,9 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
         TecnicasDispersao.getInstance().setMatrizDados(teste);
-        TecnicasDispersao.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual()-1));
+        TecnicasDispersao.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual() - 1));
+        TecnicasDispersao.getInstance().setQntGrupos(qntGrupos);
+        TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
     }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
@@ -878,7 +884,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
         }
         setOperar(c);
-      //  ClusteringFrameVisualization.getInstance().setVisible(false);
+        //  ClusteringFrameVisualization.getInstance().setVisible(false);
         listaObjetos.add(getOperar());
         getOperar().set_percent1((frameFormigas.getFase()));
         getOperar().set_cont2(matrizDados[0].length, matrizDados.length);
@@ -981,30 +987,34 @@ public final class PanelFormigas extends javax.swing.JPanel {
             ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaS.inicio();
             listaGrupos.add(ligaS.get_mpos());
+            qntGrupos = ligaS.get_contgrupos();
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 2) {
             ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaM.inicio();
+            qntGrupos = ligaM.get_contgrupos();
             listaGrupos.add(ligaM.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 3) {
             ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaC.inicio();
+            qntGrupos = ligaC.get_contgrupos();
             listaGrupos.add(ligaC.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 4) {
             ward = new Ward(getOperar().getMatriz_padrao(), teste, getOperar());
             ward.inicio();
+            qntGrupos = ward.get_contgrupos();
             listaGrupos.add(ward.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
             indice.inicio();
-
         } else if (teste_recuperação == 5) {
             achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
             achagrupos.inicio();
+            qntGrupos = achagrupos.get_contgrupos();
             listaGrupos.add(achagrupos.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, achagrupos.get_mpos(), achagrupos.get_contgrupos(), achagrupos.getPos(), getOperar());
             indice.inicio();
@@ -1081,13 +1091,13 @@ public final class PanelFormigas extends javax.swing.JPanel {
     public void startMatrizDados() {
         String grupo;
         grupo = grupos[0];
+        ArrayList<String> atributos = new ArrayList<>();
         double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];
         for (int i = 0; i < this.matrizDados.length; i++) {
             for (int j = 0; j < this.matrizDados[0].length; j++) {
                 base[i][j + 1] = this.matrizDados[i][j];
             }
         }
-
         int contadorGrupos = 1;
         for (int i = 0; i < grupos.length; i++) {
             if (!grupo.equals(grupos[i])) {
@@ -1098,6 +1108,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         }
 
 
+        teste.setClasses(nomesClasses);
         teste.setColunas(base[0].length);
         teste.setLinhas(base.length);
         teste.setDimensão_matriz();
