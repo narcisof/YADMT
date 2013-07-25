@@ -46,7 +46,7 @@ public class ACOClustering {
     public ACOClustering(MatrizDados teste, int teste_distancia, int[][] _matriz_padrao) throws IOException {
         arquivo = teste;
         matematica = new Operações_Mat();
-        // matematica.Padronização(teste);
+//         matematica.Padronização(teste);
         matriz_padrao = new int[_matriz_padrao.length][_matriz_padrao.length];
         matriz_distancias = new double[teste.getLinhas()][teste.getLinhas()];
         for (int i = 0; i < _matriz_padrao.length; i++) {
@@ -91,6 +91,14 @@ public class ACOClustering {
 
             }
         }
+//        
+//        System.out.println("Matriz correlacao");
+//        for (int i = 0; i < matriz_distancias.length; i++) {
+//            for (int j = 0; j < matriz_distancias.length; j++) {
+//                System.out.print(matriz_distancias[i][j]+";");
+//            }
+//            System.out.println();
+//        }
     }
 
     public MatrizDados getArquivo() {

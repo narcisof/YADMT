@@ -65,7 +65,7 @@ public class Correlação extends DistanciaPrincipal {
             }
 
         }
-//        padronizacaDistancias(matrizDistancias);
+        padronizacaDistancias(matrizDistancias);
 //        System.out.println("Matriz Correlacao");
 //        for (int i = 0; i < matrizDistancias.length; i++) {
 //            for (int j = 0; j < matrizDistancias.length; j++) {
@@ -124,12 +124,12 @@ public class Correlação extends DistanciaPrincipal {
 
         }
 //        padronizacaDistancias(matrizDistancias);
-//        System.out.println("Matriz Correlacao");
-//        for (int i = 0; i < matrizDistancias.length; i++) {
-//            for (int j = 0; j < matrizDistancias.length; j++) {
-//                System.out.print(matrizDistancias[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
+        System.out.println("Matriz Correlacao");
+        for (int i = 0; i < matrizDistancias.length; i++) {
+            for (int j = 0; j < matrizDistancias.length; j++) {
+                System.out.print(matrizDistancias[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }

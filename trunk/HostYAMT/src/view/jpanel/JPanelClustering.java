@@ -165,7 +165,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     jButtonConfiguracao.setEnabled(true);
                     panelFundo.removeAll();
                     frameFormigas = new JFrameFormigas();
-                    formigas = new PanelFormigas(base, grupos, frameFormigas);
+                    formigas = new PanelFormigas(base, grupos, frameFormigas,arrayListBases.get(arrayListBases.size()-1).getAtributes());
                     formigas.setSize(panelFundo.getSize());
                     formigas.setPreferredSize(panelFundo.getPreferredSize());
                     panelFundo.add(formigas);
