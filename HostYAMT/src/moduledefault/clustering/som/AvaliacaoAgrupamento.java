@@ -21,7 +21,8 @@ public class AvaliacaoAgrupamento {
     private float variancia;
     private int[][] mconfusao;
     private float acerto;
-    
+    private float medidaF;
+
     public AvaliacaoAgrupamento(ArrayList<Cluster> clusters, List<String> classes, int tamBase) {
         this.classes = classes;
         this.clusters = clusters;
@@ -30,6 +31,7 @@ public class AvaliacaoAgrupamento {
         variancia();
         matrizConfusao();
         acerto();
+        medidaF();
     }
 
     public float centroide(Cluster cluster) {
@@ -69,25 +71,26 @@ public class AvaliacaoAgrupamento {
 
     public final void matrizConfusao() {
         int gruposDesejados = classes.size();
+        int gruposFormados = clusters.size();
 
-        mconfusao = new int[gruposDesejados][gruposDesejados];
+        mconfusao = new int[gruposDesejados][gruposFormados];
 
         SelectionSort(clusters);
 
-        for (int j = 0; j < gruposDesejados; j++) { //Coluna = formados
+        for (int j = 0; j < gruposFormados; j++) { //Coluna = formados
             for (int i = 0; i < gruposDesejados; i++) {
                 mconfusao[i][j] = clusters.get(j).getNumClasse(classes.get(i));
             }
         }
-        
+
         //Ajusta as posições da matriz confusao
         for (int i = 0; i < gruposDesejados; i++) {
             int aux = 0;
             int grupo = -1;
-            for (int j = i; j < gruposDesejados; j++) {
+            for (int j = i; j < gruposFormados; j++) {
                 if (mconfusao[i][j] > aux) {
                     boolean maior = true;
-                    for (int k = i+1; k < gruposDesejados; k++) {
+                    for (int k = i + 1; k < gruposDesejados; k++) {
                         if (mconfusao[i][j] < mconfusao[k][j]) {
                             maior = false;
                         }
@@ -108,14 +111,82 @@ public class AvaliacaoAgrupamento {
         }
     }
 
-    public final void acerto(){
+    public final void acerto() {
         for (int i = 0; i < mconfusao.length; i++) {
             acerto += mconfusao[i][i];
         }
         acerto = acerto * 100;
         acerto = acerto / tamanhoBase;
     }
-    
+
+    public final void medidaF() {
+        int numpad = classes.size();
+        int contgrupo = clusters.size();
+
+        float[][] p = new float[numpad][contgrupo];
+        float[][] r = new float[numpad][contgrupo];
+        float[][] f = new float[numpad][contgrupo];
+        float[] gerado = new float[contgrupo];
+        float[] desejados = new float[numpad];
+        float b = 1, somapad = 0;
+
+        for (int j = 0; j < contgrupo; j++) {
+            gerado[j] = 0;
+        }
+        for (int i = 0; i < numpad; i++) {
+            desejados[i] = 0;
+        }
+        for (int j = 0; j < contgrupo; j++) {
+            for (int i = 0; i < numpad; i++) {
+                gerado[j] = gerado[j] + mconfusao[i][j];
+            }
+        }
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                desejados[i] = desejados[i] + mconfusao[i][j];
+            }
+        }
+        for (int i = 0; i < numpad; i++) {
+            somapad = somapad + desejados[i];
+        }
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                p[i][j] = 0;
+                r[i][j] = 0;
+                f[i][j] = 0;
+            }
+        }
+        ///CALCULO P
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                p[i][j] = mconfusao[i][j] / gerado[j];
+            }
+        }
+        ///CALCULO R
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                r[i][j] = mconfusao[i][j] / desejados[i];
+            }
+        }
+        ///CALCULO F
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                f[i][j] = (((b * b) + 1) * p[i][j] * r[i][j]) / ((b * b) * p[i][j] + r[i][j]);
+            }
+        }
+
+        float maxj = 0;
+        for (int i = 0; i < numpad; i++) {
+            for (int j = 0; j < contgrupo; j++) {
+                if (f[i][j] > maxj) {
+                    maxj = f[i][j];
+                }
+            }
+            medidaF = medidaF + ((desejados[i] / somapad) * maxj);
+            maxj = 0;
+        }
+    }
+
     public void SelectionSort(ArrayList<Cluster> clusters) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Cluster aux;
@@ -156,9 +227,11 @@ public class AvaliacaoAgrupamento {
         return acerto;
     }
 
+    public float getMedidaF() {
+        return medidaF;
+    }
+
     public void setAcerto(float acerto) {
         this.acerto = acerto;
     }
-    
-    
 }
