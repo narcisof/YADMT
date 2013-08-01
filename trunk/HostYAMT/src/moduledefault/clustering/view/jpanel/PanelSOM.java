@@ -428,14 +428,14 @@ public final class PanelSOM extends javax.swing.JPanel {
 
     public void setTextSOM() {
         jTextArea.setText("====================== Informações ======================\n");
-        jTextArea.append("Base de Dados:\t"+dados.getNome()+"\n");
-        jTextArea.append("Instâncias:\t"+dados.getDataSet().size()+"\n");
-        jTextArea.append("Atributos:\t"+dados.getDataSet().get(0).getAtributos().size() +"\n");
+        jTextArea.append("Base de Dados:\t" + dados.getNome() + "\n");
+        jTextArea.append("Instâncias:\t" + dados.getDataSet().size() + "\n");
+        jTextArea.append("Atributos:\t" + dados.getDataSet().get(0).getAtributos().size() + "\n");
         for (int i = 0; i < dados.getAtributos().size(); i++) {
-            jTextArea.append("\t\t"+dados.getAtributos().get(i)+"\n");
+            jTextArea.append("\t\t" + dados.getAtributos().get(i) + "\n");
         }
-        
-        
+
+
         jTextArea.append("\n=============== Self-Organizing Map - SOM ===============\n");
         jTextArea.append("Erro de Quantização: " + rede.getErroQuantização() + "\n");
         jTextArea.append("Erro Topológico: " + rede.getErroTopologico() + "\n");
@@ -449,7 +449,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         String padrao;
         for (int i = 0; i < clusters.size(); i++) {
             clusters.get(i).setNomeGrupo(dados.getClasses());
-            jTextArea.append("Grupo " + i + ":");
+            jTextArea.append("Grupo " + (i + 1) + ":");
             grupo = clusters.get(i).getSortGrupo();
             for (int j = 0; j < grupo.size(); j++) {
                 padrao = grupo.get(j) + "";
@@ -475,11 +475,12 @@ public final class PanelSOM extends javax.swing.JPanel {
 
         //Medidas de avaliaxao do agrupamento
         jTextArea.append("\n================ Avaliação do Agrupamento ===============\n");
-        jTextArea.append("Grupos Formados: " + clusters.size() + "\n");
-        jTextArea.append("Viariância Total: " + avaliacao.getVariancia() + "\n");
-
+        jTextArea.append("Grupos Formados:\t" + clusters.size() + "\n");
+        jTextArea.append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
+        jTextArea.append("Medida F:\t\t" + avaliacao.getMedidaF()+"\n");
+        
         float acertos = avaliacao.getAcerto();
-        jTextArea.append("Porcentagem de Acerto: " + acertos + "%\n");
+        jTextArea.append("Porcentagem de Acerto:\t" + acertos + "%\n");
 
         jTextArea.append("\nMatriz Confusão:\n");
         int[][] mconfusao = avaliacao.getMconfusao();
@@ -491,7 +492,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         jTextArea.append("\n");
         classe = 'a';
         for (int i = 0; i < mconfusao.length; i++) {
-            for (int j = 0; j < mconfusao[0].length; j++) {
+            for (int j = 0; j < mconfusao.length; j++) {
                 jTextArea.append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
                     jTextArea.append("\t" + classe + " = " + dados.getClasses().get(i));
