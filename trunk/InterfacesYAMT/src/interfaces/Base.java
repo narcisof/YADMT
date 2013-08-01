@@ -29,6 +29,11 @@ public class Base {
     private Object[] output = null;
 
     /**
+     * name data
+     */
+    private Object name = null;
+
+    /**
      * class constructor
      */
     public Base() {
@@ -98,6 +103,14 @@ public class Base {
      */
     public Object getOutputLine(int line){
         return output[line];
+    }
+
+    public Object getName() {
+        return name;
+    }
+
+    public void setName(Object name) {
+        this.name = name;
     }
 
     /**
