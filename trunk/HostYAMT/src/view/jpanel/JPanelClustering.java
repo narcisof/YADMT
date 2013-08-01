@@ -13,14 +13,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import moduledefault.clustering.kohonen.visualization.FrameVisualization;
+import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.view.frames.JFrameKmeans;
 import moduledefault.clustering.view.frames.JFrameKohonenConfig;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 import moduledefault.clustering.view.jpanel.PanelHierarquicos;
 import moduledefault.clustering.view.jpanel.PanelKmeans;
-import moduledefault.clustering.view.jpanel.PanelKohonen;
+import moduledefault.clustering.view.jpanel.PanelSOM;
 
 /**
  *
@@ -36,7 +36,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     //
     PanelFormigas formigas = null;
     PanelKmeans K = null;
-    PanelKohonen kohonen = null;
+    PanelSOM kohonen = null;
     PanelHierarquicos hierarquicos = null;
     //
     JFrameFormigas frameFormigas;
@@ -152,7 +152,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             fundoWidth = panelFundo.getWidth();
             fundoHeight = panelFundo.getHeight();
 
-            FrameVisualization.getInstance().setVisible(false);
+            FrameSomVisualization.getInstance().setVisible(false);
 
             switch (jComboBoxMetodos.getSelectedIndex()) {
                 case 0: //Nenhum selecionado
@@ -186,7 +186,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                 case 3: //Kohonen
                     if (kohonen == null) {
                         frameKohonen = new JFrameKohonenConfig();
-                        kohonen = new PanelKohonen(arrayListBases, frameKohonen);
+                        kohonen = new PanelSOM(arrayListBases.get(arrayListBases.size()-1), frameKohonen);
                     }
                     jButtonConfiguracao.setEnabled(true);
                     panelFundo.removeAll();

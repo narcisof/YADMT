@@ -6,7 +6,6 @@ package moduledefault.clustering.uteis;
 
 import java.io.IOException;
 import java.util.Scanner;
-import javax.management.MBeanConstructorInfo;
 import moduledefault.clustering.aco.ACOClustering;
 
 /**
@@ -82,7 +81,8 @@ public class Índices {
 
         for (int i = 1; i <= contgrupo; i++) {
 //            x.string.append("\nGRUPO ").append(i);
-//            x.string2.append("\nGRUPO ").append(i);
+
+            //            x.string2.append("\nGRUPO ").append(i);
 //            string3.append("\nGRUPO ").append(i);
 
             for (int j = 0; j < pos; j++) {

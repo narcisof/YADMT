@@ -6,7 +6,7 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import moduledefault.clustering.kohonen.visualization.FrameVisualization;
+import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.uteis.MatrizDados;
 import moduledefault.clustering.uteis.Operações_Mat;
 import sun.security.x509.CRLDistributionPointsExtension;
