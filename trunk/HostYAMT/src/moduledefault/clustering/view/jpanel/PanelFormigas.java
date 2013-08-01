@@ -13,13 +13,10 @@ import java.util.Date;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import moduledefault.clustering.aco.ACOClustering;
-import moduledefault.clustering.kohonen.visualization.FrameVisualization;
 import moduledefault.clustering.recuperacaogrupos.LigacaoCompleta;
 import moduledefault.clustering.recuperacaogrupos.LigacaoMedia;
 import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
@@ -143,17 +140,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jMeans = new javax.swing.JRadioButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        Panel_recuperacao = new javax.swing.JPanel();
-        Simples = new javax.swing.JRadioButton();
-        Media = new javax.swing.JRadioButton();
-        Completa = new javax.swing.JRadioButton();
-        Ward = new javax.swing.JRadioButton();
-        Faino = new javax.swing.JRadioButton();
-        Panel_medidas = new javax.swing.JPanel();
-        Euclidiana = new javax.swing.JRadioButton();
-        Cosseno = new javax.swing.JRadioButton();
-        Mahalanobis = new javax.swing.JRadioButton();
-        Correlacao = new javax.swing.JRadioButton();
         Executar_formigas = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
@@ -162,6 +148,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         fundoSimulacao = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBoxDistancias = new javax.swing.JComboBox();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxMetodos = new javax.swing.JComboBox();
 
         Panel_medidas1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
 
@@ -344,126 +336,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         setFocusCycleRoot(true);
         setPreferredSize(new java.awt.Dimension(718, 458));
 
-        Panel_recuperacao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Recuperação de Grupos"));
-
-        Simples.setText("Ligação Simples");
-        Simples.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SimplesActionPerformed(evt);
-            }
-        });
-
-        Media.setText("Ligação Média");
-        Media.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MediaActionPerformed(evt);
-            }
-        });
-
-        Completa.setText("Ligação Completa");
-        Completa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CompletaActionPerformed(evt);
-            }
-        });
-
-        Ward.setText("Método Ward");
-        Ward.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WardActionPerformed(evt);
-            }
-        });
-
-        Faino.setText("Recuperação M_Faino");
-        Faino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FainoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Panel_recuperacaoLayout = new javax.swing.GroupLayout(Panel_recuperacao);
-        Panel_recuperacao.setLayout(Panel_recuperacaoLayout);
-        Panel_recuperacaoLayout.setHorizontalGroup(
-            Panel_recuperacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_recuperacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(Panel_recuperacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Simples)
-                    .addComponent(Media)
-                    .addComponent(Completa)
-                    .addComponent(Ward)
-                    .addComponent(Faino))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Panel_recuperacaoLayout.setVerticalGroup(
-            Panel_recuperacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_recuperacaoLayout.createSequentialGroup()
-                .addComponent(Simples)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Media)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Completa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Ward)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Faino))
-        );
-
-        Panel_medidas.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
-
-        Euclidiana.setText("Distância Euclidiana");
-        Euclidiana.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EuclidianaActionPerformed(evt);
-            }
-        });
-
-        Cosseno.setText("Similiridade de Cosseno");
-        Cosseno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CossenoActionPerformed(evt);
-            }
-        });
-
-        Mahalanobis.setText("Mahalanobis");
-        Mahalanobis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MahalanobisActionPerformed(evt);
-            }
-        });
-
-        Correlacao.setText("Correlação");
-        Correlacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorrelacaoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Panel_medidasLayout = new javax.swing.GroupLayout(Panel_medidas);
-        Panel_medidas.setLayout(Panel_medidasLayout);
-        Panel_medidasLayout.setHorizontalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Cosseno)
-                    .addComponent(Euclidiana)
-                    .addComponent(Mahalanobis)
-                    .addComponent(Correlacao)))
-        );
-        Panel_medidasLayout.setVerticalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Euclidiana)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Cosseno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Mahalanobis)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Correlacao))
-        );
-
         Executar_formigas.setText("Executar Formigas");
         Executar_formigas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -525,10 +397,62 @@ public final class PanelFormigas extends javax.swing.JPanel {
         );
         fundoSimulacaoLayout.setVerticalGroup(
             fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGap(0, 452, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Simulação", fundoSimulacao);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Distância"));
+
+        jLabel1.setText("Função de Distância:");
+
+        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBoxDistancias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Recuperação de Grupos"));
+
+        jLabel2.setText("Método:");
+
+        jComboBoxMetodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Completa", "Média", "Simples", "MFaino","Ward" }));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBoxMetodos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxMetodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -536,12 +460,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Panel_recuperacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Panel_medidas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Executar_formigas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Executar_formigas, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
@@ -550,78 +474,78 @@ public final class PanelFormigas extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Panel_recuperacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
                         .addComponent(Executar_formigas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonVisualizacao)
-                        .addGap(13, 13, 13)
+                        .addGap(48, 48, 48)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTabbedPane1))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void Executar_formigasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Executar_formigasActionPerformed
         this.Executar_formigas.setEnabled(false);
-        buttonVisualizacao.setEnabled(false);
-        if (!Euclidiana.isSelected() && !Correlacao.isSelected() && !Cosseno.isSelected() && !Mahalanobis.isSelected()) {
-            JOptionPane.showMessageDialog(null, "Selecione uma Medida", "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
-            return;
-        }
 
-        //1 - EUCLIDIANA 2 - Cosseno 3 - Correlação 4 - Mahalanobis PADRAO EUCLIDIANA
-        if (Euclidiana.isSelected()) {
-            teste_distancia = 1;
-        } else {
-            if (Cosseno.isSelected()) {
+        switch (this.jComboBoxDistancias.getSelectedIndex()) {
+            case 0:
+                JOptionPane.showMessageDialog(null, "Selecione uma Medida de Distância.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                this.Executar_formigas.setEnabled(true);
+
+                return;
+            case 1:
+                teste_distancia = 1;
+                break;
+            case 2:
                 teste_distancia = 2;
-            } else {
-                if (Correlacao.isSelected()) {
-                    teste_distancia = 3;
-                } else {
-                    if (Mahalanobis.isSelected()) {
-                        teste_distancia = 4;
-                    }
-                }
-            }
+                break;
+            case 3:
+                teste_distancia = 3;
+                break;
+            case 4:
+                teste_distancia = 4;
+                break;
+            case 5:
+                teste_distancia = 5;
+                break;
+            case 6:
+                teste_distancia = 6;
+                break;
+            default:
+                break;
         }
 
-        if (!Simples.isSelected()
-                && !Completa.isSelected() && !Media.isSelected() && !Ward.isSelected() && !Faino.isSelected()) {
-            JOptionPane.showMessageDialog(null, "Selecione um método", "Aviso", JOptionPane.INFORMATION_MESSAGE, null);
-            return;
-        }
+        switch (this.jComboBoxMetodos.getSelectedIndex()) {
+            case 0:
+                JOptionPane.showMessageDialog(null, "Selecione um Método de Recuperação.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                this.Executar_formigas.setEnabled(true);
 
-        /*
-         * Teste recuperação 1 - Ligação Simples 2 - Ligação Média 3 - Ligação
-         * Completa 4 - Método Ward 5 - Recuperação M_Faino
-         */
-
-        if (Simples.isSelected()) {
-            teste_recuperação = 1;
-        } else {
-            if (Media.isSelected()) {
+                return;
+            case 1:
+                teste_recuperação = 1;
+                break;
+            case 2:
                 teste_recuperação = 2;
-            } else {
-                if (Completa.isSelected()) {
-                    teste_recuperação = 3;
-                } else {
-                    if (Ward.isSelected()) {
-                        teste_recuperação = 4;
-                    } else {
-                        if (Faino.isSelected()) {
-                            teste_recuperação = 5;
-                        }
-                    }
-                }
-            }
+                break;
+            case 3:
+                teste_recuperação = 3;
+                break;
+            case 4:
+                teste_recuperação = 4;
+                break;
+            case 5:
+                teste_recuperação = 5;
+                break;
+            default:
+                break;
         }
-
 
         new Thread() {//instancia nova thread já implementando o método run()
             @Override
@@ -648,10 +572,15 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 imprimiRecuperacao(teste_recuperação);
                 setListaResultados();
                 jTextArea1.setText(getBuffer().toString());
-                System.out.println("Matriz Grupos");
+                System.out.println("Matriz Grupos:;");
                 for (int i = 0; i < listaGrupos.get(getObjetoAtual()).length; i++) {
                     for (int j = 0; j < listaGrupos.get(getObjetoAtual())[0].length; j++) {
-                        System.out.print(listaGrupos.get(getObjetoAtual())[i][j] + ";");
+                        if (j == 0) {
+
+                            System.out.print("\t;" + listaGrupos.get(getObjetoAtual())[i][j] + ";");
+                        } else {
+                            System.out.print(listaGrupos.get(getObjetoAtual())[i][j] + ";");
+                        }
                     }
                     System.out.println("");
                 }
@@ -676,124 +605,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void EuclidianaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EuclidianaActionPerformed
-        if (Euclidiana.isSelected()) {
-            Correlacao.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Correlacao.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_EuclidianaActionPerformed
-
-    private void CossenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CossenoActionPerformed
-        if (Cosseno.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Correlacao.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Correlacao.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_CossenoActionPerformed
-
-    private void MahalanobisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MahalanobisActionPerformed
-        if (Mahalanobis.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Correlacao.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Correlacao.setEnabled(true);
-        }
-    }//GEN-LAST:event_MahalanobisActionPerformed
-
-    private void CorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CorrelacaoActionPerformed
-        if (Correlacao.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_CorrelacaoActionPerformed
-
-    private void SimplesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimplesActionPerformed
-        if (Simples.isSelected()) {
-            Completa.setEnabled(false);
-            Media.setEnabled(false);
-            Ward.setEnabled(false);
-            Faino.setEnabled(false);
-        } else {
-            Completa.setEnabled(true);
-            Media.setEnabled(true);
-            Ward.setEnabled(true);
-            Faino.setEnabled(true);
-        }
-    }//GEN-LAST:event_SimplesActionPerformed
-
-    private void MediaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MediaActionPerformed
-        if (Media.isSelected()) {
-            Completa.setEnabled(false);
-            Simples.setEnabled(false);
-            Ward.setEnabled(false);
-            Faino.setEnabled(false);
-        } else {
-            Completa.setEnabled(true);
-            Simples.setEnabled(true);
-            Ward.setEnabled(true);
-            Faino.setEnabled(true);
-        }
-    }//GEN-LAST:event_MediaActionPerformed
-
-    private void CompletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompletaActionPerformed
-        if (Completa.isSelected()) {
-            Media.setEnabled(false);
-            Simples.setEnabled(false);
-            Ward.setEnabled(false);
-            Faino.setEnabled(false);
-        } else {
-            Media.setEnabled(true);
-            Simples.setEnabled(true);
-            Ward.setEnabled(true);
-            Faino.setEnabled(true);
-        }
-    }//GEN-LAST:event_CompletaActionPerformed
-
-    private void WardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WardActionPerformed
-        if (Ward.isSelected()) {
-            Media.setEnabled(false);
-            Simples.setEnabled(false);
-            Completa.setEnabled(false);
-            Faino.setEnabled(false);
-        } else {
-            Media.setEnabled(true);
-            Simples.setEnabled(true);
-            Completa.setEnabled(true);
-            Faino.setEnabled(true);
-        }
-    }//GEN-LAST:event_WardActionPerformed
-
-    private void FainoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FainoActionPerformed
-        if (Faino.isSelected()) {
-            Media.setEnabled(false);
-            Simples.setEnabled(false);
-            Completa.setEnabled(false);
-            Ward.setEnabled(false);
-        } else {
-            Media.setEnabled(true);
-            Simples.setEnabled(true);
-            Completa.setEnabled(true);
-            Ward.setEnabled(true);
-        }
-    }//GEN-LAST:event_FainoActionPerformed
 
     private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
     }//GEN-LAST:event_listResultadosActionPerformed
@@ -825,38 +636,33 @@ public final class PanelFormigas extends javax.swing.JPanel {
         setDispersao(matriz_padrao);
     }//GEN-LAST:event_fundoSimulacaoComponentResized
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton Completa;
-    private javax.swing.JRadioButton Correlacao;
     private javax.swing.JRadioButton Correlacao1;
-    private javax.swing.JRadioButton Cosseno;
     private javax.swing.JRadioButton Cosseno1;
-    private javax.swing.JRadioButton Euclidiana;
     private javax.swing.JRadioButton Euclidiana1;
     private javax.swing.JButton Executar_formigas;
     private javax.swing.JButton Executar_teste;
-    private javax.swing.JRadioButton Faino;
     private javax.swing.JFrame Frame_Teste;
-    private javax.swing.JRadioButton Mahalanobis;
     private javax.swing.JRadioButton Mahalanobis1;
-    private javax.swing.JRadioButton Media;
-    private javax.swing.JPanel Panel_medidas;
     private javax.swing.JPanel Panel_medidas1;
-    private javax.swing.JPanel Panel_recuperacao;
-    private javax.swing.JRadioButton Simples;
-    private javax.swing.JRadioButton Ward;
     private javax.swing.JButton buttonVisualizacao;
     private javax.swing.JFrame fMetodos;
     private static javax.swing.JPanel fundoSimulacao;
     private javax.swing.JTextField iteracoes;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private static javax.swing.JComboBox jComboBoxDistancias;
+    private static javax.swing.JComboBox jComboBoxMetodos;
     private javax.swing.JRadioButton jCompleta;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jMeans;
     private javax.swing.JRadioButton jMedia;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton jSimples;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -921,55 +727,87 @@ public final class PanelFormigas extends javax.swing.JPanel {
         setBuffer(buffer);
         getBuffer().append("===================== Informações =====================");
         getBuffer().append("\n\t YADMT.Clustering.AC");
-        getBuffer().append("\n\t Base: ");
         getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
         getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
-        String grupo = grupos[0];
-        for (int i = 0; i < grupos.length; i++) {
-            if (!grupo.equals(grupos[i])) {
-                getBuffer().append("\n\t\t" + grupo);
-                grupo = grupos[i];
-            }
+        getBuffer().append("\n\t Classes:");
+        for (int i = 0; i < nomesClasses.length; i++) {
+            getBuffer().append("\n\t\t" + nomesClasses[i]);
         }
-        getBuffer().append("\n\t\t" + grupo);
 //        Matriz Final
-        getBuffer().append("\n\n");
-        for (int i = 0; i < getOperar().getMatriz_padrao().length; i++) {
-            for (int j = 0; j < getOperar().getMatriz_padrao().length; j++) {
-                getBuffer().append(String.valueOf(getOperar().getMatriz_padrao()[i][j]) + " ");
-            }
-            getBuffer().append("\n");
-        }
-        getBuffer().append("\n\n");
+//        getBuffer().append("\n\n");
+//        for (int i = 0; i < getOperar().getMatriz_padrao().length; i++) {
+//            for (int j = 0; j < getOperar().getMatriz_padrao().length; j++) {
+//                getBuffer().append(String.valueOf(getOperar().getMatriz_padrao()[i][j]) + " ");
+//            }
+//            getBuffer().append("\n");
+//        }
+//        getBuffer().append("\n\n");
     }
 
     synchronized void imprimiRecuperacao(int teste_recuperação) {
         String m = null;
-        if (teste_recuperação == 1) {
+        if (teste_recuperação == 3) {
             m = "Ligação Simples";
         } else if (teste_recuperação == 2) {
             m = "Ligação Media";
-        } else if (teste_recuperação == 3) {
+        } else if (teste_recuperação == 1) {
             m = "Ligação Completa";
-        } else if (teste_recuperação == 4) {
-            m = "Ligação Ward";
         } else if (teste_recuperação == 5) {
+            m = "Ligação Ward";
+        } else if (teste_recuperação == 4) {
             m = "Ligação MFaino";
         }
-        getBuffer().append("================ " + m + " ================");
-        getBuffer().append("\n\tMétodo Ligação Simples");
-        getBuffer().append("\n\t\tGrupos Formados: " + String.valueOf(indice.getContgrupo()));
-        getBuffer().append("\n\t\tÍndice R: " + String.valueOf(indice.getR()));
-        getBuffer().append("\n\t\tÍndice F: " + String.valueOf(indice.getFfinal()));
-        getBuffer().append("\n\t\tPorcentagem de Acerto: " + String.valueOf(indice.getPorcentagem()));
-        getBuffer().append("\n\t\tÍndice Idunn: " + String.valueOf(indice.getIdunn()));
-        getBuffer().append("\n\t\tVariância Total: " + String.valueOf(indice.getVtotal()));
+        getBuffer().append("\n\n\n================ " + m + " ================");
+        System.out.println("Método " + m + ";");
+        getBuffer().append("\n\tGrupos Formados: " + String.valueOf(indice.getContgrupo()));
+        System.out.println("Grupos Formados:; " + String.valueOf(indice.getContgrupo()) + ";");
+        getBuffer().append("\n\tÍndice R: " + String.valueOf(indice.getR()));
+        System.out.println("Índice R:; " + String.valueOf(indice.getR()) + ";");
+        getBuffer().append("\n\tÍndice F: " + String.valueOf(indice.getFfinal()));
+        System.out.println("Índice F:; " + String.valueOf(indice.getFfinal()) + ";");
+        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(indice.getPorcentagem()));
+        System.out.println("Porcentagem de Acerto:; " + String.valueOf(indice.getPorcentagem()) + ";");
+        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(indice.getIdunn()));
+        System.out.println("Índice Idunn:; " + String.valueOf(indice.getIdunn()) + ";");
+        getBuffer().append("\n\tVariância Total: " + String.valueOf(indice.getVtotal()));
+        System.out.println("Variância Total:; " + String.valueOf(indice.getVtotal()) + ";");
         getBuffer().append("\n\tMatriz Confusão:");
-        for (int i = 0; i < indice.getMconfusao().length; i++) {
-            for (int j = 0; j < indice.getMconfusao().length; j++) {
-                getBuffer().append("\t\t" + indice.getMconfusao()[i][j] + " ");
+        System.out.println("Matriz Confusão:" + ";");
+
+//        if (nomesClasses != null) {
+//            for (int i = 0; i < indice.getMconfusao().length; i++) {
+//                for (int j = 0; j < indice.getMconfusao().length; j++) {
+//                    getBuffer().append("\t\t" + indice.getMconfusao()[i][j] + " ");
+//
+//                }
+//                getBuffer().append("\n");
+//            }
+//        }
+
+        getBuffer().append("\nGrupos Formados:");
+        for (int j = listaGrupos.get(getObjetoAtual())[0].length - 1; j >= 1; j--) {
+            for (int i = 0; i < j; i++) {
+                if (listaGrupos.get(getObjetoAtual())[0][i] > listaGrupos.get(getObjetoAtual())[0][i + 1]) {
+                    int auxLinha = listaGrupos.get(getObjetoAtual())[0][i];
+                    int auxColuna = listaGrupos.get(getObjetoAtual())[1][i];
+                    listaGrupos.get(getObjetoAtual())[0][i] = listaGrupos.get(getObjetoAtual())[0][i + 1];
+                    listaGrupos.get(getObjetoAtual())[1][i] = listaGrupos.get(getObjetoAtual())[1][i + 1];
+                    listaGrupos.get(getObjetoAtual())[0][i + 1] = auxLinha;
+                    listaGrupos.get(getObjetoAtual())[1][i + 1] = auxColuna;
+                }
             }
-            getBuffer().append("\n");
+        }
+
+        for (int k = 0; k < indice.getContgrupo(); k++) {
+            getBuffer().append("Grupo: "+(k+1)+"\n");
+            for (int i = 0; i < listaGrupos.get(getObjetoAtual()).length; i++) {
+                for (int j = 0; j < listaGrupos.get(getObjetoAtual())[0].length; j++) {
+                    if(listaGrupos.get(getObjetoAtual())[1][j] == (k+1)){
+                        getBuffer().append(listaGrupos.get(getObjetoAtual())[0][j]+" ");
+                    }
+                }
+            }
+            getBuffer().append("\n\n-------------------------------\n\n");
         }
     }
 
@@ -983,13 +821,14 @@ public final class PanelFormigas extends javax.swing.JPanel {
          */
         tempoinicial_rec = System.currentTimeMillis();
 
-        if (teste_recuperação == 1) {
+        if (teste_recuperação == 3) {
             ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaS.inicio();
             listaGrupos.add(ligaS.get_mpos());
             qntGrupos = ligaS.get_contgrupos();
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
             indice.inicio();
+            System.out.println("fez as paradas");
         } else if (teste_recuperação == 2) {
             ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaM.inicio();
@@ -997,21 +836,21 @@ public final class PanelFormigas extends javax.swing.JPanel {
             listaGrupos.add(ligaM.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
             indice.inicio();
-        } else if (teste_recuperação == 3) {
+        } else if (teste_recuperação == 1) {
             ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), teste, getOperar());
             ligaC.inicio();
             qntGrupos = ligaC.get_contgrupos();
             listaGrupos.add(ligaC.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
             indice.inicio();
-        } else if (teste_recuperação == 4) {
+        } else if (teste_recuperação == 5) {
             ward = new Ward(getOperar().getMatriz_padrao(), teste, getOperar());
             ward.inicio();
             qntGrupos = ward.get_contgrupos();
             listaGrupos.add(ward.get_mpos());
             indice = new Índices(getOperar().getMatriz_padrao(), teste, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
             indice.inicio();
-        } else if (teste_recuperação == 5) {
+        } else if (teste_recuperação == 4) {
             achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
             achagrupos.inicio();
             qntGrupos = achagrupos.get_contgrupos();

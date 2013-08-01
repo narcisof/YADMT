@@ -13,6 +13,13 @@ public class JFrameKmeans extends javax.swing.JFrame {
     /**
      * Creates new form JFrameKmeans
      */
+    int k;
+    boolean paradaAutomatica;
+    int iteracoes;
+    int maxIteracoes;
+    boolean seedAleatorios;
+    int seeds;
+
     public JFrameKmeans() {
         initComponents();
         setK(Integer.parseInt(textKClusters.getText()));
@@ -46,12 +53,6 @@ public class JFrameKmeans extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
-    int k;
-    boolean paradaAutomatica;
-    int iteracoes;
-    int maxIteracoes;
-    boolean seedAleatorios;
-    int seeds;
 
     /**
      * This method is called from within the constructor to initialize the form.

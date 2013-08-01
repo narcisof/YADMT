@@ -5,6 +5,8 @@
 package moduledefault.clustering.distancias;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.MatrizDados;
 
 /**
@@ -33,7 +35,23 @@ public class Chebyshev extends DistanciaPrincipal {
         padronizacaDistancias(matrizDistancias);
     }
 
-    private double maximo(double[] acumulador) {
+    public static float[][] distanciaKmeans(int linhas, int k, float[][] matriz, ArrayList<Centroide> centroide) {
+        float[][] resultado = new float[linhas][k];
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < k; j++) {
+                if (i != j) {
+                    double acumulador[] = new double[k];
+                    for (int w = 0; w < k; w++) {
+                        acumulador[w] = Math.abs(matriz[i][w] -centroide.get(w).getAtributos().get(j));
+                    }
+                    resultado[i][j] = (float) maximo(acumulador);
+                }
+            }
+        }
+        return resultado;
+    }
+
+    private static double maximo(double[] acumulador) {
         double maior = Double.MIN_VALUE;
         for (int i = 0; i < acumulador.length - 1; i++) {
             double aux = Math.max(acumulador[i], acumulador[i + 1]);

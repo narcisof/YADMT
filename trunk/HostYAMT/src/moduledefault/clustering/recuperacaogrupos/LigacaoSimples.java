@@ -48,6 +48,7 @@ public class LigacaoSimples {
         return mpos2;
     }
 
+
     void liga_simples(int[][] m) {
 
 
@@ -219,7 +220,6 @@ public class LigacaoSimples {
         }
 
     }
-
     public int getNumpad() {
         return numpad;
     }

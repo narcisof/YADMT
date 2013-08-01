@@ -55,12 +55,12 @@ public class ACOClustering {
             }
         }
         cont = 0;
-        if (teste_distancia == 1) {
+        if (teste_distancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
             matriz_distancias = distância.getMatrizDistancias();
         } else {
-            if (teste_distancia == 2) {
+            if (teste_distancia == 4) {
                 Cosseno distância = new Cosseno(teste);
                 distância.distancia(teste);
                 matriz_distancias = distância.getMatrizDistancias();
@@ -70,17 +70,17 @@ public class ACOClustering {
                     distância.distancia(teste);
                     matriz_distancias = distância.getMatrizDistancias();
                 } else {
-                    if (teste_distancia == 4) {
+                    if (teste_distancia == 6) {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia(teste);
                         matriz_distancias = distância.getMatrizDistancias();
                     } else {
-                        if (teste_distancia == 5) {
+                        if (teste_distancia == 2) {
                             CityBlock distancia = new CityBlock(teste);
                             distancia.distancia(teste);
                             matriz_distancias = distancia.getMatrizDistancias();
                         } else {
-                            if (teste_distancia == 6) {
+                            if (teste_distancia == 1) {
                                 Chebyshev distancia = new Chebyshev(teste);
                                 distancia.distancia(teste);
                                 matriz_distancias = distancia.getMatrizDistancias();

@@ -5,17 +5,12 @@
 package moduledefault.clustering.view.jpanel;
 
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.MatrizDados;
 import moduledefault.clustering.view.frames.JFrameKmeans;
-import view.jpanel.JPanelClustering;
 
 /**
  *
@@ -31,6 +26,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     MatrizDados teste;
     String[] grupos;
     JFrameKmeans frameKmeans;
+
     public PanelKmeans(double[][] base, String grupos[], JFrameKmeans k) throws IOException {
         initComponents();
         this.matrizDados = base;
@@ -56,15 +52,13 @@ public class PanelKmeans extends javax.swing.JPanel {
         jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
-        Panel_medidas = new javax.swing.JPanel();
-        Euclidiana = new javax.swing.JRadioButton();
-        Cosseno = new javax.swing.JRadioButton();
-        Mahalanobis = new javax.swing.JRadioButton();
-        Correlacao = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonExecuta = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPaneResult = new javax.swing.JScrollPane();
         jListResult = new javax.swing.JList();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBoxDistancias = new javax.swing.JComboBox();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -80,47 +74,10 @@ public class PanelKmeans extends javax.swing.JPanel {
         jTextArea3.setRows(5);
         jScrollPane3.setViewportView(jTextArea3);
 
-        Panel_medidas.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
-
-        Euclidiana.setSelected(true);
-        Euclidiana.setText("Distância Euclidiana");
-
-        Cosseno.setText("Similiridade de Cosseno");
-
-        Mahalanobis.setText("Mahalanobis");
-
-        Correlacao.setText("Correlação");
-
-        javax.swing.GroupLayout Panel_medidasLayout = new javax.swing.GroupLayout(Panel_medidas);
-        Panel_medidas.setLayout(Panel_medidasLayout);
-        Panel_medidasLayout.setHorizontalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Cosseno)
-                    .addComponent(Euclidiana)
-                    .addComponent(Mahalanobis)
-                    .addComponent(Correlacao))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Panel_medidasLayout.setVerticalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Euclidiana)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(Cosseno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Mahalanobis)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Correlacao))
-        );
-
-        jButton1.setText("Executar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonExecuta.setText("Executar");
+        jButtonExecuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonExecutaActionPerformed(evt);
             }
         });
 
@@ -142,51 +99,110 @@ public class PanelKmeans extends javax.swing.JPanel {
         });
         jScrollPaneResult.setViewportView(jListResult);
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Distância"));
+
+        jLabel1.setText("Função de Distância:");
+
+        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBoxDistancias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                        .addGap(0, 8, Short.MAX_VALUE)
+                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonExecuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonExecuta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addGap(137, 137, 137)
+                .addComponent(jScrollPaneResult, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                .addGap(83, 83, 83))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(97, 97, 97)
-                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                        .addGap(72, 72, 72)))
+                .addComponent(jScrollPane3)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+    private void jButtonExecutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExecutaActionPerformed
+        int teste_distancia = 0;
+        this.jButtonExecuta.setEnabled(false);
+        switch (this.jComboBoxDistancias.getSelectedIndex()) {
+            case 0:
+                JOptionPane.showMessageDialog(null, "Selecione uma Medida de Distância.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                this.jButtonExecuta.setEnabled(true);
+                return;
+            case 1:
+                teste_distancia = 1;
+                break;
+            case 2:
+                teste_distancia = 2;
+                break;
+            case 3:
+                teste_distancia = 3;
+                break;
+            case 4:
+                teste_distancia = 4;
+                break;
+            case 5:
+                teste_distancia = 5;
+                break;
+            case 6:
+                teste_distancia = 6;
+                break;
+            default:
+                break;
+        }
         this.numK = frameKmeans.getK();
-        KMeansPrincipal k = new KMeansPrincipal(teste, numK);
+        boolean paradaAutomatica = frameKmeans.isParadaAutomatica();
+        boolean seedAleatorios = frameKmeans.isSeedAleatorios();
+        int seeds = 0;
+        if(!seedAleatorios){
+            seeds = frameKmeans.getSeeds();
+        }
+        int maxIteracoes = frameKmeans.getMaxIteracoes();
+        int iteracoesParada = frameKmeans.getIteracoes();
+        KMeansPrincipal k = new KMeansPrincipal(teste, numK,paradaAutomatica,seedAleatorios,seeds,maxIteracoes,iteracoesParada,teste_distancia);
         k.start();
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.jButtonExecuta.setEnabled(true);
+    }//GEN-LAST:event_jButtonExecutaActionPerformed
 
     private void jListResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListResultMouseClicked
         //        if (evt.getClickCount() == 2)
@@ -195,24 +211,21 @@ public class PanelKmeans extends javax.swing.JPanel {
 
     private void jListResultKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListResultKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_UP
-            || evt.getKeyCode() == KeyEvent.VK_DOWN
-            || evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN
-            || evt.getKeyCode() == KeyEvent.VK_PAGE_UP
-            || evt.getKeyCode() == KeyEvent.VK_END
-            || evt.getKeyCode() == KeyEvent.VK_HOME) {
+                || evt.getKeyCode() == KeyEvent.VK_DOWN
+                || evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN
+                || evt.getKeyCode() == KeyEvent.VK_PAGE_UP
+                || evt.getKeyCode() == KeyEvent.VK_END
+                || evt.getKeyCode() == KeyEvent.VK_HOME) {
             //            jListResultActionPerformed();
         }
     }//GEN-LAST:event_jListResultKeyReleased
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton Correlacao;
-    private javax.swing.JRadioButton Cosseno;
-    private javax.swing.JRadioButton Euclidiana;
-    private javax.swing.JRadioButton Mahalanobis;
-    private javax.swing.JPanel Panel_medidas;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonExecuta;
+    private static javax.swing.JComboBox jComboBoxDistancias;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jListResult;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
