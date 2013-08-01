@@ -4,12 +4,18 @@
  */
 package moduledefault.clustering.view.jpanel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JTextArea;
+import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import moduledefault.clustering.som.AvaliacaoAgrupamento;
 import moduledefault.clustering.som.Base;
@@ -50,12 +56,18 @@ public final class PanelSOM extends javax.swing.JPanel {
     JFrameKohonenConfig frameKohonen;
     //
     JFrameKohonenConfigDensidade densidadeConfig = null;
+    //
+    ArrayList<String> resutados = new ArrayList<>();
+    DefaultListModel listaResultados = new DefaultListModel();
+    private DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+    private Date date = new Date();
 
     public PanelSOM(interfaces.Base b, JFrameKohonenConfig fk) {
         initComponents();
         frameKohonen = fk;
         Base = b;
         carregaBase();
+        resutados.clear();
     }
 
     @SuppressWarnings("unchecked")
@@ -79,7 +91,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         jButtonAgrupamento = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jListResultados = new javax.swing.JList();
         jPanel19 = new javax.swing.JPanel();
         bVisualizacao = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -184,7 +196,13 @@ public final class PanelSOM extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
-        jScrollPane2.setViewportView(jList1);
+        jListResultados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListResultados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListResultadosMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jListResultados);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -318,6 +336,10 @@ public final class PanelSOM extends javax.swing.JPanel {
         //AGRUPAMENTO
         clusterig();
     }//GEN-LAST:event_jButtonAgrupamentoActionPerformed
+
+    private void jListResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListResultadosMouseClicked
+        jTextArea.setText(resutados.get(jListResultados.getSelectedIndex()));
+    }//GEN-LAST:event_jListResultadosMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton agrupamentoDensidade;
     private javax.swing.JButton bVisualizacao;
@@ -331,7 +353,7 @@ public final class PanelSOM extends javax.swing.JPanel {
     private javax.swing.JButton jButtonConfigDensidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList jList1;
+    private javax.swing.JList jListResultados;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
@@ -373,11 +395,8 @@ public final class PanelSOM extends javax.swing.JPanel {
                 }
                 //Calcula o Erro
                 rede.calcErro();
-                //
-                jTextArea.setText("=============== Self-Organizing Map - SOM ===============\n");
-                jTextArea.append("Erro de Quantização: " + rede.getErroQuantização() + "\n");
-                jTextArea.append("Erro Topológico: " + rede.getErroTopologico() + "\n");
 
+                setTextSOM();
                 //carrega os padroes...
                 rede.carregaPadroes(); //
                 //Calcula a matriz U
@@ -392,26 +411,45 @@ public final class PanelSOM extends javax.swing.JPanel {
     }
 
     public void clusterig() {
-        AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento();
-        //
         ClusteringSOM cluster = new ClusteringSOM(rede);
-        //
         ArrayList<Cluster> clusters = new ArrayList<>();
-        ArrayList<Integer> grupo = new ArrayList<>();
 
+        setTextSOM();
         //Realiza o Agrupamento
         switch (agrupamento) {
             case "densidade":
                 clusters = cluster.clusteringDensidade(Double.parseDouble(densidadeConfig.getCampoErro().getText()));
-                jTextArea.append("\n========= Agrupamento por Matriz de Densidade =========\n");
+                jTextArea.append("\n========== Agrupamento por Matriz de Densidade ==========\n");
                 break;
         }
 
-        String padrao = null;
+        setTextClustering(clusters, agrupamento);
+    }
+
+    public void setTextSOM() {
+        jTextArea.setText("====================== Informações ======================\n");
+        jTextArea.append("Base de Dados:\t"+dados.getNome()+"\n");
+        jTextArea.append("Instâncias:\t"+dados.getDataSet().size()+"\n");
+        jTextArea.append("Atributos:\t"+dados.getDataSet().get(0).getAtributos().size() +"\n");
+        for (int i = 0; i < dados.getAtributos().size(); i++) {
+            jTextArea.append("\t\t"+dados.getAtributos().get(i)+"\n");
+        }
+        
+        
+        jTextArea.append("\n=============== Self-Organizing Map - SOM ===============\n");
+        jTextArea.append("Erro de Quantização: " + rede.getErroQuantização() + "\n");
+        jTextArea.append("Erro Topológico: " + rede.getErroTopologico() + "\n");
+    }
+
+    public void setTextClustering(ArrayList<Cluster> clusters, String agrup) {
+        AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados.getDataSet().size());
+        ArrayList<Integer> grupo;
+
         //imprime em tela o agrupamento realizado
+        String padrao;
         for (int i = 0; i < clusters.size(); i++) {
             clusters.get(i).setNomeGrupo(dados.getClasses());
-            jTextArea.append("Grupo " + clusters.get(i).getNomeGrupo() + ":");
+            jTextArea.append("Grupo " + i + ":");
             grupo = clusters.get(i).getSortGrupo();
             for (int j = 0; j < grupo.size(); j++) {
                 padrao = grupo.get(j) + "";
@@ -432,17 +470,19 @@ public final class PanelSOM extends javax.swing.JPanel {
                 jTextArea.append(padrao);
             }
             jTextArea.append("\n");
-            jTextArea.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n");
+            jTextArea.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
         }
-        jTextArea.append("\n");
 
         //Medidas de avaliaxao do agrupamento
-        jTextArea.append("Viariância Total: " + avaliacao.variancia(clusters) + "\n");
+        jTextArea.append("\n================ Avaliação do Agrupamento ===============\n");
+        jTextArea.append("Grupos Formados: " + clusters.size() + "\n");
+        jTextArea.append("Viariância Total: " + avaliacao.getVariancia() + "\n");
 
-        int[][] mconfusao = avaliacao.matrizConfusao(clusters, dados.getClasses());
+        float acertos = avaliacao.getAcerto();
+        jTextArea.append("Porcentagem de Acerto: " + acertos + "%\n");
 
         jTextArea.append("\nMatriz Confusão:\n");
-
+        int[][] mconfusao = avaliacao.getMconfusao();
         char classe = 'a';
         for (int i = 0; i < mconfusao.length; i++) {
             jTextArea.append(classe + "\t");
@@ -452,21 +492,27 @@ public final class PanelSOM extends javax.swing.JPanel {
         classe = 'a';
         for (int i = 0; i < mconfusao.length; i++) {
             for (int j = 0; j < mconfusao[0].length; j++) {
-                        jTextArea.append(mconfusao[i][j] + "\t");
+                jTextArea.append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
-                     jTextArea.append("\t"+classe+" = "+dados.getClasses().get(i));
-                     ++classe;
+                    jTextArea.append("\t" + classe + " = " + dados.getClasses().get(i));
+                    ++classe;
                 }
             }
             jTextArea.append("\n");
         }
+        resutados.add(jTextArea.getText());
 
-        for (int i = 0; i < clusters.size(); i++) {
-            jTextArea.append("\n\nGrupo : " + clusters.get(i).getNomeGrupo() + "\n");
-            for (int j = 0; j < dados.getClasses().size(); j++) {
-                jTextArea.append(dados.getClasses().get(j) + ": " + clusters.get(i).getNumClasse(dados.getClasses().get(j)) + "\n");
-            }
+
+        //Adiciona na Lista de Resultados
+        String metodo = null;
+        switch (agrup) {
+            case "densidade":
+                metodo = "Densidade";
+                break;
         }
+        date = new Date();
+        listaResultados.addElement(formatter.format(date) + " SOM - " + metodo);
+        jListResultados.setModel(listaResultados);
     }
 
     public void atualizaStatus(final int i) {
@@ -506,7 +552,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         }
 
         dados.setClasses((List) Base.getClasses());
-
+        dados.setNome((String) Base.getName());
         FrameSomVisualization.getInstance().setDados(dados);
         FrameSomVisualization.getInstance().setRede(null);
         FrameSomVisualization.getInstance().setMatrizU(null);

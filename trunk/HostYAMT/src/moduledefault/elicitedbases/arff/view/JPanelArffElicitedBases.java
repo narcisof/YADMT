@@ -2,6 +2,7 @@ package moduledefault.elicitedbases.arff.view;
 
 import controller.FacadeHost;
 import interfaces.Base;
+import java.io.File;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -12,6 +13,7 @@ import moduledefault.elicitedbases.arff.FacadeArffElicitedBases;
 public class JPanelArffElicitedBases extends javax.swing.JPanel {
 
     private ArffFileReader fr;
+    private String name = null;
 
     public JPanelArffElicitedBases() {
         initComponents();
@@ -156,7 +158,9 @@ public class JPanelArffElicitedBases extends javax.swing.JPanel {
                         JOptionPane.ERROR_MESSAGE);
                 getArffFile();
             } else {
-                fr = new ArffFileReader(chooser.getSelectedFile());
+                File file = chooser.getSelectedFile();                
+                fr = new ArffFileReader(file);
+                name = file.getName();
                 loadList(fr.getAttributes());
                 //loadData(fr.getAttributes(), fr.getData());
                 //jButtonExcluir.setEnabled(true);
@@ -257,6 +261,7 @@ public class JPanelArffElicitedBases extends javax.swing.JPanel {
      */
     private void addBase() {
         Base base = new Base();
+        base.setName(name);
         base.setAtributes(interactiveDoubleList.getSelectedClasses());
         base.setInput(getInput());
         base.setOutput(getOutput());

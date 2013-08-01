@@ -5,11 +5,10 @@
  */
 package moduledefault.elicitedbases.postgresrafael.view.jpanel;
 
-import moduledefault.elicitedbases.postgresrafael.util.jcombobox.ComboListener;
-//import util.MetodosUtil;
 import java.awt.Color;
 import moduledefault.elicitedbases.postgresrafael.FacadePostgresElicitedBases;
 import moduledefault.elicitedbases.postgresrafael.PostgresElicitedBases;
+import moduledefault.elicitedbases.postgresrafael.util.jcombobox.ComboListener;
 
 /**
  *
