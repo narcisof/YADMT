@@ -63,7 +63,7 @@ public class SOMVisualization extends javax.swing.JPanel {
             int escala = (int) height / 10;
             int soma = escala;
             while (soma <= height) {
-                //   g.drawLine(x0 - 5, soma, x0 +5, soma);
+                   g.drawLine(x0 - 5, soma, x0 +5, soma);
                 soma += escala;
             }
 

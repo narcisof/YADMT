@@ -6,6 +6,8 @@ package moduledefault.clustering.distancias;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.MatrizDados;
 
 /**
@@ -36,6 +38,22 @@ public class CityBlock extends DistanciaPrincipal {
             }
         }
         padronizacaDistancias(matrizDistancias);
+    }
+    public static float [][] distanciaKmeans(int linhas, int k, float[][]matriz, ArrayList<Centroide> centroide) {
+        double acumulador = 0;
+        float [][] resultado = new float[linhas][k];
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < k; j++) {
+                if (i != j) {
+                    for (int w = 0; w < k; w++) {
+                        acumulador += Math.abs(matriz[i][w] - centroide.get(j).getAtributos().get(w));
+                    }
+                    resultado[i][j] = (float)acumulador;
+                    acumulador = 0;
+                }
+            }
+        }
+        return resultado;
     }
     
 }
