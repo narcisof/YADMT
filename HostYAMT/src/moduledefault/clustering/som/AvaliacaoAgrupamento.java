@@ -14,7 +14,22 @@ import java.util.List;
  */
 public class AvaliacaoAgrupamento {
 
-    public AvaliacaoAgrupamento() {
+    private List<String> classes;
+    private ArrayList<Cluster> clusters;
+    private int tamanhoBase;
+    //
+    private float variancia;
+    private int[][] mconfusao;
+    private float acerto;
+    
+    public AvaliacaoAgrupamento(ArrayList<Cluster> clusters, List<String> classes, int tamBase) {
+        this.classes = classes;
+        this.clusters = clusters;
+        this.tamanhoBase = tamBase;
+        //
+        variancia();
+        matrizConfusao();
+        acerto();
     }
 
     public float centroide(Cluster cluster) {
@@ -28,8 +43,7 @@ public class AvaliacaoAgrupamento {
         return centroide;
     }
 
-    public float variancia(ArrayList<Cluster> clusters) {
-        float variancia;
+    public final void variancia() {
         float centro = 0, qdesvio = 0, sqdesvio = 0, somaqdesvio = 0;
         int qpadrao = 0, somapadrao = 0;
 
@@ -51,14 +65,12 @@ public class AvaliacaoAgrupamento {
             ////////////Fazer a variancia para todos os grupos
         }
         variancia = somaqdesvio / somapadrao;//variancia total, de todos os grupos da matriz
-
-        return variancia;
     }
 
-    public int[][] matrizConfusao(ArrayList<Cluster> clusters, List<String> classes) {
+    public final void matrizConfusao() {
         int gruposDesejados = classes.size();
 
-        int[][] mconfusao = new int[gruposDesejados][gruposDesejados];
+        mconfusao = new int[gruposDesejados][gruposDesejados];
 
         SelectionSort(clusters);
 
@@ -94,9 +106,16 @@ public class AvaliacaoAgrupamento {
                 }
             }
         }
-        return mconfusao;
     }
 
+    public final void acerto(){
+        for (int i = 0; i < mconfusao.length; i++) {
+            acerto += mconfusao[i][i];
+        }
+        acerto = acerto * 100;
+        acerto = acerto / tamanhoBase;
+    }
+    
     public void SelectionSort(ArrayList<Cluster> clusters) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Cluster aux;
@@ -116,4 +135,30 @@ public class AvaliacaoAgrupamento {
         }
         Collections.reverse(clusters);
     }
+
+    public float getVariancia() {
+        return variancia;
+    }
+
+    public void setVariancia(float variancia) {
+        this.variancia = variancia;
+    }
+
+    public int[][] getMconfusao() {
+        return mconfusao;
+    }
+
+    public void setMconfusao(int[][] mconfusao) {
+        this.mconfusao = mconfusao;
+    }
+
+    public float getAcerto() {
+        return acerto;
+    }
+
+    public void setAcerto(float acerto) {
+        this.acerto = acerto;
+    }
+    
+    
 }

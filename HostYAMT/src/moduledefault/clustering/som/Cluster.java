@@ -16,7 +16,6 @@ public class Cluster {
 
     private ArrayList<Padrao> grupo;
     private String nomeGrupo;
-    private int qtdGrupo; //
 
     public Cluster() {
         grupo = new ArrayList<>();
@@ -60,18 +59,13 @@ public class Cluster {
                 nome = classes.get(i);
             }
         }
-        qtdGrupo = num;
         nomeGrupo = nome;
     }
 
     public String getNomeGrupo() {
         return nomeGrupo;
     }
-    
-    public int getQtdGrupo(){
-        return qtdGrupo;
-    }
-    
+        
     public int getNumClasse(String classe){
         int aux = 0;
         for (int i = 0; i < grupo.size(); i++) {
