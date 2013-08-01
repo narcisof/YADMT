@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import moduledefault.clustering.aco.ACOClustering;
+import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.recuperacaogrupos.LigacaoCompleta;
 import moduledefault.clustering.recuperacaogrupos.LigacaoMedia;
 import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
