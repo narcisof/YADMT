@@ -68,7 +68,7 @@ public class SOMVisualization extends javax.swing.JPanel {
             }
 
             float m = width / 100;
-            int tamPixel = (int) m;
+            int tamPixel = 8;//(int) m;
 
             if (FrameSomVisualization.getDados() != null) {
                 for (int i = 0; i < FrameSomVisualization.getDados().getDataSet().size(); i++) {
@@ -109,9 +109,24 @@ public class SOMVisualization extends javax.swing.JPanel {
                 }
             }
         } else {
+            g.setColor(Color.green);
             for (int i = 0; i < FrameSomVisualization.getPontos2DBase().size(); i++) {
                 g.fillOval(FrameSomVisualization.getPontos2DBase().get(i).x, FrameSomVisualization.getPontos2DBase().get(i).y, 5, 5);
             }
+            g.setColor(Color.BLACK);
+            for (int i = 0; i < FrameSomVisualization.getPontos2DRede().size(); i++) {
+                g.fillOval(FrameSomVisualization.getPontos2DRede().get(i).x, FrameSomVisualization.getPontos2DRede().get(i).y, 5, 5);
+            }
+            
+            for (int j = 0; j < FrameSomVisualization.getRede().getRede().length - 1; j++) {
+                    for (int i = 0; i < FrameSomVisualization.getRede().getRede()[0].length - 1; i++) {
+                        int xx[] = {FrameSomVisualization.getPontosDrawRede(i, j).x, FrameSomVisualization.getPontosDrawRede(i, j + 1).x,
+                            FrameSomVisualization.getPontosDrawRede(i + 1, j + 1).x, FrameSomVisualization.getPontosDrawRede(i + 1, j).x};
+                        int yy[] = {FrameSomVisualization.getPontosDrawRede(i, j).y, FrameSomVisualization.getPontosDrawRede(i, j + 1).y,
+                            FrameSomVisualization.getPontosDrawRede(i + 1, j + 1).y, FrameSomVisualization.getPontosDrawRede(i + 1, j).y};
+                        g.drawPolygon(xx, yy, 4);
+                    }
+                }
         }
     }
 

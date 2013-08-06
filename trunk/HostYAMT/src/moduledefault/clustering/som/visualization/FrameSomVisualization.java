@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 import moduledefault.clustering.som.Base;
+import moduledefault.clustering.som.Neuronio;
 import moduledefault.clustering.som.RedeSOM;
 import moduledefault.clustering.view.jpanel.PanelSOM;
 
@@ -25,8 +26,10 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private static Point3d[][] pontos3D;
     private static ArrayList<Point> pontos2D = new ArrayList<>();
     private static ArrayList<Point> pontos2DBase = null;
+    private static ArrayList<Point> pontos2DRede = null;
     private static ArrayList<Point> eixos = new ArrayList<>();
     private static Point[][] pontosDraw;
+    private static Point[][] pontosDrawRede;
     private static Color cor_fundo = Color.WHITE;
     private static Color cor_linha = Color.BLACK;
     private static Color cor_eixo = Color.BLACK;
@@ -118,6 +121,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         matrizU2D();
         densidade();
         calcBase3D();
+        calcRede3D();
         INSTANCE.repaint();
     }
 
@@ -693,6 +697,10 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     }//GEN-LAST:event_panel3DMouseWheelMoved
 
     private void jComboBoxEixoZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoZActionPerformed
+        if (rede != null) {
+            // calcBase3D();
+            //calcRede3D();
+        }
         repaint();
     }//GEN-LAST:event_jComboBoxEixoZActionPerformed
 
@@ -703,7 +711,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private void jComboBoxEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoYActionPerformed
         repaint();
     }//GEN-LAST:event_jComboBoxEixoYActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -769,46 +776,21 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         panelDensidade.add(den);
     }
 
-    public static void setStatus(int i) {
-        if (statusProgesso != null) {
-            statusProgesso.setValue(i);
-            if (i == statusProgesso.getMaximum() - 1) {
-                labelStatus.setText("Finalizado.");
-            } else {
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        switch (labelStatus.getText()) {
-                            case "Executando":
-                                labelStatus.setText("Executando.");
-                                break;
-                            case "Executando.":
-                                labelStatus.setText("Executando..");
-                                break;
-                            case "Executando..":
-                                labelStatus.setText("Executando...");
-                                break;
-                            case "Executando...":
-                                labelStatus.setText("Executando");
-                                break;
-                        }
-                    }
-                };
-                t.start();
+    private static void drawEixos() {
+        eixos.clear();
+        eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
+    }
+
+    public static void drawMatrizU() {
+        project = new Projetor(panel3D.getWidth(), panel3D.getHeight());
+        pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
+        pontosDraw = new Point[gridMUX][gridMUY];
+
+        for (int i = 0; i < gridMUX; i++) {
+            for (int j = 0; j < gridMUY; j++) {
+                pontosDraw[i][j] = pontos2D.get(0);
+                pontos2D.remove(0);
             }
-        }
-    }
-
-    public static void setLabel(String i) {
-        if (labelStatus != null) {
-            labelStatus.setText(i);
-        }
-
-    }
-
-    public static void setMaxStatus(int i) {
-        if (statusProgesso != null) {
-            statusProgesso.setMaximum(i);
         }
     }
 
@@ -834,7 +816,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
                 ++count;
             }
         }
-
     }
 
     public void calcBase3D() {
@@ -842,14 +823,39 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         Mbase = new double[4][dados.getDataSet().size()];
 
         for (int i = 0; i < dados.getDataSet().size(); i++) {
-            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0) * 10;
-            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1) * 10;
-            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2) * 10;
+            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0);
+            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1);
+            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2);
             Mbase[3][i] = 1;
 
         }
         pontos2DBase = new ArrayList<>();
         pontos2DBase = project.convert3Dto2D(Mbase, dados.getDataSet().size(), VRP, Dvalue, P);
+    }
+
+    public void calcRede3D() {
+        ArrayList<Neuronio> n = rede.getListNeuronios();
+        project = new Projetor(panelSOM.getWidth(), panelSOM.getHeight());
+        Mbase = new double[4][n.size()];
+
+        for (int i = 0; i < n.size(); i++) {
+            Mbase[0][i] = n.get(i).getPesos().get(0);
+            Mbase[1][i] = n.get(i).getPesos().get(1);
+            Mbase[2][i] = n.get(i).getPesos().get(2);
+            Mbase[3][i] = 1;
+
+        }
+        pontos2DRede = new ArrayList<>();
+        pontos2DRede = project.convert3Dto2D(Mbase, n.size(), VRP, Dvalue, P);
+
+        pontosDrawRede = new Point[rede.getGridX()][rede.getGridY()];
+
+        for (int i = 0; i < rede.getGridX(); i++) {
+            for (int j = 0; j < rede.getGridY(); j++) {
+                pontosDrawRede[i][j] = pontos2DRede.get(0);
+                pontos2DRede.remove(0);
+            }
+        }
     }
 
     private static void verificaCantos() {
@@ -912,24 +918,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         }
     }
 
-    private static void drawEixos() {
-        eixos.clear();
-        eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
-    }
-
-    public static void drawMatrizU() {
-        project = new Projetor(panel3D.getWidth(), panel3D.getHeight());
-        pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
-        pontosDraw = new Point[gridMUX][gridMUY];
-
-        for (int i = 0; i < gridMUX; i++) {
-            for (int j = 0; j < gridMUY; j++) {
-                pontosDraw[i][j] = pontos2D.get(0);
-                pontos2D.remove(0);
-            }
-        }
-    }
-
     public void giroDireita() {
         double rotZ[][] = {{Math.cos(Math.PI / 180 * 10), -Math.sin(Math.PI / 180 * 10), 0, 0},
             {Math.sin(Math.PI / 180 * 10), Math.cos(Math.PI / 180 * 10), 0, 0},
@@ -955,7 +943,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         Mcartesiano = UtilKohonenVisualization.multiMatriz(rotZ, Mcartesiano, 4, 4);
         Mcartesiano = UtilKohonenVisualization.multiMatriz(pos, Mcartesiano, 4, 4);
         eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
-        
+
         verificaCantos();
 
         pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
@@ -995,7 +983,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         Mcartesiano = UtilKohonenVisualization.multiMatriz(rotZ, Mcartesiano, 4, 4);
         Mcartesiano = UtilKohonenVisualization.multiMatriz(pos, Mcartesiano, 4, 4);
         eixos = project.convert3Dto2D(Mcartesiano, 4, VRP, Dvalue, P);
-                
+
         verificaCantos();
 
         pontos2D = project.convert3Dto2D(Mpontos, numPontos, VRP, Dvalue, P);
@@ -1008,10 +996,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
             }
         }
         repaint();
-    }
-
-    public static ArrayList<Point> getPontos2DBase() {
-        return pontos2DBase;
     }
 
     public static void setDados(Base r) {
@@ -1027,7 +1011,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
             jComboBoxEixoY.addItem(dados.getAtributo(i));
             jComboBoxEixoZ.addItem(dados.getAtributo(i));
         }
-        
+
         jComboBoxEixoX.setSelectedIndex(0);
         jComboBoxEixoY.setSelectedIndex(1);
         jComboBoxEixoZ.setSelectedIndex(0);
@@ -1039,6 +1023,57 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         }
         rede = r;
         som.setRede(r);
+    }
+
+    public static ArrayList<Point> getPontos2DBase() {
+        return pontos2DBase;
+    }
+
+    public static ArrayList<Point> getPontos2DRede() {
+        return pontos2DRede;
+    }
+
+    public static void setStatus(int i) {
+        if (statusProgesso != null) {
+            statusProgesso.setValue(i);
+            if (i == statusProgesso.getMaximum() - 1) {
+                labelStatus.setText("Finalizado.");
+            } else {
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        switch (labelStatus.getText()) {
+                            case "Executando":
+                                labelStatus.setText("Executando.");
+                                break;
+                            case "Executando.":
+                                labelStatus.setText("Executando..");
+                                break;
+                            case "Executando..":
+                                labelStatus.setText("Executando...");
+                                break;
+                            case "Executando...":
+                                labelStatus.setText("Executando");
+                                break;
+                        }
+                    }
+                };
+                t.start();
+            }
+        }
+    }
+
+    public static void setLabel(String i) {
+        if (labelStatus != null) {
+            labelStatus.setText(i);
+        }
+
+    }
+
+    public static void setMaxStatus(int i) {
+        if (statusProgesso != null) {
+            statusProgesso.setMaximum(i);
+        }
     }
 
     public static double[][] getMatrizU() {
@@ -1067,6 +1102,10 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
 
     public static Point getPontosDraw(int i, int j) {
         return pontosDraw[i][j];
+    }
+
+    public static Point getPontosDrawRede(int i, int j) {
+        return pontosDrawRede[i][j];
     }
 
     public static Color getCor_linha() {
@@ -1128,5 +1167,4 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     public static ArrayList<Point> getEixos() {
         return eixos;
     }
-
 }
