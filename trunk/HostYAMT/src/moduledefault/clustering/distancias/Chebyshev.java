@@ -16,11 +16,10 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class Chebyshev extends DistanciaPrincipal {
 
     public Chebyshev(MatrizDados teste) {
-        System.out.println("Chebyshev");
         setMatrizDistancias(teste.getLinhas());
     }
 
-    public void distancia(MatrizDados teste) throws IOException {
+    public void distancia(MatrizDados teste)  {
         for (int i = 0; i < teste.getLinhas(); i++) {
             for (int j = 0; j < teste.getLinhas(); j++) {
                 if (i != j) {

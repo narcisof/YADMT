@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.aco.ACOClustering;
+import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
 import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
@@ -32,16 +33,13 @@ public class LigaçãoCompletaAgrupamento {
     int[][] mpos;
     int[][] mpos2;
     int q = 1;
-    ACOClustering x;
-    StringBuffer string3;
     double[][] matrizDistancia;
     String nomeArquivoEntrada;
     MatrizDados teste;
     int[][] mdend;
 
-    public LigaçãoCompletaAgrupamento(int[][] matriz, MatrizDados matrizdados, ACOClustering x_, int opcaoDistancia) throws IOException {
-        x = x_;
-        string3 = new StringBuffer();
+
+    public LigaçãoCompletaAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
@@ -52,75 +50,23 @@ public class LigaçãoCompletaAgrupamento {
         setMatrizDistancia(opcaoDistancia, matrizdados);
     }
 
-    public LigaçãoCompletaAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) throws IOException {
 
-        string3 = new StringBuffer();
-        linhas = matriz.length;
-        m = new int[matriz.length][matriz.length];
-        m = matriz;
-        mdados = matrizdados;
-        numpad = mdados.getLinhas();
-        mpos = new int[2][numpad];
-        mpos2 = new int[2][numpad];
-        setMatrizDistancia(opcaoDistancia, matrizdados);
-    }
 
-    public LigaçãoCompletaAgrupamento(int opcaoDistancia, String nomeArquivo) throws IOException {
-        this.nomeArquivoEntrada = nomeArquivo;
-        string3 = new StringBuffer();
-        teste = new MatrizDados();
-        teste.setDimensão_matriz();
-        m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
-        pmat();
-        linhas = teste.getDimensão_matriz();
-        mdados = teste;
-        numpad = mdados.getLinhas();
-        mpos = new int[2][numpad];
-        mpos2 = new int[2][numpad];
-        setMatrizDistancia(opcaoDistancia, teste);
-    }
 
-    void pmat() {
-        int i = 0, j = 0, x = 0, y;
-        Random random = new Random();
-        for (i = 0; i < teste.getDimensão_matriz(); i++) {
-            for (j = 0; j < teste.getDimensão_matriz(); j++) {
-                m[i][j] = 0;
-            }
-        }
-        for (y = 1; y <= teste.getLinhas(); y++) {//coloca os padroes sem repetir na grade
-            do {
-                i = random.nextInt(teste.getDimensão_matriz());
-                j = random.nextInt(teste.getDimensão_matriz());
-            } while (m[i][j] != 0);
-            x++;
-            if (m[i][j] == 0) {
-                m[i][j] = x;
-            }
-        }
-    }
 
-    public void inicio() throws IOException {
-        System.out.println("Chamou");
+    public void inicio(){
         liga_completa(m);
-        System.out.println("Terminou");
 
     }
 
-    public StringBuffer getString() {
-        return string3;
-    }
 
-    int get_contgrupos() {
-        return numgrupo;
-    }
 
     int[][] get_mpos() {
         return mpos2;
 
     }
 
-    void liga_completa(int[][] m) throws IOException {
+    void liga_completa(int[][] m) {
 
 
         char ch;
@@ -133,11 +79,8 @@ public class LigaçãoCompletaAgrupamento {
             }
             z = (int) mdados.getMatriz_dados()[i][0];
         }
-        // System.out.println("NUMERO DE GRUPOS = "+numgrupo);
         mdend = new int[numpad][numpad];
 
-//        double[][] distancia = new double[numpad][numpad];
-        //faço inicialização mdend
         for (int i = 0; i < numpad; i++) {
             for (int j = 0; j < numpad; j++) {
                 mdend[i][j] = 0;
@@ -157,12 +100,6 @@ public class LigaçãoCompletaAgrupamento {
                 }
             }
         }
-        //matriz das distancias
-//        for (int i = 0; i < numpad; i++) {
-//            for (int j = 0; j < numpad; j++) {
-//                distancia[i][j] = (double) Math.sqrt(Math.pow((mpos[0][i] - mpos[0][j]), 2) + Math.pow((mpos[1][i] - mpos[1][j]), 2));
-//            }
-//        }
 
         double min = 1000000, d = 0;
         int pad1 = 0, pad2 = 0;
@@ -193,14 +130,11 @@ public class LigaçãoCompletaAgrupamento {
                     if ((mdend[q - 1][i] == mdend[q - 1][j])) {
                         for (int k = 0; k < numpad; k++) {
                             if ((k != i) && (k != j)) {
-                                //printf("\n%f - %f\n",distancia[k][j],distancia[k][i]);
                                 if (matrizDistancia[k][j] > matrizDistancia[k][i]) {
                                     d = matrizDistancia[k][j];
                                 } else {
                                     d = matrizDistancia[k][i];
                                 }
-                                //printf("\n%f\n",d);
-                                //system("pause");
                                 matrizDistancia[i][k] = d;
                                 matrizDistancia[k][i] = d;
                                 matrizDistancia[j][k] = d;
@@ -217,10 +151,6 @@ public class LigaçãoCompletaAgrupamento {
                         min = matrizDistancia[i][j];
                         pad1 = i + 1;
                         pad2 = j + 1;
-//                                            System.out.println("Pad1 = "+pad1);
-//                                            System.out.println("Pad2 = "+pad2);
-//                        System.out.println("Iteração q = "+q);
-
 
                     }
                 }
@@ -228,26 +158,12 @@ public class LigaçãoCompletaAgrupamento {
             for (int i = 0; i < numpad; i++) {
                 if ((mdend[q - 1][i] == pad1) || (mdend[q - 1][i] == pad2)) {
                     mdend[q][i] = mdend[q - 1][pad1 - 1];
-//                    System.out.println("Q = "+q);
-//                                            System.out.println("Pad1 = "+pad1);
-//                        System.out.println("Pad2 = "+pad2);
-//                    System.out.println("1  "+mdend[q][i]);
-//                                    System.in.read();
 
                 } else {
                     mdend[q][i] = mdend[q - 1][i];
-//                    System.out.println("Q = "+q);
-//                                            System.out.println("Pad1 = "+pad1);
-//                        System.out.println("Pad2 = "+pad2);
-
-//                    System.out.println("2 "+mdend[q][i]);
 
                 }
             }
-//                 System.out.println("Pad1 = "+pad1);
-//                        System.out.println("Pad2 = "+pad2);
-//                                                System.in.read();
-
             //////
             int aux = 0, aux2 = 0;
             for (int i = 0; i < numpad; i++) {
@@ -279,17 +195,6 @@ public class LigaçãoCompletaAgrupamento {
             mpos2[1][j] = mdend[q - 1][j];
             count++;
         }
-//        x.getString().append("\nLIGACAO COMPLETA\n");
-//        x.getString2().append("\nLIGACAO COMPLETA\n");
-//        string3.append("\nLIGACAO COMPLETA\n");
-//        x.getString().append("\nPADRAO = GRUPO\n");
-//        x.getString2().append("\nPADRAO = GRUPO\n");
-//        string3.append("\nPADRAO = GRUPO\n");
-//        for (int j = 0; j < numpad; j++) {
-//            x.getString().append(j + 1).append(" = ").append(mpos2[1][j]).append("\n");
-//            x.getString2().append(j + 1).append(" = ").append(mpos2[1][j]).append("\n");
-//            string3.append(j + 1).append(" = ").append(mpos2[1][j]).append("\n");
-//        }
 
         count = 1;
         int[] pertence = new int[numgrupo];
@@ -324,12 +229,6 @@ public class LigaçãoCompletaAgrupamento {
         }
 
 
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < numpad; j++) {
-                System.out.print(mdend[i][j] + " ");
-            }
-            System.out.println();
-        }
 
     }
 
@@ -337,13 +236,13 @@ public class LigaçãoCompletaAgrupamento {
         return mdend;
     }
 
-    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) throws IOException {
-        if (opcaoDistancia == 1) {
+    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste)  {
+        if (opcaoDistancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
             matrizDistancia = distância.getMatrizDistancias();
         } else {
-            if (opcaoDistancia == 2) {
+            if (opcaoDistancia == 4) {
                 Cosseno distância = new Cosseno(teste);
                 distância.distancia(teste);
                 matrizDistancia = distância.getMatrizDistancias();
@@ -353,15 +252,19 @@ public class LigaçãoCompletaAgrupamento {
                     distância.distancia(teste);
                     matrizDistancia = distância.getMatrizDistancias();
                 } else {
-                    if (opcaoDistancia == 4) {
+                    if (opcaoDistancia == 6) {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia(teste);
                         matrizDistancia = distância.getMatrizDistancias();
                     } else {
-                        if (opcaoDistancia == 5) {
+                        if (opcaoDistancia == 2) {
                             CityBlock distancia = new CityBlock(teste);
                             distancia.distancia(teste);
                             matrizDistancia = distancia.getMatrizDistancias();
+                        } else if (opcaoDistancia == 1) {
+                            Chebyshev ch = new Chebyshev(teste);
+                            ch.distancia(teste);
+                            matrizDistancia = ch.getMatrizDistancias();
                         }
                     }
                 }

@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.hierarquicos;
 
-
 import java.io.IOException;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.CityBlock;
@@ -26,12 +25,10 @@ public class LigaçãoSimplesAgrupamento {
     int numpad, numgrupo = 1;
     int[][] mpos;
     int[][] mpos2;
-    ACOClustering x;
-    StringBuffer string3;
-    double [][] matrizDistancia;
-    LigaçãoSimplesAgrupamento(int[][] matriz, MatrizDados matrizdados, ACOClustering x_,int opcaoDistancia) throws IOException {
-        string3 = new StringBuffer();
-        x = x_;
+    double[][] matrizDistancia;
+    int mdend[][];
+
+    public LigaçãoSimplesAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
@@ -39,16 +36,11 @@ public class LigaçãoSimplesAgrupamento {
         numpad = mdados.getLinhas();
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
-                setMatrizDistancia(opcaoDistancia, matrizdados);
-
+        setMatrizDistancia(opcaoDistancia, matrizdados);
     }
 
-    void inicio() {
+    public void inicio() {
         liga_simples(m);
-    }
-
-    int get_contgrupos() {
-        return numgrupo;
     }
 
     int[][] get_mpos() {
@@ -68,7 +60,7 @@ public class LigaçãoSimplesAgrupamento {
             }
             z = (int) mdados.getMatriz_dados()[i][0];
         }
-        int[][] mdend = new int[numpad][1000];
+        mdend = new int[numpad][1000];
 
 //        double[][] distancia = new double[numpad][numpad];
 
@@ -126,14 +118,11 @@ public class LigaçãoSimplesAgrupamento {
                     if ((mdend[q - 1][i] == mdend[q - 1][j])) {
                         for (int k = 0; k < numpad; k++) {
                             if ((k != i) && (k != j)) {
-                                //printf("\n%f - %f\n",distancia[k][j],distancia[k][i]);
                                 if (matrizDistancia[k][j] < matrizDistancia[k][i]) {
                                     d = matrizDistancia[k][j];
                                 } else {
                                     d = matrizDistancia[k][i];
                                 }
-                                //printf("\n%f\n",d);
-                                //system("pause");
                                 matrizDistancia[i][k] = d;
                                 matrizDistancia[k][i] = d;
                                 matrizDistancia[j][k] = d;
@@ -226,7 +215,8 @@ public class LigaçãoSimplesAgrupamento {
         }
 
     }
-    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) throws IOException {
+
+    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) {
         if (opcaoDistancia == 1) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
@@ -246,8 +236,7 @@ public class LigaçãoSimplesAgrupamento {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia(teste);
                         matrizDistancia = distância.getMatrizDistancias();
-                    }
-                     else {
+                    } else {
                         if (opcaoDistancia == 5) {
                             CityBlock distancia = new CityBlock(teste);
                             distancia.distancia(teste);
@@ -258,5 +247,13 @@ public class LigaçãoSimplesAgrupamento {
 
             }
         }
+    }
+
+    public int[][] getMdend() {
+        return mdend;
+    }
+
+    public void setMdend(int[][] mdend) {
+        this.mdend = mdend;
     }
 }

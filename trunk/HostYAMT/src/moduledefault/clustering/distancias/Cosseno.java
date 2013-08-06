@@ -16,11 +16,10 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class Cosseno extends DistanciaPrincipal {
 
     public Cosseno(MatrizDados teste) {
-        System.out.println("cosseno");
         setMatrizDistancias(teste.getLinhas());
     }
 
-    public void distancia(MatrizDados teste) throws IOException {
+    public void distancia(MatrizDados teste)  {
         double vetorial = 0;
         double compvetor1 = 0;
         double compvetor2 = 0;

@@ -16,13 +16,12 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class DistanciaEuclidiana extends DistanciaPrincipal {
 
     public DistanciaEuclidiana(MatrizDados teste) {
-        System.out.println("euclidiana");
         setMatrizDistancias(teste.getLinhas());
     }
 
 
 
-    public void distancia(MatrizDados teste) throws IOException {
+    public void distancia(MatrizDados teste) {
         double acumulador = 0;
         for (int i = 0; i < teste.getLinhas(); i++) {
             for (int j = 0; j < teste.getLinhas(); j++) {

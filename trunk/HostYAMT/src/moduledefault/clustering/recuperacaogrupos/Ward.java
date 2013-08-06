@@ -191,7 +191,6 @@ public class Ward {
         }
 
         while (para != 1) {
-            //printf("\n+1\n");
             for (int i = 0; i < numpad; i++) {
                 parada[i] = 0;
             }
@@ -222,9 +221,6 @@ public class Ward {
                     }
                 }
             }
-            //printf("%d - %d  q = %d\n",g1,g2,q);
-            //system("pause");
-
             for (int i = 0; i < numpad; i++) { //Junta os grupos com menor SQe
                 if ((mdend[q][i] == g2)) {
                     mdend[q + 1][i] = g1;

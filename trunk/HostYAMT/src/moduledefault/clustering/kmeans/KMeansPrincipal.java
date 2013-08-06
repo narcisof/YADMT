@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.kmeans;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import moduledefault.clustering.distancias.Chebyshev;
@@ -33,6 +32,7 @@ public class KMeansPrincipal {
     private boolean lock = true;
     private ArrayList<Historico> historico;
     private float perct;
+    int[][] m;
 
     public KMeansPrincipal(MatrizDados teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia) {
         this.Arquivo = teste;
@@ -48,7 +48,6 @@ public class KMeansPrincipal {
             perct = seeds / 100;
             setCentroidesInicialPorcentagem();
         }
-//        setMatrizDistancia();
         this.paradaAutomatica = paradaAutomatica;
         maxI = maxIteracoes;
         it = iteracoesParada;
@@ -76,25 +75,20 @@ public class KMeansPrincipal {
             this.historico.add(hist);
             avaliaMudanca(auxMatrizCluster);
             this.centroides = calcularNewCentroides();
-            if((!this.paradaAutomatica) && (cont > it)){
-                System.out.println("entrou parada contador");
+            if ((!this.paradaAutomatica) && (cont > it)) {
                 break;
             }
-            if(cont >= maxI){
-                System.out.println("entrou para maximo");
+            if (cont >= maxI) {
                 break;
             }
 
-            if(((!this.lock) && (this.paradaAutomatica))){
-                System.out.println("entrou parada automatica");
+            if (((!this.lock) && (this.paradaAutomatica))) {
                 break;
             }
             cont++;
         } while ((true));
-        mConfusao();
+//        mConfusao();
 //        imprimiHistorico();
-
-        // this.Arquivo.escreve_arquivo();
 
     }
 
@@ -244,24 +238,70 @@ public class KMeansPrincipal {
         this.lock = false;
     }
 
-    private void imprimiHistorico() {
+    public StringBuffer imprimiHistorico() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\n\n===========================Resultados==================================");
         for (int i = 0; i < historico.size(); i++) {
-            System.out.println("Iteração: " + i + "\n");
-            System.out.println("Centroídes: \n");
+            buffer.append("\n\nIteração: " + (i + 1) + "\n");
+            buffer.append("\nCentroídes: \n");
             for (int j = 0; j < historico.get(i).historicoCentroide.size(); j++) {
-                System.out.println("\nCentroide: " + j);
-                System.out.println("\nAtributos: ");
+                buffer.append("\nCentroide: " + j);
+                buffer.append("\n\nAtributos: ");
                 for (int w = 0; w < historico.get(i).historicoCentroide.get(j).getAtributos().size(); w++) {
-                    System.out.print(historico.get(i).historicoCentroide.get(j).getAtributos().get(w) + " ");
+                    buffer.append(historico.get(i).historicoCentroide.get(j).getAtributos().get(w) + " ");
                 }
             }
-            System.out.println("\n\nPadroes: ");
-            for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-                System.out.print(j + ";");
+            int[][] m = new int[2][historico.get(i).historicoPadroes.length];
+            buffer.append("\n\nGrupos Formados:\n");
+            for (int j = 0; j < historico.get(i).historicoPadroes.length; j++) {
+                m[0][j] = j;
             }
-            System.out.println("");
-            for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-                System.out.print(historico.get(historico.size() - 1).historicoPadroes[j] + ";");
+            for (int j = 0; j < historico.get(i).historicoPadroes.length; j++) {
+                m[1][j] = historico.get(i).historicoPadroes[j];
+            }
+
+            for (int j = m[0].length - 1; j >= 1; j--) {
+                for (int y = 0; y < j; y++) {
+                    if (m[0][y] > m[0][y + 1]) {
+                        int auxLinha = m[0][y];
+                        int auxColuna = m[1][y];
+                        m[0][y] = m[0][y + 1];
+                        m[1][y] = m[1][y + 1];
+                        m[0][y + 1] = auxLinha;
+                        m[1][y + 1] = auxColuna;
+                    }
+                }
+            }
+
+            String padrao;
+            for (int k = 0; k < numK; k++) {
+                int cont = 1;
+                buffer.append("Grupo: " + (k + 1) + "\n\n");
+                for (int j = 0; j < m[0].length; j++) {
+                    if (m[1][j] == (k)) {
+
+                        padrao = m[0][j] + "";
+                        switch (padrao.length()) {
+                            case 1:
+                                padrao += "   ";
+                                break;
+                            case 2:
+                                padrao += "  ";
+                                break;
+                            case 3:
+                                padrao += " ";
+                                break;
+                        }
+
+                        buffer.append(padrao);
+                        if (cont % 10 == 0) {
+                            buffer.append("\n");
+                            cont = 0;
+                        }
+                        cont++;
+                    }
+                }
+                buffer.append("\n\n-------------------------------------------------------\n\n");
             }
 
             int[] vetorGruposFinal = new int[this.numK];
@@ -272,26 +312,122 @@ public class KMeansPrincipal {
                     }
                 }
             }
-            System.out.println("\n\nFormação Final da Iteração: ");
+            buffer.append("\n\nFormação Final da Iteração:\n\n ");
             for (int w = 0; w < this.numK; w++) {
-                System.out.println("Grupo " + w + " -> " + vetorGruposFinal[w]);
+                buffer.append("Grupo " + (w + 1) + " -> " + vetorGruposFinal[w]);
+                buffer.append("\n");
+            }
+            buffer.append(("============================================================="));
+        }
+//        int[] vetorGruposFinal = new int[this.numK];
+//        for (int i = 0; i < this.padroesClusters.length; i++) {
+//            for (int j = 0; j < this.numK; j++) {
+//                if (this.padroesClusters[i] == j) {
+//                    vetorGruposFinal[j]++;
+//                }
+//            }
+//        }
+//        System.out.println("\n\nFormação Final: ");
+//        for (int i = 0; i < this.numK; i++) {
+//            System.out.println("Grupo " + i + " -> " + vetorGruposFinal[i]);
+//        }
+        return buffer;
+    }
+
+    public StringBuffer imprimi() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\n\n===================Resultados======================");
+        buffer.append("\n\nCentroídes: \n");
+        for (int j = 0; j < historico.get(historico.size() - 1).historicoCentroide.size(); j++) {
+            buffer.append("\n\nCentroide: " + j);
+            buffer.append("\nAtributos: ");
+            for (int w = 0; w < historico.get(historico.size() - 1).historicoCentroide.get(j).getAtributos().size(); w++) {
+                buffer.append(historico.get(historico.size() - 1).historicoCentroide.get(j).getAtributos().get(w) + " ");
             }
         }
+        m = new int[2][historico.get(historico.size() - 1).historicoPadroes.length];
+        buffer.append("\n\nGrupos Formados:\n\n");
+        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
+            m[0][j] = j;
+        }
+        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
+            m[1][j] = historico.get(historico.size() - 1).historicoPadroes[j];
+        }
+
+        for (int j = m[0].length - 1; j >= 1; j--) {
+            for (int y = 0; y < j; y++) {
+                if (m[0][y] > m[0][y + 1]) {
+                    int auxLinha = m[0][y];
+                    int auxColuna = m[1][y];
+                    m[0][y] = m[0][y + 1];
+                    m[1][y] = m[1][y + 1];
+                    m[0][y + 1] = auxLinha;
+                    m[1][y + 1] = auxColuna;
+                }
+            }
+        }
+
+        String padrao;
+        for (int k = 0; k < numK; k++) {
+            int cont = 1;
+            buffer.append("Grupo: " + (k + 1) + "\n\n");
+            for (int j = 0; j < m[0].length; j++) {
+                if (m[1][j] == (k)) {
+
+                    padrao = m[0][j] + "";
+                    switch (padrao.length()) {
+                        case 1:
+                            padrao += "   ";
+                            break;
+                        case 2:
+                            padrao += "  ";
+                            break;
+                        case 3:
+                            padrao += " ";
+                            break;
+                    }
+
+                    buffer.append(padrao);
+                    if (cont % 10 == 0) {
+                        buffer.append("\n");
+                        cont = 0;
+                    }
+                    cont++;
+                }
+            }
+            buffer.append("\n\n-------------------------------------------------------\n\n");
+        }
+
         int[] vetorGruposFinal = new int[this.numK];
-        for (int i = 0; i < this.padroesClusters.length; i++) {
+        for (int w = 0; w < this.padroesClusters.length; w++) {
             for (int j = 0; j < this.numK; j++) {
-                if (this.padroesClusters[i] == j) {
+                if (this.historico.get(historico.size() - 1).historicoPadroes[w] == j) {
                     vetorGruposFinal[j]++;
                 }
             }
         }
-        System.out.println("\n\nFormação Final: ");
-        for (int i = 0; i < this.numK; i++) {
-            System.out.println("Grupo " + i + " -> " + vetorGruposFinal[i]);
+        buffer.append("\nFormação Final: \n");
+        for (int w = 0; w < this.numK; w++) {
+            buffer.append("Grupo " + (w + 1) + " -> " + vetorGruposFinal[w]);
+            buffer.append("\n");
         }
+
+//        int[] vetorGruposFinal = new int[this.numK];
+//        for (int i = 0; i < this.padroesClusters.length; i++) {
+//            for (int j = 0; j < this.numK; j++) {
+//                if (this.padroesClusters[i] == j) {
+//                    vetorGruposFinal[j]++;
+//                }
+//            }
+//        }
+//        System.out.println("\n\nFormação Final: ");
+//        for (int i = 0; i < this.numK; i++) {
+//            System.out.println("Grupo " + i + " -> " + vetorGruposFinal[i]);
+//        }
+        return buffer;
     }
 
-    void mConfusao() {
+    public int[][] mConfusao() {
         int[][] mConfusao = new int[this.numK][this.numK];
 
         for (int i = 0; i < this.numK; i++) {
@@ -303,13 +439,64 @@ public class KMeansPrincipal {
                 }
             }
         }
-        System.out.println("M = ");
+        //Ajusta as posições da matriz confusao
         for (int i = 0; i < this.numK; i++) {
-            for (int j = 0; j < this.numK; j++) {
-                System.out.print(mConfusao[i][j] + " ");
+            int aux = 0;
+            int grupo = -1;
+            for (int j = i; j < this.numK; j++) {
+                if (mConfusao[i][j] > aux) {
+                    boolean maior = true;
+                    for (int k = i + 1; k < this.numK; k++) {
+                        if (mConfusao[i][j] < mConfusao[k][j]) {
+                            maior = false;
+                        }
+                    }
+                    if (maior) {
+                        aux = mConfusao[i][j];
+                        grupo = j;
+                    }
+                }
             }
-            System.out.println();
+            if (grupo != i && grupo != -1) {
+                for (int k = 0; k < this.numK; k++) {
+                    int swap = mConfusao[k][grupo];
+                    mConfusao[k][grupo] = mConfusao[k][i];
+                    mConfusao[k][i] = swap;
+                }
+            }
+        }
+        return mConfusao;
+
+    }
+
+    public int getNumK() {
+        return numK;
+    }
+
+    public void setNumK(int numK) {
+        this.numK = numK;
+    }
+
+    public int[] getPadroesClusters() {
+        return padroesClusters;
+    }
+
+    public void setPadroesClusters(int[] padroesClusters) {
+        this.padroesClusters = padroesClusters;
+    }
+
+    public int[][] getM() {
+        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
+            m[0][j] = j + 1;
+        }
+        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
+            m[1][j] = historico.get(historico.size() - 1).historicoPadroes[j] + 1;
         }
 
+        return m;
+    }
+
+    public void setM(int[][] m) {
+        this.m = m;
     }
 }

@@ -120,14 +120,11 @@ public class LigacaoSimples {
                     if ((mdend[q - 1][i] == mdend[q - 1][j])) {
                         for (int k = 0; k < numpad; k++) {
                             if ((k != i) && (k != j)) {
-                                //printf("\n%f - %f\n",distancia[k][j],distancia[k][i]);
                                 if (distancia[k][j] < distancia[k][i]) {
                                     d = distancia[k][j];
                                 } else {
                                     d = distancia[k][i];
                                 }
-                                //printf("\n%f\n",d);
-                                //system("pause");
                                 distancia[i][k] = d;
                                 distancia[k][i] = d;
                                 distancia[j][k] = d;

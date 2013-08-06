@@ -67,7 +67,6 @@ public class LigacaoMedia {
             }
             z = (int) mdados.getMatriz_dados()[i][0];
         }
-        // System.out.println("NUMERO DE GRUPOS = "+numgrupo);
         int[][] mdend = new int[numpad][1000];
 
         double[][] distancia = new double[numpad][numpad];
@@ -169,12 +168,10 @@ public class LigacaoMedia {
                                         ++cnt;
                                     }
                                 }
-                                //  System.out.println("n1 = "+n1+" n2 = "+n2);
                                 for (int i = 0; i < n1; i++) { //faz a soma das distancias de todos do grupo 1 para grupo 2
                                     for (int j = 0; j < n2; j++) {
                                         int auxgrupo1 = grupo1[i] - 1;
                                         int auxgrupo2 = grupo2[j] - 1;
-                                        //   System.out.println("n1 = "+auxgrupo1+" n2 = "+auxgrupo2);
                                         d += distancia[auxgrupo1][auxgrupo2];
                                     }
                                 }

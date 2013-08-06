@@ -14,6 +14,7 @@ public class MatrizDados {
     int dimensão_matriz = 0;
     String[] grupos;
     private String[] classes;
+    List<String> realClasses = new ArrayList<>();
 
     public double[][] getMatriz_dados() {
         return matriz_dados;
@@ -66,5 +67,13 @@ public class MatrizDados {
 
     public String[] getClasses() {
         return this.classes;
+    }
+
+    public void setRealClasses(List<String> cl) {
+        this.realClasses = cl;
+    }
+
+    public List<String> getRealClasses() {
+        return realClasses;
     }
 }

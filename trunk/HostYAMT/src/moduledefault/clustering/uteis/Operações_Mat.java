@@ -42,12 +42,7 @@ public class Operações_Mat {
         }
         
         
-//        for(int i = 0;i < matriz.linhas;i++){
-//            for(int j = 0;j < matriz.colunas;j++){
-//                System.out.print(matriz.matriz_dados[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
+
     }
 
     public void PA_PG(int cont2, double percent1, double sigmaminimo, double sigmamaximo, double alfaminimo, double alfamaximo, double controlesigma, double controlealfa) {
@@ -57,37 +52,15 @@ public class Operações_Mat {
         qmenos = Math.pow((controlesigma / sigmamaximo), (1 / (cont2 * (1 - percent1))));
     }
 
-//    public double fPdrop(int i) {
-//        if (i == 1) {
-//            return fun1;
-//        } else {
-//            return fun2;
-//        }
-//    }
-//
-//    public double fPpick() {
-//        return fun1;
-//    }
+
     public double fPdrop(int i) {
         if (i == 1) {
             return Math.pow((fun1 / (fun1 + kd)), 2);
         } else {
             return Math.pow((fun2 / (fun2 + kd)), 2);
         }
-        
-//        if(i == 1){
-//            if(fun1 <= 1){
-//                return 1;
-//            }else {
-//                return (1/((Math.pow(fun1,2))));
-//            }
-//        }else{
-//               if(fun2 <= 1){
-//                return 1;
-//            }else {
-//                return (1/((Math.pow(fun2,2))));
-//            }
-//        }
+      
+
     }
 
     public double fPpick() {
