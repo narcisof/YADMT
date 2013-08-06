@@ -113,7 +113,12 @@ public class AvaliacaoAgrupamento {
 
     public final void acerto() {
         for (int i = 0; i < mconfusao.length; i++) {
-            acerto += mconfusao[i][i];
+            for (int j = 0; j < mconfusao[0].length; j++) {
+                if (i == j) {
+                    acerto += mconfusao[i][i];
+                }
+            }
+
         }
         acerto = acerto * 100;
         acerto = acerto / tamanhoBase;
@@ -122,6 +127,7 @@ public class AvaliacaoAgrupamento {
     public final void medidaF() {
         int numpad = classes.size();
         int contgrupo = clusters.size();
+
 
         float[][] p = new float[numpad][contgrupo];
         float[][] r = new float[numpad][contgrupo];

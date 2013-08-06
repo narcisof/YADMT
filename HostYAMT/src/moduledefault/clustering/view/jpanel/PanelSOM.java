@@ -9,13 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JTextArea;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import moduledefault.clustering.som.AvaliacaoAgrupamento;
 import moduledefault.clustering.som.Base;
@@ -366,7 +362,7 @@ public final class PanelSOM extends javax.swing.JPanel {
 
     public void startSOM() {
         gridX = Integer.parseInt(frameKohonen.getCampoGridX().getValue().toString());
-        gridY = Integer.parseInt(frameKohonen.getCampoGridX().getValue().toString());
+        gridY = Integer.parseInt(frameKohonen.getCampoGridY().getValue().toString());
 
         raio = Integer.parseInt(frameKohonen.getCampoRaio().getValue().toString());
         iteracoes = Integer.parseInt(campoIteracoes.getValue().toString());
@@ -484,15 +480,16 @@ public final class PanelSOM extends javax.swing.JPanel {
 
         jTextArea.append("\nMatriz Confusão:\n");
         int[][] mconfusao = avaliacao.getMconfusao();
+        
         char classe = 'a';
-        for (int i = 0; i < mconfusao.length; i++) {
+        for (int i = 0; i < mconfusao[0].length; i++) {
             jTextArea.append(classe + "\t");
             ++classe;
         }
         jTextArea.append("\n");
         classe = 'a';
         for (int i = 0; i < mconfusao.length; i++) {
-            for (int j = 0; j < mconfusao.length; j++) {
+            for (int j = 0; j < mconfusao[0].length; j++) {
                 jTextArea.append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
                     jTextArea.append("\t" + classe + " = " + dados.getClasses().get(i));

@@ -4,6 +4,8 @@
  */
 package moduledefault.clustering.som;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Thiago
@@ -68,7 +70,6 @@ public final class RedeSOM {
                 rede[i][j] = n;
             }
         }
-
         //
         this.erroQuantização = 0;
         this.erroTopologico = 0;
@@ -206,6 +207,7 @@ public final class RedeSOM {
                     result = math.euclidiana(dataSet.getDataSet().get(y).getAtributos(), rede[i][j].getPesos());
                     if (result < menorDis) {
                         menorDis = result;
+                        BMU2 = BMU;
                         BMU = rede[i][j];
                     } else if (result < menorDis2) {
                         menorDis2 = result;
@@ -256,6 +258,15 @@ public final class RedeSOM {
         return adj;
     }
 
+    public ArrayList<Neuronio> getListNeuronios(){
+        ArrayList<Neuronio> n = new ArrayList<>();
+        for (int i = 0; i < rede.length; i++) {
+            for (int j = 0; j < rede[0].length; j++) {
+                n.add(rede[i][j]);
+            }
+        }
+        return n;
+    }
     public float getErroQuantização() {
         return erroQuantização;
     }
