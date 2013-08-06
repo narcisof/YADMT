@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.hierarquicos;
 
-
 import java.io.IOException;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.CityBlock;
@@ -27,13 +26,10 @@ public class LigaçãoMediaAgrupamento {
     int[][] mpos;
     int[][] mpos2;
     int q = 1;
-    ACOClustering x;
-    StringBuffer string3;
     double[][] matrizDistancia;
+    int[][] mdend;
 
-    LigaçãoMediaAgrupamento(int[][] matriz, MatrizDados matrizdados, ACOClustering x_, int opcaoDistancia) throws IOException {
-        x = x_;
-        string3 = new StringBuffer();
+    public LigaçãoMediaAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
@@ -42,16 +38,10 @@ public class LigaçãoMediaAgrupamento {
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
         setMatrizDistancia(opcaoDistancia, matrizdados);
-
     }
 
-    void inicio() {
+    public void inicio() {
         liga_media(m);
-
-    }
-
-    int get_contgrupos() {
-        return numgrupo;
     }
 
     int[][] get_mpos() {
@@ -72,8 +62,7 @@ public class LigaçãoMediaAgrupamento {
             }
             z = (int) mdados.getMatriz_dados()[i][0];
         }
-        // System.out.println("NUMERO DE GRUPOS = "+numgrupo);
-        int[][] mdend = new int[numpad][1000];
+        mdend = new int[numpad][1000];
 
 //        double[][] distancia = new double[numpad][numpad];
 
@@ -96,13 +85,6 @@ public class LigaçãoMediaAgrupamento {
                 }
             }
         }
-        //matriz das distancias
-//        for (int i = 0; i < numpad; i++) {
-//            for (int j = 0; j < numpad; j++) {
-//                distancia[i][j] = (double) Math.sqrt(Math.pow((mpos[0][i] - mpos[0][j]), 2) + Math.pow((mpos[1][i] - mpos[1][j]), 2));
-//            }
-//        }
-
         double min = 1000000, d = 0;
         int pad1 = 0, pad2 = 0;
         int[] parada = new int[numpad];
@@ -174,12 +156,10 @@ public class LigaçãoMediaAgrupamento {
                                         ++cnt;
                                     }
                                 }
-                                //  System.out.println("n1 = "+n1+" n2 = "+n2);
                                 for (int i = 0; i < n1; i++) { //faz a soma das distancias de todos do grupo 1 para grupo 2
                                     for (int j = 0; j < n2; j++) {
                                         int auxgrupo1 = grupo1[i] - 1;
                                         int auxgrupo2 = grupo2[j] - 1;
-                                        //   System.out.println("n1 = "+auxgrupo1+" n2 = "+auxgrupo2);
                                         d += matrizDistancia[auxgrupo1][auxgrupo2];
                                     }
                                 }
@@ -242,7 +222,7 @@ public class LigaçãoMediaAgrupamento {
             mpos2[1][j] = mdend[q - 1][j];
             count++;
         }
-       
+
         count = 1;
         int[] pertence = new int[numgrupo];
         boolean teste = false;
@@ -279,7 +259,8 @@ public class LigaçãoMediaAgrupamento {
 
 
     }
-     private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) throws IOException {
+
+    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) {
         if (opcaoDistancia == 1) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
@@ -299,8 +280,7 @@ public class LigaçãoMediaAgrupamento {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia(teste);
                         matrizDistancia = distância.getMatrizDistancias();
-                    }
-                     else {
+                    } else {
                         if (opcaoDistancia == 5) {
                             CityBlock distancia = new CityBlock(teste);
                             distancia.distancia(teste);
@@ -311,5 +291,13 @@ public class LigaçãoMediaAgrupamento {
 
             }
         }
+    }
+
+    public int[][] getMdend() {
+        return mdend;
+    }
+
+    public void setMdend(int[][] mdend) {
+        this.mdend = mdend;
     }
 }

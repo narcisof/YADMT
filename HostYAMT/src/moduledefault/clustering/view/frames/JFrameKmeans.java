@@ -52,6 +52,8 @@ public class JFrameKmeans extends javax.swing.JFrame {
         }
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        abrir.setEnabled(false);
+        salvar.setEnabled(false);
     }
 
     /**
@@ -78,8 +80,8 @@ public class JFrameKmeans extends javax.swing.JFrame {
         comboParadaAutomatica = new javax.swing.JComboBox();
         textIteracoes = new javax.swing.JTextField();
         comboSeeds = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        abrir = new javax.swing.JButton();
+        salvar = new javax.swing.JButton();
         buttonOK = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
 
@@ -200,9 +202,9 @@ public class JFrameKmeans extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Abrir");
+        abrir.setText("Abrir");
 
-        jButton2.setText("Salvar");
+        salvar.setText("Salvar");
 
         buttonOK.setText("OK");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -212,6 +214,11 @@ public class JFrameKmeans extends javax.swing.JFrame {
         });
 
         buttonCancelar.setText("Cancelar");
+        buttonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,9 +230,9 @@ public class JFrameKmeans extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addComponent(abrir, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -241,8 +248,8 @@ public class JFrameKmeans extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(abrir)
+                    .addComponent(salvar)
                     .addComponent(buttonOK)
                     .addComponent(buttonCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -306,6 +313,10 @@ public class JFrameKmeans extends javax.swing.JFrame {
     private void comboParadaAutomaticaMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_comboParadaAutomaticaMouseWheelMoved
     }//GEN-LAST:event_comboParadaAutomaticaMouseWheelMoved
 
+    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_buttonCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -341,12 +352,11 @@ public class JFrameKmeans extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton abrir;
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonOK;
     private javax.swing.JComboBox comboParadaAutomatica;
     private javax.swing.JComboBox comboSeeds;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -356,6 +366,7 @@ public class JFrameKmeans extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel labelParadaIteracoes;
     private javax.swing.JLabel labelSeeds;
+    private javax.swing.JButton salvar;
     private javax.swing.JTextField textIteracoes;
     private javax.swing.JTextField textKClusters;
     private javax.swing.JTextField textMaxIteracoes;

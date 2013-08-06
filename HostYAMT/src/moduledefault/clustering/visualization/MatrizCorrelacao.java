@@ -6,6 +6,7 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -14,6 +15,7 @@ import java.awt.Graphics;
 public class MatrizCorrelacao extends javax.swing.JPanel {
 
     private double grupos[][];
+    private static boolean repinta;
 
     /**
      * Creates new form MatrizCorrelacao
@@ -25,50 +27,64 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         int width = TecnicasDispersao.getFundoMatrizCorrelacao().getWidth();
         int height = TecnicasDispersao.getFundoMatrizCorrelacao().getHeight();
-        float w = width / 2;
-        float h = height / 2;
 
-        int x0 = width - (width - 50);
-        int y0 = height - (height - 50);
+        int x0 = 20;
+        int y0 = 20;
+        int x1 = width - 100;
+        int y1 = height - 10;
+        int meioX = (x1 - x0) / 2;
+        int meioY = (y1 - y0) / 2;
         int inicioX = 0;
         int inicioY = 0;
-        if (TecnicasDispersao.getGrupoEscolhidoMatriz() != 0) {
-            int tamPixelY = (height - 100) / grupos.length;
-            if (this.grupos != null) {
-                for (int i = 0; i < grupos.length; i++) {
-                    inicioX = 0;
-                    for (int j = 0; j < grupos.length; j++) {
-                        int x = inicioX;
-                        int y = inicioY;
-                        if (i == j) {
-                            g.setColor(Color.black);
-                        } else {
-                            if (grupos[i][j] >= -1 && grupos[i][j] < -0.75) {
-                                g.setColor(new Color(0, 44, 163));
-                            } else if (grupos[i][j] >= -0.75 && grupos[i][j] < -0.5) {
-                                g.setColor(new Color(0, 210, 253));
-                            } else if (grupos[i][j] >= -0.5 && grupos[i][j] < -0.25) {
-                                g.setColor(new Color(1, 202, 132));
-                            } else if (grupos[i][j] >= -0.25 && grupos[i][j] < 0) {
-                                g.setColor(new Color(0, 186, 39));
-                            } else if (grupos[i][j] >= 0 && grupos[i][j] < 0.25) {
-                                g.setColor(new Color(1, 180, 162));
-                            } else if (grupos[i][j] >= 0.25 && grupos[i][j] < 0.5) {
-                                g.setColor(new Color(81, 209, 64));
-                            } else if (grupos[i][j] >= 0.5 && grupos[i][j] < 0.75) {
-                                g.setColor(new Color(216, 252, 6));
-                            } else if (grupos[i][j] >= 0.75 && grupos[i][j] <= 1) {
-                                g.setColor(new Color(255, 6, 0));
+        this.add(this.jLabel1);
+        if (grupos != null) {
+            if (!repinta) {
+                if (TecnicasDispersao.getGrupoEscolhidoMatriz() != 0) {
+                    int tamPixelY = (y1 - y0) / grupos.length;
+                    int tamPixelX = (x1 - x0) / grupos.length;
+                    int pontoInicialX = grupos.length / 2;
+                    int pontoInicialY = grupos.length / 2;
+                    inicioX = meioX - pontoInicialX * tamPixelX+20;
+                    inicioY = meioY - pontoInicialY * tamPixelY+20;
+                    if (this.grupos != null) {
+                        for (int i = 0; i < grupos.length; i++) {
+                            inicioX = meioX - pontoInicialX * tamPixelX+20;
+                            for (int j = 0; j < grupos.length; j++) {
+                                int x = inicioX;
+                                int y = inicioY;
+                                if (i == j) {
+                                    g.setColor(Color.black);
+                                } else {
+                                    if (grupos[i][j] >= -1 && grupos[i][j] < -0.75) {
+                                        g.setColor(new Color(0, 44, 163));
+                                    } else if (grupos[i][j] >= -0.75 && grupos[i][j] < -0.5) {
+                                        g.setColor(new Color(0, 210, 253));
+                                    } else if (grupos[i][j] >= -0.5 && grupos[i][j] < -0.25) {
+                                        g.setColor(new Color(1, 202, 132));
+                                    } else if (grupos[i][j] >= -0.25 && grupos[i][j] < 0) {
+                                        g.setColor(new Color(0, 186, 39));
+                                    } else if (grupos[i][j] >= 0 && grupos[i][j] < 0.25) {
+                                        g.setColor(new Color(1, 180, 162));
+                                    } else if (grupos[i][j] >= 0.25 && grupos[i][j] < 0.5) {
+                                        g.setColor(new Color(81, 209, 64));
+                                    } else if (grupos[i][j] >= 0.5 && grupos[i][j] < 0.75) {
+                                        g.setColor(new Color(216, 252, 6));
+                                    } else if (grupos[i][j] >= 0.75 && grupos[i][j] <= 1) {
+                                        g.setColor(new Color(255, 6, 0));
+                                    }
+                                }
+                                g.fillOval(x, y, tamPixelY, tamPixelY);
+                                inicioX += tamPixelX;
                             }
+                            inicioY += tamPixelY;
                         }
-                        g.fillOval(x, y, tamPixelY, tamPixelY);
-                        inicioX += tamPixelY;
                     }
-                    inicioY += tamPixelY;
                 }
+            } else {
+                g.setColor(this.getBackground());
+                g.drawRect(0, 0, this.getWidth(), this.getHeight());
             }
         }
     }
@@ -82,24 +98,40 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+
         setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Visualização"));
         setPreferredSize(new java.awt.Dimension(400, 300));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Mateus\\Dropbox\\TCC - Mateus\\Imagens\\escalarCerta.png")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 299, Short.MAX_VALUE)
+                .addComponent(jLabel1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
     void setMatrizGrupos(double[][] grupos) {
         this.grupos = grupos;
+    }
+
+    public static boolean isRepinta() {
+        return repinta;
+    }
+
+    public static void setRepinta(boolean repinta) {
+        MatrizCorrelacao.repinta = repinta;
     }
 }

@@ -1,6 +1,5 @@
 package moduledefault.clustering.hierarquicos;
 
-
 import java.io.IOException;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.CityBlock;
@@ -19,13 +18,10 @@ public class WardAgrupamento {
     int[][] mpos;
     int[][] mpos2;
     int q = 1;
-    ACOClustering x;
-    StringBuffer string3;
     double[][] matrizDistancia;
+    int[][] mdend;
 
-    WardAgrupamento(int[][] matriz, MatrizDados matrizdados, ACOClustering x_, int opcaoDistancia) throws IOException {
-        x = x_;
-        string3 = new StringBuffer();
+    public WardAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
@@ -34,10 +30,9 @@ public class WardAgrupamento {
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
         setMatrizDistancia(opcaoDistancia, matrizdados);
-
     }
 
-    void inicio() {
+    public void inicio() {
         ward(m);
 
     }
@@ -65,7 +60,7 @@ public class WardAgrupamento {
             z = (int) mdados.getMatriz_dados()[i][0];
         }
 
-        int[][] mdend = new int[numpad][1000];
+        mdend = new int[numpad][1000];
 
 
         for (int i = 0; i < numpad; i++) {
@@ -196,7 +191,6 @@ public class WardAgrupamento {
         }
 
         while (para != 1) {
-            //printf("\n+1\n");
             for (int i = 0; i < numpad; i++) {
                 parada[i] = 0;
             }
@@ -227,9 +221,6 @@ public class WardAgrupamento {
                     }
                 }
             }
-            //printf("%d - %d  q = %d\n",g1,g2,q);
-            //system("pause");
-
             for (int i = 0; i < numpad; i++) { //Junta os grupos com menor SQe
                 if ((mdend[q][i] == g2)) {
                     mdend[q + 1][i] = g1;
@@ -370,7 +361,7 @@ public class WardAgrupamento {
 
     }
 
-    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) throws IOException {
+    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) {
         if (opcaoDistancia == 1) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
@@ -402,4 +393,14 @@ public class WardAgrupamento {
             }
         }
     }
+
+    public int[][] getMdend() {
+        return mdend;
+    }
+
+    public void setMdend(int[][] mdend) {
+        this.mdend = mdend;
+    }
+    
+    
 }

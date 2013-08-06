@@ -7,6 +7,7 @@ package moduledefault.clustering.visualization;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.uteis.MatrizDados;
@@ -23,7 +24,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
      */
     private static GraficoDispersaoGrupo GDGr;
     private static GraficoDispersaoGeral GDG;
-    private static DispersaoCorrelacao DC;
     private static MatrizCorrelacao MC;
     private static TecnicasDispersao INSTANCE;
     private static MatrizDados matrizDados;
@@ -31,6 +31,16 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static int qntGrupos;
     private static int[] vetorGrupos;
     private static int grupoEscolhidoMatriz = 0;
+    static boolean setou = false;
+    static StringBuffer bufferLogGrupos;
+
+    public boolean isSetou() {
+        return setou;
+    }
+
+    public static void setSetou(boolean setou) {
+        TecnicasDispersao.setou = setou;
+    }
 
     public static int getQntGrupos() {
         return qntGrupos;
@@ -41,18 +51,30 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         vetorGrupos = new int[TecnicasDispersao.qntGrupos];
     }
 
+    public static void setComponentes() {
+        comboBoxEixoX.setSelectedIndex(0);
+        comboBoxEixoY.setSelectedIndex(0);
+        comboBoxEixoZ.setSelectedIndex(0);
+        comboBoxEixoXGrupos.setSelectedIndex(0);
+        comboBoxEixoYGrupos.setSelectedIndex(0);
+        comboBoxEixoZGrupos.setSelectedIndex(0);
+        comboBoxGrupos.setSelectedIndex(0);
+        comboBoxGruposMatriz.setSelectedIndex(0);
+    }
+
     public TecnicasDispersao() {
         initComponents();
-//        this.setResizable(false);
+        this.setResizable(false);
         repaint();
     }
 
     public static synchronized TecnicasDispersao getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TecnicasDispersao();
-
+        } else {
+            INSTANCE.repaint();
         }
-        INSTANCE.repaint();
+        bufferLogGrupos = new StringBuffer();
         return INSTANCE;
     }
 
@@ -63,17 +85,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel6 = new javax.swing.JPanel();
-        fundoDispersaoCorrelacao = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        comboBoxEixoXCorrelacao = new javax.swing.JComboBox();
-        jLabel9 = new javax.swing.JLabel();
-        comboBoxEixoYCorrelacao = new javax.swing.JComboBox();
-        jLabel10 = new javax.swing.JLabel();
-        comboBoxEixoZCorrelacao = new javax.swing.JComboBox();
-        jLabel12 = new javax.swing.JLabel();
-        comboBoxGruposCorrelacao = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         fundoDispersaoGeral = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -83,6 +94,13 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         comboBoxEixoX = new javax.swing.JComboBox();
         comboBoxEixoY = new javax.swing.JComboBox();
         comboBoxEixoZ = new javax.swing.JComboBox();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        fundoMatrizCorrelacao = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        comboBoxGruposMatriz = new javax.swing.JComboBox();
         jPanel4 = new javax.swing.JPanel();
         fundoDispersaoGrupos = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -92,121 +110,30 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         comboBoxEixoXGrupos = new javax.swing.JComboBox();
         comboBoxEixoYGrupos = new javax.swing.JComboBox();
         comboBoxEixoZGrupos = new javax.swing.JComboBox();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        logDispersaoGrupos = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         comboBoxGrupos = new javax.swing.JComboBox();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        fundoMatrizCorrelacao = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        comboBoxGruposMatriz = new javax.swing.JComboBox();
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        jTabbedPane2.setBackground(new java.awt.Color(255, 255, 255));
         jTabbedPane2.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 jTabbedPane2ComponentResized(evt);
             }
         });
 
-        javax.swing.GroupLayout fundoDispersaoCorrelacaoLayout = new javax.swing.GroupLayout(fundoDispersaoCorrelacao);
-        fundoDispersaoCorrelacao.setLayout(fundoDispersaoCorrelacaoLayout);
-        fundoDispersaoCorrelacaoLayout.setHorizontalGroup(
-            fundoDispersaoCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 740, Short.MAX_VALUE)
-        );
-        fundoDispersaoCorrelacaoLayout.setVerticalGroup(
-            fundoDispersaoCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 466, Short.MAX_VALUE)
-        );
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setText("Eixo X:");
-
-        comboBoxEixoXCorrelacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxEixoXCorrelacaoActionPerformed(evt);
-            }
-        });
-
-        jLabel9.setText("Eixo Y:");
-
-        comboBoxEixoYCorrelacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxEixoYCorrelacaoActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText("Eixo Z:");
-
-        comboBoxEixoZCorrelacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxEixoZCorrelacaoActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setText("Grupo:");
-
-        comboBoxGruposCorrelacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxGruposCorrelacaoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboBoxEixoXCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxEixoYCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxEixoZCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxGruposCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9)
-                    .addComponent(comboBoxEixoXCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxEixoYCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxEixoZCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(comboBoxGruposCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fundoDispersaoCorrelacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(fundoDispersaoCorrelacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(112, 112, 112))
-        );
-
-        jTabbedPane2.addTab("Dispersão de Correlação", jPanel6);
+        fundoDispersaoGeral.setBackground(new java.awt.Color(255, 255, 255));
+        fundoDispersaoGeral.setPreferredSize(new java.awt.Dimension(474, 474));
 
         javax.swing.GroupLayout fundoDispersaoGeralLayout = new javax.swing.GroupLayout(fundoDispersaoGeral);
         fundoDispersaoGeral.setLayout(fundoDispersaoGeralLayout);
@@ -216,8 +143,11 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         );
         fundoDispersaoGeralLayout.setVerticalGroup(
             fundoDispersaoGeralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGap(0, 499, Short.MAX_VALUE)
         );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Eixos"));
 
         jLabel1.setText("Eixo X:");
 
@@ -252,52 +182,167 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(comboBoxEixoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboBoxEixoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(503, Short.MAX_VALUE))
+                .addContainerGap(530, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(13, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(comboBoxEixoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboBoxEixoY, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(comboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 84, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(170, 170, 170))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane2.addTab("Gráfico Dispersão Geral", jPanel3);
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        fundoMatrizCorrelacao.setBackground(new java.awt.Color(255, 255, 255));
+        fundoMatrizCorrelacao.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                fundoMatrizCorrelacaoComponentHidden(evt);
+            }
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                fundoMatrizCorrelacaoComponentResized(evt);
+            }
+        });
+
+        javax.swing.GroupLayout fundoMatrizCorrelacaoLayout = new javax.swing.GroupLayout(fundoMatrizCorrelacao);
+        fundoMatrizCorrelacao.setLayout(fundoMatrizCorrelacaoLayout);
+        fundoMatrizCorrelacaoLayout.setHorizontalGroup(
+            fundoMatrizCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        fundoMatrizCorrelacaoLayout.setVerticalGroup(
+            fundoMatrizCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 489, Short.MAX_VALUE)
+        );
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 87, Short.MAX_VALUE)
+        );
+
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Grupos"));
+
+        jLabel8.setText("Grupos:");
+
+        comboBoxGruposMatriz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxGruposMatrizActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(777, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 15, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fundoMatrizCorrelacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(fundoMatrizCorrelacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("Matriz de Correlação", jPanel5);
+
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         fundoDispersaoGrupos.setBackground(new java.awt.Color(255, 255, 255));
-        fundoDispersaoGrupos.setPreferredSize(new java.awt.Dimension(550, 550));
+        fundoDispersaoGrupos.setPreferredSize(new java.awt.Dimension(474, 474));
 
         javax.swing.GroupLayout fundoDispersaoGruposLayout = new javax.swing.GroupLayout(fundoDispersaoGrupos);
         fundoDispersaoGrupos.setLayout(fundoDispersaoGruposLayout);
@@ -307,10 +352,11 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         );
         fundoDispersaoGruposLayout.setVerticalGroup(
             fundoDispersaoGruposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Eixos"));
 
         jLabel4.setText("Eixo X:");
 
@@ -336,14 +382,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Grupos:");
-
-        comboBoxGrupos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxGruposActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -361,128 +399,110 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboBoxEixoZGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(417, Short.MAX_VALUE))
+                .addContainerGap(315, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(13, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(comboBoxEixoXGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboBoxEixoYGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBoxEixoZGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(comboBoxGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                    .addComponent(comboBoxEixoZGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
 
+        logDispersaoGrupos.setColumns(20);
+        logDispersaoGrupos.setRows(5);
+        jScrollPane1.setViewportView(logDispersaoGrupos);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 151, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Grupos"));
+
+        jLabel7.setText("Grupos:");
+
+        comboBoxGrupos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboBoxGruposMouseClicked(evt);
+            }
+        });
+        comboBoxGrupos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxGruposActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboBoxGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(195, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 13, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(comboBoxGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(fundoDispersaoGrupos, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fundoDispersaoGrupos, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(fundoDispersaoGrupos, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTabbedPane2.addTab("Gráfico Dispersão Grupos", jPanel4);
-
-        fundoMatrizCorrelacao.setBackground(new java.awt.Color(200, 200, 200));
-
-        javax.swing.GroupLayout fundoMatrizCorrelacaoLayout = new javax.swing.GroupLayout(fundoMatrizCorrelacao);
-        fundoMatrizCorrelacao.setLayout(fundoMatrizCorrelacaoLayout);
-        fundoMatrizCorrelacaoLayout.setHorizontalGroup(
-            fundoMatrizCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 738, Short.MAX_VALUE)
-        );
-        fundoMatrizCorrelacaoLayout.setVerticalGroup(
-            fundoMatrizCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 519, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(fundoMatrizCorrelacao);
-
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel11.setText("Grupo:");
-
-        comboBoxGruposMatriz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboBoxGruposMatrizActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
+                .addComponent(fundoDispersaoGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(659, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(jScrollPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
-        );
-
-        jTabbedPane2.addTab("Matriz de Correlação", jPanel5);
+        jTabbedPane2.addTab("Gráfico Dispersão Grupos", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -492,7 +512,9 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 3, Short.MAX_VALUE))
         );
 
         pack();
@@ -500,89 +522,89 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     private void jTabbedPane2ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTabbedPane2ComponentResized
         dispersaoGeral();
-        dispersaoCorrelacao();
         dispersaoGrupos();
     }//GEN-LAST:event_jTabbedPane2ComponentResized
 
-    private void comboBoxEixoXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoXActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoXActionPerformed
+    private void comboBoxGruposMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposMatrizActionPerformed
+        if (setou) {
+            matrizCorrelacao();
+            grupoEscolhidoMatriz = comboBoxGruposMatriz.getSelectedIndex();
+            if (grupoEscolhidoMatriz != 0) {
+                MatrizDados aux = getMatrizDadosCorrelacao();
+                if (aux != null) {
+                    setMatrizGruposCorrelacao(aux);
+                    MC.setRepinta(false);
+                    repaint();
+                } else {
+                    MC.setRepinta(true);
+                    repaint();
+                }
+            }
+        } else {
+            setMatrizGruposCorrelacao(null);
+        }
+    }//GEN-LAST:event_comboBoxGruposMatrizActionPerformed
+    private void comboBoxGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposActionPerformed
 
-    private void comboBoxEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoYActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoYActionPerformed
+        if (setou) {
+            setVetorGrupos();
+            repaint();
+        }
+    }//GEN-LAST:event_comboBoxGruposActionPerformed
+
+    private void comboBoxEixoZGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoZGruposActionPerformed
+        //    repaint();
+    }//GEN-LAST:event_comboBoxEixoZGruposActionPerformed
+
+    private void comboBoxEixoYGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoYGruposActionPerformed
+        //   repaint();
+    }//GEN-LAST:event_comboBoxEixoYGruposActionPerformed
+
+    private void comboBoxEixoXGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoXGruposActionPerformed
+        //   repaint();
+    }//GEN-LAST:event_comboBoxEixoXGruposActionPerformed
 
     private void comboBoxEixoZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoZActionPerformed
         repaint();
     }//GEN-LAST:event_comboBoxEixoZActionPerformed
 
-    private void comboBoxEixoXGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoXGruposActionPerformed
+    private void comboBoxEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoYActionPerformed
         repaint();
-    }//GEN-LAST:event_comboBoxEixoXGruposActionPerformed
+    }//GEN-LAST:event_comboBoxEixoYActionPerformed
 
-    private void comboBoxEixoYGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoYGruposActionPerformed
+    private void comboBoxEixoXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoXActionPerformed
         repaint();
-    }//GEN-LAST:event_comboBoxEixoYGruposActionPerformed
+    }//GEN-LAST:event_comboBoxEixoXActionPerformed
 
-    private void comboBoxEixoZGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoZGruposActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoZGruposActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        //matrizDados = null;
+    }//GEN-LAST:event_formWindowClosing
 
-    private void comboBoxGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposActionPerformed
-        setVetorGrupos();
-        repaint();
-    }//GEN-LAST:event_comboBoxGruposActionPerformed
+    private void comboBoxGruposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboBoxGruposMouseClicked
+    }//GEN-LAST:event_comboBoxGruposMouseClicked
 
-    private void comboBoxGruposMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposMatrizActionPerformed
-        matrizCorrelacao();
-        grupoEscolhidoMatriz = comboBoxGruposMatriz.getSelectedIndex();
-        if (grupoEscolhidoMatriz != 0) {
-            MatrizDados aux = getMatrizDadosCorrelacao();
-            if (aux != null) {
-                setMatrizGruposCorrelacao(aux);
-            }
-        }
-        repaint();
-    }//GEN-LAST:event_comboBoxGruposMatrizActionPerformed
+    private void fundoMatrizCorrelacaoComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoMatrizCorrelacaoComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fundoMatrizCorrelacaoComponentHidden
 
-    private void comboBoxEixoXCorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoXCorrelacaoActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoXCorrelacaoActionPerformed
-
-    private void comboBoxEixoYCorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoYCorrelacaoActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoYCorrelacaoActionPerformed
-
-    private void comboBoxEixoZCorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoZCorrelacaoActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxEixoZCorrelacaoActionPerformed
-
-    private void comboBoxGruposCorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposCorrelacaoActionPerformed
-        repaint();
-    }//GEN-LAST:event_comboBoxGruposCorrelacaoActionPerformed
+    private void fundoMatrizCorrelacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoMatrizCorrelacaoComponentResized
+//        fundoMatrizCorrelacao.getGraphics().clearRect(0, 0, fundoMatrizCorrelacao.getWidth(), fundoMatrizCorrelacao.getHeight());
+    }//GEN-LAST:event_fundoMatrizCorrelacaoComponentResized
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private static javax.swing.JComboBox comboBoxEixoX;
-    private static javax.swing.JComboBox comboBoxEixoXCorrelacao;
     private static javax.swing.JComboBox comboBoxEixoXGrupos;
     private static javax.swing.JComboBox comboBoxEixoY;
-    private static javax.swing.JComboBox comboBoxEixoYCorrelacao;
     private static javax.swing.JComboBox comboBoxEixoYGrupos;
     private static javax.swing.JComboBox comboBoxEixoZ;
-    private static javax.swing.JComboBox comboBoxEixoZCorrelacao;
     private static javax.swing.JComboBox comboBoxEixoZGrupos;
     private static javax.swing.JComboBox comboBoxGrupos;
-    private static javax.swing.JComboBox comboBoxGruposCorrelacao;
     private static javax.swing.JComboBox comboBoxGruposMatriz;
-    private static javax.swing.JPanel fundoDispersaoCorrelacao;
     private static javax.swing.JPanel fundoDispersaoGeral;
     private static javax.swing.JPanel fundoDispersaoGrupos;
     private static javax.swing.JPanel fundoMatrizCorrelacao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -590,36 +612,20 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTabbedPane jTabbedPane2;
+    private static javax.swing.JTextArea logDispersaoGrupos;
     // End of variables declaration//GEN-END:variables
-
-    private static void dispersaoGrupos() {
-        if (GDGr == null) {
-            GDGr = new GraficoDispersaoGrupo();
-        }
-        GDGr.setSize(fundoDispersaoGrupos.getWidth(), fundoDispersaoGrupos.getHeight());
-        fundoDispersaoGrupos.add(GDGr);
-    }
-
-    private static void dispersaoCorrelacao() {
-        if (DC == null) {
-            DC = new DispersaoCorrelacao();
-        }
-        DC.setSize(fundoDispersaoCorrelacao.getWidth(), fundoDispersaoCorrelacao.getHeight());
-        fundoDispersaoCorrelacao.add(DC);
-
-    }
 
     public static MatrizDados getMatrizDados() {
         return matrizDados;
@@ -660,15 +666,13 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             MC = new MatrizCorrelacao();
         } else {
             if (grupoEscolhidoMatriz != 0) {
-                Correlação cor = new Correlação(grupos);
-                cor.distanciaGrupos(grupos);
-                MC.setMatrizGrupos(cor.getMatrizDistancias());
-//                for (int i = 0; i < cor.getMatrizDistancias().length; i++) {
-//                    for (int j = 0; j < cor.getMatrizDistancias().length; j++) {
-//                        System.out.print(cor.getMatrizDistancias()[i][j] + " ");
-//                    }
-//                    System.out.println();
-//                }
+                if (grupos != null) {
+                    Correlação cor = new Correlação(grupos);
+                    cor.distanciaGrupos(grupos);
+                    MC.setMatrizGrupos(cor.getMatrizDistancias());
+                } else {
+                    MC.setMatrizGrupos(null);
+                }
             }
         }
     }
@@ -676,23 +680,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private MatrizDados getMatrizDadosCorrelacao() {
         int grupo = grupoEscolhidoMatriz;
         int numElemento = 0;
-        System.out.println("Matriz dos grupos");
-//        for (int i = 0; i < getMatrizGrupos().length; i++) {
-//            for (int j = 0; j < getMatrizGrupos()[0].length; j++) {
-//                System.out.print(getMatrizGrupos()[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
         for (int i = 0; i < getMatrizGrupos()[0].length; i++) {
             if (getMatrizGrupos()[1][i] == grupo) {
                 numElemento++;
             }
         }
-        if (numElemento < 10) {
+        if (numElemento < 10 && comboBoxGruposMatriz.getSelectedIndex() != 0) {
             JOptionPane.showMessageDialog(null, "Poucos Padrões para este Grupo", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return null;
         }
-        System.out.println("Elmentos = " + numElemento);
         MatrizDados aux = new MatrizDados();
         aux.setLinhas(numElemento);
         aux.setColunas(getMatrizDados().getColunas());
@@ -706,23 +702,8 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 contadorResultado++;
             }
         }
-//        System.out.println("resultado");
         aux.setMatriz_dados(resultado);
-//        for (int i = 0; i < numElemento; i++) {
-//            for (int j = 0; j < getMatrizDados().getColunas(); j++) {
-//                System.out.print(resultado[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
         return aux;
-    }
-
-    public static JPanel getFundoDispersaoCorrelacao() {
-        return fundoDispersaoCorrelacao;
-    }
-
-    public static void setFundoDispersaoCorrelacao(JPanel fundoDispersaoCorrelacao) {
-        TecnicasDispersao.fundoDispersaoCorrelacao = fundoDispersaoCorrelacao;
     }
 
     public static JPanel getFundoDispersaoGeral() {
@@ -750,30 +731,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }
 
     public static void setCombos() {
-        //dispersao correlacao
-        comboBoxEixoXCorrelacao.removeAllItems();
-        comboBoxEixoYCorrelacao.removeAllItems();
-        comboBoxEixoZCorrelacao.removeAllItems();
-        comboBoxGruposCorrelacao.removeAllItems();
 
-        comboBoxEixoXCorrelacao.addItem("");
-        comboBoxEixoYCorrelacao.addItem("");
-        comboBoxEixoZCorrelacao.addItem("");
-        comboBoxGruposCorrelacao.addItem("");
-
-        for (int i = 0; i < matrizDados.getClasses().length; i++) {
-            comboBoxEixoXCorrelacao.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoYCorrelacao.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoZCorrelacao.addItem(matrizDados.getClasses()[i]);
-
-        }
-
-        for (int i = 0; i < getQntGrupos(); i++) {
-            comboBoxGruposCorrelacao.addItem(i + 1);
-        }
-        comboBoxEixoXCorrelacao.setSelectedIndex(1);
-        comboBoxEixoYCorrelacao.setSelectedIndex(2);
-        comboBoxGruposCorrelacao.setSelectedIndex(1);
 
         //dispersao geral
         comboBoxEixoX.removeAllItems();
@@ -818,12 +776,10 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         }
         comboBoxEixoXGrupos.setSelectedIndex(1);
         comboBoxEixoYGrupos.setSelectedIndex(2);
-        comboBoxGrupos.setSelectedIndex(1);
+        comboBoxGrupos.setSelectedIndex(0);
 
         // matriz
         comboBoxGruposMatriz.removeAllItems();
-
-
         comboBoxGruposMatriz.addItem("");
 
         for (int i = 0; i < getQntGrupos(); i++) {
@@ -831,6 +787,16 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         }
         comboBoxGruposMatriz.setSelectedIndex(0);
 
+        logDispersaoGrupos.setText("");
+        setSetou(true);
+    }
+
+    private void dispersaoGrupos() {
+        if (GDGr == null) {
+            GDGr = new GraficoDispersaoGrupo();
+        }
+        GDGr.setSize(fundoDispersaoGrupos.getWidth(), fundoDispersaoGrupos.getHeight());
+        fundoDispersaoGrupos.add(GDGr);
     }
 
     public static JComboBox getComboBoxEixoX() {
@@ -860,8 +826,12 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private void setVetorGrupos() {
         if (vetorGrupos != null) {
             boolean vai = true;
+
             for (int i = 0; i < vetorGrupos.length; i++) {
                 if (vetorGrupos[i] == comboBoxGrupos.getSelectedIndex()) {
+                    if (comboBoxGrupos.getSelectedIndex() != 0) {
+                        bufferLogGrupos.append("Grupo Desselecionado: [" + vetorGrupos[i] + "]\n");
+                    }
                     vetorGrupos[i] = 0;
                     vai = false;
                     break;
@@ -871,17 +841,52 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 for (int i = 0; i < vetorGrupos.length; i++) {
                     if (vetorGrupos[i] == 0 && comboBoxGrupos.getSelectedIndex() != 0) {
                         vetorGrupos[i] = comboBoxGrupos.getSelectedIndex();
+                        bufferLogGrupos.append("Grupo Selecionado: [" + vetorGrupos[i] + "]\n");
                         break;
                     }
                 }
 
 
             }
-            System.out.println("Vetor Grupos: ");
+            boolean semGrupos = true;
+            int numGruposSelecionados = 0;
             for (int i = 0; i < vetorGrupos.length; i++) {
-                System.out.println("v = " + vetorGrupos[i]);
+                if (vetorGrupos[i] != 0) {
+                    semGrupos = false;
+                    numGruposSelecionados++;
+                }
+            }
+            if (semGrupos) {
+                bufferLogGrupos.append("Sem Grupos para Visualização\n");
+            } else {
+                if (numGruposSelecionados == 1) {
+                    bufferLogGrupos.append("Grupo Selecionado para Visualização: ");
+                    for (int i = 0; i < vetorGrupos.length; i++) {
+                        if (vetorGrupos[i] != 0) {
+                            bufferLogGrupos.append("[" + vetorGrupos[i] + "]\n");
+                        }
+                    }
+                } else {
+                    bufferLogGrupos.append("Grupos Selecionado para Visualização: [");
+                    int ultimoGrupo = 1;
+                    for (int i = 0; i < vetorGrupos.length; i++) {
+                        if (vetorGrupos[i] != 0) {
+                            if (ultimoGrupo == numGruposSelecionados) {
+                                bufferLogGrupos.append(vetorGrupos[i] + "]");
+                            } else {
+                                bufferLogGrupos.append(vetorGrupos[i] + ", ");
+                            }
+                            ultimoGrupo++;
+                        }
+                    }
+//                    bufferLogGrupos.append("]");
+                    bufferLogGrupos.append("\n");
+                }
+
             }
             comboBoxGrupos.setSelectedIndex(0);
+            logDispersaoGrupos.setText(bufferLogGrupos.toString());
+
         }
     }
 
@@ -925,30 +930,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         TecnicasDispersao.grupoEscolhidoMatriz = grupoEscolhidoMatriz;
     }
 
-    public static JComboBox getComboBoxEixoXCorrelacao() {
-        return comboBoxEixoXCorrelacao;
-    }
-
-    public static void setComboBoxEixoXCorrelacao(JComboBox comboBoxEixoXCorrelacao) {
-        TecnicasDispersao.comboBoxEixoXCorrelacao = comboBoxEixoXCorrelacao;
-    }
-
-    public static JComboBox getComboBoxEixoYCorrelacao() {
-        return comboBoxEixoYCorrelacao;
-    }
-
-    public static void setComboBoxEixoYCorrelacao(JComboBox comboBoxEixoYCorrelacao) {
-        TecnicasDispersao.comboBoxEixoYCorrelacao = comboBoxEixoYCorrelacao;
-    }
-
-    public static JComboBox getComboBoxEixoZCorrelacao() {
-        return comboBoxEixoZCorrelacao;
-    }
-
-    public static void setComboBoxEixoZCorrelacao(JComboBox comboBoxEixoZCorrelacao) {
-        TecnicasDispersao.comboBoxEixoZCorrelacao = comboBoxEixoZCorrelacao;
-    }
-
     public static JComboBox getComboBoxGrupos() {
         return comboBoxGrupos;
     }
@@ -957,19 +938,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         TecnicasDispersao.comboBoxGrupos = comboBoxGrupos;
     }
 
-    public static JComboBox getComboBoxGruposCorrelacao() {
-        return comboBoxGruposCorrelacao;
-    }
-
-    public static void setComboBoxGruposCorrelacao(JComboBox comboBoxGruposCorrelacao) {
-        TecnicasDispersao.comboBoxGruposCorrelacao = comboBoxGruposCorrelacao;
-    }
-
     public static JComboBox getComboBoxGruposMatriz() {
         return comboBoxGruposMatriz;
     }
 
     public static void setComboBoxGruposMatriz(JComboBox comboBoxGruposMatriz) {
         TecnicasDispersao.comboBoxGruposMatriz = comboBoxGruposMatriz;
+    }
+
+    public void setLogDispersaoGrupos() {
+        this.logDispersaoGrupos = new JTextArea();
     }
 }

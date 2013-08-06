@@ -18,11 +18,10 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class Mahalanobis extends DistanciaPrincipal {
 
     public Mahalanobis(MatrizDados teste) {
-        System.out.println("mahalanobis");
         setMatrizDistancias(teste.getLinhas());
     }
 
-    public void distancia(MatrizDados teste) throws IOException {
+    public void distancia(MatrizDados teste)  {
         double[] medias = new double[teste.getColunas() - 1];
         double somador = 0;
         for (int i = 1; i < teste.getColunas(); i++) {

@@ -18,7 +18,7 @@ import moduledefault.clustering.visualization.TecnicasDispersao;
  *
  * @author Mateus
  */
-public class ACOClustering {
+public final class ACOClustering {
 
     int sigma;
     double sigma_auxiliar = sigma;
@@ -91,14 +91,6 @@ public class ACOClustering {
 
             }
         }
-//        
-//        System.out.println("Matriz correlacao");
-//        for (int i = 0; i < matriz_distancias.length; i++) {
-//            for (int j = 0; j < matriz_distancias.length; j++) {
-//                System.out.print(matriz_distancias[i][j]+";");
-//            }
-//            System.out.println();
-//        }
     }
 
     public MatrizDados getArquivo() {
@@ -116,17 +108,10 @@ public class ACOClustering {
 
     public void set_alfa(double set_alfa) {
         alfa = set_alfa;
-//        System.out.println("afla = " + alfa);
     }
 
     public void set_cont2(int colunas, int linhas) throws IOException {
-//        cont2 = 500 * (colunas - 1) * linhas;
         cont2 = 150 * (colunas - 1) * linhas;
-//        cont2 =300* (colunas - 1) * linhas;
-//        cont2 = 675 * (colunas - 1) * linhas;
-//        cont2 = 1;
-//        cont2 = 1000;
-//        System.out.println("cont2 = " + cont2);
     }
 
     public int getCont2() {

@@ -75,9 +75,6 @@ public class MFaino {
         atualizavetor(maux, mpos);
         //imprimefinal(maux,mpos);
 
-        //System.out.printf("\n");
-        //System.out.printf("Agrupar os Padroes que Ficaram Isolados?\n");//Pergunta para o usuario se ele vai querer agrupar os padroes isolados
-
 
         if (op == 1) {//Enquanto o usuario desejar agrupar os isolados, e enquanto houver isolados para serem agrupados...	
             //PASSO 5
@@ -85,7 +82,6 @@ public class MFaino {
                 procura(maux, mpos);//procura o padrao isolado para ser agrupado
                 //FIM PASSO 5
             }
-            //imprimefinal(maux,mpos);
         }
         int cont = 0;
         for (int i = 0; i < pos; i++) {
@@ -103,7 +99,7 @@ public class MFaino {
     }
 
     public int[][] get_mpos() {
-        return mpos;
+        return mpos2;
     }
 
     public int getPos() {

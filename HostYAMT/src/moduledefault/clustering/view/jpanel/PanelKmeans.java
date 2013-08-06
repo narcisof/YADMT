@@ -5,12 +5,22 @@
 package moduledefault.clustering.view.jpanel;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.view.frames.JFrameHistoricoKmeans;
 import moduledefault.clustering.view.frames.JFrameKmeans;
+import moduledefault.clustering.visualization.TecnicasDispersao;
 
 /**
  *
@@ -24,17 +34,58 @@ public class PanelKmeans extends javax.swing.JPanel {
     int numK;
     double[][] matrizDados;
     MatrizDados teste;
-    String[] grupos;
+    public static String[] grupos;
     JFrameKmeans frameKmeans;
+    public static String[] nomeClasses;
+    StringBuffer buffer;
+    String nomeBase;
+    int teste_distancia = 0;
+    KMeansPrincipal k;
+    Collection realClasses;
+    ArrayList<KMeansPrincipal> listaObjetos;
+    ArrayList<StringBuffer> listaBuffer;
 
-    public PanelKmeans(double[][] base, String grupos[], JFrameKmeans k) throws IOException {
+    public PanelKmeans(double[][] base, String grupos[], JFrameKmeans k, String[] a, String nome, Collection cl) throws IOException {
         initComponents();
         this.matrizDados = base;
         teste = new MatrizDados();
         teste = new MatrizDados();
         this.grupos = grupos;
+        nomeClasses = a;
+        nomeBase = nome;
+        realClasses = cl;
         startMatrizDados();
         frameKmeans = k;
+        listaObjetos = new ArrayList<>();
+        listaBuffer = new ArrayList<>();
+    }
+
+    public void setNomeClasses(String[] a) {
+        PanelKmeans.nomeClasses = a;
+    }
+
+    public JFrameKmeans getFrameKmeans() {
+        return frameKmeans;
+    }
+
+    public void setFrameKmeans(JFrameKmeans frameKmeans) {
+        this.frameKmeans = frameKmeans;
+    }
+
+    public String getNomeBase() {
+        return nomeBase;
+    }
+
+    public void setNomeBase(String nomeBase) {
+        this.nomeBase = nomeBase;
+    }
+
+    public Collection getRealClasses() {
+        return realClasses;
+    }
+
+    public void setRealClasses(Collection realClasses) {
+        this.realClasses = realClasses;
     }
 
     /**
@@ -46,27 +97,16 @@ public class PanelKmeans extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         jButtonExecuta = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jScrollPaneResult = new javax.swing.JScrollPane();
-        jListResult = new javax.swing.JList();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBoxDistancias = new javax.swing.JComboBox();
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        jButton1 = new javax.swing.JButton();
+        visualizacao = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        listResultados = new java.awt.List();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
 
@@ -80,24 +120,6 @@ public class PanelKmeans extends javax.swing.JPanel {
                 jButtonExecutaActionPerformed(evt);
             }
         });
-
-        jButton2.setText("Limpar Tela");
-
-        jScrollPaneResult.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
-
-        jListResult.setModel(new DefaultListModel());
-        jListResult.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListResult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jListResultMouseClicked(evt);
-            }
-        });
-        jListResult.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jListResultKeyReleased(evt);
-            }
-        });
-        jScrollPaneResult.setViewportView(jListResult);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Distância"));
 
@@ -125,6 +147,46 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jButton1.setText("Imprimir Histórico");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        visualizacao.setText("Visualização");
+        visualizacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visualizacaoActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Resultados")));
+
+        listResultados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listResultadosMouseClicked(evt);
+            }
+        });
+        listResultados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listResultadosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(listResultados, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(listResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,12 +194,11 @@ public class PanelKmeans extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 8, Short.MAX_VALUE)
-                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonExecuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(visualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -149,11 +210,13 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonExecuta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(137, 137, 137)
-                .addComponent(jScrollPaneResult, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addGap(83, 83, 83))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(visualizacao)
+                .addGap(40, 40, 40)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(121, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3)
@@ -162,7 +225,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonExecutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExecutaActionPerformed
-        int teste_distancia = 0;
+
         this.jButtonExecuta.setEnabled(false);
         switch (this.jComboBoxDistancias.getSelectedIndex()) {
             case 0:
@@ -194,45 +257,97 @@ public class PanelKmeans extends javax.swing.JPanel {
         boolean paradaAutomatica = frameKmeans.isParadaAutomatica();
         boolean seedAleatorios = frameKmeans.isSeedAleatorios();
         int seeds = 0;
-        if(!seedAleatorios){
+        if (!seedAleatorios) {
             seeds = frameKmeans.getSeeds();
         }
         int maxIteracoes = frameKmeans.getMaxIteracoes();
         int iteracoesParada = frameKmeans.getIteracoes();
-        KMeansPrincipal k = new KMeansPrincipal(teste, numK,paradaAutomatica,seedAleatorios,seeds,maxIteracoes,iteracoesParada,teste_distancia);
+        k = new KMeansPrincipal(teste, numK, paradaAutomatica, seedAleatorios, seeds, maxIteracoes, iteracoesParada, teste_distancia);
         k.start();
+        imprimiAgrupamento();
+        getBuffer().append(k.imprimi());
+        getBuffer().append("\n\nMatriz Confusão:\n\n");
+        int[][] mconfusao = k.mConfusao();
+        char classe = 'a';
+        for (int i = 0; i < mconfusao.length; i++) {
+            getBuffer().append(classe + "\t");
+            ++classe;
+        }
+        getBuffer().append("\n\n");
+        classe = 'a';
+        for (int i = 0; i < mconfusao.length; i++) {
+            for (int j = 0; j < mconfusao[0].length; j++) {
+                getBuffer().append(mconfusao[i][j] + "\t");
+                if (j == mconfusao[0].length - 1) {
+                    getBuffer().append("\t" + classe);// + " = " + teste.getRealClasses().get(i));
+                    ++classe;
+                }
+            }
+            getBuffer().append("\n");
+        }
+        jTextArea3.setText(getBuffer().toString());
+        listaObjetos.add(k);
+        setListaResultados();
         this.jButtonExecuta.setEnabled(true);
     }//GEN-LAST:event_jButtonExecutaActionPerformed
 
-    private void jListResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListResultMouseClicked
-        //        if (evt.getClickCount() == 2)
-        //        jListResultActionPerformed();
-    }//GEN-LAST:event_jListResultMouseClicked
-
-    private void jListResultKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListResultKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_UP
-                || evt.getKeyCode() == KeyEvent.VK_DOWN
-                || evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN
-                || evt.getKeyCode() == KeyEvent.VK_PAGE_UP
-                || evt.getKeyCode() == KeyEvent.VK_END
-                || evt.getKeyCode() == KeyEvent.VK_HOME) {
-            //            jListResultActionPerformed();
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        imprimiAgrupamento();
+        getBuffer().append(k.imprimiHistorico());
+        getBuffer().append("\n\nMatriz Confusão:\n\n");
+        int[][] mconfusao = k.mConfusao();
+        char classe = 'a';
+        for (int i = 0; i < mconfusao.length; i++) {
+            getBuffer().append(classe + "\t");
+            ++classe;
         }
-    }//GEN-LAST:event_jListResultKeyReleased
+        getBuffer().append("\n");
+        classe = 'a';
+        for (int i = 0; i < mconfusao.length; i++) {
+            for (int j = 0; j < mconfusao.length; j++) {
+                getBuffer().append(mconfusao[i][j] + "\t");
+                if (j == mconfusao[0].length - 1) {
+                    getBuffer().append("\t" + classe);// " = " + nomeClasses[i]);
+                    ++classe;
+                }
+            }
+            getBuffer().append("\n");
+        }
+        JFrameHistoricoKmeans hK = new JFrameHistoricoKmeans(getBuffer());
+        hK.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void visualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizacaoActionPerformed
+        TecnicasDispersao.getInstance().setSetou(false);
+        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setMatrizGrupos(k.getM());
+        TecnicasDispersao.getInstance().setQntGrupos(numK);
+        TecnicasDispersao.getInstance().setCombos();
+        TecnicasDispersao.getInstance().setVisible(true);
+    }//GEN-LAST:event_visualizacaoActionPerformed
+
+    private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            if (listResultados.getSelectedIndex() != -1) {
+                StringBuffer text = listaBuffer.get(listResultados.getSelectedIndex());
+                jTextArea3.setText(text.toString());
+            }
+        }
+    }//GEN-LAST:event_listResultadosMouseClicked
+
+    private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
+    }//GEN-LAST:event_listResultadosActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonExecuta;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jListResult;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPaneResult;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
+    private java.awt.List listResultados;
+    private javax.swing.JButton visualizacao;
     // End of variables declaration//GEN-END:variables
 
     public void setMatrizDados(double[][] matrizDados) {
@@ -243,16 +358,20 @@ public class PanelKmeans extends javax.swing.JPanel {
         this.grupos = grupos;
     }
 
+    public static String[] getGrupos() {
+        return grupos;
+    }
+
     public void startMatrizDados() {
         String grupo;
         grupo = grupos[0];
+        ArrayList<String> atributos = new ArrayList<>();
         double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];
         for (int i = 0; i < this.matrizDados.length; i++) {
             for (int j = 0; j < this.matrizDados[0].length; j++) {
                 base[i][j + 1] = this.matrizDados[i][j];
             }
         }
-
         int contadorGrupos = 1;
         for (int i = 0; i < grupos.length; i++) {
             if (!grupo.equals(grupos[i])) {
@@ -263,20 +382,112 @@ public class PanelKmeans extends javax.swing.JPanel {
         }
 
 
+        teste.setClasses(nomeClasses);
         teste.setColunas(base[0].length);
         teste.setLinhas(base.length);
         teste.setDimensão_matriz();
         teste.setMatriz_dados(base);
+        teste.setGrupos(grupos);
+        teste.setRealClasses((List) realClasses);
+        TecnicasDispersao.getInstance().setSetou(false);
+        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setQntGrupos(numK);
+        TecnicasDispersao.getInstance().setCombos();
 
-        System.out.println("co " + teste.getColunas());
-        System.out.println("li " + teste.getLinhas());
-        System.out.println("di " + teste.getDimensão_matriz());
+    }
 
-        for (int i = 0; i < base.length; i++) {
-            for (int j = 0; j < base[0].length; j++) {
-                System.out.print(" " + teste.getMatriz_dados()[i][j]);
-            }
-            System.out.println();
+    public static String[] getNomeClasses() {
+        return nomeClasses;
+    }
+
+    void imprimiAgrupamento() {
+        StringBuffer buffer1 = new StringBuffer();
+        setBuffer(buffer1);
+        getBuffer().append("===================== Informações =====================");
+        getBuffer().append("\n\t\t\tYADMT.Clustering.AC");
+        getBuffer().append("\n\t Base: " + nomeBase);
+        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
+        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
+        getBuffer().append("\n\t Classes:");
+        for (int i = 0; i < nomeClasses.length; i++) {
+            getBuffer().append("\n\t\t" + nomeClasses[i]);
+        }
+        getBuffer().append("\n\t Parâmetros: " + frameKmeans.getK() + ";" + frameKmeans.isParadaAutomatica() + ";" + frameKmeans.getIteracoes() + ";"
+                + frameKmeans.getMaxIteracoes() + ";" + frameKmeans.isSeedAleatorios() + ";" + frameKmeans.getSeeds());
+        switch (teste_distancia) {
+            case 1:
+                getBuffer().append(";Ch;");
+                break;
+            case 2:
+                getBuffer().append(";Ci;");
+                break;
+            case 3:
+                getBuffer().append(";Cor;");
+                break;
+            case 4:
+                getBuffer().append(";Cos;");
+                break;
+            case 5:
+                getBuffer().append(";E;");
+                break;
+            case 6:
+                getBuffer().append(";M;");
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void setBuffer(StringBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    private StringBuffer getBuffer() {
+        return this.buffer;
+    }
+
+    private void setListaResultados() {
+        PanelKmeans.ClusteringText text = new PanelKmeans.ClusteringText();
+        String s = text.toString();
+        text.setJTextArea(jTextArea3);
+        listResultados.add(s);
+        listaBuffer.add(getBuffer());
+    }
+
+    class ClusteringText {
+
+        final DateFormat formatter;
+        private JTextArea text;
+        private Date date;
+
+        public ClusteringText() {
+            date = new Date();
+            formatter = new SimpleDateFormat("HH:mm:ss");
+        }
+
+        /**
+         * returns the text area
+         *
+         * @return
+         */
+        public JTextArea getJTextArea() {
+            return text;
+        }
+
+        /**
+         * sets the text area
+         *
+         * @param text
+         */
+        public void setJTextArea(JTextArea text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return formatter.format(date) + " - K-means";
+
         }
     }
 }

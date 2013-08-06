@@ -4,8 +4,24 @@
  */
 package moduledefault.clustering.view.jpanel;
 
-import java.awt.event.KeyEvent;
-import javax.swing.DefaultListModel;
+import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.event.EventListenerList;
+import javax.swing.plaf.ComponentUI;
+import moduledefault.clustering.hierarquicos.LigaçãoCompletaAgrupamento;
+import moduledefault.clustering.hierarquicos.LigaçãoMediaAgrupamento;
+import moduledefault.clustering.hierarquicos.LigaçãoSimplesAgrupamento;
+import moduledefault.clustering.hierarquicos.WardAgrupamento;
+import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.visualization.TecnicasDispersao;
 
 /**
  *
@@ -16,8 +32,103 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     /**
      * Creates new form PanelHierarquicos
      */
-    public PanelHierarquicos() {
+    int teste_distancia;
+    double[][] matrizDados;
+    String[] grupos;
+    MatrizDados teste;
+    String[] nomesClasses;
+    String nomeBase;
+    Collection cl;
+    StringBuffer b;
+    int[][] matrizGrupos;
+    int numeroGrupos;
+    ArrayList<Integer> elementoPrincipal;
+    ArrayList<StringBuffer> listaText;
+
+    public PanelHierarquicos(double[][] base, String[] grupos, String[] aa, String n, Collection classes) {
         initComponents();
+        cl = classes;
+        this.nomeBase = nomeBase;
+        nomesClasses = aa;
+        this.matrizDados = base;
+        teste = new MatrizDados();
+        this.grupos = grupos;
+        this.nomeBase = n;
+        listaText = new ArrayList<>();
+        startMatrizDados();
+        buttonVisualizacao.setEnabled(false);
+    }
+
+    public String[] getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(String[] grupos) {
+        this.grupos = grupos;
+    }
+
+    public String[] getNomesClasses() {
+        return nomesClasses;
+    }
+
+    public void setNomesClasses(String[] nomesClasses) {
+        this.nomesClasses = nomesClasses;
+    }
+
+    public String getNomeBase() {
+        return nomeBase;
+    }
+
+    public void setNomeBase(String nomeBase) {
+        this.nomeBase = nomeBase;
+    }
+
+    public Collection getCl() {
+        return cl;
+    }
+
+    public void setCl(Collection cl) {
+        this.cl = cl;
+    }
+
+    public int[][] getMatrizGrupos() {
+        return matrizGrupos;
+    }
+
+    public void setMatrizGrupos(int[][] matrizGrupos) {
+        this.matrizGrupos = matrizGrupos;
+    }
+
+    public int getNumeroGrupos() {
+        return numeroGrupos;
+    }
+
+    public void setNumeroGrupos(int numeroGrupos) {
+        this.numeroGrupos = numeroGrupos;
+    }
+
+    public ComponentUI getUi() {
+        return ui;
+    }
+
+    public void setUi(ComponentUI ui) {
+        this.ui = ui;
+    }
+
+    public EventListenerList getListenerList() {
+        return listenerList;
+    }
+
+    public void setListenerList(EventListenerList listenerList) {
+        this.listenerList = listenerList;
+    }
+
+    public double[][] getMatrizDados() {
+        return matrizDados;
+    }
+
+    public void setMatrizDados(double[][] matrizDados) {
+        this.matrizDados = matrizDados;
     }
 
     /**
@@ -29,161 +140,117 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Panel_medidas = new javax.swing.JPanel();
-        Euclidiana = new javax.swing.JRadioButton();
-        Cosseno = new javax.swing.JRadioButton();
-        Mahalanobis = new javax.swing.JRadioButton();
-        Correlacao = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
-        ligaSimples = new javax.swing.JRadioButton();
-        ligaCompleta = new javax.swing.JRadioButton();
-        ligaMedia = new javax.swing.JRadioButton();
-        ligaWard = new javax.swing.JRadioButton();
-        jScrollPaneResult = new javax.swing.JScrollPane();
-        jListResult = new javax.swing.JList();
         buttonExecutar = new javax.swing.JButton();
-        buttonTela = new javax.swing.JButton();
+        buttonVisualizacao = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBoxDistancias = new javax.swing.JComboBox();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxMetodos = new javax.swing.JComboBox();
+        jPanel2 = new javax.swing.JPanel();
+        listResultados = new java.awt.List();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
-
-        Panel_medidas.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
-
-        Euclidiana.setText("Distância Euclidiana");
-        Euclidiana.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EuclidianaActionPerformed(evt);
-            }
-        });
-
-        Cosseno.setText("Similiridade de Cosseno");
-        Cosseno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CossenoActionPerformed(evt);
-            }
-        });
-
-        Mahalanobis.setText("Mahalanobis");
-        Mahalanobis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MahalanobisActionPerformed(evt);
-            }
-        });
-
-        Correlacao.setText("Correlação");
-        Correlacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorrelacaoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Panel_medidasLayout = new javax.swing.GroupLayout(Panel_medidas);
-        Panel_medidas.setLayout(Panel_medidasLayout);
-        Panel_medidasLayout.setHorizontalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Cosseno)
-                    .addComponent(Euclidiana)
-                    .addComponent(Mahalanobis)
-                    .addComponent(Correlacao)))
-        );
-        Panel_medidasLayout.setVerticalGroup(
-            Panel_medidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Panel_medidasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Euclidiana)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Cosseno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Mahalanobis)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Correlacao)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Métodos"));
-
-        ligaSimples.setText("Ligação Simples");
-        ligaSimples.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ligaSimplesActionPerformed(evt);
-            }
-        });
-
-        ligaCompleta.setText("Ligação Completa");
-        ligaCompleta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ligaCompletaActionPerformed(evt);
-            }
-        });
-
-        ligaMedia.setText("Ligação Média");
-        ligaMedia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ligaMediaActionPerformed(evt);
-            }
-        });
-
-        ligaWard.setText("Ward");
-        ligaWard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ligaWardActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ligaCompleta)
-                    .addComponent(ligaSimples)
-                    .addComponent(ligaMedia)
-                    .addComponent(ligaWard))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ligaSimples)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ligaCompleta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ligaMedia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ligaWard)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jScrollPaneResult.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
-
-        jListResult.setModel(new DefaultListModel());
-        jListResult.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListResult.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jListResultMouseClicked(evt);
-            }
-        });
-        jListResult.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jListResultKeyReleased(evt);
-            }
-        });
-        jScrollPaneResult.setViewportView(jListResult);
-
         buttonExecutar.setText("Executar");
+        buttonExecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExecutarActionPerformed(evt);
+            }
+        });
 
-        buttonTela.setText("Limpar Tela");
+        buttonVisualizacao.setText("Visualizar");
+        buttonVisualizacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonVisualizacaoActionPerformed(evt);
+            }
+        });
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Distância"));
+
+        jLabel1.setText("Função de Distância:");
+
+        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jComboBoxDistancias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Método:"));
+
+        jLabel2.setText("Método:");
+
+        jComboBoxMetodos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Completa", "Média", "Simples","Ward" }));
+        jComboBoxMetodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxMetodosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jComboBoxMetodos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jComboBoxMetodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Resultados")));
+
+        listResultados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listResultadosMouseClicked(evt);
+            }
+        });
+        listResultados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listResultadosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(listResultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(listResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -191,132 +258,406 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneResult, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonTela, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(buttonExecutar, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                    .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Panel_medidas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(buttonExecutar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonTela)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonVisualizacao)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 61, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void EuclidianaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EuclidianaActionPerformed
-        if (Euclidiana.isSelected()) {
-            Correlacao.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Correlacao.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_EuclidianaActionPerformed
-
-    private void CossenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CossenoActionPerformed
-        if (Cosseno.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Correlacao.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Correlacao.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_CossenoActionPerformed
-
-    private void MahalanobisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MahalanobisActionPerformed
-        if (Mahalanobis.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Correlacao.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Correlacao.setEnabled(true);
-        }
-    }//GEN-LAST:event_MahalanobisActionPerformed
-
-    private void CorrelacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CorrelacaoActionPerformed
-        if (Correlacao.isSelected()) {
-            Euclidiana.setEnabled(false);
-            Cosseno.setEnabled(false);
-            Mahalanobis.setEnabled(false);
-        } else {
-            Euclidiana.setEnabled(true);
-            Cosseno.setEnabled(true);
-            Mahalanobis.setEnabled(true);
-        }
-    }//GEN-LAST:event_CorrelacaoActionPerformed
-
-    private void ligaSimplesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ligaSimplesActionPerformed
+    private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ligaSimplesActionPerformed
+    }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
-    private void ligaCompletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ligaCompletaActionPerformed
+    private void jComboBoxMetodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMetodosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ligaCompletaActionPerformed
+    }//GEN-LAST:event_jComboBoxMetodosActionPerformed
 
-    private void ligaMediaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ligaMediaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ligaMediaActionPerformed
+    private void buttonExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExecutarActionPerformed
 
-    private void ligaWardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ligaWardActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ligaWardActionPerformed
 
-    private void jListResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListResultMouseClicked
-        //        if (evt.getClickCount() == 2)
-        //        jListResultActionPerformed();
-    }//GEN-LAST:event_jListResultMouseClicked
-
-    private void jListResultKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jListResultKeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_UP
-            || evt.getKeyCode() == KeyEvent.VK_DOWN
-            || evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN
-            || evt.getKeyCode() == KeyEvent.VK_PAGE_UP
-            || evt.getKeyCode() == KeyEvent.VK_END
-            || evt.getKeyCode() == KeyEvent.VK_HOME) {
-            //            jListResultActionPerformed();
+        switch (this.jComboBoxDistancias.getSelectedIndex()) {
+            case 0:
+                JOptionPane.showMessageDialog(null, "Selecione uma Medida de Distância.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            case 1:
+                teste_distancia = 1;
+                break;
+            case 2:
+                teste_distancia = 2;
+                break;
+            case 3:
+                teste_distancia = 3;
+                break;
+            case 4:
+                teste_distancia = 4;
+                break;
+            case 5:
+                teste_distancia = 5;
+                break;
+            case 6:
+                teste_distancia = 6;
+                break;
+            default:
+                break;
         }
-    }//GEN-LAST:event_jListResultKeyReleased
 
+        switch (this.jComboBoxMetodos.getSelectedIndex()) {
+            case 0:
+                JOptionPane.showMessageDialog(null, "Selecione um Método.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            case 1:
+                int[][] m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = pmat(m);
+                LigaçãoCompletaAgrupamento LC = new LigaçãoCompletaAgrupamento(m, teste, teste_distancia);
+                LC.inicio();
+                int[][] matrizDendograma = LC.getMdend();
+                avaliaLigacao(matrizDendograma);
+                imprimiAgrupamento();
+                imprimiRecuperacao();
+                setListaResultados();
+                jTextArea1.setText(getBuffer().toString());
+                break;
+            case 2:
+                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = pmat(m);
+                LigaçãoMediaAgrupamento LM = new LigaçãoMediaAgrupamento(m, teste, teste_distancia);
+                LM.inicio();
+                matrizDendograma = LM.getMdend();
+                avaliaLigacao(matrizDendograma);
+                imprimiAgrupamento();
+                imprimiRecuperacao();
+                setListaResultados();
+                jTextArea1.setText(getBuffer().toString());
+                break;
+            case 3:
+                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = pmat(m);
+                LigaçãoSimplesAgrupamento LS = new LigaçãoSimplesAgrupamento(m, teste, teste_distancia);
+                LS.inicio();
+                matrizDendograma = LS.getMdend();
+                avaliaLigacao(matrizDendograma);
+                imprimiAgrupamento();
+                imprimiRecuperacao();
+                setListaResultados();
+                jTextArea1.setText(getBuffer().toString());
+                break;
+            case 4:
+                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = pmat(m);
+                WardAgrupamento W = new WardAgrupamento(m, teste, teste_distancia);
+                W.inicio();
+                matrizDendograma = W.getMdend();
+                avaliaLigacao(matrizDendograma);
+                imprimiAgrupamento();
+                imprimiRecuperacao();
+                setListaResultados();
+                jTextArea1.setText(getBuffer().toString());
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_buttonExecutarActionPerformed
+
+    private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            if (listResultados.getSelectedIndex() != -1) {
+                StringBuffer text = listaText.get(listResultados.getSelectedIndex());
+                jTextArea1.setText(text.toString());
+            }
+        }
+    }//GEN-LAST:event_listResultadosMouseClicked
+
+    private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
+    }//GEN-LAST:event_listResultadosActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton Correlacao;
-    private javax.swing.JRadioButton Cosseno;
-    private javax.swing.JRadioButton Euclidiana;
-    private javax.swing.JRadioButton Mahalanobis;
-    private javax.swing.JPanel Panel_medidas;
     private javax.swing.JButton buttonExecutar;
-    private javax.swing.JButton buttonTela;
-    private javax.swing.JList jListResult;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton buttonVisualizacao;
+    private static javax.swing.JComboBox jComboBoxDistancias;
+    private static javax.swing.JComboBox jComboBoxMetodos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPaneResult;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JRadioButton ligaCompleta;
-    private javax.swing.JRadioButton ligaMedia;
-    private javax.swing.JRadioButton ligaSimples;
-    private javax.swing.JRadioButton ligaWard;
+    private java.awt.List listResultados;
     // End of variables declaration//GEN-END:variables
+
+    public void startMatrizDados() {
+        String grupo;
+        grupo = grupos[0];
+        ArrayList<String> atributos = new ArrayList<>();
+        double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];
+        for (int i = 0; i < this.matrizDados.length; i++) {
+            for (int j = 0; j < this.matrizDados[0].length; j++) {
+                base[i][j + 1] = this.matrizDados[i][j];
+            }
+        }
+        int contadorGrupos = 1;
+        for (int i = 0; i < grupos.length; i++) {
+            if (!grupo.equals(grupos[i])) {
+                grupo = grupos[i];
+                contadorGrupos++;
+            }
+            base[i][0] = contadorGrupos;
+        }
+
+
+        teste.setClasses(nomesClasses);
+        teste.setColunas(base[0].length);
+        teste.setLinhas(base.length);
+        teste.setDimensão_matriz();
+        teste.setMatriz_dados(base);
+        teste.setGrupos(grupos);
+        teste.setRealClasses((List) cl);
+
+        TecnicasDispersao.getInstance().setSetou(false);
+        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setCombos();
+
+    }
+
+    int[][] pmat(int[][] matriz) {
+        int i = 0, j = 0, x = 0, y;
+        Random random = new Random();
+        for (i = 0; i < teste.getDimensão_matriz(); i++) {
+            for (j = 0; j < teste.getDimensão_matriz(); j++) {
+                matriz[i][j] = 0;
+            }
+        }
+        for (y = 1; y <= matriz.length; y++) {//coloca os padroes sem repetir na grade
+            do {
+                i = random.nextInt((int) teste.getDimensão_matriz());
+                j = random.nextInt((int) teste.getDimensão_matriz());
+            } while (matriz[i][j] != 0);
+            x++;
+            if (matriz[i][j] == 0) {
+                matriz[i][j] = x;
+            }
+        }
+        return matriz;
+    }
+
+    private void avaliaLigacao(int[][] matrizDendograma) {
+        int[] gruposFinais = matrizDendograma[matrizDendograma.length - 3];
+
+        numeroGrupos = 0;
+        int grupoInicial;
+        elementoPrincipal = new ArrayList<>();
+        numeroGrupos = 0;
+        grupoInicial = gruposFinais[0];
+        for (int i = 1; i < gruposFinais.length; i++) {
+            boolean existe = false;
+            if (gruposFinais[i] != grupoInicial) {
+                for (int j = 0; j < elementoPrincipal.size(); j++) {
+                    if (elementoPrincipal.get(j) == grupoInicial) {
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    elementoPrincipal.add(grupoInicial);
+                    grupoInicial = gruposFinais[i];
+                    numeroGrupos++;
+                }
+            }
+        }
+        matrizGrupos = new int[2][gruposFinais.length];
+        for (int i = 0; i < elementoPrincipal.size(); i++) {
+            for (int j = 0; j < gruposFinais.length; j++) {
+                if (elementoPrincipal.get(i) == gruposFinais[j]) {
+                    matrizGrupos[0][j] = j + 1;
+                    matrizGrupos[1][j] = i + 1;
+                }
+            }
+        }
+
+    }
+
+    synchronized void imprimiAgrupamento() {
+        StringBuffer buffer = new StringBuffer();
+        setBuffer(buffer);
+        getBuffer().append("===================== Informações =====================");
+        getBuffer().append("\n\t\t\tYADMT.Clustering.Hierárquicos");
+        getBuffer().append("\n\t Base: " + nomeBase);
+        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
+        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
+        getBuffer().append("\n\t Classes:");
+        for (int i = 0; i < nomesClasses.length; i++) {
+            getBuffer().append("\n\t\t" + nomesClasses[i]);
+        }
+
+        switch (jComboBoxMetodos.getSelectedIndex()) {
+            case 1:
+                getBuffer().append("\n\tMétodo:\n  \tLigação Completa.\n");
+                break;
+            case 2:
+                getBuffer().append("\n\tMétodo:\n  \tLigação Média.\n");
+                break;
+            case 3:
+                getBuffer().append("\n\tMétodo:\n  \tLigação Simples.\n");
+                break;
+            case 4:
+                getBuffer().append("\n\tMétodo:\n  \tWard.\n");
+                break;
+        }
+        switch (teste_distancia) {
+            case 1:
+                getBuffer().append("\tMedida de Distância:\n  \tChebyshev");
+                break;
+            case 2:
+                getBuffer().append("\tMedida de Distância:\n  \tCityblock");
+                break;
+            case 3:
+                getBuffer().append("\tMedida de Distância:\n  \tCorrelação");
+                break;
+            case 4:
+                getBuffer().append("\tMedida de Distância:\n  \tCosseno");
+                break;
+            case 5:
+                getBuffer().append("\tMedida de Distância:\n  \tEuclidiana");
+                break;
+            case 6:
+                getBuffer().append("\tMedida de Distância:\n  \tMahalanobis");
+                break;
+            default:
+                break;
+        }
+    }
+
+    synchronized void imprimiRecuperacao() {
+
+        getBuffer().append("\n\nGrupos Formados:\n\n");
+        for (int j = matrizGrupos[0].length - 1; j >= 1; j--) {
+            for (int i = 0; i < j; i++) {
+                if (matrizGrupos[0][i] > matrizGrupos[0][i + 1]) {
+                    int auxLinha = matrizGrupos[0][i];
+                    int auxColuna = matrizGrupos[1][i];
+                    matrizGrupos[0][i] = matrizGrupos[0][i + 1];
+                    matrizGrupos[1][i] = matrizGrupos[1][i + 1];
+                    matrizGrupos[0][i + 1] = auxLinha;
+                    matrizGrupos[1][i + 1] = auxColuna;
+                }
+            }
+        }
+
+        String padrao;
+        for (int k = 0; k < this.numeroGrupos; k++) {
+            int cont = 1;
+            getBuffer().append("Grupo: " + (k + 1) + " Padrão: [" + elementoPrincipal.get(k) + "]" + "\n\n");
+            for (int j = 0; j < matrizGrupos[0].length; j++) {
+                if (matrizGrupos[1][j] == (k + 1)) {
+
+                    padrao = matrizGrupos[0][j] + "";
+                    switch (padrao.length()) {
+                        case 1:
+                            padrao += "   ";
+                            break;
+                        case 2:
+                            padrao += "  ";
+                            break;
+                        case 3:
+                            padrao += " ";
+                            break;
+                    }
+
+                    getBuffer().append(padrao);
+                    if (cont % 10 == 0) {
+                        getBuffer().append("\n");
+                        cont = 0;
+                    }
+                    cont++;
+                }
+            }
+            getBuffer().append("\n\n-------------------------------------------------------\n\n");
+        }
+    }
+
+    public StringBuffer getBuffer() {
+        return b;
+    }
+
+    public void setBuffer(StringBuffer b) {
+        this.b = b;
+    }
+
+    private void setListaResultados() {
+        PanelHierarquicos.ClusteringText text = new PanelHierarquicos.ClusteringText();
+        String s = text.toString(jComboBoxMetodos.getSelectedIndex());
+        text.setJTextArea(jTextArea1);
+        listResultados.add(s);
+        listaText.add(getBuffer());
+    }
+
+    class ClusteringText {
+
+        final DateFormat formatter;
+        private JTextArea text;
+        private Date date;
+
+        public ClusteringText() {
+            date = new Date();
+            formatter = new SimpleDateFormat("HH:mm:ss");
+        }
+
+        /**
+         * returns the text area
+         *
+         * @return
+         */
+        public JTextArea getJTextArea() {
+            return text;
+        }
+
+        /**
+         * sets the text area
+         *
+         * @param text
+         */
+        public void setJTextArea(JTextArea text) {
+            this.text = text;
+        }
+
+        public String toString(int index) {
+            switch (jComboBoxMetodos.getSelectedIndex()) {
+                case 1:
+                    return formatter.format(date) + " - Ligação Completa";
+                case 2:
+                    return formatter.format(date) + " - Ligação Média";
+                case 3:
+                    return formatter.format(date) + " - Ligação Simples";
+                case 4:
+                    return formatter.format(date) + " - Ward";
+                default:
+                    return "";
+            }
+
+        }
+    }
 }

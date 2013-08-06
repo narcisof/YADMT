@@ -5,6 +5,7 @@
 package moduledefault.clustering.uteis;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import moduledefault.clustering.aco.ACOClustering;
 
@@ -32,6 +33,7 @@ public class Índices {
     float r = 0;
     float porcentagem = 0;
     StringBuffer string3;
+    int[][] matrizResultado;
 
     public Índices(int[][] matriz, MatrizDados mpadrao, int[][] mpos_par, int contgrupo_par, int pos_par, ACOClustering x_) {
         x = x_;
@@ -54,7 +56,17 @@ public class Índices {
         sizepos = (linhas * linhas) * 2;
 
         mpos = new int[2][sizepos];
-        mpos = mpos_par;
+        for (int i = 0; i < mpos_par.length; i++) {
+            for (int j = 0; j < mpos_par[0].length; j++) {
+                mpos[i][j] = mpos_par[i][j];
+            }
+        }
+        matrizResultado = new int[2][mpos[0].length];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < matrizResultado[0].length; j++) {
+                matrizResultado[i][j] = mpos[i][j];
+            }
+        }
         pos = pos_par;
         contgrupo = contgrupo_par;
 
@@ -72,18 +84,9 @@ public class Índices {
         float centro = 0, qdesvio = 0, sqdesvio = 0, v = 0, somaqdesvio = 0;
         int qpadrao = 0, somapadrao = 0;
 
-//        x.string.append("\nINDICES:\n");
-//        x.string2.append("\nINDICES:\n");
-//        string3.append("\nINDICES:\n");
-//        x.string.append("\nVARIANCIA:\n");
-//        x.string2.append("\nVARIANCIA:\n");
-//        string3.append("\nVARIANCIA:\n");
 
         for (int i = 1; i <= contgrupo; i++) {
-//            x.string.append("\nGRUPO ").append(i);
 
-            //            x.string2.append("\nGRUPO ").append(i);
-//            string3.append("\nGRUPO ").append(i);
 
             for (int j = 0; j < pos; j++) {
                 if (mpos[1][j] == i) {
@@ -93,13 +96,6 @@ public class Índices {
                 }
             }
             centro = centro / qpadrao;//calcula o centroide/média
-//            x.string.append("\nQuantidade de Padroes = ").append(qpadrao);
-//            x.string.append("\nCentroide = ").append(centro);
-//            x.string2.append("\nQuantidade de Padroes = ").append(qpadrao);
-//            x.string2.append("\nCentroide = ").append(centro);
-//            string3.append("\nQuantidade de Padroes = ").append(qpadrao);
-//            string3.append("\nCentroide = ").append(centro);
-
             for (int j = 0; j < pos; j++) {
                 if (mpos[1][j] == i) {
                     qdesvio = mpos[0][j] - centro;
@@ -110,9 +106,6 @@ public class Índices {
             }
             somaqdesvio += sqdesvio;//somatorios dos quadrados dos desvios entre todos os padroes de todos os grupos
             v = sqdesvio / centro;
-//            x.string.append("\nVariancia = ").append(v).append("\n");
-//            x.string2.append("\nVariancia = ").append(v).append("\n");
-//            string3.append("\nVariancia = ").append(v).append("\n");
 
 
             qpadrao = 0;
@@ -124,11 +117,7 @@ public class Índices {
         }
         ////////////Fazer a variancia para todos os grupos
         vtotal = somaqdesvio / somapadrao;//variancia total, de todos os grupos da matriz 
-//        x.string.append("\nVARIANCIA TOTAL = ").append(vtotal);
-//        x.string2.append("\nVARIANCIA TOTAL = ").append(vtotal);
-//        string3.append("\nVARIANCIA TOTAL = ").append(vtotal);
 
-        //system("pause");
     }
 
     void dunn(int[][] mpos) {
@@ -137,13 +126,6 @@ public class Índices {
         float centro2 = 0, qdesvio2 = 0, diam2 = 0;
         float mdistancia = 0, fdistancia = 0, diamfinal = 0;
         int qpadrao1 = 0, qpadrao2 = 0;
-//        x.string.append("\n-----------------------------------------------------------");
-//        x.string2.append("\n-----------------------------------------------------------");
-//        string3.append("\n-----------------------------------------------------------");
-//
-//        x.string.append("\nINDICE DUNN\n");
-//        x.string2.append("\nINDICE DUNN\n");
-//        string3.append("\nINDICE DUNN\n");
 
         for (int i = 1; i < contgrupo; i++) {
             ///////////Primeiro grupo
@@ -209,10 +191,6 @@ public class Índices {
             diam1 = 0;
             qpadrao1 = 0;
         }
-//        x.string.append("\nIndice = ").append(idunn);
-//        x.string2.append("\nIndice = ").append(idunn);
-//        string3.append("\nIndice = ").append(idunn);
-
     }
 
     void medidaf(int[][] mpos) throws IOException {
@@ -307,26 +285,6 @@ public class Índices {
             ++conta;
             padmaior = 0;
         }
-//        x.string.append("\n-----------------------------------------------------------");
-//        x.string2.append("\n-----------------------------------------------------------");
-//        string3.append("\n-----------------------------------------------------------");
-//        x.string.append("\nMATRIZ CONFUSAO\n\n");
-//        x.string2.append("\nMATRIZ CONFUSAO\n\n");
-//        string3.append("\nMATRIZ CONFUSAO\n\n");
-
-
-//        for (int i = 0; i < numpad; i++) {
-//            for (int j = 0; j < contgrupo; j++) {
-//                x.string.append(mconfusao[i][j]).append(" ");
-//                x.string2.append(mconfusao[i][j]).append("; ");
-//                string3.append(mconfusao[i][j]).append("; ");
-//
-//            }
-//            x.string.append("\n");
-//            x.string2.append("\n");
-//            string3.append("\n");
-//
-//        }
         int somaacertos = 0;
         porcentagem = 0;
         for (int i = 0; i < numpad; i++) {
@@ -339,11 +297,6 @@ public class Índices {
 
         porcentagem = (somaacertos * 100) / x.getArquivo().getLinhas();
 
-
-        //
-//        x.string.append("\nPorcentagem de Acerto; ").append(porcentagem).append("\n\n");
-//        x.string2.append("\nPorcentagem de Acerto; ").append(porcentagem).append("\n\n");
-//        string3.append("\nPorcentagem de Acerto; ").append(porcentagem).append("\n\n");
 
 
 //	///////////////////////// calculos
@@ -497,5 +450,58 @@ public class Índices {
 
     public int[][] getMconfusao() {
         return mconfusao;
+    }
+
+    public final int[][] matrizConfusao(List<String> classes, String[] grupos) {
+        int gruposDesejados = classes.size();
+        int gruposFormados = this.contgrupo;
+
+        mconfusao = new int[gruposDesejados][gruposFormados];
+
+
+        for (int j = 0; j < gruposFormados; j++) { //Coluna = formados
+            for (int i = 0; i < gruposDesejados; i++) {
+                mconfusao[i][j] = getQntiaClasses(classes.get(i), grupos, j + 1);
+            }
+        }
+
+        //Ajusta as posições da matriz confusao
+        for (int i = 0; i < gruposDesejados; i++) {
+            int aux = 0;
+            int grupo = -1;
+            for (int j = i; j < gruposFormados; j++) {
+                if (mconfusao[i][j] > aux) {
+                    boolean maior = true;
+                    for (int k = i + 1; k < gruposDesejados; k++) {
+                        if (mconfusao[i][j] < mconfusao[k][j]) {
+                            maior = false;
+                        }
+                    }
+                    if (maior) {
+                        aux = mconfusao[i][j];
+                        grupo = j;
+                    }
+                }
+            }
+            if (grupo != i && grupo != -1) {
+                for (int k = 0; k < gruposDesejados; k++) {
+                    int swap = mconfusao[k][grupo];
+                    mconfusao[k][grupo] = mconfusao[k][i];
+                    mconfusao[k][i] = swap;
+                }
+            }
+        }
+
+        return mconfusao;
+    }
+
+    private int getQntiaClasses(String get, String[] grupos, int grupo) {
+        int aux = 0;
+        for (int i = 0; i < grupos.length; i++) {
+            if (get.equals(grupos[i]) && matrizResultado[1][i] == grupo) {
+                aux++;
+            }
+        }
+        return aux;
     }
 }

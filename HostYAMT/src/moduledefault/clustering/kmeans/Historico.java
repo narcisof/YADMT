@@ -21,7 +21,6 @@ public class Historico {
         this.historicoCentroide = historicoCentroide;
         this.historicoPadroes = new int[historicoPadroes.length];
         for(int i = 0;i < historicoPadroes.length;i++){
-//            System.out.println(historicoPadroes[i]);
         this.historicoPadroes[i] = historicoPadroes[i];
         }
 

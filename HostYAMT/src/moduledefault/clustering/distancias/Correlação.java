@@ -29,9 +29,6 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-        System.out.println("lingas " + teste.getLinhas());
-        System.out.println("colu " + teste.getColunas());
-
         for (int y = 0; y < teste.getLinhas(); y++) {
             for (int w = 0; w < teste.getLinhas(); w++) {
                 for (int i = 1; i < teste.getColunas(); i++) {
@@ -67,13 +64,6 @@ public class Correlação extends DistanciaPrincipal {
 
         }
         padronizacaDistancias(matrizDistancias);
-//        System.out.println("Matriz Correlacao");
-//        for (int i = 0; i < matrizDistancias.length; i++) {
-//            for (int j = 0; j < matrizDistancias.length; j++) {
-//                System.out.print(matrizDistancias[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
     }
 
     public static float[][] distanciaKmeans(int linhas, int k, float[][] matriz, ArrayList<Centroide> centroide) {
@@ -124,13 +114,6 @@ public class Correlação extends DistanciaPrincipal {
 
         }
         return resultado;
-//        System.out.println("Matriz Correlacao");
-//        for (int i = 0; i < matrizDistancias.length; i++) {
-//            for (int j = 0; j < matrizDistancias.length; j++) {
-//                System.out.print(matrizDistancias[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
     }
 
     public void distanciaGrupos(MatrizDados teste) {
@@ -144,8 +127,6 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-        System.out.println("lingas " + teste.getLinhas());
-        System.out.println("colu " + teste.getColunas());
 
         for (int y = 0; y < teste.getLinhas(); y++) {
             for (int w = 0; w < teste.getLinhas(); w++) {
@@ -180,14 +161,6 @@ public class Correlação extends DistanciaPrincipal {
                 correlacao = 0;
             }
 
-        }
-//        padronizacaDistancias(matrizDistancias);
-        System.out.println("Matriz Correlacao");
-        for (int i = 0; i < matrizDistancias.length; i++) {
-            for (int j = 0; j < matrizDistancias.length; j++) {
-                System.out.print(matrizDistancias[i][j] + " ");
-            }
-            System.out.println();
         }
     }
 }
