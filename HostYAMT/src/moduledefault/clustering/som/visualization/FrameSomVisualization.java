@@ -823,9 +823,9 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         Mbase = new double[4][dados.getDataSet().size()];
 
         for (int i = 0; i < dados.getDataSet().size(); i++) {
-            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0);
-            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1);
-            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2);
+            Mbase[0][i] = dados.getDataSet().get(i).getAtributos().get(0) * 10;
+            Mbase[1][i] = dados.getDataSet().get(i).getAtributos().get(1) * 10;
+            Mbase[2][i] = dados.getDataSet().get(i).getAtributos().get(2) * 10;
             Mbase[3][i] = 1;
 
         }
@@ -839,9 +839,9 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         Mbase = new double[4][n.size()];
 
         for (int i = 0; i < n.size(); i++) {
-            Mbase[0][i] = n.get(i).getPesos().get(0);
-            Mbase[1][i] = n.get(i).getPesos().get(1);
-            Mbase[2][i] = n.get(i).getPesos().get(2);
+            Mbase[0][i] = n.get(i).getPesos().get(0) * 10;
+            Mbase[1][i] = n.get(i).getPesos().get(1) * 10;
+            Mbase[2][i] = n.get(i).getPesos().get(2) * 10;
             Mbase[3][i] = 1;
 
         }

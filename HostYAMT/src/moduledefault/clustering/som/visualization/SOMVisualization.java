@@ -68,7 +68,7 @@ public class SOMVisualization extends javax.swing.JPanel {
             }
 
             float m = width / 100;
-            int tamPixel = 8;//(int) m;
+            int tamPixel = 7;//(int) m;
 
             if (FrameSomVisualization.getDados() != null) {
                 for (int i = 0; i < FrameSomVisualization.getDados().getDataSet().size(); i++) {
