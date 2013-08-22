@@ -12,7 +12,7 @@ import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
 
 /**
@@ -21,10 +21,10 @@ import moduledefault.clustering.uteis.Operações_Mat;
  */
 public class KMeansPrincipal {
 
-    MatrizDados Arquivo;
-    float[][] matrizAtributos;
-    ArrayList<Float> minimoAtributo;
-    ArrayList<Float> maximoAtributo;
+    Base dados;
+    double[][] matrizAtributos;
+    ArrayList<Double> minimoAtributo;
+    ArrayList<Double> maximoAtributo;
     int numK;
     ArrayList<Centroide> centroides;
     float[][] matrizDistancia;
@@ -34,10 +34,8 @@ public class KMeansPrincipal {
     private float perct;
     int[][] m;
 
-    public KMeansPrincipal(MatrizDados teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia) {
-        this.Arquivo = teste;
-        Operações_Mat m = new Operações_Mat();
-        m.Padronização(teste);
+    public KMeansPrincipal(Base teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia) {
+        this.dados = teste;
         this.numK = numK;
         this.distancia = distancia;
         setMatrizAtributos();
@@ -52,7 +50,7 @@ public class KMeansPrincipal {
         maxI = maxIteracoes;
         it = iteracoesParada;
         historico = new ArrayList<Historico>();
-        this.padroesClusters = new int[this.Arquivo.getLinhas()];
+        this.padroesClusters = new int[this.dados.getDataSet().size()];
         for (int i = 0; i < this.padroesClusters.length; i++) {
             this.padroesClusters[i] = -1;
         }
@@ -93,22 +91,22 @@ public class KMeansPrincipal {
     }
 
     private void setMatrizAtributos() {
-        this.matrizAtributos = new float[this.Arquivo.getLinhas()][(this.Arquivo.getColunas() - 1)];
-        for (int i = 0; i < this.Arquivo.getLinhas(); i++) {
-            for (int j = 1; j < this.Arquivo.getColunas(); j++) {
-                this.matrizAtributos[i][j - 1] = (float) this.Arquivo.getMatriz_dados()[i][j];
+        this.matrizAtributos = new double[this.dados.getDataSet().size()][(this.dados.getAtributos().size() - 1)];
+        for (int i = 0; i < this.dados.getDataSet().size(); i++) {
+            for (int j = 0; j < this.dados.getAtributos().size() - 1; j++) {
+                this.matrizAtributos[i][j] = (this.dados.getDataSet().get(i).getAtributos().get(j));
             }
         }
     }
 
     private void setMinMax() {
-        this.minimoAtributo = new ArrayList<Float>();
-        this.maximoAtributo = new ArrayList<Float>();
+        this.minimoAtributo = new ArrayList<Double>();
+        this.maximoAtributo = new ArrayList<Double>();
 
-        for (int i = 0; i < this.Arquivo.getColunas() - 1; i++) {
-            float minimo = Float.MAX_VALUE;
-            float maximo = Float.MIN_VALUE;
-            for (int j = 0; j < this.Arquivo.getLinhas(); j++) {
+        for (int i = 0; i < this.dados.getAtributos().size() - 1; i++) {
+            double minimo = Float.MAX_VALUE;
+            double maximo = Float.MIN_VALUE;
+            for (int j = 0; j < this.dados.getDataSet().size(); j++) {
                 if (this.matrizAtributos[j][i] > maximo) {
                     maximo = this.matrizAtributos[j][i];
                 }
@@ -124,7 +122,7 @@ public class KMeansPrincipal {
     private void setCentroidesInicialAleatorio() {
         this.centroides = new ArrayList<Centroide>();
         for (int i = 0; i < this.numK; i++) {
-            Centroide newCentroide = new Centroide(this.Arquivo.getColunas() - 1);
+            Centroide newCentroide = new Centroide(this.dados.getAtributos().size() - 1);
             for (int j = 0; j < newCentroide.getNumAtributos(); j++) {
                 newCentroide.setAtributos(j, sorteia(minimoAtributo.get(j), maximoAtributo.get(j)));
             }
@@ -134,18 +132,18 @@ public class KMeansPrincipal {
 
     private void setCentroidesInicialPorcentagem() {
         this.centroides = new ArrayList<Centroide>();
-        int porcentagem = (int) (this.Arquivo.getLinhas() * perct);
+        int porcentagem = (int) (this.dados.getDataSet().size() * perct);
         Random r = new Random();
         for (int i = 0; i < this.numK; i++) {
-            Centroide newCentroide = new Centroide(this.Arquivo.getColunas() - 1);
-            double[] medias = new double[this.Arquivo.getColunas() - 1];
+            Centroide newCentroide = new Centroide(this.dados.getAtributos().size() - 1);
+            double[] medias = new double[this.dados.getAtributos().size() - 1];
             for (int w = 0; w < porcentagem; w++) {
                 int padraoSorteado = r.nextInt(150);
-                for (int e = 0; e < this.Arquivo.getColunas() - 1; e++) {
-                    medias[e] += this.Arquivo.getMatriz_dados()[padraoSorteado][e + 1];
+                for (int e = 0; e < this.dados.getAtributos().size() - 1; e++) {
+                    medias[e] += this.dados.getDataSet().get(padraoSorteado).getAtributos().get(e + 1);
                 }
             }
-            for (int e = 0; e < this.Arquivo.getColunas() - 1; e++) {
+            for (int e = 0; e < this.dados.getAtributos().size() - 1; e++) {
                 medias[e] /= porcentagem;
             }
             for (int j = 0; j < newCentroide.getNumAtributos(); j++) {
@@ -155,11 +153,11 @@ public class KMeansPrincipal {
         }
     }
 
-    public double sorteia(float minimo, float maximo) {
+    public double sorteia(double minimo, double maximo) {
 
         Random r = new Random();
-        final float H = maximo; // sorteia entre 1 e 60
-        final float L = minimo;
+        final double H = maximo; // sorteia entre 1 e 60
+        final double L = minimo;
         return (r.nextDouble() * (H - L)) + L;
     }
 
@@ -167,22 +165,22 @@ public class KMeansPrincipal {
 
         switch (distancia) {
             case 1:
-                setMatrizDistancia(Chebyshev.distanciaKmeans(Arquivo.getLinhas(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(Chebyshev.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 2:
-                setMatrizDistancia(CityBlock.distanciaKmeans(Arquivo.getLinhas(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(CityBlock.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 3:
-                setMatrizDistancia(Correlação.distanciaKmeans(Arquivo.getLinhas(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(Correlação.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 4:
-                setMatrizDistancia(Cosseno.distanciaKmeans(Arquivo.getLinhas(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(Cosseno.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 5:
-                setMatrizDistancia(DistanciaEuclidiana.distanciaKmeans(centroides, numK, matrizAtributos, Arquivo.getLinhas()));
+                setMatrizDistancia(DistanciaEuclidiana.distanciaKmeans(centroides, numK, matrizAtributos, dados.getDataSet().size()));
                 break;
             case 6:
-                setMatrizDistancia(Mahalanobis.distanciaKmeans(Arquivo.getLinhas(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(Mahalanobis.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
         }
 
@@ -193,7 +191,7 @@ public class KMeansPrincipal {
     }
 
     private void atribuiCentroides() {
-        for (int i = 0; i < this.Arquivo.getLinhas(); i++) {
+        for (int i = 0; i < this.dados.getDataSet().size(); i++) {
             int indexCentroide = -1;
             float menor = Float.MAX_VALUE;
             for (int j = 0; j < this.numK; j++) {
@@ -207,19 +205,19 @@ public class KMeansPrincipal {
     }
 
     private ArrayList<Centroide> calcularNewCentroides() {
-        double[][] vetorMedias = new double[this.numK][this.Arquivo.getColunas() - 1];
+        double[][] vetorMedias = new double[this.numK][this.dados.getAtributos().size() - 1];
         int[] vetorSomatoria = new int[this.numK];
 
         for (int i = 0; i < this.padroesClusters.length; i++) {
             Centroide aux = this.centroides.get(this.padroesClusters[i]);
             for (int j = 0; j < aux.getAtributos().size(); j++) {
-                vetorMedias[this.padroesClusters[i]][j] += this.Arquivo.getMatriz_dados()[i][j + 1];
+                vetorMedias[this.padroesClusters[i]][j] += this.dados.getDataSet().get(i).getAtributos().get(j);
             }
             vetorSomatoria[this.padroesClusters[i]]++;
         }
         ArrayList<Centroide> auxArray = new ArrayList<Centroide>();
         for (int i = 0; i < this.numK; i++) {
-            Centroide aux = new Centroide((this.Arquivo.getColunas() - 1));
+            Centroide aux = new Centroide((this.dados.getAtributos().size() - 1));
             for (int j = 0; j < aux.getAtributos().size(); j++) {
                 aux.getAtributos().set(j, (vetorMedias[i][j] / vetorSomatoria[i]));
             }
@@ -430,12 +428,10 @@ public class KMeansPrincipal {
     public int[][] mConfusao() {
         int[][] mConfusao = new int[this.numK][this.numK];
 
-        for (int i = 0; i < this.numK; i++) {
-            for (int j = 0; j < this.numK; j++) {
-                for (int w = 0; w < this.Arquivo.getLinhas(); w++) {
-                    if ((this.Arquivo.getMatriz_dados()[w][0] == i + 1) && (this.padroesClusters[w] == j)) {
-                        mConfusao[i][j]++;
-                    }
+        for (int j = 0; j < this.numK; j++) { //Coluna = formados
+            for (int i = 0; i < this.numK; i++) {
+                if (i < dados.getClasses().size()) {
+                    mConfusao[i][j] = getQntiaClasses(dados.getClasses().get(i), dados, j);
                 }
             }
         }
@@ -498,5 +494,15 @@ public class KMeansPrincipal {
 
     public void setM(int[][] m) {
         this.m = m;
+    }
+
+    private int getQntiaClasses(String get, Base dados, int grupo) {
+        int aux = 0;
+        for (int i = 0; i < dados.getDataSet().size(); i++) {
+            if (get.equals(dados.getDataSet().get(i).getClasse()) && padroesClusters[i] == grupo) {
+                aux++;
+            }
+        }
+        return aux;
     }
 }

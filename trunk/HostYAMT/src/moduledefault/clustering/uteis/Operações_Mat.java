@@ -15,33 +15,34 @@ public class Operações_Mat {
     final double kp = 0.1;
     final double kd = 0.3;
 
-    public void Padronização(MatrizDados matriz) {
+    public void Padronização(Base matriz) {
         double menor = 0;
         double maior = 0;
-        int cont = 1;
-        while (cont < matriz.colunas) {
+        int cont = 0;
+        while (cont < matriz.getAtributos().size()-1) {
             menor = 10000;
             maior = -10000;
-            for (int i = 0; i < matriz.linhas; i++) {
-                if (matriz.matriz_dados[i][cont] < menor) {
-                    menor = matriz.matriz_dados[i][cont];
+            for (int i = 0; i < matriz.getDataSet().size(); i++) {
+                if (matriz.getDataSet().get(i).getAtributos().get(cont) < menor) {
+                    menor = matriz.getDataSet().get(i).getAtributos().get(cont);
                 }
 
-                if (matriz.matriz_dados[i][cont] > maior) {
-                    maior = matriz.matriz_dados[i][cont];
+                if (matriz.getDataSet().get(i).getAtributos().get(cont) > maior) {
+                    maior = matriz.getDataSet().get(i).getAtributos().get(cont);
                 }
             }
-            for (int i = 0; i < matriz.linhas; i++) {
-                matriz.matriz_dados[i][cont] -= menor;
+            for (int i = 0; i < matriz.getDataSet().size(); i++) {
+                matriz.getDataSet().get(i).getAtributos().set(cont, (matriz.getDataSet().get(i).getAtributos().get(cont) - menor));
             }
             maior -= menor;
-            for (int i = 0; i < matriz.linhas; i++) {
-                matriz.matriz_dados[i][cont] /= maior;
+            for (int i = 0; i < matriz.getDataSet().size(); i++) {
+
+                matriz.getDataSet().get(i).getAtributos().set(cont, (matriz.getDataSet().get(i).getAtributos().get(cont) / maior));
             }
             cont++;
         }
-        
-        
+
+
 
     }
 
@@ -52,14 +53,13 @@ public class Operações_Mat {
         qmenos = Math.pow((controlesigma / sigmamaximo), (1 / (cont2 * (1 - percent1))));
     }
 
-
     public double fPdrop(int i) {
         if (i == 1) {
             return Math.pow((fun1 / (fun1 + kd)), 2);
         } else {
             return Math.pow((fun2 / (fun2 + kd)), 2);
         }
-      
+
 
     }
 
@@ -67,7 +67,7 @@ public class Operações_Mat {
         return Math.pow((kp / (fun1 + kp)), 2);
     }
 
-    public void calculos(int i, int cont_vizinhos, MatrizDados matriz_dados, double[] distâncias, int sigma, double alfa, int índice) throws IOException {
+    public void calculos(int i, int cont_vizinhos, Base matriz_dados, double[] distâncias, int sigma, double alfa, int índice) throws IOException {
         double soma1 = 0;
         double somatoria1 = 0;
         double somatoria2 = 0;
@@ -77,7 +77,7 @@ public class Operações_Mat {
             if (cont_vizinhos > 0) {
                 for (int j = 0; j < índice; j++) {
 //                        soma1 = (1 - (distâncias[j])); //sem divisao alfa
-                    soma1 = (1-(distâncias[j]/alfa)); //sem divisao alfa
+                    soma1 = (1 - (distâncias[j] / alfa)); //sem divisao alfa
                     somatoria1 += soma1;
                     if (soma1 <= 0) {
                         fun1 = 0;
@@ -99,7 +99,7 @@ public class Operações_Mat {
                 if (cont_vizinhos > 0) {
                     for (int j = 0; j < índice; j++) {
 //                            soma2 = (1 - (distâncias[j]));
-                        soma2 = (1-(distâncias[j] / alfa));
+                        soma2 = (1 - (distâncias[j] / alfa));
                         somatoria2 += soma2;
                         if (soma2 <= 0) {
                             fun2 = 0;

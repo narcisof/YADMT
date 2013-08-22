@@ -8,7 +8,7 @@ package moduledefault.clustering.distancias;
 import java.io.IOException;
 import java.util.ArrayList;
 import moduledefault.clustering.kmeans.Centroide;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -17,19 +17,19 @@ import moduledefault.clustering.uteis.MatrizDados;
 public class CityBlock extends DistanciaPrincipal {
     
     
-    public CityBlock(MatrizDados teste) {
-        setMatrizDistancias(teste.getLinhas());
+    public CityBlock(Base teste) {
+        setMatrizDistancias(teste.getDataSet().size());
     }
 
 
 
-    public void distancia(MatrizDados teste) {
+    public void distancia(Base teste) {
         double acumulador = 0;
-        for (int i = 0; i < teste.getLinhas(); i++) {
-            for (int j = 0; j < teste.getLinhas(); j++) {
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 0; j < teste.getDataSet().size(); j++) {
                 if (i != j) {
-                    for (int w = 1; w < teste.getColunas(); w++) {
-                        acumulador += Math.abs(teste.getMatriz_dados()[i][w] - teste.getMatriz_dados()[j][w]);
+                    for (int w = 0; w < teste.getAtributos().size()-1; w++) {
+                        acumulador += Math.abs(teste.getDataSet().get(i).getAtributos().get(w) - teste.getDataSet().get(j).getAtributos().get(w));
                     }
                     matrizDistancias[i][j] = acumulador;
                     acumulador = 0;
@@ -38,7 +38,7 @@ public class CityBlock extends DistanciaPrincipal {
         }
         padronizacaDistancias(matrizDistancias);
     }
-    public static float [][] distanciaKmeans(int linhas, int k, float[][]matriz, ArrayList<Centroide> centroide) {
+    public static float [][] distanciaKmeans(int linhas, int k, double[][]matriz, ArrayList<Centroide> centroide) {
         double acumulador = 0;
         float [][] resultado = new float[linhas][k];
         for (int i = 0; i < linhas; i++) {

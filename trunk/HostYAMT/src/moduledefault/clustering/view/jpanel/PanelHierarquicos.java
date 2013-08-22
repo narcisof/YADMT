@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -20,8 +19,9 @@ import moduledefault.clustering.hierarquicos.LigaçãoCompletaAgrupamento;
 import moduledefault.clustering.hierarquicos.LigaçãoMediaAgrupamento;
 import moduledefault.clustering.hierarquicos.LigaçãoSimplesAgrupamento;
 import moduledefault.clustering.hierarquicos.WardAgrupamento;
-import moduledefault.clustering.uteis.MatrizDados;
-import moduledefault.clustering.visualization.TecnicasDispersao;
+import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Operações_Mat;
+import moduledefault.clustering.uteis.Padrao;
 
 /**
  *
@@ -33,63 +33,22 @@ public class PanelHierarquicos extends javax.swing.JPanel {
      * Creates new form PanelHierarquicos
      */
     int teste_distancia;
-    double[][] matrizDados;
-    String[] grupos;
-    MatrizDados teste;
-    String[] nomesClasses;
-    String nomeBase;
-    Collection cl;
+
     StringBuffer b;
     int[][] matrizGrupos;
     int numeroGrupos;
     ArrayList<Integer> elementoPrincipal;
     ArrayList<StringBuffer> listaText;
-
-    public PanelHierarquicos(double[][] base, String[] grupos, String[] aa, String n, Collection classes) {
+    interfaces.Base base;
+    Base dados;
+    public PanelHierarquicos(interfaces.Base b) {
         initComponents();
-        cl = classes;
-        this.nomeBase = nomeBase;
-        nomesClasses = aa;
-        this.matrizDados = base;
-        teste = new MatrizDados();
-        this.grupos = grupos;
-        this.nomeBase = n;
+        base = b;
         listaText = new ArrayList<>();
         startMatrizDados();
         buttonVisualizacao.setEnabled(false);
     }
 
-    public String[] getGrupos() {
-        return grupos;
-    }
-
-    public void setGrupos(String[] grupos) {
-        this.grupos = grupos;
-    }
-
-    public String[] getNomesClasses() {
-        return nomesClasses;
-    }
-
-    public void setNomesClasses(String[] nomesClasses) {
-        this.nomesClasses = nomesClasses;
-    }
-
-    public String getNomeBase() {
-        return nomeBase;
-    }
-
-    public void setNomeBase(String nomeBase) {
-        this.nomeBase = nomeBase;
-    }
-
-    public Collection getCl() {
-        return cl;
-    }
-
-    public void setCl(Collection cl) {
-        this.cl = cl;
-    }
 
     public int[][] getMatrizGrupos() {
         return matrizGrupos;
@@ -123,13 +82,6 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         this.listenerList = listenerList;
     }
 
-    public double[][] getMatrizDados() {
-        return matrizDados;
-    }
-
-    public void setMatrizDados(double[][] matrizDados) {
-        this.matrizDados = matrizDados;
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -331,9 +283,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Selecione um Método.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             case 1:
-                int[][] m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                int[][] m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
-                LigaçãoCompletaAgrupamento LC = new LigaçãoCompletaAgrupamento(m, teste, teste_distancia);
+                LigaçãoCompletaAgrupamento LC = new LigaçãoCompletaAgrupamento(m, dados, teste_distancia);
                 LC.inicio();
                 int[][] matrizDendograma = LC.getMdend();
                 avaliaLigacao(matrizDendograma);
@@ -343,9 +295,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 jTextArea1.setText(getBuffer().toString());
                 break;
             case 2:
-                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
-                LigaçãoMediaAgrupamento LM = new LigaçãoMediaAgrupamento(m, teste, teste_distancia);
+                LigaçãoMediaAgrupamento LM = new LigaçãoMediaAgrupamento(m, dados, teste_distancia);
                 LM.inicio();
                 matrizDendograma = LM.getMdend();
                 avaliaLigacao(matrizDendograma);
@@ -355,9 +307,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 jTextArea1.setText(getBuffer().toString());
                 break;
             case 3:
-                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
-                LigaçãoSimplesAgrupamento LS = new LigaçãoSimplesAgrupamento(m, teste, teste_distancia);
+                LigaçãoSimplesAgrupamento LS = new LigaçãoSimplesAgrupamento(m, dados, teste_distancia);
                 LS.inicio();
                 matrizDendograma = LS.getMdend();
                 avaliaLigacao(matrizDendograma);
@@ -367,9 +319,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 jTextArea1.setText(getBuffer().toString());
                 break;
             case 4:
-                m = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+                m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
-                WardAgrupamento W = new WardAgrupamento(m, teste, teste_distancia);
+                WardAgrupamento W = new WardAgrupamento(m, dados, teste_distancia);
                 W.inicio();
                 matrizDendograma = W.getMdend();
                 avaliaLigacao(matrizDendograma);
@@ -410,51 +362,54 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void startMatrizDados() {
-        String grupo;
-        grupo = grupos[0];
-        ArrayList<String> atributos = new ArrayList<>();
-        double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];
-        for (int i = 0; i < this.matrizDados.length; i++) {
-            for (int j = 0; j < this.matrizDados[0].length; j++) {
-                base[i][j + 1] = this.matrizDados[i][j];
+         dados = new moduledefault.clustering.uteis.Base();
+        double matriz[][] = new double[base.getInput().length][base.getInput()[0].length]; //= arrayListBases.get(arrayListBases.size() - 1).getInput();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                matriz[i][j] = Double.valueOf(base.getInput()[i][j] + "").doubleValue();
             }
         }
-        int contadorGrupos = 1;
-        for (int i = 0; i < grupos.length; i++) {
-            if (!grupo.equals(grupos[i])) {
-                grupo = grupos[i];
-                contadorGrupos++;
+//        padronizacao(base);
+
+        int grupo = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            Padrao p = new Padrao();
+            p.setNumero(grupo);
+            ++grupo;
+            for (int j = 0; j < matriz[0].length; j++) {
+                p.addAtributos(matriz[i][j]);
+
             }
-            base[i][0] = contadorGrupos;
+            p.setClasse(base.getOutput()[i].toString());
+            dados.addDataSet(p);
         }
 
+        for (int i = 0; i < base.getAtributes().length; i++) {
+            dados.addAtributos(base.getAtributes()[i]);
+        }
 
-        teste.setClasses(nomesClasses);
-        teste.setColunas(base[0].length);
-        teste.setLinhas(base.length);
-        teste.setDimensão_matriz();
-        teste.setMatriz_dados(base);
-        teste.setGrupos(grupos);
-        teste.setRealClasses((List) cl);
+        dados.setClasses((List) base.getClasses());
+        dados.setNome((String) base.getName());
+        dados.setDimensaoMatriz();
 
-        TecnicasDispersao.getInstance().setSetou(false);
-        TecnicasDispersao.getInstance().setMatrizDados(teste);
-        TecnicasDispersao.getInstance().setCombos();
+        Operações_Mat m = new Operações_Mat();
+        m.Padronização(dados);
+        
 
     }
 
     int[][] pmat(int[][] matriz) {
         int i = 0, j = 0, x = 0, y;
         Random random = new Random();
-        for (i = 0; i < teste.getDimensão_matriz(); i++) {
-            for (j = 0; j < teste.getDimensão_matriz(); j++) {
+        for (i = 0; i < dados.getDimensaoMatriz(); i++) {
+            for (j = 0; j < dados.getDimensaoMatriz(); j++) {
                 matriz[i][j] = 0;
             }
         }
         for (y = 1; y <= matriz.length; y++) {//coloca os padroes sem repetir na grade
             do {
-                i = random.nextInt((int) teste.getDimensão_matriz());
-                j = random.nextInt((int) teste.getDimensão_matriz());
+                i = random.nextInt((int) dados.getDimensaoMatriz());
+                j = random.nextInt((int) dados.getDimensaoMatriz());
             } while (matriz[i][j] != 0);
             x++;
             if (matriz[i][j] == 0) {
@@ -505,12 +460,12 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         setBuffer(buffer);
         getBuffer().append("===================== Informações =====================");
         getBuffer().append("\n\t\t\tYADMT.Clustering.Hierárquicos");
-        getBuffer().append("\n\t Base: " + nomeBase);
-        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
-        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
+        getBuffer().append("\n\t Base: " + dados.getNome());
+//        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
+//        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
         getBuffer().append("\n\t Classes:");
-        for (int i = 0; i < nomesClasses.length; i++) {
-            getBuffer().append("\n\t\t" + nomesClasses[i]);
+        for (int i = 0; i < dados.getClasses().size(); i++) {
+            getBuffer().append("\n\t\t" + dados.getClasses().get(i));
         }
 
         switch (jComboBoxMetodos.getSelectedIndex()) {
@@ -613,6 +568,11 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         text.setJTextArea(jTextArea1);
         listResultados.add(s);
         listaText.add(getBuffer());
+    }
+
+    public void addBase(interfaces.Base get) {
+        base = get;
+        startMatrizDados();
     }
 
     class ClusteringText {

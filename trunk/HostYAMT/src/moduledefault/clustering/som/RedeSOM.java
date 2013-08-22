@@ -4,6 +4,7 @@
  */
 package moduledefault.clustering.som;
 
+import moduledefault.clustering.uteis.Base;
 import java.util.ArrayList;
 
 /**

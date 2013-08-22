@@ -7,7 +7,7 @@ package moduledefault.clustering.distancias;
 import java.io.IOException;
 import java.util.ArrayList;
 import moduledefault.clustering.kmeans.Centroide;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -15,11 +15,11 @@ import moduledefault.clustering.uteis.MatrizDados;
  */
 public class Cosseno extends DistanciaPrincipal {
 
-    public Cosseno(MatrizDados teste) {
-        setMatrizDistancias(teste.getLinhas());
+    public Cosseno(Base teste) {
+        setMatrizDistancias(teste.getDataSet().size());
     }
 
-    public void distancia(MatrizDados teste)  {
+    public void distancia(Base teste) {
         double vetorial = 0;
         double compvetor1 = 0;
         double compvetor2 = 0;
@@ -27,14 +27,14 @@ public class Cosseno extends DistanciaPrincipal {
         double compvetor21 = 0;
         double resultado = 0;
         //d1 * d2
-        for (int i = 0; i < teste.getLinhas(); i++) {
-            for (int j = 1; j < teste.getLinhas(); j++) {
-                for (int w = 1; w < teste.getColunas(); w++) {
-                    vetorial += teste.getMatriz_dados()[i][w] * teste.getMatriz_dados()[j][w];
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 1; j < teste.getDataSet().size(); j++) {
+                for (int w = 0; w < teste.getAtributos().size()-1; w++) {
+                    vetorial += teste.getDataSet().get(i).getAtributos().get(w) * teste.getDataSet().get(j).getAtributos().get(w);
                 }
-                for (int y = 1; y < teste.getColunas(); y++) {
-                    compvetor1 += Math.pow(teste.getMatriz_dados()[i][y], 2);
-                    compvetor2 += Math.pow(teste.getMatriz_dados()[j][y], 2);
+                for (int y = 0; y < teste.getAtributos().size()-1; y++) {
+                    compvetor1 += Math.pow(teste.getDataSet().get(i).getAtributos().get(y), 2);
+                    compvetor2 += Math.pow(teste.getDataSet().get(j).getAtributos().get(y), 2);
                     compvetor11 = Math.sqrt(compvetor1);
                     compvetor21 = Math.sqrt(compvetor2);
                 }
@@ -48,7 +48,7 @@ public class Cosseno extends DistanciaPrincipal {
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, float[][] matriz, ArrayList<Centroide> centroide) {
+    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         double vetorial = 0;
         double compvetor1 = 0;
         double compvetor2 = 0;
@@ -69,7 +69,7 @@ public class Cosseno extends DistanciaPrincipal {
                     compvetor21 = Math.sqrt(compvetor2);
                 }
                 resultado = vetorial / (compvetor11 * compvetor21);
-                re[i][j] =  (float)(1 - resultado);
+                re[i][j] = (float) (1 - resultado);
                 compvetor1 = 0;
                 compvetor2 = 0;
                 vetorial = 0;

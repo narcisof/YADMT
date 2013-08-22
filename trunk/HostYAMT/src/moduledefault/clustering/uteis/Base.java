@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.som;
+package moduledefault.clustering.uteis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,9 @@ public class Base {
     List<Padrao> dataSet = new ArrayList<>();
     List<String> atributos = new ArrayList<>();
     List<String> classes = new ArrayList<>();
-     
+    int dimensaoMatriz;
+    private int linhas;
+    private int colunas;
     public Base() {
        this.Nome = null;
        this.dataSet.clear();
@@ -65,4 +67,19 @@ public class Base {
         this.classes = grupos;
     }
     
+        public void setDimensaoMatriz() {
+        dimensaoMatriz = (int) Math.sqrt((10 * this.dataSet.size()));
+    }
+
+    public int getDimensaoMatriz() {
+        return dimensaoMatriz;
+    }
+
+    public void setLinhas(int numElemento) {
+        linhas = numElemento;
+    }
+    
+    public void setColunas(int colunas){
+        this.colunas = colunas;
+    }
 }

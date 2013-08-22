@@ -17,7 +17,7 @@ import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 import view.jpanel.JPanelClustering;
 
 /**
@@ -28,38 +28,31 @@ public class LigaçãoCompletaAgrupamento {
 
     int[][] m;// = new int[matriz.length][matriz.length];
     int linhas;
-    MatrizDados mdados;
+    Base mdados;
     int numpad, numgrupo = 1;
     int[][] mpos;
     int[][] mpos2;
     int q = 1;
     double[][] matrizDistancia;
     String nomeArquivoEntrada;
-    MatrizDados teste;
+    Base teste;
     int[][] mdend;
 
-
-    public LigaçãoCompletaAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
+    public LigaçãoCompletaAgrupamento(int[][] matriz, Base matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
         mdados = matrizdados;
-        numpad = mdados.getLinhas();
+        numpad = mdados.getDataSet().size();
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
         setMatrizDistancia(opcaoDistancia, matrizdados);
     }
 
-
-
-
-
-    public void inicio(){
+    public void inicio() {
         liga_completa(m);
 
     }
-
-
 
     int[][] get_mpos() {
         return mpos2;
@@ -72,13 +65,7 @@ public class LigaçãoCompletaAgrupamento {
         char ch;
         int z = 0, grupo = 0;
         //VERIFICA NUMERO DE GRUPOS
-        z = (int) mdados.getMatriz_dados()[0][0];
-        for (int i = 1; i < mdados.getLinhas(); i++) {
-            if (mdados.getMatriz_dados()[i][0] != z) {
-                numgrupo++;
-            }
-            z = (int) mdados.getMatriz_dados()[i][0];
-        }
+        numgrupo = mdados.getClasses().size();
         mdend = new int[numpad][numpad];
 
         for (int i = 0; i < numpad; i++) {
@@ -236,7 +223,7 @@ public class LigaçãoCompletaAgrupamento {
         return mdend;
     }
 
-    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste)  {
+    private void setMatrizDistancia(int opcaoDistancia, Base teste) {
         if (opcaoDistancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);

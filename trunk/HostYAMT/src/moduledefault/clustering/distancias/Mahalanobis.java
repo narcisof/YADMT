@@ -9,7 +9,7 @@ import Jama.Matrix;
 import java.io.IOException;
 import java.util.ArrayList;
 import moduledefault.clustering.kmeans.Centroide;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -17,28 +17,28 @@ import moduledefault.clustering.uteis.MatrizDados;
  */
 public class Mahalanobis extends DistanciaPrincipal {
 
-    public Mahalanobis(MatrizDados teste) {
-        setMatrizDistancias(teste.getLinhas());
+    public Mahalanobis(Base teste) {
+        setMatrizDistancias(teste.getDataSet().size());
     }
 
-    public void distancia(MatrizDados teste)  {
-        double[] medias = new double[teste.getColunas() - 1];
+    public void distancia(Base teste)  {
+        double[] medias = new double[teste.getAtributos().size()-1];
         double somador = 0;
-        for (int i = 1; i < teste.getColunas(); i++) {
-            for (int j = 0; j < teste.getLinhas(); j++) {
-                somador += teste.getMatriz_dados()[j][i];
+        for (int i = 0; i < teste.getAtributos().size()-1; i++) {
+            for (int j = 0; j < teste.getDataSet().size(); j++) {
+                somador += teste.getDataSet().get(j).getAtributos().get(i);
             }
-            medias[i - 1] = somador / teste.getLinhas();
+            medias[i - 1] = somador / teste.getDataSet().size();
             somador = 0;
         }
         somador = 0;
-        double[][] cov = new double[teste.getColunas() - 1][teste.getColunas() - 1];
-        for (int j = 0; j < teste.getColunas() - 1; j++) {
-            for (int k = 0; k < teste.getColunas() - 1; k++) {
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somador += (teste.getMatriz_dados()[i][j] - medias[j]) * (teste.getMatriz_dados()[i][k] - medias[k]);
+        double[][] cov = new double[teste.getAtributos().size()-1][teste.getAtributos().size()-1];
+        for (int j = 0; j < teste.getAtributos().size()-1; j++) {
+            for (int k = 0; k < teste.getAtributos().size()-1; k++) {
+                for (int i = 0; i < teste.getAtributos().size()-1; i++) {
+                    somador += (teste.getDataSet().get(i).getAtributos().get(j) - medias[j]) * (teste.getDataSet().get(i).getAtributos().get(k) - medias[k]);
                 }
-                cov[j][k] = somador / ((teste.getColunas() - 1) - 1);
+                cov[j][k] = somador / ((teste.getAtributos().size()) - 1);
                 somador = 0;
             }
         }
@@ -48,32 +48,32 @@ public class Mahalanobis extends DistanciaPrincipal {
         inversa_matrix = matrix.inverse();
         double[][] inversa;
         inversa = inversa_matrix.getArrayCopy();
-        double[] vetor1 = new double[teste.getColunas() - 1];
-        double[] vetor2 = new double[teste.getColunas() - 1];
-        double[][] menos = new double[1][teste.getColunas() - 1];
-        double[][] transposta = new double[teste.getColunas() - 1][1];
+        double[] vetor1 = new double[teste.getAtributos().size()-1];
+        double[] vetor2 = new double[teste.getAtributos().size()-1];
+        double[][] menos = new double[1][teste.getAtributos().size()-1];
+        double[][] transposta = new double[teste.getAtributos().size()-1][1];
         Matrix minus1;
         Matrix minus2;
         Matrix multiplicação_matrix;
         double[][] multiplicação;
-        for (int i = 0; i < teste.getLinhas(); i++) {
-            for (int j = 0; j < teste.getLinhas(); j++) {
-                for (int w = 1; w < teste.getColunas(); w++) {
-                    vetor1[w - 1] = teste.getMatriz_dados()[i][w];
-                    vetor2[w - 1] = teste.getMatriz_dados()[j][w];
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 0; j < teste.getDataSet().size(); j++) {
+                for (int w = 0; w < teste.getAtributos().size()-1; w++) {
+                    vetor1[w - 1] = teste.getDataSet().get(i).getAtributos().get(w);
+                    vetor2[w - 1] = teste.getDataSet().get(j).getAtributos().get(w);
                 }
-                minus1 = new Matrix(vetor1, (teste.getColunas() - 1));
-                minus2 = new Matrix(vetor2, (teste.getColunas() - 1));
+                minus1 = new Matrix(vetor1, (teste.getAtributos().size()-1));
+                minus2 = new Matrix(vetor2, (teste.getAtributos().size()-1));
                 minus1.minusEquals(minus2);
                 menos[0] = minus1.getRowPackedCopy();
-                for (int y = 0; y < teste.getColunas() - 1; y++) {
+                for (int y = 0; y < teste.getAtributos().size()-1; y++) {
                     transposta[y][0] = menos[0][y];
                 }
                 multiplicação_matrix = new Matrix(menos);
                 inversa_matrix.arrayTimesEquals(matrix);
                 multiplicação = multiplicação_matrix.getArrayCopy();
                 double somador2 = 0;
-                for (int g = 0; g < teste.getColunas() - 1; g++) {
+                for (int g = 0; g < teste.getAtributos().size()-1; g++) {
                     somador2 += multiplicação[0][g] * transposta[g][0];
                 }
                 matrizDistancias[i][j] = somador2;
@@ -81,7 +81,7 @@ public class Mahalanobis extends DistanciaPrincipal {
         }
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, float[][] matriz, ArrayList<Centroide> centroide) {
+    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         float[][] r = new float[linhas][k];
         double[] medias = new double[k];
         double somador = 0;

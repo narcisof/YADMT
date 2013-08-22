@@ -7,7 +7,7 @@ package moduledefault.clustering.distancias;
 import java.io.IOException;
 import java.util.ArrayList;
 import moduledefault.clustering.kmeans.Centroide;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -15,19 +15,19 @@ import moduledefault.clustering.uteis.MatrizDados;
  */
 public class DistanciaEuclidiana extends DistanciaPrincipal {
 
-    public DistanciaEuclidiana(MatrizDados teste) {
-        setMatrizDistancias(teste.getLinhas());
+    public DistanciaEuclidiana(Base teste) {
+        setMatrizDistancias(teste.getDataSet().size());
     }
 
 
 
-    public void distancia(MatrizDados teste) {
+    public void distancia(Base teste) {
         double acumulador = 0;
-        for (int i = 0; i < teste.getLinhas(); i++) {
-            for (int j = 0; j < teste.getLinhas(); j++) {
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 0; j < teste.getDataSet().size(); j++) {
                 if (i != j) {
-                    for (int w = 1; w < teste.getColunas(); w++) {
-                        acumulador += Math.pow(teste.getMatriz_dados()[i][w] - teste.getMatriz_dados()[j][w], 2);
+                    for (int w = 0; w < teste.getAtributos().size()-1; w++) {
+                        acumulador += Math.pow(teste.getDataSet().get(i).getAtributos().get(w) - teste.getDataSet().get(j).getAtributos().get(w), 2);
                     }
                     matrizDistancias[i][j] = Math.sqrt(acumulador);
                     acumulador = 0;
@@ -37,12 +37,12 @@ public class DistanciaEuclidiana extends DistanciaPrincipal {
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(ArrayList<Centroide> centroides, int numK, float[][] matrizAtributos, int linhas) {
+    public static float[][] distanciaKmeans(ArrayList<Centroide> centroides, int numK, double[][] matrizAtributos, int linhas) {
         float[][] resultado = new float[linhas][numK];
         for (int i = 0; i < linhas; i++) {
             for (int w = 0; w < numK; w++) {
                 double acumulador = 0;
-                for (int j = 0; j < centroides.get(w).getAtributos().size(); j++) {
+                for (int j = 0; j < centroides.get(w).getAtributos().size()-1; j++) {
                     acumulador += Math.pow(matrizAtributos[i][j] - centroides.get(w).getAtributos().get(j), 2);
                 }
                 resultado[i][w] = ((float) Math.sqrt((acumulador)));

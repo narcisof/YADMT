@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import moduledefault.clustering.aco.ACOClustering;
+import moduledefault.clustering.som.Cluster;
 
 /**
  *
@@ -25,17 +26,18 @@ public class Índices {
     int[][] maux;// = new int[matriz.length][matriz.length];
     int linhas;
     int[][] mpos;
-    MatrizDados mpadrao1;
+    Base mpadrao1;
     ACOClustering x;
     int numpad = 0;
     int[][] mconfusao;
-    float vtotal = 0, idunn = 999999999, ffinal = 0;
+    float vtotal = 0, idunn = 999999999;
     float r = 0;
-    float porcentagem = 0;
     StringBuffer string3;
     int[][] matrizResultado;
+    private float medidaF;
+    private int acerto;
 
-    public Índices(int[][] matriz, MatrizDados mpadrao, int[][] mpos_par, int contgrupo_par, int pos_par, ACOClustering x_) {
+    public Índices(int[][] matriz, Base mpadrao, int[][] mpos_par, int contgrupo_par, int pos_par, ACOClustering x_) {
         x = x_;
         string3 = new StringBuffer();
         mpadrao1 = mpadrao;
@@ -55,7 +57,8 @@ public class Índices {
 
         sizepos = (linhas * linhas) * 2;
 
-        mpos = new int[2][sizepos];
+        mpos = new int[2][mpos_par[0].length];
+        System.out.println("tamanho mpos = "+mpos[0].length);
         for (int i = 0; i < mpos_par.length; i++) {
             for (int j = 0; j < mpos_par[0].length; j++) {
                 mpos[i][j] = mpos_par[i][j];
@@ -77,7 +80,22 @@ public class Índices {
 
         variancia(mpos);
         dunn(mpos);
-        medidaf(mpos);
+        matrizConfusao(mpadrao1);
+        medidaF();
+        acerto();
+    }
+
+    public final void acerto() {
+        for (int i = 0; i < mconfusao.length; i++) {
+            for (int j = 0; j < mconfusao[0].length; j++) {
+                if (i == j) {
+                    acerto += mconfusao[i][i];
+                }
+            }
+
+        }
+        acerto = acerto * 100;
+        acerto = acerto / mpadrao1.getDataSet().size();
     }
 
     void variancia(int[][] mpos) {
@@ -86,8 +104,6 @@ public class Índices {
 
 
         for (int i = 1; i <= contgrupo; i++) {
-
-
             for (int j = 0; j < pos; j++) {
                 if (mpos[1][j] == i) {
                     ++qpadrao;//conta quantos padroes existem no grupo
@@ -106,8 +122,6 @@ public class Índices {
             }
             somaqdesvio += sqdesvio;//somatorios dos quadrados dos desvios entre todos os padroes de todos os grupos
             v = sqdesvio / centro;
-
-
             qpadrao = 0;
             centro = 0;
             qdesvio = 0;
@@ -121,7 +135,6 @@ public class Índices {
     }
 
     void dunn(int[][] mpos) {
-
         float centro1 = 0, qdesvio1 = 0, diam1 = 0;
         float centro2 = 0, qdesvio2 = 0, diam2 = 0;
         float mdistancia = 0, fdistancia = 0, diamfinal = 0;
@@ -193,194 +206,97 @@ public class Índices {
         }
     }
 
-    void medidaf(int[][] mpos) throws IOException {
-
-
-
-        int[] classepad = new int[mpadrao1.linhas];
-        int z = 0;
-        for (int i = 0; i < mpadrao1.linhas; i++) {
-            classepad[i] = 0;
-        }
-        int col2 = 0, col1 = 0;
-
-        col1 = mpadrao1.colunas;
-
-        for (int i = 0; i < mpadrao1.linhas; i++) {
-            for (int j = 0; j < col1; j++) {
-                if (j == 0) {
-                    classepad[i] = (int) mpadrao1.matriz_dados[i][j];
-                }
-            }
-        }
-        //FIM LEITURA ARQUIVO
-        for (int i = 0; i < mpadrao1.linhas; i++) {
-            if (classepad[i] > numpad) {
-                numpad = classepad[i];
-            }
-        }
-        //declara matriz confusão
-        mconfusao = new int[numpad][contgrupo];
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
-                mconfusao[i][j] = 0;
-            }
-        }
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
-                for (int a = 0; a < mpadrao1.linhas; a++) {
-                    if (classepad[a] == i + 1) {
-                        for (int b = 0; b < pos; b++) {
-                            if ((mpos[0][b] == a + 1) && (mpos[1][b] == j + 1)) {
-                                ++mconfusao[i][j];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //////////////AJUSTA NOME DOS GRUPOS
-        int posi = 0, posj = 0, padmaior = 0, conta = 0, q = 0;
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
-                if (i != 0) {
-                    q = 1;
-                } else {
-                    q = 0;
-                }
-                if ((mconfusao[i][j] > padmaior) && (mconfusao[i][j] >= mconfusao[i - q][j])) {
-                    padmaior = mconfusao[i][j];
-                    posi = i + 1;
-                    posj = j + 1;
-                }
-                if (posi > contgrupo) {
-                    posi = contgrupo;
-                }
-            }
-            for (int d = 0; d < pos; d++) {
-                if (mpos[1][d] == posi) {
-                    mpos[1][d] = posj;
-                } else if (mpos[1][d] == posj) {
-                    mpos[1][d] = posi;
-                }
-            }
-            for (int e = 0; e < numpad; e++) {
-                for (int f = 0; f < contgrupo; f++) {
-                    mconfusao[e][f] = 0;
-                }
-            }
-            for (int e = 0; e < numpad; e++) {
-                for (int f = 0; f < contgrupo; f++) {
-                    for (int a = 0; a < mpadrao1.linhas; a++) {
-                        if (classepad[a] == e + 1) {
-                            for (int b = 0; b < pos; b++) {
-                                if ((mpos[0][b] == a + 1) && (mpos[1][b] == f + 1)) {
-                                    ++mconfusao[e][f];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            ++conta;
-            padmaior = 0;
-        }
-        int somaacertos = 0;
-        porcentagem = 0;
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
-                if (i == j) {
-                    somaacertos += mconfusao[i][j];
-                }
-            }
-        }
-
-        porcentagem = (somaacertos * 100) / x.getArquivo().getLinhas();
-
-
-
-//	///////////////////////// calculos
-        float[][] p = new float[numpad][contgrupo];
-        float[][] r = new float[numpad][contgrupo];
-        float[][] f = new float[numpad][contgrupo];
-        float[] gerado = new float[contgrupo];
-        float[] desejados = new float[numpad];
+    public final void medidaF() {
+        int numpadF = mpadrao1.getClasses().size();
+        int contGrupoF = mpadrao1.getClasses().size();
+        float[][] p = new float[numpadF][contGrupoF];
+        float[][] r = new float[numpadF][contGrupoF];
+        float[][] f = new float[numpadF][contGrupoF];
+        float[] gerado = new float[contGrupoF];
+        float[] desejados = new float[numpadF];
         float b = 1, somapad = 0;
 
-        for (int j = 0; j < contgrupo; j++) {
+        for (int j = 0; j < contGrupoF; j++) {
             gerado[j] = 0;
         }
-        for (int i = 0; i < numpad; i++) {
+        for (int i = 0; i < numpadF; i++) {
             desejados[i] = 0;
         }
-        for (int j = 0; j < contgrupo; j++) {
-            for (int i = 0; i < numpad; i++) {
+        for (int j = 0; j < contGrupoF; j++) {
+            for (int i = 0; i < numpadF; i++) {
                 gerado[j] = gerado[j] + mconfusao[i][j];
             }
         }
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 desejados[i] = desejados[i] + mconfusao[i][j];
             }
         }
-        for (int i = 0; i < numpad; i++) {
+        for (int i = 0; i < numpadF; i++) {
             somapad = somapad + desejados[i];
         }
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 p[i][j] = 0;
                 r[i][j] = 0;
                 f[i][j] = 0;
             }
         }
         ///CALCULO P
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 p[i][j] = mconfusao[i][j] / gerado[j];
             }
         }
         ///CALCULO R
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 r[i][j] = mconfusao[i][j] / desejados[i];
             }
         }
         ///CALCULO F
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 f[i][j] = (((b * b) + 1) * p[i][j] * r[i][j]) / ((b * b) * p[i][j] + r[i][j]);
             }
         }
 
         float maxj = 0;
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < contgrupo; j++) {
+        for (int i = 0; i < numpadF; i++) {
+            for (int j = 0; j < contGrupoF; j++) {
                 if (f[i][j] > maxj) {
                     maxj = f[i][j];
                 }
             }
-            ffinal = ffinal + ((desejados[i] / somapad) * maxj);
+            medidaF = medidaF + ((desejados[i] / somapad) * maxj);
             maxj = 0;
         }
-//        x.string.append("\n-----------------------------------------------------------");
-//        x.string.append("\nMEDIDA F \n");
-//        x.string.append("\nF = ").append(ffinal);
-//        x.string2.append("\n-----------------------------------------------------------");
-//        x.string2.append("\nMEDIDA F \n");
-//        x.string2.append("\nF = ").append(ffinal);
-//        string3.append("\n-----------------------------------------------------------");
-//        string3.append("\nMEDIDA F \n");
-//        string3.append("\nF = ").append(ffinal);
 
-        indice_aleatorio(mpos, classepad);
+        indice_aleatorio(mpos);
     }
 
-    void indice_aleatorio(int[][] mpos, int[] classepad) {
-        int[][] newvet = new int[2][mpadrao1.linhas]; //
+    void indice_aleatorio(int[][] mpos) {
+        int[] classepad = new int[mpadrao1.getDataSet().size()];
+        int z = 0;
+        for (int i = 0; i < mpadrao1.getDataSet().size(); i++) {
+            classepad[i] = 0;
+        }
+        int col2 = 0, col1 = 0;
+
+        col1 = mpadrao1.getDataSet().get(0).getAtributos().size();
+
+        for (int i = 0; i < mpadrao1.getDataSet().size(); i++) {
+            for (int j = 0; j < col1; j++) {
+                if (j == 0) {
+                    classepad[i] = mpadrao1.getDataSet().get(i).getAtributos().get(j).intValue();
+                }
+            }
+        }
+        int[][] newvet = new int[2][mpadrao1.getDataSet().size()]; //
         float a = 0, b = 0, c = 0, d = 0;
 
 
-        for (int i = 0; i < mpadrao1.linhas; i++) {
+        for (int i = 0; i < mpadrao1.getDataSet().size(); i++) {
             for (int j = 0; j < pos; j++) {
                 if (mpos[0][j] == (i + 1)) {
                     newvet[0][i] = mpos[0][j];
@@ -389,8 +305,8 @@ public class Índices {
             }
         }
 
-        for (int i = 0; i < mpadrao1.linhas; i++) {
-            for (int j = 0; j < mpadrao1.linhas; j++) {
+        for (int i = 0; i < mpadrao1.getDataSet().size(); i++) {
+            for (int j = 0; j < mpadrao1.getDataSet().size(); j++) {
                 if ((i != j) && (j > i)) {
                     if ((classepad[i] == classepad[j]) && (newvet[1][i] == newvet[1][j])) {
                         ++a;
@@ -421,7 +337,7 @@ public class Índices {
     }
 
     public float getFfinal() {
-        return ffinal;
+        return medidaF;
     }
 
     public float getIdunn() {
@@ -441,7 +357,7 @@ public class Índices {
     }
 
     public float getPorcentagem() {
-        return porcentagem;
+        return acerto;
     }
 
     public int getNumpad() {
@@ -452,8 +368,8 @@ public class Índices {
         return mconfusao;
     }
 
-    public final int[][] matrizConfusao(List<String> classes, String[] grupos) {
-        int gruposDesejados = classes.size();
+    public final int[][] matrizConfusao(Base dados) {
+        int gruposDesejados = dados.getClasses().size();
         int gruposFormados = this.contgrupo;
 
         mconfusao = new int[gruposDesejados][gruposFormados];
@@ -461,7 +377,7 @@ public class Índices {
 
         for (int j = 0; j < gruposFormados; j++) { //Coluna = formados
             for (int i = 0; i < gruposDesejados; i++) {
-                mconfusao[i][j] = getQntiaClasses(classes.get(i), grupos, j + 1);
+                mconfusao[i][j] = getQntiaClasses(dados.getClasses().get(i), dados, j + 1);
             }
         }
 
@@ -495,13 +411,24 @@ public class Índices {
         return mconfusao;
     }
 
-    private int getQntiaClasses(String get, String[] grupos, int grupo) {
+    private int getQntiaClasses(String get, Base dados, int grupo) {
         int aux = 0;
-        for (int i = 0; i < grupos.length; i++) {
-            if (get.equals(grupos[i]) && matrizResultado[1][i] == grupo) {
+        for (int i = 0; i < dados.getDataSet().size(); i++) {
+            if (get.equals(dados.getDataSet().get(i).getClasse()) && matrizResultado[1][i] == grupo) {
                 aux++;
             }
         }
         return aux;
     }
+    
+//      public float centroide(Cluster cluster) {
+//        float centroide = 0;
+//
+//        for (int i = 0; i < cluster.getGrupo().size(); i++) {
+//            centroide += cluster.getGrupo().get(i).getNumero(); //soma dos padroes
+//        }
+//        centroide = centroide / cluster.getGrupo().size(); //calcula centroide/media
+//
+//        return centroide;
+//    }
 }

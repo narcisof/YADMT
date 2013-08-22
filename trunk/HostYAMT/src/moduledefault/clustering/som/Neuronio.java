@@ -4,6 +4,7 @@
  */
 package moduledefault.clustering.som;
 
+import moduledefault.clustering.uteis.Padrao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

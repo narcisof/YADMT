@@ -10,7 +10,7 @@ import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.visualization.TecnicasDispersao;
 
@@ -40,15 +40,16 @@ public final class ACOClustering {
     int contcarrega = 0;
     boolean teste_fases = true;
     int[][] matriz_padrao;
-    MatrizDados arquivo;
+    Base arquivo;
     double vetorMaiorF[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    MatrizDados dados;
-    public ACOClustering(MatrizDados teste, int teste_distancia, int[][] _matriz_padrao) throws IOException {
+    Base dados;
+
+    public ACOClustering(Base teste, int teste_distancia, int[][] _matriz_padrao) throws IOException {
         arquivo = teste;
         matematica = new Operações_Mat();
 //         matematica.Padronização(teste);
         matriz_padrao = new int[_matriz_padrao.length][_matriz_padrao.length];
-        matriz_distancias = new double[teste.getLinhas()][teste.getLinhas()];
+        matriz_distancias = new double[teste.getDataSet().size()][teste.getDataSet().size()];
         for (int i = 0; i < _matriz_padrao.length; i++) {
             for (int j = 0; j < _matriz_padrao.length; j++) {
                 matriz_padrao[i][j] = _matriz_padrao[i][j];
@@ -93,7 +94,7 @@ public final class ACOClustering {
         }
     }
 
-    public MatrizDados getArquivo() {
+    public Base getArquivo() {
         return arquivo;
     }
 
@@ -111,7 +112,7 @@ public final class ACOClustering {
     }
 
     public void set_cont2(int colunas, int linhas) throws IOException {
-        cont2 = 150 * (colunas - 1) * linhas;
+        cont2 = 150 * (colunas) * linhas;
     }
 
     public int getCont2() {
@@ -147,7 +148,7 @@ public final class ACOClustering {
         controlealfa = set_controlealfa;
     }
 
-    public void opera_inicial(MatrizDados matriz_dados) throws IOException, InterruptedException {
+    public void opera_inicial(Base matriz_dados) throws IOException, InterruptedException {
         matematica.PA_PG(cont2, percent1, sigmaminimo, sigmamaximo, alfaminimo, alfamaximo, controlesigma, controlealfa);
         dados = matriz_dados;
         //   while ((cont < cont2)) {
@@ -182,16 +183,13 @@ public final class ACOClustering {
 
     }
 
-    private void opera(MatrizDados matriz_dados) throws IOException {
+    private void opera(Base matriz_dados) throws IOException {
         int pad = 0;
         int linha_sorteada = 0, coluna_sorteada = 0;
         int aux = 0, cont_vizinhos = 0;
         int i, j, si, sj, ci, cj, c2i, c2j;
         Random random = new Random();
         int principal;
-        int teste_formiga = 1;
-        int pad_aux;
-        int indice_auxiliar = 0;
 //        if (teste_carrega == 0) {
 //            form = new int[3][10];
 //            i = 0;
@@ -253,12 +251,12 @@ public final class ACOClustering {
 //        for (int w = 0; w < 10; w++) {
 //         indice_auxiliar = controle_indice[w] - 1;
 //            pad = form[indice_auxiliar]; 	//sorteio padrao
-        pad = (random.nextInt(matriz_dados.getLinhas())) + 1;
+        pad = (random.nextInt(matriz_dados.getDataSet().size())) + 1;
 //        for (int w = 0; w < 10; w++) {
         principal = pad;
         buscaant(pad, matriz_padrao, matriz_dados);
-        linha_sorteada = random.nextInt(matriz_dados.getDimensão_matriz());
-        coluna_sorteada = random.nextInt(matriz_dados.getDimensão_matriz());
+        linha_sorteada = random.nextInt(matriz_dados.getDimensaoMatriz());
+        coluna_sorteada = random.nextInt(matriz_dados.getDimensaoMatriz());
         ci = sigma;
         cj = sigma;
         c2i = sigma;
@@ -268,13 +266,13 @@ public final class ACOClustering {
         while (si - ci < 0) {
             --ci;
         }
-        while (si + c2i >= matriz_dados.getDimensão_matriz()) {
+        while (si + c2i >= matriz_dados.getDimensaoMatriz()) {
             --c2i;
         }
         while (sj - cj < 0) {
             --cj;
         }
-        while (sj + c2j >= matriz_dados.getDimensão_matriz()) {
+        while (sj + c2j >= matriz_dados.getDimensaoMatriz()) {
             --c2j;
         }
 
@@ -311,7 +309,7 @@ public final class ACOClustering {
 
     }
 
-    private void descarrega(int linha_descarrega, int coluna_descarrega, int pad, int[][] matriz_padrao, MatrizDados matriz_dados) throws IOException {
+    private void descarrega(int linha_descarrega, int coluna_descarrega, int pad, int[][] matriz_padrao, Base matriz_dados) throws IOException {
         int i = 0, j = 0;
         int contador = 0, contador2 = 0;
         int si = 0, sj = 0, ci = 1, cj = 1, c2i = 1, c2j = 1;
@@ -331,7 +329,6 @@ public final class ACOClustering {
         if (Pdrop2 >= teste) {
             if (Pdrop2 > Pdrop1) {
                 if (matriz_padrao[linha_descarrega][coluna_descarrega] != 0) {
-
                     ci = cj = c2i = c2j = 1;
                     si = linha_descarrega;
                     sj = coluna_descarrega;
@@ -339,13 +336,13 @@ public final class ACOClustering {
                         if (si - ci < 0) {
                             --ci;
                         }
-                        if (si + c2i > matriz_dados.getDimensão_matriz()) {
+                        if (si + c2i > matriz_dados.getDimensaoMatriz()) {
                             --c2i;
                         }
                         if (sj - cj < 0) {
                             --cj;
                         }
-                        if (sj + c2j > matriz_dados.getDimensão_matriz()) {
+                        if (sj + c2j > matriz_dados.getDimensaoMatriz()) {
                             --c2j;
                         }
                         for (i = si - ci; i < si + c2i; i++) {
@@ -382,13 +379,13 @@ public final class ACOClustering {
                     while (si - ci < 0) {
                         --ci;
                     }
-                    while (si + c2i >= matriz_dados.getDimensão_matriz()) {
+                    while (si + c2i >= matriz_dados.getDimensaoMatriz()) {
                         --c2i;
                     }
                     while (sj - cj < 0) {
                         --cj;
                     }
-                    while (sj + c2j >= matriz_dados.getDimensão_matriz()) {
+                    while (sj + c2j >= matriz_dados.getDimensaoMatriz()) {
                         --c2j;
                     }
 
@@ -404,13 +401,11 @@ public final class ACOClustering {
                     matematica.calculos(2, cont_vizinhos, matriz_dados, distâncias2, 1, alfa, índice2);
                     Pdrop2 = matematica.fPdrop(2);
                     if ((Pdrop2) >= Pdrop1) {
-
                         matriz_padrao[linha_a_descarregar][coluna_a_descarregar] = pad;
                         matriz_padrao[linha_anterior][coluna_anterior] = 0;
                         memset(vetlin);
                         memset(vetcol);
                         contcarrega = 0;
-
                     }
                 } else {
                     if (pad != 0) {
@@ -424,7 +419,7 @@ public final class ACOClustering {
         }
     }
 
-    private void analisairis(int principal, int pad, int i, MatrizDados matriz_dados) throws IOException {
+    private void analisairis(int principal, int pad, int i, Base matriz_dados) throws IOException {
         int auxiliar_principal = principal - 1;
         int auxiliar_padrao = pad - 1;
         if (i == 1) {
@@ -450,13 +445,13 @@ public final class ACOClustering {
         }
     }
 
-    private void buscaant(int pad, int[][] matriz_padrao, MatrizDados matriz_dados) throws IOException {
+    private void buscaant(int pad, int[][] matriz_padrao, Base matriz_dados) throws IOException {
         int aux = 0;
         int cont_vizinhos = 0;
         int i, j, si, sj, ci, cj, c2i, c2j;
         int principal = pad;
-        for (i = 0; i < matriz_dados.getDimensão_matriz(); i++) {
-            for (j = 0; j < matriz_dados.getDimensão_matriz(); j++) {
+        for (i = 0; i < matriz_dados.getDimensaoMatriz(); i++) {
+            for (j = 0; j < matriz_dados.getDimensaoMatriz(); j++) {
                 if (matriz_padrao[i][j] == pad) {
                     linha_anterior = i;
                     coluna_anterior = j;
@@ -473,13 +468,13 @@ public final class ACOClustering {
         while (si - ci < 0) {
             --ci;
         }
-        while (si + c2i >= matriz_dados.getDimensão_matriz()) {
+        while (si + c2i >= matriz_dados.getDimensaoMatriz()) {
             --c2i;
         }
         while (sj - cj < 0) {
             --cj;
         }
-        while (sj + c2j >= matriz_dados.getDimensão_matriz()) {
+        while (sj + c2j >= matriz_dados.getDimensaoMatriz()) {
             --c2j;
         }
         for (i = (si - ci); i <= (si + c2i); i++) {

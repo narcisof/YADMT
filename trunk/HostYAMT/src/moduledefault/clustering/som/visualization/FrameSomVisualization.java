@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
-import moduledefault.clustering.som.Base;
+import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.som.Neuronio;
 import moduledefault.clustering.som.RedeSOM;
 import moduledefault.clustering.view.jpanel.PanelSOM;
