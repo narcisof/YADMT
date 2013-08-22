@@ -24,8 +24,9 @@ import moduledefault.clustering.recuperacaogrupos.LigacaoMedia;
 import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
 import moduledefault.clustering.recuperacaogrupos.MFaino;
 import moduledefault.clustering.recuperacaogrupos.Ward;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
+import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.visualization.TecnicasDispersao;
@@ -41,46 +42,22 @@ public final class PanelFormigas extends javax.swing.JPanel {
     /**
      * Creates new form panelFormigas
      */
-    Collection cl;
+    interfaces.Base base;
+    static Base dados;
 
-    public PanelFormigas(double[][] base, String[] grupos, JFrameFormigas j, String[] aa, String nomeBase, Collection classes) {
-
+    public PanelFormigas(interfaces.Base b, JFrameFormigas j) {
         initComponents();
-        cl = classes;
-        this.nomeBase = nomeBase;
-        nomesClasses = aa;
-        this.matrizDados = base;
-        teste = new MatrizDados();
-        this.grupos = grupos;
+        base = b;
         startMatrizDados();
         Operações_Mat mat = new Operações_Mat();
-        mat.Padronização(teste);
+        mat.Padronização(dados);
+        imprimiBase();
         listaObjetos = new ArrayList<ACOClustering>();
         listaGrupos = new ArrayList<int[][]>();
         listaText = new ArrayList<>();
         frameFormigas = j;
         this.objetoAtual = 0;
         buttonVisualizacao.setEnabled(false);
-    }
-
-    public String getNomeBase() {
-        return nomeBase;
-    }
-
-    public void setNomeBase(String nomeBase) {
-        this.nomeBase = nomeBase;
-    }
-
-    public String[] getNomesClasses() {
-        return nomesClasses;
-    }
-
-    public void setNomesClasses(String[] nomesClasses) {
-        this.nomesClasses = nomesClasses;
-    }
-
-    public void setCl(Collection cl) {
-        this.cl = cl;
     }
 
     public JFrameFormigas getFrameFormigas() {
@@ -93,8 +70,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
     /**
      *
      */
-    String nomeBase;
-    String[] nomesClasses;
     ArrayList<int[][]> listaGrupos;
     ArrayList<ACOClustering> listaObjetos;
     double melhorconfusao = Integer.MIN_VALUE;
@@ -125,7 +100,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
     MFaino achagrupos;
     double[][] matrizDados;
     String[] grupos;
-    static MatrizDados teste;
     int teste_distancia = 0;
     JFrameFormigas frameFormigas;
     StringBuffer buffer;
@@ -663,7 +637,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
 
         TecnicasDispersao.getInstance().setSetou(false);
-        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setMatrizDados(dados);
         TecnicasDispersao.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual() - 1));
         TecnicasDispersao.getInstance().setQntGrupos(qntGrupos);
         TecnicasDispersao.getInstance().setCombos();
@@ -672,7 +646,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     private void fundoSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoSimulacaoComponentResized
         if (matriz_padrao == null) {
-            matriz_padrao = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+            matriz_padrao = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
             pmat(matriz_padrao);
         }
         dispersaoGeral();
@@ -728,12 +702,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
     void Agrupamento() throws IOException, InterruptedException {
         if (matriz_padrao == null) {
-            matriz_padrao = new int[teste.getDimensão_matriz()][teste.getDimensão_matriz()];
+            matriz_padrao = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
             pmat(matriz_padrao);
         }
         ACOClustering c = null;
         try {
-            c = new ACOClustering(teste, teste_distancia, matriz_padrao);
+            c = new ACOClustering(dados, teste_distancia, matriz_padrao);
 
         } catch (IOException ex) {
             Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
@@ -750,7 +724,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         getOperar().set_alfamaximo(frameFormigas.getAlfaMaximo());
         getOperar().set_alfaminimo(frameFormigas.getAlfaMinimo());
         getOperar().set_controlealfa(frameFormigas.getAlfaControle());
-        getOperar().opera_inicial(teste);
+        getOperar().opera_inicial(dados);
 
 
         while (getOperar().getCont() < getOperar().getCont2()) {
@@ -759,7 +733,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 getOperar().iteracao();
                 setDispersao(getOperar().getMatriz_padrao());
                 repaint();
-                Thread.sleep(sleep);
+                Thread.sleep(0);
                 vai((getOperar().getCont() * 100) / getOperar().getCont2());
             } catch (IOException ex) {
                 Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
@@ -775,12 +749,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
         setBuffer(buffer);
         getBuffer().append("===================== Informações =====================");
         getBuffer().append("\n\t\t\tYADMT.Clustering.AC");
-        getBuffer().append("\n\t Base: " + nomeBase);
-        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
-        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
+        getBuffer().append("\n\t Base: " + getDados().getNome());
+        getBuffer().append("\n\t Número de Instâncias: " + getDados().getDataSet().size());
+        getBuffer().append("\n\t Atributos: " + (getDados().getAtributos().size() - 1));
         getBuffer().append("\n\t Classes:");
-        for (int i = 0; i < nomesClasses.length; i++) {
-            getBuffer().append("\n\t\t" + nomesClasses[i]);
+        for (int i = 0; i < getDados().getClasses().size(); i++) {
+            getBuffer().append("\n\t\t" + getDados().getClasses().get(i));
         }
         getBuffer().append("\n\t Parâmetros: " + frameFormigas.getSigma() + ";" + frameFormigas.getSigmaMaximo() + ";" + frameFormigas.getSigmaMinimo() + ";"
                 + frameFormigas.getSigmaControle() + ";" + frameFormigas.getAlfa() + ";" + frameFormigas.getAlfaMaximo() + ";" + frameFormigas.getAlfaMinimo()
@@ -892,7 +866,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             }
             getBuffer().append("\n\n-------------------------------------------------------\n\n");
         }
-        mconfusao = indice.matrizConfusao(teste.getRealClasses(), grupos);
+        mconfusao = indice.getMconfusao();
         getBuffer().append("\tMatriz Confusão: \n\n");
         char classe = 'a';
         for (int i = 0; i < mconfusao[0].length; i++) {
@@ -905,7 +879,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             for (int j = 0; j < mconfusao[0].length; j++) {
                 getBuffer().append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
-                    getBuffer().append("\t" + classe + " = " + teste.getRealClasses().get(i));
+                    getBuffer().append("\t" + classe + " = " + getDados().getClasses().get(i));
                     ++classe;
                 }
             }
@@ -921,39 +895,39 @@ public final class PanelFormigas extends javax.swing.JPanel {
         tempoinicial_rec = System.currentTimeMillis();
 
         if (teste_recuperação == 3) {
-            ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), teste, getOperar());
+            ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaS.inicio();
             listaGrupos.add(ligaS.get_mpos());
             qntGrupos = ligaS.get_contgrupos();
-            indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
+            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 2) {
-            ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), teste, getOperar());
+            ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaM.inicio();
             qntGrupos = ligaM.get_contgrupos();
             listaGrupos.add(ligaM.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
+            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 1) {
-            ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), teste, getOperar());
+            ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaC.inicio();
             qntGrupos = ligaC.get_contgrupos();
             listaGrupos.add(ligaC.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), teste, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
+            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 5) {
-            ward = new Ward(getOperar().getMatriz_padrao(), teste, getOperar());
+            ward = new Ward(getOperar().getMatriz_padrao(), dados, getOperar());
             ward.inicio();
             qntGrupos = ward.get_contgrupos();
             listaGrupos.add(ward.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), teste, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
+            indice = new Índices(getOperar().getMatriz_padrao(), dados, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
             indice.inicio();
         } else if (teste_recuperação == 4) {
             achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
             achagrupos.inicio();
             qntGrupos = achagrupos.get_contgrupos();
             listaGrupos.add(achagrupos.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), teste, achagrupos.get_mpos(), achagrupos.get_contgrupos(), achagrupos.getPos(), getOperar());
+            indice = new Índices(getOperar().getMatriz_padrao(), dados, achagrupos.get_mpos(), achagrupos.get_contgrupos(), achagrupos.getPos(), getOperar());
             indice.inicio();
         }
 
@@ -973,7 +947,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 //        porcentagem = (somaacertos * 100) / matrizDados.length;
 //        if (porcentagem > melhorconfusao) {
 //            melhorconfusao = porcentagem;
-//            melhormatriz = new int[teste.getDimensão_matriz()][(teste.getDimensão_matriz())];
+//            melhormatriz = new int[dados.getDimensão_matriz()][(dados.getDimensão_matriz())];
 //            melhormconfusao = new int[numpad][numgrupo];
 //            for (int i = 0; i < numpad; i++) {
 //                for (int j = 0; j < numgrupo; j++) {
@@ -982,8 +956,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
 //                    melhornumgrupo = numgrupo;
 //                }
 //            }
-//            for (int i = 0; i < teste.getDimensão_matriz(); i++) {
-//                for (int j = 0; j < teste.getDimensão_matriz(); j++) {
+//            for (int i = 0; i < dados.getDimensão_matriz(); i++) {
+//                for (int j = 0; j < dados.getDimensão_matriz(); j++) {
 //                    melhormatriz[i][j] = operar.getMatriz_padrao()[i][j];
 //                }
 //            }
@@ -1000,15 +974,15 @@ public final class PanelFormigas extends javax.swing.JPanel {
     void pmat(int[][] matriz) {
         int i = 0, j = 0, x = 0, y;
         Random random = new Random();
-        for (i = 0; i < teste.getDimensão_matriz(); i++) {
-            for (j = 0; j < teste.getDimensão_matriz(); j++) {
+        for (i = 0; i < dados.getDimensaoMatriz(); i++) {
+            for (j = 0; j < dados.getDimensaoMatriz(); j++) {
                 matriz[i][j] = 0;
             }
         }
         for (y = 1; y <= matrizDados.length; y++) {//coloca os padroes sem repetir na grade
             do {
-                i = random.nextInt((int) teste.getDimensão_matriz());
-                j = random.nextInt((int) teste.getDimensão_matriz());
+                i = random.nextInt((int) dados.getDimensaoMatriz());
+                j = random.nextInt((int) dados.getDimensaoMatriz());
             } while (matriz[i][j] != 0);
             x++;
             if (matriz[i][j] == 0) {
@@ -1026,35 +1000,38 @@ public final class PanelFormigas extends javax.swing.JPanel {
     }
 
     public void startMatrizDados() {
-        String grupo;
-        grupo = grupos[0];
-        ArrayList<String> atributos = new ArrayList<>();
-        double[][] base = new double[this.matrizDados.length][this.matrizDados[0].length + 1];
-        for (int i = 0; i < this.matrizDados.length; i++) {
-            for (int j = 0; j < this.matrizDados[0].length; j++) {
-                base[i][j + 1] = this.matrizDados[i][j];
+        dados = new moduledefault.clustering.uteis.Base();
+        double matriz[][] = new double[base.getInput().length][base.getInput()[0].length]; //= arrayListBases.get(arrayListBases.size() - 1).getInput();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                matriz[i][j] = Double.valueOf(base.getInput()[i][j] + "").doubleValue();
             }
         }
-        int contadorGrupos = 1;
-        for (int i = 0; i < grupos.length; i++) {
-            if (!grupo.equals(grupos[i])) {
-                grupo = grupos[i];
-                contadorGrupos++;
+//        padronizacao(base);
+        matrizDados = matriz;
+        int grupo = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            Padrao p = new Padrao();
+            p.setNumero(grupo);
+            ++grupo;
+            for (int j = 0; j < matriz[0].length; j++) {
+                p.addAtributos(matriz[i][j]);
+
             }
-            base[i][0] = contadorGrupos;
+            p.setClasse(base.getOutput()[i].toString());
+            dados.addDataSet(p);
         }
 
+        for (int i = 0; i < base.getAtributes().length; i++) {
+            dados.addAtributos(base.getAtributes()[i]);
+        }
+        dados.setClasses((List) base.getClasses());
+        dados.setNome((String) base.getName());
+        dados.setDimensaoMatriz();
 
-        teste.setClasses(nomesClasses);
-        teste.setColunas(base[0].length);
-        teste.setLinhas(base.length);
-        teste.setDimensão_matriz();
-        teste.setMatriz_dados(base);
-        teste.setGrupos(grupos);
-        teste.setRealClasses((List) cl);
-
+//        imprimiBase();
         TecnicasDispersao.getInstance().setSetou(false);
-        TecnicasDispersao.getInstance().setMatrizDados(teste);
+        TecnicasDispersao.getInstance().setMatrizDados(dados);
         TecnicasDispersao.getInstance().setQntGrupos(qntGrupos);
         TecnicasDispersao.getInstance().setCombos();
 
@@ -1066,6 +1043,31 @@ public final class PanelFormigas extends javax.swing.JPanel {
         text.setJTextArea(jTextArea1);
         listResultados.add(s);
         listaText.add(buffer);
+    }
+
+    public void attBase(interfaces.Base get) {
+        base = get;
+        startMatrizDados();
+    }
+
+    private void imprimiBase() {
+        System.out.println("Nome = " + dados.getNome());
+        System.out.println("Atributos = ");
+        for (int i = 0; i < dados.getAtributos().size(); i++) {
+            System.out.print(dados.getAtributos().get(i) + " ");
+        }
+        System.out.println("\nClasses = ");
+        for (int i = 0; i < dados.getClasses().size(); i++) {
+            System.out.print(dados.getClasses().get(i) + " ");
+        }
+        System.out.println("\ndimensao = " + dados.getDimensaoMatriz());
+        System.out.println("Dados: ");
+        for (int i = 0; i < dados.getDataSet().size(); i++) {
+            for (int j = 0; j < dados.getDataSet().get(i).getAtributos().size(); j++) {
+                System.out.print(dados.getDataSet().get(i).getAtributos().get(j) + " ");
+            }
+            System.out.println("");
+        }
     }
 
     class ClusteringText {
@@ -1148,8 +1150,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         PanelFormigas.fundoSimulacao = fundoSimulacao;
     }
 
-    public static MatrizDados getDados() {
-        return teste;
+    public static Base getDados() {
+        return dados;
     }
 
     public void vai(final int i) {

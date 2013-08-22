@@ -4,13 +4,18 @@
  */
 package moduledefault.clustering.visualization;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.Correlação;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
 
 /**
@@ -26,13 +31,14 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static GraficoDispersaoGeral GDG;
     private static MatrizCorrelacao MC;
     private static TecnicasDispersao INSTANCE;
-    private static MatrizDados matrizDados;
+    private static Base matrizDados;
     private static int[][] matrizGrupos;
     private static int qntGrupos;
     private static int[] vetorGrupos;
     private static int grupoEscolhidoMatriz = 0;
     static boolean setou = false;
     static StringBuffer bufferLogGrupos;
+    JPanel[][] coco;
 
     public boolean isSetou() {
         return setou;
@@ -51,20 +57,20 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         vetorGrupos = new int[TecnicasDispersao.qntGrupos];
     }
 
-    public static void setComponentes() {
-        comboBoxEixoX.setSelectedIndex(0);
-        comboBoxEixoY.setSelectedIndex(0);
-        comboBoxEixoZ.setSelectedIndex(0);
-        comboBoxEixoXGrupos.setSelectedIndex(0);
-        comboBoxEixoYGrupos.setSelectedIndex(0);
-        comboBoxEixoZGrupos.setSelectedIndex(0);
-        comboBoxGrupos.setSelectedIndex(0);
-        comboBoxGruposMatriz.setSelectedIndex(0);
-    }
-
+//    public static void setComponentes() {
+//        comboBoxEixoX.setSelectedIndex(0);
+//        comboBoxEixoY.setSelectedIndex(0);
+//        comboBoxEixoZ.setSelectedIndex(0);
+//        comboBoxEixoXGrupos.setSelectedIndex(0);
+//        comboBoxEixoYGrupos.setSelectedIndex(0);
+//        comboBoxEixoZGrupos.setSelectedIndex(0);
+//        comboBoxGrupos.setSelectedIndex(0);
+//        comboBoxGruposMatriz.setSelectedIndex(0);
+//    }
     public TecnicasDispersao() {
         initComponents();
         this.setResizable(false);
+        setCoco();
         repaint();
     }
 
@@ -116,6 +122,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         comboBoxGrupos = new javax.swing.JComboBox();
+        tabCorrelacao = new javax.swing.JPanel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -504,6 +511,19 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Gráfico Dispersão Grupos", jPanel4);
 
+        javax.swing.GroupLayout tabCorrelacaoLayout = new javax.swing.GroupLayout(tabCorrelacao);
+        tabCorrelacao.setLayout(tabCorrelacaoLayout);
+        tabCorrelacaoLayout.setHorizontalGroup(
+            tabCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 895, Short.MAX_VALUE)
+        );
+        tabCorrelacaoLayout.setVerticalGroup(
+            tabCorrelacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 691, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("tab4", tabCorrelacao);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -530,7 +550,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             matrizCorrelacao();
             grupoEscolhidoMatriz = comboBoxGruposMatriz.getSelectedIndex();
             if (grupoEscolhidoMatriz != 0) {
-                MatrizDados aux = getMatrizDadosCorrelacao();
+                Base aux = getMatrizDadosCorrelacao();
                 if (aux != null) {
                     setMatrizGruposCorrelacao(aux);
                     MC.setRepinta(false);
@@ -625,13 +645,14 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTabbedPane jTabbedPane2;
     private static javax.swing.JTextArea logDispersaoGrupos;
+    private javax.swing.JPanel tabCorrelacao;
     // End of variables declaration//GEN-END:variables
 
-    public static MatrizDados getMatrizDados() {
+    public static Base getMatrizDados() {
         return matrizDados;
     }
 
-    public static void setMatrizDados(MatrizDados m) {
+    public static void setMatrizDados(Base m) {
         matrizDados = m;
     }
 
@@ -661,7 +682,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     }
 
-    private void setMatrizGruposCorrelacao(MatrizDados grupos) {
+    private void setMatrizGruposCorrelacao(Base grupos) {
         if (MC == null) {
             MC = new MatrizCorrelacao();
         } else {
@@ -677,7 +698,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         }
     }
 
-    private MatrizDados getMatrizDadosCorrelacao() {
+    private Base getMatrizDadosCorrelacao() {
         int grupo = grupoEscolhidoMatriz;
         int numElemento = 0;
         for (int i = 0; i < getMatrizGrupos()[0].length; i++) {
@@ -689,20 +710,30 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Poucos Padrões para este Grupo", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             return null;
         }
-        MatrizDados aux = new MatrizDados();
+        Base aux = new Base();
         aux.setLinhas(numElemento);
-        aux.setColunas(getMatrizDados().getColunas());
-        double[][] resultado = new double[numElemento][getMatrizDados().getColunas()];
+        aux.setColunas(getMatrizDados().getAtributos().size() - 1);
+        double[][] resultado = new double[numElemento][getMatrizDados().getAtributos().size() - 1];
         int contadorResultado = 0;
-        for (int j = 0; j < getMatrizDados().getLinhas(); j++) {
+        for (int j = 0; j < getMatrizDados().getDataSet().size(); j++) {
             if (getMatrizGrupos()[1][j] == grupo) {
-                for (int k = 0; k < getMatrizDados().getColunas(); k++) {
-                    resultado[contadorResultado][k] = getMatrizDados().getMatriz_dados()[getMatrizGrupos()[0][j] - 1][k];
+                for (int k = 0; k < getMatrizDados().getAtributos().size() - 1; k++) {
+                    resultado[contadorResultado][k] = getMatrizDados().getDataSet().get(getMatrizGrupos()[0][j] - 1).getAtributos().get(k);
                 }
                 contadorResultado++;
             }
         }
-        aux.setMatriz_dados(resultado);
+        int grupos = 0;
+        for (int i = 0; i < resultado.length; i++) {
+            Padrao p = new Padrao();
+            p.setNumero(grupo);
+            ++grupos;
+            for (int j = 0; j < resultado[0].length; j++) {
+                p.addAtributos(resultado[i][j]);
+            }
+//            p.setClasse(base.getOutput()[i].toString());
+            aux.addDataSet(p);
+        }
         return aux;
     }
 
@@ -742,10 +773,10 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         comboBoxEixoY.addItem("");
         comboBoxEixoZ.addItem("");
 
-        for (int i = 0; i < matrizDados.getClasses().length; i++) {
-            comboBoxEixoX.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoY.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoZ.addItem(matrizDados.getClasses()[i]);
+        for (int i = 0; i < matrizDados.getAtributos().size() - 1; i++) {
+            comboBoxEixoX.addItem(matrizDados.getAtributos().get(i));
+            comboBoxEixoY.addItem(matrizDados.getAtributos().get(i));
+            comboBoxEixoZ.addItem(matrizDados.getAtributos().get(i));
 
         }
 
@@ -764,10 +795,10 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         comboBoxEixoZGrupos.addItem("");
         comboBoxGrupos.addItem("");
 
-        for (int i = 0; i < matrizDados.getClasses().length; i++) {
-            comboBoxEixoXGrupos.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoYGrupos.addItem(matrizDados.getClasses()[i]);
-            comboBoxEixoZGrupos.addItem(matrizDados.getClasses()[i]);
+        for (int i = 0; i < matrizDados.getAtributos().size(); i++) {
+            comboBoxEixoXGrupos.addItem(matrizDados.getAtributos().get(i));
+            comboBoxEixoYGrupos.addItem(matrizDados.getAtributos().get(i));
+            comboBoxEixoZGrupos.addItem(matrizDados.getAtributos().get(i));
 
         }
 
@@ -948,5 +979,24 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     public void setLogDispersaoGrupos() {
         this.logDispersaoGrupos = new JTextArea();
+    }
+
+    private void setCoco() {
+        coco = new JPanel[2][2];
+        int contX = 0;
+        int contY = 0;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                JPanel aux = new JPanel();
+                aux.setBackground(Color.red);
+                aux.setLocation(contX, contY);
+                aux.setSize(10, 10);
+                coco[i][j] = aux;
+                tabCorrelacao.add(coco[i][j]);
+                coco[i][j].setVisible(true);
+                contY += 15;
+            }
+            contX += 15;
+        }
     }
 }

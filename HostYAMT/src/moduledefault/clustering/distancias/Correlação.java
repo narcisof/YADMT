@@ -4,9 +4,12 @@
  */
 package moduledefault.clustering.distancias;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import moduledefault.clustering.kmeans.Centroide;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -14,11 +17,11 @@ import moduledefault.clustering.uteis.MatrizDados;
  */
 public class Correlação extends DistanciaPrincipal {
 
-    public Correlação(MatrizDados teste) {
-        setMatrizDistancias(teste.getLinhas());
+    public Correlação(Base teste) {
+        setMatrizDistancias(teste.getDataSet().size());
     }
 
-    public void distancia(MatrizDados teste) {
+    public void distancia(Base teste) {
         double somador1 = 0;
         double somador2 = 0;
         double media1 = 0;
@@ -29,24 +32,24 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-        for (int y = 0; y < teste.getLinhas(); y++) {
-            for (int w = 0; w < teste.getLinhas(); w++) {
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somador1 += teste.getMatriz_dados()[y][i];
+        for (int y = 0; y < teste.getDataSet().size(); y++) {
+            for (int w = 0; w < teste.getDataSet().size(); w++) {
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador1 += teste.getDataSet().get(y).getAtributos().get(i);
                 }
-                media1 = somador1 / (teste.getColunas() - 1);
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somador2 += teste.getMatriz_dados()[w][i];
+                media1 = somador1 / (teste.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador2 += teste.getDataSet().get(w).getAtributos().get(i);
                 }
-                media2 = somador2 / (teste.getColunas() - 1);
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio1 += (teste.getMatriz_dados()[y][i] - media1) * (teste.getMatriz_dados()[w][i] - media2);
+                media2 = somador2 / (teste.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio1 += (teste.getDataSet().get(y).getAtributos().get(i) - media1) * (teste.getDataSet().get(w).getAtributos().get(i) - media2);
                 }
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio2 += Math.pow((teste.getMatriz_dados()[y][i] - media1), 2);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio2 += Math.pow((teste.getDataSet().get(y).getAtributos().get(i) - media1), 2);
                 }
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio3 += Math.pow((teste.getMatriz_dados()[w][i] - media2), 2);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio3 += Math.pow((teste.getDataSet().get(w).getAtributos().get(i) - media2), 2);
                 }
                 raiz = Math.sqrt((somatorio2 * somatorio3));
                 correlacao = somatorio1 / raiz;
@@ -66,7 +69,7 @@ public class Correlação extends DistanciaPrincipal {
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, float[][] matriz, ArrayList<Centroide> centroide) {
+    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         double somador1 = 0;
         double somador2 = 0;
         double media1 = 0;
@@ -116,7 +119,7 @@ public class Correlação extends DistanciaPrincipal {
         return resultado;
     }
 
-    public void distanciaGrupos(MatrizDados teste) {
+    public void distanciaGrupos(Base teste) {
         double somador1 = 0;
         double somador2 = 0;
         double media1 = 0;
@@ -127,25 +130,25 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-
-        for (int y = 0; y < teste.getLinhas(); y++) {
-            for (int w = 0; w < teste.getLinhas(); w++) {
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somador1 += teste.getMatriz_dados()[y][i];
+        
+        for (int y = 0; y < teste.getDataSet().size(); y++) {
+            for (int w = 0; w < teste.getDataSet().size(); w++) {
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador1 += teste.getDataSet().get(y).getAtributos().get(i);
                 }
-                media1 = somador1 / (teste.getColunas() - 1);
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somador2 += teste.getMatriz_dados()[w][i];
+                media1 = somador1 / (teste.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador2 += teste.getDataSet().get(w).getAtributos().get(i);
                 }
-                media2 = somador2 / (teste.getColunas() - 1);
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio1 += (teste.getMatriz_dados()[y][i] - media1) * (teste.getMatriz_dados()[w][i] - media2);
+                media2 = somador2 / (teste.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio1 += (teste.getDataSet().get(y).getAtributos().get(i) - media1) * (teste.getDataSet().get(w).getAtributos().get(i) - media2);
                 }
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio2 += Math.pow((teste.getMatriz_dados()[y][i] - media1), 2);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio2 += Math.pow((teste.getDataSet().get(y).getAtributos().get(i) - media1), 2);
                 }
-                for (int i = 1; i < teste.getColunas(); i++) {
-                    somatorio3 += Math.pow((teste.getMatriz_dados()[w][i] - media2), 2);
+                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio3 += Math.pow((teste.getDataSet().get(w).getAtributos().get(i) - media2), 2);
                 }
                 raiz = Math.sqrt((somatorio2 * somatorio3));
                 correlacao = somatorio1 / raiz;
@@ -161,6 +164,13 @@ public class Correlação extends DistanciaPrincipal {
                 correlacao = 0;
             }
 
+        }
+
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 0; j < teste.getDataSet().size(); j++) {
+                System.out.print(matrizDistancias[i][j] + " ");
+            }
+            System.out.println();
         }
     }
 }

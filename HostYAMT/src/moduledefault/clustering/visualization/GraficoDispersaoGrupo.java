@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.som.visualization.FrameSomVisualization;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
 
 /**
@@ -38,7 +38,7 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int height = TecnicasDispersao.getFundoDispersaoGrupos().getHeight();
         float w = width / 2;
         float h = height / 2;
-        float m = width / TecnicasDispersao.getMatrizDados().getLinhas() + 2;
+        float m = width / TecnicasDispersao.getMatrizDados().getDataSet().size() + 2;
         int tamPixel = (int) m;
         int x0 = 50 + (int) 0 * (width - 120);
         int y0 = (height - 70) - (int) 0 * (height - 120) + tamPixel;
@@ -79,12 +79,12 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int atributo3 = TecnicasDispersao.getComboBoxEixoZGrupos().getSelectedIndex();
         if (TecnicasDispersao.getMatrizGrupos() != null) {
             for (int j = 0; j < TecnicasDispersao.getVetorGrupos().length; j++) {
-                for (int i = 0; i < TecnicasDispersao.getMatrizDados().getLinhas(); i++) {
+                for (int i = 0; i < TecnicasDispersao.getMatrizDados().getDataSet().size(); i++) {
                     if (TecnicasDispersao.getMatrizGrupos()[1][i] == TecnicasDispersao.getVetorGrupos()[j]) {
-                        int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i] - 1][atributo1] * (width - 120));
-                        int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[TecnicasDispersao.getMatrizGrupos()[0][i] - 1][atributo2] * (height - 120));
-                        for (int k = 0; k < TecnicasDispersao.getMatrizDados().getRealClasses().size(); k++) {
-                            if (TecnicasDispersao.getMatrizDados().getGrupos()[TecnicasDispersao.getMatrizGrupos()[0][i] - 1].equals(TecnicasDispersao.getMatrizDados().getRealClasses().get(k))) {
+                        int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getAtributos().get(atributo1 - 1) * (width - 120));
+                        int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getAtributos().get(atributo2 - 1) * (height - 120));
+                        for (int k = 0; k < TecnicasDispersao.getMatrizDados().getClasses().size(); k++) {
+                            if (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getClasse().equals(TecnicasDispersao.getMatrizDados().getClasses().get(k))) {
                                 g.setColor(cores[k]);
                             }
                         }
@@ -97,7 +97,7 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
     }
 
     private void iniciaVetorCores() {
-        cores = new Color[TecnicasDispersao.getMatrizDados().getRealClasses().size()];
+        cores = new Color[TecnicasDispersao.getMatrizDados().getClasses().size()];
         for (int i = 0; i < cores.length; i++) {
             cores[i] = coresAux[i];
         }

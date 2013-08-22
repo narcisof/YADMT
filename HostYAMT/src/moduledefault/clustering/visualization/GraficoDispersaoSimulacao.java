@@ -30,16 +30,16 @@ public class GraficoDispersaoSimulacao extends javax.swing.JPanel {
         int y2 = height - 50;
         g.setColor(Color.black);
         iniciaVetorCores();
-        float m = (x2 - x0) / PanelFormigas.getDados().getLinhas() ;
-        int tamPixelX = (int) m+4;
-        int tamPixelY = (int) ((y2 - y0) / PanelFormigas.getDados().getLinhas())+4;
-        for (int i = 0; i < PanelFormigas.getDados().getDimensão_matriz(); i++) {
-            for (int j = 0; j < PanelFormigas.getDados().getDimensão_matriz(); j++) {
+        float m = (x2 - x0) / PanelFormigas.getDados().getDataSet().size();
+        int tamPixelX = (int) m + 4;
+        int tamPixelY = (int) ((y2 - y0) / PanelFormigas.getDados().getDataSet().size()) + 4;
+        for (int i = 0; i < PanelFormigas.getDados().getDimensaoMatriz(); i++) {
+            for (int j = 0; j < PanelFormigas.getDados().getDimensaoMatriz(); j++) {
                 if (matrizPadroes[i][j] != 0) {
-                    int x = x0 + j * ((((width - 100) / PanelFormigas.getDados().getDimensão_matriz())));
-                    int y = y0 + i * ((((height - 100) / PanelFormigas.getDados().getDimensão_matriz())));
+                    int x = x0 + j * ((((width - 100) / PanelFormigas.getDados().getDimensaoMatriz())));
+                    int y = y0 + i * ((((height - 100) / PanelFormigas.getDados().getDimensaoMatriz())));
                     for (int k = 0; k < cores.length; k++) {
-                        if (PanelFormigas.getDados().getGrupos()[(matrizPadroes[i][j] - 1)].equals(PanelFormigas.getDados().getRealClasses().get(k))) {
+                        if (PanelFormigas.getDados().getDataSet().get(matrizPadroes[i][j] - 1).getClasse().equals(PanelFormigas.getDados().getClasses().get(k))) {
                             g.setColor(cores[k]);
                         }
                     }
@@ -56,7 +56,7 @@ public class GraficoDispersaoSimulacao extends javax.swing.JPanel {
     }
 
     private void iniciaVetorCores() {
-        cores = new Color[TecnicasDispersao.getMatrizDados().getRealClasses().size()];
+        cores = new Color[TecnicasDispersao.getMatrizDados().getClasses().size()];
         for (int i = 0; i < cores.length; i++) {
             cores[i] = coresAux[i];
         }

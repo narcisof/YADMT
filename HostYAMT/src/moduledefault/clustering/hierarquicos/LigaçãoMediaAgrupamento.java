@@ -11,7 +11,7 @@ import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 /**
  *
@@ -21,7 +21,7 @@ public class LigaçãoMediaAgrupamento {
 
     int[][] m;// = new int[matriz.length][matriz.length];
     int linhas;
-    MatrizDados mdados;
+    Base mdados;
     int numpad, numgrupo = 1;
     int[][] mpos;
     int[][] mpos2;
@@ -29,12 +29,12 @@ public class LigaçãoMediaAgrupamento {
     double[][] matrizDistancia;
     int[][] mdend;
 
-    public LigaçãoMediaAgrupamento(int[][] matriz, MatrizDados matrizdados, int opcaoDistancia) {
+    public LigaçãoMediaAgrupamento(int[][] matriz, Base matrizdados, int opcaoDistancia) {
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
         mdados = matrizdados;
-        numpad = mdados.getLinhas();
+        numpad = mdados.getAtributos().size()-1;
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
         setMatrizDistancia(opcaoDistancia, matrizdados);
@@ -55,13 +55,8 @@ public class LigaçãoMediaAgrupamento {
         char ch;
         int z = 0;
         //VERIFICA NUMERO DE GRUPOS
-        z = (int) mdados.getMatriz_dados()[0][0];
-        for (int i = 1; i < mdados.getLinhas(); i++) {
-            if (mdados.getMatriz_dados()[i][0] != z) {
-                numgrupo++;
-            }
-            z = (int) mdados.getMatriz_dados()[i][0];
-        }
+        
+        numgrupo = mdados.getClasses().size();
         mdend = new int[numpad][1000];
 
 //        double[][] distancia = new double[numpad][numpad];
@@ -260,7 +255,7 @@ public class LigaçãoMediaAgrupamento {
 
     }
 
-    private void setMatrizDistancia(int opcaoDistancia, MatrizDados teste) {
+    private void setMatrizDistancia(int opcaoDistancia, Base teste) {
         if (opcaoDistancia == 1) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);

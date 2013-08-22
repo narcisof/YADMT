@@ -101,6 +101,7 @@ public class JPanelArffElicitedBases extends javax.swing.JPanel {
 
     private void jButtonAddBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBaseActionPerformed
         addBase();
+        JOptionPane.showMessageDialog(null, "Base de Dados carregada com sucesso!", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 //        Object[][] dados = getData(InteractiveDoubleList1.getListModelB().toArray());
 //        for (int i= 0; i < dados.length; i++) {
 //            for (int j= 0; j < dados[i].length; j++) {

@@ -5,7 +5,7 @@
 package moduledefault.clustering.recuperacaogrupos;
 
 import moduledefault.clustering.aco.ACOClustering;
-import moduledefault.clustering.uteis.MatrizDados;
+import moduledefault.clustering.uteis.Base;
 
 
 /**
@@ -16,7 +16,7 @@ public class LigacaoMedia {
 
     int[][] m;// = new int[matriz.length][matriz.length];
     int linhas;
-    MatrizDados mdados;
+    Base mdados;
     int numpad, numgrupo = 1;
     int[][] mpos;
     int[][] mpos2;
@@ -24,14 +24,14 @@ public class LigacaoMedia {
     ACOClustering x;
     StringBuffer string3;
 
-    public LigacaoMedia(int[][] matriz, MatrizDados matrizdados, ACOClustering x_) {
+    public LigacaoMedia(int[][] matriz, Base matrizdados, ACOClustering x_) {
         x = x_;
         string3 = new StringBuffer();
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         m = matriz;
         mdados = matrizdados;
-        numpad = mdados.getLinhas();
+        numpad = mdados.getDataSet().size();
         mpos = new int[2][numpad];
         mpos2 = new int[2][numpad];
     }
@@ -60,13 +60,8 @@ public class LigacaoMedia {
         char ch;
         int z = 0;
         //VERIFICA NUMERO DE GRUPOS
-        z = (int) mdados.getMatriz_dados()[0][0];
-        for (int i = 1; i < mdados.getLinhas(); i++) {
-            if (mdados.getMatriz_dados()[i][0] != z) {
-                numgrupo++;
-            }
-            z = (int) mdados.getMatriz_dados()[i][0];
-        }
+       
+        numgrupo = mdados.getClasses().size();
         int[][] mdend = new int[numpad][1000];
 
         double[][] distancia = new double[numpad][numpad];

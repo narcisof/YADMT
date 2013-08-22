@@ -30,7 +30,7 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
         int height = TecnicasDispersao.getFundoDispersaoGeral().getHeight();
         float w = width / 2;
         float h = height / 2;
-        float m = width / TecnicasDispersao.getMatrizDados().getLinhas() + 2;
+        float m = width / TecnicasDispersao.getMatrizDados().getDataSet().size() + 2;
         int tamPixel = (int) m;
         int x0 = 50 + (int) 0 * (width - 120);
         int y0 = (height - 70) - (int) 0 * (height - 120) + tamPixel;
@@ -69,13 +69,15 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
         int atributo1 = TecnicasDispersao.getComboBoxEixoX().getSelectedIndex();
         int atributo2 = TecnicasDispersao.getComboBoxEixoY().getSelectedIndex();
         int atributo3 = TecnicasDispersao.getComboBoxEixoZ().getSelectedIndex();
+        System.out.println("att 1 = " + atributo1);
+        System.out.println("att 2 = " + atributo2);
         if (atributo1 != 0 && atributo2 != 0) {
             if (TecnicasDispersao.getMatrizGrupos() != null) {
-                for (int i = 0; i < TecnicasDispersao.getMatrizDados().getLinhas(); i++) {
-                    int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[i][atributo1] * (width - 120));
-                    int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getMatriz_dados()[i][atributo2] * (height - 120));
-                    for (int k = 0; k < TecnicasDispersao.getMatrizDados().getRealClasses().size(); k++) {
-                        if (TecnicasDispersao.getMatrizDados().getGrupos()[TecnicasDispersao.getMatrizGrupos()[0][i] - 1].equals(TecnicasDispersao.getMatrizDados().getRealClasses().get(k))) {
+                for (int i = 0; i < TecnicasDispersao.getMatrizDados().getDataSet().size(); i++) {
+                    int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().get((atributo1 - 1)) * (width - 120));
+                    int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().get((atributo2 - 1)) * (height - 120));
+                    for (int k = 0; k < TecnicasDispersao.getMatrizDados().getClasses().size(); k++) {
+                        if (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getClasse().equals(TecnicasDispersao.getMatrizDados().getClasses().get(k))) {
                             g.setColor(cores[k]);
                         }
                     }
@@ -89,7 +91,7 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
     }
 
     private void iniciaVetorCores() {
-        cores = new Color[TecnicasDispersao.getMatrizDados().getRealClasses().size()];
+        cores = new Color[TecnicasDispersao.getMatrizDados().getClasses().size()];
         for (int i = 0; i < cores.length; i++) {
             cores[i] = coresAux[i];
         }

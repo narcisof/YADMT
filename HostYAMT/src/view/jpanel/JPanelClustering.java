@@ -166,7 +166,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     jButtonConfiguracao.setEnabled(true);
                     panelFundo.removeAll();
                     frameFormigas = new JFrameFormigas();
-                    formigas = new PanelFormigas(base, grupos, frameFormigas, arrayListBases.get(arrayListBases.size() - 1).getAtributes(), (String) arrayListBases.get(arrayListBases.size() - 1).getName(), arrayListBases.get(arrayListBases.size() - 1).getClasses());
+                    formigas = new PanelFormigas(arrayListBases.get(arrayListBases.size() - 1), frameFormigas);
                     formigas.setSize(panelFundo.getSize());
                     formigas.setPreferredSize(panelFundo.getPreferredSize());
                     panelFundo.add(formigas);
@@ -177,7 +177,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     jButtonConfiguracao.setEnabled(true);
                     frameKmeans = new JFrameKmeans();
                     panelFundo.removeAll();
-                    K = new PanelKmeans(base, grupos, frameKmeans, arrayListBases.get(arrayListBases.size() - 1).getAtributes(), (String) arrayListBases.get(arrayListBases.size() - 1).getName(), arrayListBases.get(arrayListBases.size() - 1).getClasses());
+                    K = new PanelKmeans(arrayListBases.get(arrayListBases.size() - 1), frameKmeans);
                     K.setSize(panelFundo.getSize());
                     K.setPreferredSize(panelFundo.getPreferredSize());
                     panelFundo.add(K);
@@ -200,7 +200,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                 case 4: //Hierarquicos
                     jButtonConfiguracao.setEnabled(true);
                     panelFundo.removeAll();
-                    hierarquicos = new PanelHierarquicos(base, grupos, arrayListBases.get(arrayListBases.size() - 1).getAtributes(), (String) arrayListBases.get(arrayListBases.size() - 1).getName(), arrayListBases.get(arrayListBases.size() - 1).getClasses());
+                    hierarquicos = new PanelHierarquicos(arrayListBases.get(arrayListBases.size() - 1));
                     hierarquicos.setSize(panelFundo.getSize());
                     hierarquicos.setPreferredSize(panelFundo.getPreferredSize());
                     panelFundo.add(hierarquicos);
@@ -264,33 +264,16 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
 
     public void updateBase() {
         if (formigas != null) {
-            formigas.setMatrizDados(base);
-            formigas.setGrupos(grupos);
-            formigas.setFrameFormigas(frameFormigas);
-            formigas.setNomesClasses(arrayListBases.get(arrayListBases.size() - 1).getAtributes());
-            formigas.setNomeBase((String) arrayListBases.get(arrayListBases.size() - 1).getName());
-            formigas.setCl(arrayListBases.get(arrayListBases.size() - 1).getClasses());
-            formigas.startMatrizDados();
+            formigas.attBase(arrayListBases.get(arrayListBases.size() - 1));
         }
         if (K != null) {
-
-            K.setMatrizDados(base);
-            K.setGrupos(grupos);
-            K.setFrameKmeans(frameKmeans);
-            K.setNomeClasses(arrayListBases.get(arrayListBases.size() - 1).getAtributes());
-            K.setNomeBase((String) arrayListBases.get(arrayListBases.size() - 1).getName());
-            K.setRealClasses(arrayListBases.get(arrayListBases.size() - 1).getClasses());
-            K.startMatrizDados();
+            K.attBase(arrayListBases.get(arrayListBases.size() - 1));
         }
         if (kohonen != null) {
             kohonen.addBase(arrayListBases.get(arrayListBases.size() - 1));
         }
         if (hierarquicos != null) {
-            hierarquicos.setMatrizDados(base);
-            hierarquicos.setGrupos(grupos);
-            hierarquicos.setNomesClasses(arrayListBases.get(arrayListBases.size() - 1).getAtributes());
-            hierarquicos.setNomeBase((String) arrayListBases.get(arrayListBases.size() - 1).getName());
-            hierarquicos.setCl(arrayListBases.get(arrayListBases.size() - 1).getClasses());
+            hierarquicos.addBase(arrayListBases.get(arrayListBases.size() - 1)); 
         }
     }
 
