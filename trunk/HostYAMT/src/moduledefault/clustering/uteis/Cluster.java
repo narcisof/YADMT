@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.som;
+package moduledefault.clustering.uteis;
 
 import moduledefault.clustering.uteis.Padrao;
 import java.util.ArrayList;
@@ -44,10 +44,10 @@ public class Cluster {
         return aux;
     }
 
-    public void setNomeGrupo(List<String> classes) {     
+    public void setNomeGrupo(List<String> classes) {
         int num = 0;
         String nome = null;
-        
+
         for (int i = 0; i < classes.size(); i++) {
             int aux = 0;
             for (int j = 0; j < grupo.size(); j++) {
@@ -55,7 +55,7 @@ public class Cluster {
                     ++aux;
                 }
             }
-            if(aux > num){
+            if (aux > num) {
                 num = aux;
                 nome = classes.get(i);
             }
@@ -63,11 +63,15 @@ public class Cluster {
         nomeGrupo = nome;
     }
 
+    public void setNomeGrupo(String nome) {
+        nomeGrupo = nome;
+    }
+
     public String getNomeGrupo() {
         return nomeGrupo;
     }
-        
-    public int getNumClasse(String classe){
+
+    public int getNumClasse(String classe) {
         int aux = 0;
         for (int i = 0; i < grupo.size(); i++) {
             if (grupo.get(i).getClasse().equals(classe)) {
@@ -76,9 +80,8 @@ public class Cluster {
         }
         return aux;
     }
-    
-    public int numPadroes(){
+
+    public int numPadroes() {
         return grupo.size();
     }
-
 }

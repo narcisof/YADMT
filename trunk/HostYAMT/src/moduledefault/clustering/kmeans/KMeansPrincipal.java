@@ -13,7 +13,7 @@ import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.Base;
-import moduledefault.clustering.uteis.Operações_Mat;
+import moduledefault.clustering.uteis.Cluster;
 
 /**
  *
@@ -236,7 +236,7 @@ public class KMeansPrincipal {
         this.lock = false;
     }
 
-    public StringBuffer imprimiHistorico() {
+    public StringBuffer imprimiHistorico(ArrayList<Cluster> clusters) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("\n\n===========================Resultados==================================");
         for (int i = 0; i < historico.size(); i++) {
@@ -258,50 +258,50 @@ public class KMeansPrincipal {
                 m[1][j] = historico.get(i).historicoPadroes[j];
             }
 
-            for (int j = m[0].length - 1; j >= 1; j--) {
-                for (int y = 0; y < j; y++) {
-                    if (m[0][y] > m[0][y + 1]) {
-                        int auxLinha = m[0][y];
-                        int auxColuna = m[1][y];
-                        m[0][y] = m[0][y + 1];
-                        m[1][y] = m[1][y + 1];
-                        m[0][y + 1] = auxLinha;
-                        m[1][y + 1] = auxColuna;
-                    }
+//            for (int j = m[0].length - 1; j >= 1; j--) {
+//                for (int y = 0; y < j; y++) {
+//                    if (m[0][y] > m[0][y + 1]) {
+//                        int auxLinha = m[0][y];
+//                        int auxColuna = m[1][y];
+//                        m[0][y] = m[0][y + 1];
+//                        m[1][y] = m[1][y + 1];
+//                        m[0][y + 1] = auxLinha;
+//                        m[1][y + 1] = auxColuna;
+//                    }
+//                }
+//            }
+
+          ArrayList<Integer> grupo;
+
+        //imprime em tela o agrupamento realizado
+        String padrao;
+        for (int w = 0; w < clusters.size(); w++) {
+////            clusters.get(i).setNomeGrupo(dados.getClasses());
+//            clusters.get(w).setNomeGrupo("Grupo " + (w + 1));
+            buffer.append("\nGrupo " + (w + 1) + ":");
+            grupo = clusters.get(w).getSortGrupo();
+            for (int j = 0; j < grupo.size(); j++) {
+                padrao = grupo.get(j) + "";
+                switch (padrao.length()) {
+                    case 1:
+                        padrao += "   ";
+                        break;
+                    case 2:
+                        padrao += "  ";
+                        break;
+                    case 3:
+                        padrao += " ";
+                        break;
                 }
-            }
-
-            String padrao;
-            for (int k = 0; k < numK; k++) {
-                int cont = 1;
-                buffer.append("Grupo: " + (k + 1) + "\n\n");
-                for (int j = 0; j < m[0].length; j++) {
-                    if (m[1][j] == (k)) {
-
-                        padrao = m[0][j] + "";
-                        switch (padrao.length()) {
-                            case 1:
-                                padrao += "   ";
-                                break;
-                            case 2:
-                                padrao += "  ";
-                                break;
-                            case 3:
-                                padrao += " ";
-                                break;
-                        }
-
-                        buffer.append(padrao);
-                        if (cont % 10 == 0) {
-                            buffer.append("\n");
-                            cont = 0;
-                        }
-                        cont++;
-                    }
+                if (j % 10 == 0) {
+                    buffer.append("\n");
                 }
-                buffer.append("\n\n-------------------------------------------------------\n\n");
+                buffer.append(padrao);
             }
+            buffer.append("\n");
+            buffer.append("\n\n-------------------------------------------------------\n\n");
 
+        }
             int[] vetorGruposFinal = new int[this.numK];
             for (int w = 0; w < this.padroesClusters.length; w++) {
                 for (int j = 0; j < this.numK; j++) {
@@ -332,7 +332,7 @@ public class KMeansPrincipal {
         return buffer;
     }
 
-    public StringBuffer imprimi() {
+    public StringBuffer imprimi(ArrayList<Cluster> clusters) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("\n\n===================Resultados======================");
         buffer.append("\n\nCentroídes: \n");
@@ -343,59 +343,51 @@ public class KMeansPrincipal {
                 buffer.append(historico.get(historico.size() - 1).historicoCentroide.get(j).getAtributos().get(w) + " ");
             }
         }
-        m = new int[2][historico.get(historico.size() - 1).historicoPadroes.length];
-        buffer.append("\n\nGrupos Formados:\n\n");
-        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-            m[0][j] = j;
-        }
-        for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-            m[1][j] = historico.get(historico.size() - 1).historicoPadroes[j];
-        }
+        buffer.append("\n\n");
+//        for (int j = m[0].length - 1; j >= 1; j--) {
+//            for (int y = 0; y < j; y++) {
+//                if (m[0][y] > m[0][y + 1]) {
+//                    int auxLinha = m[0][y];
+//                    int auxColuna = m[1][y];
+//                    m[0][y] = m[0][y + 1];
+//                    m[1][y] = m[1][y + 1];
+//                    m[0][y + 1] = auxLinha;
+//                    m[1][y + 1] = auxColuna;
+//                }
+//            }
+//        }
 
-        for (int j = m[0].length - 1; j >= 1; j--) {
-            for (int y = 0; y < j; y++) {
-                if (m[0][y] > m[0][y + 1]) {
-                    int auxLinha = m[0][y];
-                    int auxColuna = m[1][y];
-                    m[0][y] = m[0][y + 1];
-                    m[1][y] = m[1][y + 1];
-                    m[0][y + 1] = auxLinha;
-                    m[1][y + 1] = auxColuna;
-                }
-            }
-        }
+    ArrayList<Integer> grupo;
 
+        //imprime em tela o agrupamento realizado
         String padrao;
-        for (int k = 0; k < numK; k++) {
-            int cont = 1;
-            buffer.append("Grupo: " + (k + 1) + "\n\n");
-            for (int j = 0; j < m[0].length; j++) {
-                if (m[1][j] == (k)) {
-
-                    padrao = m[0][j] + "";
-                    switch (padrao.length()) {
-                        case 1:
-                            padrao += "   ";
-                            break;
-                        case 2:
-                            padrao += "  ";
-                            break;
-                        case 3:
-                            padrao += " ";
-                            break;
-                    }
-
-                    buffer.append(padrao);
-                    if (cont % 10 == 0) {
-                        buffer.append("\n");
-                        cont = 0;
-                    }
-                    cont++;
+        for (int i = 0; i < clusters.size(); i++) {
+//            clusters.get(i).setNomeGrupo(dados.getClasses());
+            clusters.get(i).setNomeGrupo("Grupo " + (i + 1));
+            buffer.append("\nGrupo " + (i + 1) + ":");
+            grupo = clusters.get(i).getSortGrupo();
+            for (int j = 0; j < grupo.size(); j++) {
+                padrao = grupo.get(j) + "";
+                switch (padrao.length()) {
+                    case 1:
+                        padrao += "   ";
+                        break;
+                    case 2:
+                        padrao += "  ";
+                        break;
+                    case 3:
+                        padrao += " ";
+                        break;
                 }
+                if (j % 10 == 0) {
+                    buffer.append("\n");
+                }
+                buffer.append(padrao);
             }
+            buffer.append("\n");
             buffer.append("\n\n-------------------------------------------------------\n\n");
-        }
 
+        }
         int[] vetorGruposFinal = new int[this.numK];
         for (int w = 0; w < this.padroesClusters.length; w++) {
             for (int j = 0; j < this.numK; j++) {
@@ -482,19 +474,17 @@ public class KMeansPrincipal {
     }
 
     public int[][] getM() {
+         m = new int[2][historico.get(historico.size() - 1).historicoPadroes.length];
         for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-            m[0][j] = j + 1;
+            m[0][j] = j;
         }
         for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
-            m[1][j] = historico.get(historico.size() - 1).historicoPadroes[j] + 1;
+            m[1][j] = historico.get(historico.size() - 1).historicoPadroes[j];
         }
 
         return m;
     }
 
-    public void setM(int[][] m) {
-        this.m = m;
-    }
 
     private int getQntiaClasses(String get, Base dados, int grupo) {
         int aux = 0;

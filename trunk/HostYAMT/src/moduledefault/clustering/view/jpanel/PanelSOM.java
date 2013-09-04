@@ -13,9 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
-import moduledefault.clustering.som.AvaliacaoAgrupamento;
+import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
-import moduledefault.clustering.som.Cluster;
+import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.som.ClusteringSOM;
 import moduledefault.clustering.som.OpMath;
 import moduledefault.clustering.uteis.Padrao;
@@ -438,7 +438,7 @@ public final class PanelSOM extends javax.swing.JPanel {
     }
 
     public void setTextClustering(ArrayList<Cluster> clusters, String agrup) {
-        AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados.getDataSet().size());
+        AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
         ArrayList<Integer> grupo;
 
         //imprime em tela o agrupamento realizado

@@ -4,6 +4,7 @@
  */
 package moduledefault.clustering.uteis;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,12 @@ public class Base {
     int dimensaoMatriz;
     private int linhas;
     private int colunas;
+
     public Base() {
-       this.Nome = null;
-       this.dataSet.clear();
-       this.atributos.clear();
-       this.classes.clear();
+        this.Nome = null;
+        this.dataSet.clear();
+        this.atributos.clear();
+        this.classes.clear();
     }
 
     public String getNome() {
@@ -43,6 +45,10 @@ public class Base {
         this.dataSet = dataSet;
     }
 
+    public void setDataSet() {
+        this.dataSet = new ArrayList<>();
+    }
+
     public void addDataSet(Padrao pad) {
         this.dataSet.add(pad);
     }
@@ -50,12 +56,12 @@ public class Base {
     public List<String> getAtributos() {
         return atributos;
     }
-    
-    public void addAtributos(String att){
+
+    public void addAtributos(String att) {
         atributos.add(att);
     }
-    
-    public String getAtributo(int i){
+
+    public String getAtributo(int i) {
         return atributos.get(i);
     }
 
@@ -66,8 +72,8 @@ public class Base {
     public void setClasses(List<String> grupos) {
         this.classes = grupos;
     }
-    
-        public void setDimensaoMatriz() {
+
+    public void setDimensaoMatriz() {
         dimensaoMatriz = (int) Math.sqrt((10 * this.dataSet.size()));
     }
 
@@ -78,8 +84,18 @@ public class Base {
     public void setLinhas(int numElemento) {
         linhas = numElemento;
     }
-    
-    public void setColunas(int colunas){
+
+    public void setColunas(int colunas) {
         this.colunas = colunas;
+    }
+
+    public Base copy() {
+        Base resultado = new Base();
+        resultado.setNome(this.getNome());
+        resultado.dataSet = this.dataSet;
+        resultado.atributos = this.atributos;
+        resultado.classes = this.classes;
+        resultado.setDimensaoMatriz();
+        return resultado;
     }
 }

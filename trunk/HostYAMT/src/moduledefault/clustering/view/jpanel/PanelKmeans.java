@@ -17,8 +17,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
+import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.view.frames.JFrameHistoricoKmeans;
 import moduledefault.clustering.view.frames.JFrameKmeans;
@@ -34,12 +36,9 @@ public class PanelKmeans extends javax.swing.JPanel {
      * Creates new form panelKmeans
      */
     int numK;
-    double[][] matrizDados;
-    public static String[] grupos;
     JFrameKmeans frameKmeans;
     public static String[] nomeAtributos;
     StringBuffer buffer;
-    String nomeBase;
     int teste_distancia = 0;
     KMeansPrincipal k;
     Collection realClasses;
@@ -47,6 +46,8 @@ public class PanelKmeans extends javax.swing.JPanel {
     ArrayList<StringBuffer> listaBuffer;
     interfaces.Base base;
     static moduledefault.clustering.uteis.Base dados;
+    ArrayList<Cluster> clusters;
+    AvaliacaoAgrupamento avaliacao;
 
     public PanelKmeans(interfaces.Base b, JFrameKmeans k) throws IOException {
         initComponents();
@@ -67,14 +68,6 @@ public class PanelKmeans extends javax.swing.JPanel {
 
     public void setFrameKmeans(JFrameKmeans frameKmeans) {
         this.frameKmeans = frameKmeans;
-    }
-
-    public String getNomeBase() {
-        return nomeBase;
-    }
-
-    public void setNomeBase(String nomeBase) {
-        this.nomeBase = nomeBase;
     }
 
     public Collection getRealClasses() {
@@ -261,22 +254,23 @@ public class PanelKmeans extends javax.swing.JPanel {
         int iteracoesParada = frameKmeans.getIteracoes();
         k = new KMeansPrincipal(dados, numK, paradaAutomatica, seedAleatorios, seeds, maxIteracoes, iteracoesParada, teste_distancia);
         k.start();
+        formaClusters(k.getM(), numK);
         imprimiAgrupamento();
-        getBuffer().append(k.imprimi());
-        getBuffer().append("\n\nMatriz Confusão:\n\n");
-        int[][] mconfusao = k.mConfusao();
+        getBuffer().append(k.imprimi(clusters));
+        getBuffer().append("\n\nMatriz Confusão:\n");
+        int[][] mconfusao = avaliacao.getMconfusao();
         char classe = 'a';
-        for (int i = 0; i < mconfusao.length; i++) {
+        for (int i = 0; i < mconfusao[0].length; i++) {
             getBuffer().append(classe + "\t");
             ++classe;
         }
-        getBuffer().append("\n\n");
+        getBuffer().append("\n");
         classe = 'a';
         for (int i = 0; i < mconfusao.length; i++) {
             for (int j = 0; j < mconfusao[0].length; j++) {
                 getBuffer().append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
-                    getBuffer().append("\t" + classe);// + " = " + teste.getRealClasses().get(i));
+                    getBuffer().append("\t" + classe + " = " + dados.getClasses().get(i));
                     ++classe;
                 }
             }
@@ -290,7 +284,7 @@ public class PanelKmeans extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         imprimiAgrupamento();
-        getBuffer().append(k.imprimiHistorico());
+        getBuffer().append(k.imprimiHistorico(clusters));
         getBuffer().append("\n\nMatriz Confusão:\n\n");
         int[][] mconfusao = k.mConfusao();
         char classe = 'a';
@@ -323,7 +317,7 @@ public class PanelKmeans extends javax.swing.JPanel {
 
         TecnicasDispersao.getInstance().setSetou(false);
         TecnicasDispersao.getInstance().setMatrizDados(dados);
-        TecnicasDispersao.getInstance().setMatrizGrupos(k.getM());
+        TecnicasDispersao.getInstance().setCluster(clusters);
         TecnicasDispersao.getInstance().setQntGrupos(numK);
         TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
@@ -352,18 +346,6 @@ public class PanelKmeans extends javax.swing.JPanel {
     private java.awt.List listResultados;
     private javax.swing.JButton visualizacao;
     // End of variables declaration//GEN-END:variables
-
-    public void setMatrizDados(double[][] matrizDados) {
-        this.matrizDados = matrizDados;
-    }
-
-    public void setGrupos(String[] grupos) {
-        this.grupos = grupos;
-    }
-
-    public static String[] getGrupos() {
-        return grupos;
-    }
 
     public void startMatrizDados() {
         dados = new moduledefault.clustering.uteis.Base();
@@ -415,14 +397,14 @@ public class PanelKmeans extends javax.swing.JPanel {
         setBuffer(buffer1);
         getBuffer().append("===================== Informações =====================");
         getBuffer().append("\n\t\t\tYADMT.Clustering.AC");
-        getBuffer().append("\n\t Base: " + nomeBase);
+        getBuffer().append("\n\t Base: " + dados.getNome());
         getBuffer().append("\n\t Número de Instâncias: " + dados.getDataSet().size());
         getBuffer().append("\n\t Atributos: " + (dados.getAtributos().size() - 1));
         getBuffer().append("\n\t Classes:");
         for (int i = 0; i < dados.getClasses().size(); i++) {
             getBuffer().append("\n\t\t" + dados.getClasses().get(i));
         }
-        getBuffer().append("\n\t Parâmetros: " + frameKmeans.getK() + ";" + frameKmeans.isParadaAutomatica() + ";" + frameKmeans.getIteracoes() + ";"
+        getBuffer().append("\n\tParâmetros: " + frameKmeans.getK() + ";" + frameKmeans.isParadaAutomatica() + ";" + frameKmeans.getIteracoes() + ";"
                 + frameKmeans.getMaxIteracoes() + ";" + frameKmeans.isSeedAleatorios() + ";" + frameKmeans.getSeeds());
         switch (teste_distancia) {
             case 1:
@@ -446,6 +428,12 @@ public class PanelKmeans extends javax.swing.JPanel {
             default:
                 break;
         }
+        avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
+        getBuffer().append("\n\tÍndice R: ALEATÓRIO");
+        getBuffer().append("\n\tÍndice F: " + String.valueOf(avaliacao.getMedidaF()));
+        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
+        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
+        getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
 
     }
 
@@ -468,6 +456,58 @@ public class PanelKmeans extends javax.swing.JPanel {
     public void attBase(interfaces.Base get) {
         base = get;
         startMatrizDados();
+    }
+
+    private void formaClusters(int[][] mpos, int numGrupos) {
+        clusters = new ArrayList<Cluster>();
+        for (int i = 0; i < numGrupos; i++) {
+            Cluster cl = new Cluster();
+            clusters.add(cl);
+        }
+        for (int j = mpos[0].length - 1; j >= 1; j--) {
+            for (int i = 0; i < j; i++) {
+                if (mpos[1][i] > mpos[1][i + 1]) {
+                    int auxLinha = mpos[0][i];
+                    int auxColuna = mpos[1][i];
+                    mpos[0][i] = mpos[0][i + 1];
+                    mpos[1][i] = mpos[1][i + 1];
+                    mpos[0][i + 1] = auxLinha;
+                    mpos[1][i + 1] = auxColuna;
+                }
+            }
+        }
+        System.out.println("mpos = ");
+        for (int i = 0; i < mpos.length; i++) {
+            for (int j = 0; j < mpos[0].length; j++) {
+                System.out.print(mpos[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        int grupoInicial = mpos[1][0];
+        int iterator = 0;
+        int cont = 0;
+        for (int i = 0; i < numGrupos; i++) {
+            for (int j = iterator; j < mpos[0].length; j++) {
+                if (mpos[1][j] == grupoInicial) {
+                    clusters.get(i).addPadrao(dados.getDataSet().get(mpos[0][j]));
+                } else {
+                    grupoInicial = mpos[1][j];
+                    iterator = j;
+                    break;
+                }
+            }
+        }
+//
+//        System.out.println("numero de clusters: " + clusters.size());
+//        for (int i = 0; i < clusters.size(); i++) {
+//            System.out.println("clusters: " + (i + 1));
+//            System.out.println(clusters.get(i).getNomeGrupo());
+//            System.out.println("elementos: ");
+//            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+//                System.out.print(clusters.get(i).getGrupo().get(j).getNumero() + " ");
+//            }
+//            System.out.println();
+//        }
     }
 
     class ClusteringText {
