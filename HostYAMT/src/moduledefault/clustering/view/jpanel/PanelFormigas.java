@@ -24,7 +24,9 @@ import moduledefault.clustering.recuperacaogrupos.LigacaoMedia;
 import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
 import moduledefault.clustering.recuperacaogrupos.MFaino;
 import moduledefault.clustering.recuperacaogrupos.Ward;
+import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.uteis.Índices;
@@ -51,9 +53,9 @@ public final class PanelFormigas extends javax.swing.JPanel {
         startMatrizDados();
         Operações_Mat mat = new Operações_Mat();
         mat.Padronização(dados);
-        imprimiBase();
+//        imprimiBase();
         listaObjetos = new ArrayList<ACOClustering>();
-        listaGrupos = new ArrayList<int[][]>();
+        clusters = new ArrayList<Cluster>();
         listaText = new ArrayList<>();
         frameFormigas = j;
         this.objetoAtual = 0;
@@ -70,7 +72,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
     /**
      *
      */
-    ArrayList<int[][]> listaGrupos;
     ArrayList<ACOClustering> listaObjetos;
     double melhorconfusao = Integer.MIN_VALUE;
     int numpad = 0;
@@ -92,14 +93,12 @@ public final class PanelFormigas extends javax.swing.JPanel {
     StringBuffer guarda;
     long tempoinicial_rec;
     long tempofinal_rec;
-    Índices indice;
     LigacaoCompleta ligaC;
     LigacaoSimples ligaS;
     LigacaoMedia ligaM;
     Ward ward;
     MFaino achagrupos;
     double[][] matrizDados;
-    String[] grupos;
     int teste_distancia = 0;
     JFrameFormigas frameFormigas;
     StringBuffer buffer;
@@ -110,6 +109,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     int numeroExecucoes = 0;
     private static GraficoDispersaoSimulacao GDG;
     int qntGrupos;
+    ArrayList<Cluster> clusters;
 
     synchronized public ACOClustering getOperar() {
         return operar;
@@ -638,7 +638,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
 
         TecnicasDispersao.getInstance().setSetou(false);
         TecnicasDispersao.getInstance().setMatrizDados(dados);
-        TecnicasDispersao.getInstance().setMatrizGrupos(listaGrupos.get(getObjetoAtual() - 1));
+        TecnicasDispersao.getInstance().setCluster(clusters);
         TecnicasDispersao.getInstance().setQntGrupos(qntGrupos);
         TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
@@ -815,58 +815,63 @@ public final class PanelFormigas extends javax.swing.JPanel {
         } else if (teste_recuperação == 4) {
             m = "Ligação MFaino";
         }
+        AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
         getBuffer().append("\n\n\n==================== " + m + " ====================");
-        getBuffer().append("\n\tGrupos Formados: " + String.valueOf(indice.getContgrupo()));
-        getBuffer().append("\n\tÍndice R: " + String.valueOf(indice.getR()));
-        getBuffer().append("\n\tÍndice F: " + String.valueOf(indice.getFfinal()));
-        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(indice.getPorcentagem()));
-        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(indice.getIdunn()));
-        getBuffer().append("\n\tVariância Total: " + String.valueOf(indice.getVtotal()));
+        getBuffer().append("\n\tGrupos Formados: " + String.valueOf(clusters.size()));
+        getBuffer().append("\n\tÍndice R: ALEATÓRIO");
+        getBuffer().append("\n\tÍndice F: " + String.valueOf(avaliacao.getMedidaF()));
+        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
+        getBuffer().append("\n\tÍndice Idunn: "+String.valueOf(avaliacao.getIndiceDunn()));
+        getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
         getBuffer().append("\n\nGrupos Formados:\n\n");
-        for (int j = listaGrupos.get(getObjetoAtual())[0].length - 1; j >= 1; j--) {
-            for (int i = 0; i < j; i++) {
-                if (listaGrupos.get(getObjetoAtual())[0][i] > listaGrupos.get(getObjetoAtual())[0][i + 1]) {
-                    int auxLinha = listaGrupos.get(getObjetoAtual())[0][i];
-                    int auxColuna = listaGrupos.get(getObjetoAtual())[1][i];
-                    listaGrupos.get(getObjetoAtual())[0][i] = listaGrupos.get(getObjetoAtual())[0][i + 1];
-                    listaGrupos.get(getObjetoAtual())[1][i] = listaGrupos.get(getObjetoAtual())[1][i + 1];
-                    listaGrupos.get(getObjetoAtual())[0][i + 1] = auxLinha;
-                    listaGrupos.get(getObjetoAtual())[1][i + 1] = auxColuna;
-                }
-            }
-        }
+//        for (int j = listaGrupos.get(getObjetoAtual())[0].length - 1; j >= 1; j--) {
+//            for (int i = 0; i < j; i++) {
+//                if (listaGrupos.get(getObjetoAtual())[0][i] > listaGrupos.get(getObjetoAtual())[0][i + 1]) {
+//                    int auxLinha = listaGrupos.get(getObjetoAtual())[0][i];
+//                    int auxColuna = listaGrupos.get(getObjetoAtual())[1][i];
+//                    listaGrupos.get(getObjetoAtual())[0][i] = listaGrupos.get(getObjetoAtual())[0][i + 1];
+//                    listaGrupos.get(getObjetoAtual())[1][i] = listaGrupos.get(getObjetoAtual())[1][i + 1];
+//                    listaGrupos.get(getObjetoAtual())[0][i + 1] = auxLinha;
+//                    listaGrupos.get(getObjetoAtual())[1][i + 1] = auxColuna;
+//                }
+//            }
+//        }
 
+        ArrayList<Integer> grupo;
+
+        //imprime em tela o agrupamento realizado
         String padrao;
-        for (int k = 0; k < indice.getContgrupo(); k++) {
-            int cont = 1;
-            getBuffer().append("Grupo: " + (k + 1) + "\n\n");
-            for (int j = 0; j < listaGrupos.get(getObjetoAtual())[0].length; j++) {
-                if (listaGrupos.get(getObjetoAtual())[1][j] == (k + 1)) {
-
-                    padrao = listaGrupos.get(getObjetoAtual())[0][j] + "";
-                    switch (padrao.length()) {
-                        case 1:
-                            padrao += "   ";
-                            break;
-                        case 2:
-                            padrao += "  ";
-                            break;
-                        case 3:
-                            padrao += " ";
-                            break;
-                    }
-
-                    getBuffer().append(padrao);
-                    if (cont % 10 == 0) {
-                        getBuffer().append("\n");
-                        cont = 0;
-                    }
-                    cont++;
+        for (int i = 0; i < clusters.size(); i++) {
+//            clusters.get(i).setNomeGrupo(dados.getClasses());
+            clusters.get(i).setNomeGrupo("Grupo " + (i + 1));
+            System.out.println("Grupo = " + (i + 1) + " clusters.getNome() = " + clusters.get(i).getNomeGrupo());
+            getBuffer().append("Grupo " + (i + 1) + ":");
+            grupo = clusters.get(i).getSortGrupo();
+            for (int j = 0; j < grupo.size(); j++) {
+                padrao = grupo.get(j) + "";
+                switch (padrao.length()) {
+                    case 1:
+                        padrao += "   ";
+                        break;
+                    case 2:
+                        padrao += "  ";
+                        break;
+                    case 3:
+                        padrao += " ";
+                        break;
                 }
+                if (j % 10 == 0) {
+                    getBuffer().append("\n");
+                }
+                getBuffer().append(padrao);
             }
+            getBuffer().append("\n");
+            getBuffer().append("\n\nCentróide: "+avaliacao.centroide(clusters.get(i)));
             getBuffer().append("\n\n-------------------------------------------------------\n\n");
+
         }
-        mconfusao = indice.getMconfusao();
+
+        mconfusao = avaliacao.getMconfusao();
         getBuffer().append("\tMatriz Confusão: \n\n");
         char classe = 'a';
         for (int i = 0; i < mconfusao[0].length; i++) {
@@ -879,7 +884,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             for (int j = 0; j < mconfusao[0].length; j++) {
                 getBuffer().append(mconfusao[i][j] + "\t");
                 if (j == mconfusao[0].length - 1) {
-                    getBuffer().append("\t" + classe + " = " + getDados().getClasses().get(i));
+                    getBuffer().append("\t" + classe + " = " + dados.getClasses().get(i));
                     ++classe;
                 }
             }
@@ -897,38 +902,28 @@ public final class PanelFormigas extends javax.swing.JPanel {
         if (teste_recuperação == 3) {
             ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaS.inicio();
-            listaGrupos.add(ligaS.get_mpos());
+            formaClusters(ligaS.get_mpos(), ligaS.get_contgrupos());
             qntGrupos = ligaS.get_contgrupos();
-            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaS.get_mpos(), ligaS.get_contgrupos(), ligaS.getNumpad(), getOperar());
-            indice.inicio();
         } else if (teste_recuperação == 2) {
             ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaM.inicio();
+            formaClusters(ligaM.get_mpos(), ligaM.get_contgrupos());
             qntGrupos = ligaM.get_contgrupos();
-            listaGrupos.add(ligaM.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaM.get_mpos(), ligaM.get_contgrupos(), ligaM.getNumpad(), getOperar());
-            indice.inicio();
         } else if (teste_recuperação == 1) {
             ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaC.inicio();
+            formaClusters(ligaC.get_mpos(), ligaC.get_contgrupos());
             qntGrupos = ligaC.get_contgrupos();
-            listaGrupos.add(ligaC.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), dados, ligaC.get_mpos(), ligaC.get_contgrupos(), ligaC.getNumpad(), getOperar());
-            indice.inicio();
         } else if (teste_recuperação == 5) {
             ward = new Ward(getOperar().getMatriz_padrao(), dados, getOperar());
             ward.inicio();
+            formaClusters(ward.get_mpos(), ward.get_contgrupos());
             qntGrupos = ward.get_contgrupos();
-            listaGrupos.add(ward.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), dados, ward.get_mpos(), ward.get_contgrupos(), ward.getNumpad(), getOperar());
-            indice.inicio();
         } else if (teste_recuperação == 4) {
             achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
             achagrupos.inicio();
+            formaClusters(achagrupos.get_mpos(), achagrupos.get_contgrupos());
             qntGrupos = achagrupos.get_contgrupos();
-            listaGrupos.add(achagrupos.get_mpos());
-            indice = new Índices(getOperar().getMatriz_padrao(), dados, achagrupos.get_mpos(), achagrupos.get_contgrupos(), achagrupos.getPos(), getOperar());
-            indice.inicio();
         }
 
 //        tempofinal_rec = System.currentTimeMillis();
@@ -989,10 +984,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 matriz[i][j] = x;
             }
         }
-    }
-
-    public void setGrupos(String[] grupos) {
-        this.grupos = grupos;
     }
 
     public void setMatrizDados(double[][] matrizDados) {
@@ -1068,6 +1059,58 @@ public final class PanelFormigas extends javax.swing.JPanel {
             }
             System.out.println("");
         }
+    }
+
+    private void formaClusters(int[][] mpos, int numGrupos) {
+        clusters = new ArrayList<Cluster>();
+        for (int i = 0; i < numGrupos; i++) {
+            Cluster cl = new Cluster();
+            clusters.add(cl);
+        }
+        for (int j = mpos[0].length - 1; j >= 1; j--) {
+            for (int i = 0; i < j; i++) {
+                if (mpos[1][i] > mpos[1][i + 1]) {
+                    int auxLinha = mpos[0][i];
+                    int auxColuna = mpos[1][i];
+                    mpos[0][i] = mpos[0][i + 1];
+                    mpos[1][i] = mpos[1][i + 1];
+                    mpos[0][i + 1] = auxLinha;
+                    mpos[1][i + 1] = auxColuna;
+                }
+            }
+        }
+        System.out.println("mpos = ");
+        for (int i = 0; i < mpos.length; i++) {
+            for (int j = 0; j < mpos[0].length; j++) {
+                System.out.print(mpos[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        int grupoInicial = mpos[1][0];
+        int iterator = 0;
+        int cont = 0;
+        for (int i = 0; i < numGrupos; i++) {
+            for (int j = iterator; j < mpos[0].length; j++) {
+                if (mpos[1][j] == grupoInicial) {
+                    clusters.get(i).addPadrao(dados.getDataSet().get(mpos[0][j] - 1));
+                } else {
+                    grupoInicial = mpos[1][j];
+                    iterator = j;
+                    break;
+                }
+            }
+        }
+//
+//        System.out.println("numero de clusters: " + clusters.size());
+//        for (int i = 0; i < clusters.size(); i++) {
+//            System.out.println("clusters: " + (i + 1));
+//            System.out.println(clusters.get(i).getNomeGrupo());
+//            System.out.println("elementos: ");
+//            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+//                System.out.print(clusters.get(i).getGrupo().get(j).getNumero() + " ");
+//            }
+//            System.out.println();
+//        }
     }
 
     class ClusteringText {

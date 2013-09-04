@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Padrao;
 
 /**
  *
@@ -19,6 +20,9 @@ public class Correlação extends DistanciaPrincipal {
 
     public Correlação(Base teste) {
         setMatrizDistancias(teste.getDataSet().size());
+    }
+
+    public Correlação() {
     }
 
     public void distancia(Base teste) {
@@ -130,7 +134,7 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-        
+
         for (int y = 0; y < teste.getDataSet().size(); y++) {
             for (int w = 0; w < teste.getDataSet().size(); w++) {
                 for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
@@ -166,11 +170,45 @@ public class Correlação extends DistanciaPrincipal {
 
         }
 
-        for (int i = 0; i < teste.getDataSet().size(); i++) {
-            for (int j = 0; j < teste.getDataSet().size(); j++) {
-                System.out.print(matrizDistancias[i][j] + " ");
+//        for (int i = 0; i < teste.getDataSet().size(); i++) {
+//            for (int j = 0; j < teste.getDataSet().size(); j++) {
+//                System.out.print(matrizDistancias[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
+    }
+
+    public void trasnpoe(Base base) {
+        if (base != null) {
+            double[][] resultado = new double[base.getDataSet().get(0).getAtributos().size()][base.getDataSet().size()];
+            double[][] matriz = new double[base.getDataSet().size()][base.getDataSet().get(0).getAtributos().size()];
+
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[0].length; j++) {
+                    matriz[i][j] = base.getDataSet().get(i).getAtributos().get(j);
+                }
             }
-            System.out.println();
+            for (int i = 0; i < resultado.length; i++) {
+                for (int j = 0; j < resultado[0].length; j++) {
+                    resultado[i][j] = matriz[j][i];
+                }
+            }
+            Base auxBase = base.copy();
+            auxBase.setDataSet();
+            int grupo = 0;
+            for (int i = 0; i < resultado.length; i++) {
+                Padrao p = new Padrao();
+                p.setNumero(grupo);
+                ++grupo;
+                for (int j = 0; j < resultado[0].length; j++) {
+                    p.addAtributos(resultado[i][j]);
+
+                }
+//            p.setClasse(Base.getOutput()[i].toString());
+                auxBase.addDataSet(p);
+            }
+            setMatrizDistancias(auxBase.getDataSet().size());
+            distanciaGrupos(auxBase);
         }
     }
 }

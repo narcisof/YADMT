@@ -77,23 +77,33 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int atributo1 = TecnicasDispersao.getComboBoxEixoXGrupos().getSelectedIndex();
         int atributo2 = TecnicasDispersao.getComboBoxEixoYGrupos().getSelectedIndex();
         int atributo3 = TecnicasDispersao.getComboBoxEixoZGrupos().getSelectedIndex();
-        if (TecnicasDispersao.getMatrizGrupos() != null) {
+        if (TecnicasDispersao.getClusters() != null) {
             for (int j = 0; j < TecnicasDispersao.getVetorGrupos().length; j++) {
-                for (int i = 0; i < TecnicasDispersao.getMatrizDados().getDataSet().size(); i++) {
-                    if (TecnicasDispersao.getMatrizGrupos()[1][i] == TecnicasDispersao.getVetorGrupos()[j]) {
-                        int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getAtributos().get(atributo1 - 1) * (width - 120));
-                        int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getAtributos().get(atributo2 - 1) * (height - 120));
-                        for (int k = 0; k < TecnicasDispersao.getMatrizDados().getClasses().size(); k++) {
-                            if (TecnicasDispersao.getMatrizDados().getDataSet().get(TecnicasDispersao.getMatrizGrupos()[0][i] - 1).getClasse().equals(TecnicasDispersao.getMatrizDados().getClasses().get(k))) {
-                                g.setColor(cores[k]);
+                String grupo = "Grupo " + TecnicasDispersao.getVetorGrupos()[j];
+                for (int l = 0; l < TecnicasDispersao.getClusters().size(); l++) {
+                    if (TecnicasDispersao.getClusters().get(l).getNomeGrupo().equals(grupo)) {
+                        for (int i = 0; i < TecnicasDispersao.getClusters().get(l).getGrupo().size(); i++) {
+                            int padrao = TecnicasDispersao.getClusters().get(l).getGrupo().get(i).getNumero();
+                            int x = 50 + (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(padrao).getAtributos().get((atributo1 - 1)) * (width - 120));
+                            int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(padrao).getAtributos().get((atributo2 - 1)) * (height - 120));
+                            for (int k = 0; k < TecnicasDispersao.getMatrizDados().getClasses().size(); k++) {
+                                String classePadrao = TecnicasDispersao.getMatrizDados().getDataSet().get(padrao).getClasse();
+                                String classeMomento = TecnicasDispersao.getMatrizDados().getClasses().get(k);
+                                if (classeMomento.equals(classePadrao)) {
+                                    g.setColor(cores[k]);
+                                }
                             }
-                        }
-                        g.fillOval(x, y, tamPixel, tamPixel);
-                    }
-                }
-            }
 
+                            g.fillOval(x, y, tamPixel, tamPixel);
+
+                        }
+                    }
+
+                }
+
+            }
         }
+
     }
 
     private void iniciaVetorCores() {

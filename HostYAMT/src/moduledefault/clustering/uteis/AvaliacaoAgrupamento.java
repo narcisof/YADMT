@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.som;
+package moduledefault.clustering.uteis;
 
+import moduledefault.clustering.uteis.Cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,21 +18,144 @@ public class AvaliacaoAgrupamento {
     private List<String> classes;
     private ArrayList<Cluster> clusters;
     private int tamanhoBase;
+    private Base base;
     //
     private float variancia;
     private int[][] mconfusao;
     private float acerto;
     private float medidaF;
+    private float indiceAleatorio;
+    private float indiceDunn;
 
-    public AvaliacaoAgrupamento(ArrayList<Cluster> clusters, List<String> classes, int tamBase) {
+    public AvaliacaoAgrupamento(ArrayList<Cluster> clusters, List<String> classes, Base _base) {
         this.classes = classes;
         this.clusters = clusters;
-        this.tamanhoBase = tamBase;
+        base = _base;
+        this.tamanhoBase = base.getDataSet().size();
         //
         variancia();
         matrizConfusao();
         acerto();
         medidaF();
+        dunn();
+    }
+
+    void indiceAleatorio() {
+//        int[] classepad = new int[tamanhoBase];
+//        int z = 0;
+//        for (int i = 0; i < tamanhoBase; i++) {
+//            classepad[i] = 0;
+//        }
+//        int col2 = 0, col1 = 0;
+//
+//        col1 = clusters.get(0).getGrupo().get(0).getAtributos().size();
+//
+//        for (int i = 0; i < tamanhoBase; i++) {
+//            for (int j = 0; j < col1; j++) {
+//                if (j == 0) {
+//                    classepad[i] = base.getDataSet().get(i).getAtributos().get(j).intValue();
+//                }
+//            }
+//        }
+//        int[][] newvet = new int[2][tamanhoBase]; //
+//        float a = 0, b = 0, c = 0, d = 0;
+//
+//
+//        for (int i = 0; i < tamanhoBase; i++) {
+//            for (int j = 0; j < tamanhoBase; j++) {
+//                if (mpos[0][j] == (i + 1)) {
+//                    newvet[0][i] = mpos[0][j];
+//                    newvet[1][i] = mpos[1][j];
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < tamanhoBase; i++) {
+//            for (int j = 0; j < tamanhoBase; j++) {
+//                if ((i != j) && (j > i)) {
+//                    if ((classepad[i] == classepad[j]) && (newvet[1][i] == newvet[1][j])) {
+//                        ++a;
+//                    }
+//                    if ((classepad[i] == classepad[j]) && (newvet[1][i] != newvet[1][j])) {
+//                        ++b;
+//                    }
+//                    if ((classepad[i] != classepad[j]) && (newvet[1][i] == newvet[1][j])) {
+//                        ++c;
+//                    }
+//                    if ((classepad[i] != classepad[j]) && (newvet[1][i] != newvet[1][j])) {
+//                        ++d;
+//                    }
+//                }
+//            }
+//        }
+//        indiceAleatorio = (a + d) / (a + b + c + d);
+    }
+
+    void dunn() {
+        float centro1 = 0, qdesvio1 = 0, diam1 = 0;
+        float centro2 = 0, qdesvio2 = 0, diam2 = 0;
+        float mdistancia = 0, fdistancia = 0, diamfinal = 0;
+        int qpadrao1 = 0, qpadrao2 = 0;
+
+        for (int i = 0; i < clusters.size(); i++) {
+            ///////////Primeiro grupo
+            qpadrao1 = clusters.get(i).getGrupo().size();
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                centro1 += clusters.get(i).getGrupo().get(j).getNumero();
+            }
+            System.out.println("qpadrao1 = " + qpadrao1);
+            centro1 = centro1 / qpadrao1;//calcula o centroide/média
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                qdesvio1 = clusters.get(i).getGrupo().get(j).getNumero() - centro1;
+                qdesvio1 = (float) Math.pow(qdesvio1, 2);
+                if (qdesvio1 > diam1) {
+                    diam1 = qdesvio1;
+                }
+                qdesvio1 = 0;
+            }
+            ///////////Segundo grupo
+            for (int x = i + 1; x < clusters.size(); x++) {
+                qpadrao2 = clusters.get(x).getGrupo().size();
+
+                System.out.println("qpadrao2 = " + qpadrao2);
+                for (int j = 0; j < clusters.get(x).getGrupo().size(); j++) {
+                    centro1 += clusters.get(x).getGrupo().get(j).getNumero();
+                }
+                centro2 = centro2 / qpadrao2;//calcula o centroide/média
+
+                for (int j = 0; j < clusters.get(x).getGrupo().size(); j++) {
+                    qdesvio1 = clusters.get(x).getGrupo().get(j).getNumero() - centro1;
+                    qdesvio1 = (float) Math.pow(qdesvio1, 2);
+                    if (qdesvio1 > diam1) {
+                        diam1 = qdesvio1;
+                    }
+                    qdesvio1 = 0;
+                }
+                ////Distancia entre as médias
+                mdistancia = (float) Math.sqrt((Math.pow(centro1, 2)) - (Math.pow(centro2, 2)));
+                if (diam1 >= diam2) {
+                    diamfinal = diam1;
+                } else {
+                    diamfinal = diam2;
+                }
+                fdistancia = mdistancia / (diamfinal);///arrumar pegar o maior diam entre todos os grupos
+                if (fdistancia < indiceDunn) {
+                    indiceDunn = fdistancia;
+                }
+                ////Zera as variaveis para prox iteração
+                centro2 = 0;
+                qdesvio2 = 0;
+                diam2 = 0;
+                qpadrao2 = 0;
+                mdistancia = 0;
+                fdistancia = 0;
+            }
+            ////Zera as variaveis para prox iteração
+            centro1 = 0;
+            qdesvio1 = 0;
+            diam1 = 0;
+            qpadrao1 = 0;
+        }
     }
 
     public float centroide(Cluster cluster) {
@@ -239,5 +363,9 @@ public class AvaliacaoAgrupamento {
 
     public void setAcerto(float acerto) {
         this.acerto = acerto;
+    }
+
+    public float getIndiceDunn() {
+        return indiceDunn;
     }
 }
