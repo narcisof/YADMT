@@ -40,7 +40,7 @@ public class QuadroPanel extends javax.swing.JPanel {
                 System.out.println("aqui");
                 int width = this.getWidth();
                 int height = this.getHeight();
-                float m = width*height /base.getDataSet().size() + 2;
+                float m = width /base.getDataSet().size() + 2;
                 int tamPixel = (int) m;
                 for (int i = 0; i < base.getDataSet().size(); i++) {
                     int x = 50 + (int) (base.getDataSet().get(i).getAtributos().get((att1)) * (width - 120));

@@ -31,6 +31,9 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static GraficoDispersaoGrupo GDGr;
     private static GraficoDispersaoGeral GDG;
     private static MatrizCorrelacao MC;
+    private static CoordenadasParalelas CP;
+    private static Radviz RV;
+    private static CoordenadasParalelasCirculares CPC;
     private static TecnicasDispersao INSTANCE;
     private static Base matrizDados;
     private static ArrayList<Cluster> clusters;
@@ -40,6 +43,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     static boolean setou = false;
     static StringBuffer bufferLogGrupos;
     JPanel[][] quadroPanels;
+    JPanel[][] quadroPanelsPixels;
     private static double dvrpX;
     private static double dvrpY;
     private static double dvrpZ;
@@ -106,7 +110,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        tabs = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         fundoDispersaoGeral = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -153,6 +157,14 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabelaBase = new javax.swing.JTable();
+        tabParalelas = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        fundoParalelas = new javax.swing.JPanel();
+        fundoRadviz = new javax.swing.JPanel();
+        fundoCirculares = new javax.swing.JPanel();
+        fundoPixelOriented = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        fundoOrientedPixel = new javax.swing.JPanel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -160,15 +172,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             }
         });
 
-        jTabbedPane2.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabs.setBackground(new java.awt.Color(255, 255, 255));
+        tabs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane2MouseClicked(evt);
+                tabsMouseClicked(evt);
             }
         });
-        jTabbedPane2.addComponentListener(new java.awt.event.ComponentAdapter() {
+        tabs.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                jTabbedPane2ComponentResized(evt);
+                tabsComponentResized(evt);
             }
         });
 
@@ -387,7 +399,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Gráfico Dispersão Geral", jPanel3);
+        tabs.addTab("Gráfico Dispersão Geral", jPanel3);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -481,7 +493,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Matriz de Correlação", jPanel5);
+        tabs.addTab("Matriz de Correlação", jPanel5);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -646,7 +658,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Gráfico Dispersão Grupos", jPanel4);
+        tabs.addTab("Gráfico Dispersão Grupos", jPanel4);
 
         tabCorrelacao.setBackground(new java.awt.Color(255, 255, 255));
         tabCorrelacao.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -720,29 +732,133 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Correlação", tabCorrelacao);
+        tabs.addTab("Correlação", tabCorrelacao);
+
+        javax.swing.GroupLayout fundoParalelasLayout = new javax.swing.GroupLayout(fundoParalelas);
+        fundoParalelas.setLayout(fundoParalelasLayout);
+        fundoParalelasLayout.setHorizontalGroup(
+            fundoParalelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 878, Short.MAX_VALUE)
+        );
+        fundoParalelasLayout.setVerticalGroup(
+            fundoParalelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 565, Short.MAX_VALUE)
+        );
+
+        jScrollPane4.setViewportView(fundoParalelas);
+
+        javax.swing.GroupLayout tabParalelasLayout = new javax.swing.GroupLayout(tabParalelas);
+        tabParalelas.setLayout(tabParalelasLayout);
+        tabParalelasLayout.setHorizontalGroup(
+            tabParalelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabParalelasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
+        );
+        tabParalelasLayout.setVerticalGroup(
+            tabParalelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabParalelasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(113, Short.MAX_VALUE))
+        );
+
+        tabs.addTab("Coordenadas Paralelas", tabParalelas);
+
+        javax.swing.GroupLayout fundoRadvizLayout = new javax.swing.GroupLayout(fundoRadviz);
+        fundoRadviz.setLayout(fundoRadvizLayout);
+        fundoRadvizLayout.setHorizontalGroup(
+            fundoRadvizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+        );
+        fundoRadvizLayout.setVerticalGroup(
+            fundoRadvizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 691, Short.MAX_VALUE)
+        );
+
+        tabs.addTab("RadViz", fundoRadviz);
+
+        javax.swing.GroupLayout fundoCircularesLayout = new javax.swing.GroupLayout(fundoCirculares);
+        fundoCirculares.setLayout(fundoCircularesLayout);
+        fundoCircularesLayout.setHorizontalGroup(
+            fundoCircularesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+        );
+        fundoCircularesLayout.setVerticalGroup(
+            fundoCircularesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 691, Short.MAX_VALUE)
+        );
+
+        tabs.addTab("Coordenadas Paralelas Circulares", fundoCirculares);
+
+        jScrollPane5.setToolTipText("");
+        jScrollPane5.setAutoscrolls(true);
+
+        fundoOrientedPixel.setBackground(new java.awt.Color(255, 255, 255));
+        fundoOrientedPixel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                fundoOrientedPixelComponentResized(evt);
+            }
+        });
+
+        javax.swing.GroupLayout fundoOrientedPixelLayout = new javax.swing.GroupLayout(fundoOrientedPixel);
+        fundoOrientedPixel.setLayout(fundoOrientedPixelLayout);
+        fundoOrientedPixelLayout.setHorizontalGroup(
+            fundoOrientedPixelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 893, Short.MAX_VALUE)
+        );
+        fundoOrientedPixelLayout.setVerticalGroup(
+            fundoOrientedPixelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 665, Short.MAX_VALUE)
+        );
+
+        jScrollPane5.setViewportView(fundoOrientedPixel);
+
+        javax.swing.GroupLayout fundoPixelOrientedLayout = new javax.swing.GroupLayout(fundoPixelOriented);
+        fundoPixelOriented.setLayout(fundoPixelOrientedLayout);
+        fundoPixelOrientedLayout.setHorizontalGroup(
+            fundoPixelOrientedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fundoPixelOrientedLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        fundoPixelOrientedLayout.setVerticalGroup(
+            fundoPixelOrientedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fundoPixelOrientedLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(193, Short.MAX_VALUE))
+        );
+
+        tabs.addTab("Orientada à Pixel", fundoPixelOriented);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(tabs)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 3, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTabbedPane2ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTabbedPane2ComponentResized
+    private void tabsComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tabsComponentResized
         dispersaoGeral();
         dispersaoGrupos();
 //        setQuadroPanels();
-    }//GEN-LAST:event_jTabbedPane2ComponentResized
+//        setQuadroPanelsOrientadaPixels();
+        setCoordenadasParalelas();
+        setRadviz();
+        setCirculares();
+    }//GEN-LAST:event_tabsComponentResized
 
     private void comboBoxGruposMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposMatrizActionPerformed
         if (setou) {
@@ -814,13 +930,13 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }//GEN-LAST:event_fundoCorrelacaoComponentResized
 
     private void tabCorrelacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tabCorrelacaoComponentResized
-//        setQuadroPanels();
+        setQuadroPanels();
         repaint();
     }//GEN-LAST:event_tabCorrelacaoComponentResized
 
-    private void jTabbedPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane2MouseClicked
-        setQuadroPanels();
-    }//GEN-LAST:event_jTabbedPane2MouseClicked
+    private void tabsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabsMouseClicked
+//        setQuadroPanels();
+    }//GEN-LAST:event_tabsMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -860,6 +976,11 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         ddistancia = (Double.valueOf(distancia.getValue().toString()));
         repaint();
     }//GEN-LAST:event_distanciaStateChanged
+
+    private void fundoOrientedPixelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoOrientedPixelComponentResized
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fundoOrientedPixelComponentResized
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -873,10 +994,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static javax.swing.JComboBox comboBoxGrupos;
     private static javax.swing.JComboBox comboBoxGruposMatriz;
     private javax.swing.JSpinner distancia;
+    private static javax.swing.JPanel fundoCirculares;
     private static javax.swing.JPanel fundoCorrelacao;
     private static javax.swing.JPanel fundoDispersaoGeral;
     private static javax.swing.JPanel fundoDispersaoGrupos;
     private static javax.swing.JPanel fundoMatrizCorrelacao;
+    private static javax.swing.JPanel fundoOrientedPixel;
+    private static javax.swing.JPanel fundoParalelas;
+    private javax.swing.JPanel fundoPixelOriented;
+    private static javax.swing.JPanel fundoRadviz;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -900,13 +1026,16 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private static javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private static javax.swing.JTextArea logDispersaoGrupos;
     private javax.swing.JSpinner pontoX;
     private javax.swing.JSpinner pontoY;
     private javax.swing.JSpinner pontoZ;
     private javax.swing.JPanel tabCorrelacao;
+    private javax.swing.JPanel tabParalelas;
     private javax.swing.JTable tabelaBase;
+    private static javax.swing.JTabbedPane tabs;
     private javax.swing.JSpinner vrpX;
     private javax.swing.JSpinner vrpY;
     private javax.swing.JSpinner vrpZ;
@@ -1274,6 +1403,51 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             setCorrelacoes();
         }
     }
+    public void setQuadroPanelsOrientadaPixels() {
+
+        if (matrizDados != null) {
+            quadroPanelsPixels = new JPanel[matrizDados.getDataSet().get(0).getAtributos().size()][matrizDados.getDataSet().get(0).getAtributos().size()];
+            int inicioX = 50;
+            int inicioY = 50;
+            for (int i = 0; i < quadroPanelsPixels.length; i++) {
+                inicioX = 50;
+                for (int j = 0; j < quadroPanelsPixels[0].length; j++) {
+                    OrientedPixels aux = null;
+                    
+                    aux.setLocation(inicioX, inicioY);
+                    aux.setSize(150, 150);
+                    quadroPanelsPixels[i][j] = aux;
+                    fundoOrientedPixel.add(quadroPanelsPixels[i][j]);
+                    quadroPanelsPixels[i][j].setVisible(true);
+                    inicioX += 200;
+                    int largura = 150 * quadroPanelsPixels[0].length + (50 * quadroPanelsPixels[0].length);
+                    int altura = 150 * quadroPanelsPixels.length + (50 * quadroPanelsPixels.length) + 50;
+                    fundoOrientedPixel.setSize(largura, altura);
+                    fundoOrientedPixel.setPreferredSize(new Dimension(largura, altura));
+//                    if (i == j) {
+//                        paintPanels(1, i + 1, quadroPanels[i][j].getGraphics(), matrizDados);
+//                    }
+                    fundoOrientedPixel.updateUI();
+                    jScrollPane5.updateUI();
+                }
+                inicioY += 200;
+            }
+        }
+    }
+
+    public void setCoordenadasParalelas() {
+        if (CP == null) {
+            CP = new CoordenadasParalelas();
+        }
+        CP.setSize(fundoParalelas.getWidth(), fundoParalelas.getHeight());
+        fundoParalelas.add(CP);
+        int numEixos = matrizDados.getDataSet().get(0).getAtributos().size();
+        int inicioX = 50;
+        int distanciaEixos = 350;
+        fundoParalelas.setSize((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight());
+        fundoParalelas.setPreferredSize(new Dimension((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight()));
+
+    }
 
     public static JPanel getFundoCorrelacao() {
         return fundoCorrelacao;
@@ -1337,5 +1511,33 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     public static double getDdistancia() {
         return ddistancia;
+    }
+
+    public static JPanel getFundoParalelas() {
+        return fundoParalelas;
+    }
+
+    private void setRadviz() {
+        if (RV == null) {
+            RV = new Radviz();
+        }
+        RV.setSize(fundoRadviz.getWidth(), fundoRadviz.getHeight());
+        fundoRadviz.add(RV);
+    }
+
+    private void setCirculares() {
+        if (CPC == null) {
+            CPC = new CoordenadasParalelasCirculares();
+        }
+        CPC.setSize(fundoCirculares.getWidth(), fundoCirculares.getHeight());
+        fundoCirculares.add(CPC);
+    }
+
+    public static JPanel getFundoRadviz() {
+        return fundoRadviz;
+    }
+
+    public static JPanel getFundoCirculares() {
+        return fundoCirculares;
     }
 }
