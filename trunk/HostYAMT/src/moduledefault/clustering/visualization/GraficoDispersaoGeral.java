@@ -106,74 +106,31 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
             double distancia = TecnicasDispersao.getDdistancia();
             Camera c = new Camera(vrpX, vrpY, vrpZ, pontoX, pontoY, pontoZ, distancia);
             c.GerarIntermediarios();
-//            Ponto p1 = new Ponto(Color.black, x0, y0, 0);
-//            p1.setNome("1");
-//            Ponto p2 = new Ponto(Color.black, x1, y0, 0);
-//            p2.setNome("2");
-//            Ponto p3 = new Ponto(Color.black, x1, y2, 0);
-//            p3.setNome("3");
-//            Ponto p4 = new Ponto(Color.black, x0, y2, 0);
-//            p4.setNome("4");
-//            Ponto p5 = new Ponto(Color.black, x0, y0, z0);
-//            p5.setNome("5");
-//            Ponto p6 = new Ponto(Color.black, x1, y0, z0);
-//            p6.setNome("6");
-//            Ponto p7 = new Ponto(Color.black, x1, y2, z0);
-//            p7.setNome("7");
-//            Ponto p8 = new Ponto(Color.black, x0, y2, z0);
-//            p8.setNome("8");
-//
-//            ArrayList<Ponto> pts = new ArrayList<>();
-//            pts.add(p1);
-//            pts.add(p2);
-//            pts.add(p3);
-//            pts.add(p4);
-//            pts.add(p5);
-//            pts.add(p6);
-//            pts.add(p7);
-//            pts.add(p8);
-//            Poligono cubo = new Poligono(pts);
-//            cubo.GerarPrisma(4, (width-100)/2, height-100);
-//            Poligono auxCubo = c.GerarPerspectiva(TecnicasDispersao.getFundoDispersaoGeral().getWidth(), TecnicasDispersao.getFundoDispersaoGeral().getHeight(), cubo);
-//            for (Aresta a : auxCubo.getArestas()) {
-//                g.drawLine((int) a.getPonto_1().getX(), (int) a.getPonto_1().getY(), (int) a.getPonto_2().getX(), (int) a.getPonto_2().getY());
-//            }
-            //            p1.setX(auxCubo.getMatrizPontos().get(0, 0));
-//            p1.setY(auxCubo.getMatrizPontos().get(1, 0));
-//            p2.setX(auxCubo.getMatrizPontos().get(0, 1));
-//            p2.setY(auxCubo.getMatrizPontos().get(1, 1));
-//            p3.setX(auxCubo.getMatrizPontos().get(0, 2));
-//            p3.setY(auxCubo.getMatrizPontos().get(1, 2));
-//            p4.setX(auxCubo.getMatrizPontos().get(0, 3));
-//            p4.setY(auxCubo.getMatrizPontos().get(1, 3));
-//            p5.setX(auxCubo.getMatrizPontos().get(0, 4));
-//            p5.setY(auxCubo.getMatrizPontos().get(1, 4));
-//            p6.setX(auxCubo.getMatrizPontos().get(0, 5));
-//            p6.setY(auxCubo.getMatrizPontos().get(1, 5));
-//            p7.setX(auxCubo.getMatrizPontos().get(0, 6));
-//            p7.setY(auxCubo.getMatrizPontos().get(1, 6));
-//            p8.setX(auxCubo.getMatrizPontos().get(0, 7));
-//            p8.setY(auxCubo.getMatrizPontos().get(1, 7));
-//            g.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
-//            g.drawLine((int) p1.getX(), (int) p1.getY(), (int) p4.getX(), (int) p4.getY());
-//            g.drawLine((int) p1.getX(), (int) p1.getY(), (int) p5.getX(), (int) p5.getY());
-//            g.drawLine((int) p2.getX(), (int) p2.getY(), (int) p3.getX(), (int) p3.getY());
-//            g.drawLine((int) p2.getX(), (int) p2.getY(), (int) p6.getX(), (int) p6.getY());
-//            g.drawLine((int) p3.getX(), (int) p3.getY(), (int) p7.getX(), (int) p7.getY());
-//            g.drawLine((int) p3.getX(), (int) p3.getY(), (int) p4.getX(), (int) p4.getY());
-//            g.drawLine((int) p4.getX(), (int) p4.getY(), (int) p8.getX(), (int) p8.getY());
-//            g.drawLine((int) p5.getX(), (int) p5.getY(), (int) p6.getX(), (int) p6.getY());
-//            g.drawLine((int) p5.getX(), (int) p5.getY(), (int) p8.getX(), (int) p8.getY());
-//            g.drawLine((int) p6.getX(), (int) p6.getY(), (int) p7.getX(), (int) p7.getY());
-//            g.drawLine((int) p7.getX(), (int) p7.getY(), (int) p8.getX(), (int) p8.getY());
-//            g.drawString(p1.getNome(), (int) p1.getX() - 3, (int) p1.getY() - 3);
-//            g.drawString(p2.getNome(), (int) p2.getX() - 3, (int) p2.getY() - 3);
-//            g.drawString(p3.getNome(), (int) p3.getX() - 3, (int) p3.getY() - 3);
-//            g.drawString(p4.getNome(), (int) p4.getX() - 3, (int) p4.getY() - 3);
-//            g.drawString(p5.getNome(), (int) p5.getX() - 3, (int) p5.getY() - 3);
-//            g.drawString(p6.getNome(), (int) p6.getX() - 3, (int) p6.getY() - 3);
-//            g.drawString(p7.getNome(), (int) p7.getX() - 3, (int) p7.getY() - 3);
-//            g.drawString(p8.getNome(), (int) p8.getX() - 3, (int) p8.getY() - 3);
+            Ponto p1 = new Ponto("1", x0, y0, 0, Color.black);
+            Ponto p2 = new Ponto("2", x1, y0, 0, Color.black);
+            Ponto p3 = new Ponto("3", x1, y2, 0, Color.black);
+            Ponto p4 = new Ponto("4", x0, y2, 0, Color.black);
+            Ponto p5 = new Ponto("5", x0, y0, -z0, Color.black);
+            Ponto p6 = new Ponto("6", x1, y0, -z0, Color.black);
+            Ponto p7 = new Ponto("7", x1, y2, -z0, Color.black);
+            Ponto p8 = new Ponto("8", x0, y2, -z0, Color.black);
+
+            ArrayList<Ponto> pts = new ArrayList<>();
+            pts.add(p1);
+            pts.add(p3);
+            pts.add(p4);
+            pts.add(p5);
+            pts.add(p6);
+            pts.add(p7);
+            pts.add(p2);
+            pts.add(p8);
+            Poligono cubo = new Poligono();
+            cubo.GerarPrisma(4, (width - 100) / 2, height - 100);
+            Poligono cubo2 = c.GerarPerspectiva(width, height, cubo);
+            for (Aresta a : cubo2.getArestas()) {
+                g.drawLine((int) a.getPonto_1().getX(), (int) a.getPonto_1().getY(), (int) a.getPonto_2().getX(), (int) a.getPonto_2().getY());
+                g.drawString(a.getPonto_1().getNome(), (int) a.getPonto_1().getX() - 3, (int) a.getPonto_1().getY() - 3);
+            }
             if (atributo1 != 0 && atributo2 != 0 && atributo3 != 0) {
                 if (TecnicasDispersao.getClusters() != null) {
                     ArrayList<Ponto> pontos = new ArrayList<>();
@@ -191,7 +148,7 @@ public class GraficoDispersaoGeral extends javax.swing.JPanel {
                         }
 
                         Ponto pAux = new Ponto(String.valueOf(TecnicasDispersao.getMatrizDados().getDataSet().get(i).getNumero()), x, y, z, cor);
-   
+
                         pontos.add(pAux);
                     }
 

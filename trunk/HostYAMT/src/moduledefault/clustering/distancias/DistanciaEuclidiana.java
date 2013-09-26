@@ -26,7 +26,7 @@ public class DistanciaEuclidiana extends DistanciaPrincipal {
         for (int i = 0; i < teste.getDataSet().size(); i++) {
             for (int j = 0; j < teste.getDataSet().size(); j++) {
                 if (i != j) {
-                    for (int w = 0; w < teste.getAtributos().size()-1; w++) {
+                    for (int w = 0; w < teste.getDataSet().get(0).getAtributos().size(); w++) {
                         acumulador += Math.pow(teste.getDataSet().get(i).getAtributos().get(w) - teste.getDataSet().get(j).getAtributos().get(w), 2);
                     }
                     matrizDistancias[i][j] = Math.sqrt(acumulador);
@@ -35,6 +35,7 @@ public class DistanciaEuclidiana extends DistanciaPrincipal {
             }
         }
         padronizacaDistancias(matrizDistancias);
+       
     }
 
     public static float[][] distanciaKmeans(ArrayList<Centroide> centroides, int numK, double[][] matrizAtributos, int linhas) {

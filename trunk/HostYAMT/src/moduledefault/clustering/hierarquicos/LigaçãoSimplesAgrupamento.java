@@ -6,6 +6,7 @@ package moduledefault.clustering.hierarquicos;
 
 import java.io.IOException;
 import moduledefault.clustering.aco.ACOClustering;
+import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
 import moduledefault.clustering.distancias.Correlação;
 import moduledefault.clustering.distancias.Cosseno;
@@ -41,7 +42,7 @@ public class LigaçãoSimplesAgrupamento {
 
     public void inicio() {
         liga_simples(m);
-    }
+            }
 
     int[][] get_mpos() {
         return mpos2;
@@ -210,14 +211,13 @@ public class LigaçãoSimplesAgrupamento {
         }
 
     }
-
-    private void setMatrizDistancia(int opcaoDistancia, Base teste) {
-        if (opcaoDistancia == 1) {
+  private void setMatrizDistancia(int opcaoDistancia, Base teste) {
+        if (opcaoDistancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia(teste);
             matrizDistancia = distância.getMatrizDistancias();
         } else {
-            if (opcaoDistancia == 2) {
+            if (opcaoDistancia == 4) {
                 Cosseno distância = new Cosseno(teste);
                 distância.distancia(teste);
                 matrizDistancia = distância.getMatrizDistancias();
@@ -227,15 +227,19 @@ public class LigaçãoSimplesAgrupamento {
                     distância.distancia(teste);
                     matrizDistancia = distância.getMatrizDistancias();
                 } else {
-                    if (opcaoDistancia == 4) {
+                    if (opcaoDistancia == 6) {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia(teste);
                         matrizDistancia = distância.getMatrizDistancias();
                     } else {
-                        if (opcaoDistancia == 5) {
+                        if (opcaoDistancia == 2) {
                             CityBlock distancia = new CityBlock(teste);
                             distancia.distancia(teste);
                             matrizDistancia = distancia.getMatrizDistancias();
+                        } else if (opcaoDistancia == 1) {
+                            Chebyshev ch = new Chebyshev(teste);
+                            ch.distancia(teste);
+                            matrizDistancia = ch.getMatrizDistancias();
                         }
                     }
                 }

@@ -33,7 +33,6 @@ public class PanelHierarquicos extends javax.swing.JPanel {
      * Creates new form PanelHierarquicos
      */
     int teste_distancia;
-
     StringBuffer b;
     int[][] matrizGrupos;
     int numeroGrupos;
@@ -41,6 +40,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     ArrayList<StringBuffer> listaText;
     interfaces.Base base;
     Base dados;
+
     public PanelHierarquicos(interfaces.Base b) {
         initComponents();
         base = b;
@@ -48,7 +48,6 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         startMatrizDados();
         buttonVisualizacao.setEnabled(false);
     }
-
 
     public int[][] getMatrizGrupos() {
         return matrizGrupos;
@@ -81,7 +80,6 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     public void setListenerList(EventListenerList listenerList) {
         this.listenerList = listenerList;
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -362,7 +360,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void startMatrizDados() {
-         dados = new moduledefault.clustering.uteis.Base();
+        dados = new moduledefault.clustering.uteis.Base();
         double matriz[][] = new double[base.getInput().length][base.getInput()[0].length]; //= arrayListBases.get(arrayListBases.size() - 1).getInput();
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
@@ -394,7 +392,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 
         Operações_Mat m = new Operações_Mat();
         m.Padronização(dados);
-        
+
 
     }
 
@@ -420,39 +418,14 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     }
 
     private void avaliaLigacao(int[][] matrizDendograma) {
-        int[] gruposFinais = matrizDendograma[matrizDendograma.length - 3];
-
-        numeroGrupos = 0;
-        int grupoInicial;
-        elementoPrincipal = new ArrayList<>();
-        numeroGrupos = 0;
-        grupoInicial = gruposFinais[0];
-        for (int i = 1; i < gruposFinais.length; i++) {
-            boolean existe = false;
-            if (gruposFinais[i] != grupoInicial) {
-                for (int j = 0; j < elementoPrincipal.size(); j++) {
-                    if (elementoPrincipal.get(j) == grupoInicial) {
-                        existe = true;
-                        break;
-                    }
-                }
-                if (!existe) {
-                    elementoPrincipal.add(grupoInicial);
-                    grupoInicial = gruposFinais[i];
-                    numeroGrupos++;
-                }
+        int[] inicial = matrizDendograma[0];
+        ArrayList<Padrao> padroes = new ArrayList<>();
+        for (int i = 1; i < matrizDendograma.length; i++) {
+            for (int j = 0; j < dados.getDataSet().size(); j++) {
+                System.out.print(matrizDendograma[i][j]+" ");
             }
+            System.out.println("");
         }
-        matrizGrupos = new int[2][gruposFinais.length];
-        for (int i = 0; i < elementoPrincipal.size(); i++) {
-            for (int j = 0; j < gruposFinais.length; j++) {
-                if (elementoPrincipal.get(i) == gruposFinais[j]) {
-                    matrizGrupos[0][j] = j + 1;
-                    matrizGrupos[1][j] = i + 1;
-                }
-            }
-        }
-
     }
 
     synchronized void imprimiAgrupamento() {

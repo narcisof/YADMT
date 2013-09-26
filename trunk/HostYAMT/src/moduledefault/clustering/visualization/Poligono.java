@@ -518,7 +518,7 @@ public class Poligono implements java.io.Serializable {
     public void GerarPrisma(int nPontosBase, int raio, int altura, ArrayList<Ponto> _pontos) {
 
         this.tipo = "Prisma";
-//        this.pontos = new ArrayList<>();
+        this.pontos = new ArrayList<>();
         this.arestas = new ArrayList<>();
         this.faces = new ArrayList<>();
         this.numPontos = nPontosBase;
@@ -558,6 +558,126 @@ public class Poligono implements java.io.Serializable {
 //
 //        }
         this.pontos = _pontos;
+
+        //conecta base e gera sua face
+        Face f = new Face(this);
+        for (int i = 1; i < nPontosBase + 1; i++) {
+            if (i != nPontosBase) {
+                this.arestas.add(new Aresta(this.getPonto(String.valueOf(i)),
+                        this.getPonto(String.valueOf(i + 1)),
+                        String.valueOf(i) + "-" + String.valueOf(i + 1)));
+
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(i + 1));
+
+            } else {
+                this.arestas.add(new Aresta(this.getPonto(String.valueOf(i)),
+                        this.getPonto(String.valueOf(1)),
+                        String.valueOf(i) + "-" + String.valueOf(1)));
+
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(1));
+
+            }
+        }
+        this.faces.add(f);
+        f = new Face(this);
+        //conecta topo
+
+        for (int i = nPontosBase + 1; i < (nPontosBase * 2) + 1; i++) {
+            if (i != nPontosBase * 2) {
+                Ponto p1 = this.getPonto(String.valueOf(i));
+                Ponto p2 = this.getPonto(String.valueOf(i + 1));
+                String nomeAresta = String.valueOf(i) + "-" + String.valueOf(i
+                        + 1);
+
+                this.arestas.add(new Aresta(p1, p2, nomeAresta));
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(i + 1));
+            } else {
+                Ponto p1 = this.getPonto(String.valueOf(i));
+                Ponto p2 = this.getPonto(String.valueOf(nPontosBase + 1));
+                String nomeAresta = String.valueOf(i) + "-" + String.
+                        valueOf(nPontosBase + 1);
+
+                this.arestas.add(new Aresta(p1, p2, nomeAresta));
+                f.addAresta(String.valueOf(i) + "-" + String.
+                        valueOf(nPontosBase + 1));
+            }
+        }
+        this.faces.add(f);
+        //coneta-base-topo;
+
+        for (int i = 1; i < nPontosBase + 1; i++) {
+            this.arestas.add(new Aresta(this.getPonto(String.valueOf(i)),
+                    this.getPonto(String.valueOf(i + nPontosBase)),
+                    String.valueOf(i) + "-" + String.valueOf(i + nPontosBase)));
+        }
+
+        //cria faces restantes
+
+        for (int i = 1; i < nPontosBase + 1; i++) {
+            f = new Face(this);
+            if (i != nPontosBase) {
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(i
+                        + nPontosBase));//base-topo
+                f.addAresta(String.valueOf(i + 1) + "-" + String.valueOf(i
+                        + nPontosBase + 1));//base-topo
+                f.addAresta(String.valueOf(i + nPontosBase) + "-" + String.
+                        valueOf(i + nPontosBase + 1));//topo-topo
+
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(i + 1));//base-base
+            } else {
+
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(i
+                        + nPontosBase));//base-topo
+                f.addAresta(String.valueOf(1) + "-" + String.valueOf(nPontosBase
+                        + 1));//base-topo
+                f.addAresta(String.valueOf(i) + "-" + String.valueOf(1));//base-base
+                f.addAresta(String.valueOf(i + nPontosBase) + "-" + String.
+                        valueOf(nPontosBase + 1));//topo-topo
+            }
+            this.faces.add(f);
+        }
+
+
+    }
+
+    public void GerarPrisma(int nPontosBase, int raio, int altura) {
+
+        this.tipo = "Prisma";
+        this.pontos = new ArrayList<>();
+        this.arestas = new ArrayList<>();
+        this.faces = new ArrayList<>();
+        this.numPontos = nPontosBase;
+        this.raio = raio;
+        this.altura = altura;
+
+        this.pontos.add(new Ponto("centro", 0, 0, 0, Color.BLACK));
+
+        double angulo;
+
+        Matriz rotacao;
+
+        Matriz ponto = new Matriz(4, 1);
+        ponto.set(0, 0, 0);//x
+        ponto.set(1, 0, raio);//y
+        ponto.set(2, 0, (altura / 2) * -1);//z
+        ponto.set(3, 0, 1);//w
+
+        int nome = 0;
+        Ponto p;
+
+        for (int i = 0; i < nPontosBase; i++) {
+            angulo = ((360.0 / nPontosBase) * i);
+            rotacao = Matriz.gerarRotacaoZ(angulo);
+
+            Matriz auxPonto = Matriz.multiplicacao(rotacao, ponto);
+
+            nome++;
+            p = new Ponto(String.valueOf(nome), (auxPonto.get(0, 0)), (auxPonto.get(1, 0)), (auxPonto.get(2, 0)), Color.black);
+            this.pontos.add(p);
+            p = new Ponto(String.valueOf(nome + nPontosBase), (auxPonto.get(0, 0)), (auxPonto.get(1, 0)), altura / 2, Color.black);
+            this.pontos.add(p);
+
+        }
 
         //conecta base e gera sua face
         Face f = new Face(this);
