@@ -428,6 +428,8 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         }
     }
 
+    
+    
     synchronized void imprimiAgrupamento() {
         StringBuffer buffer = new StringBuffer();
         setBuffer(buffer);
