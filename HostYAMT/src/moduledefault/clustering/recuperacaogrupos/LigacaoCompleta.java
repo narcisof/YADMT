@@ -7,8 +7,6 @@ package moduledefault.clustering.recuperacaogrupos;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.uteis.Base;
 
-
-
 /**
  *
  * @author Mateus
@@ -22,11 +20,11 @@ public class LigacaoCompleta {
     int[][] mpos;
     int[][] mpos2;
     int q = 1;
-    ACOClustering x;
+   // ACOClustering x;
     StringBuffer string3;
 
     public LigacaoCompleta(int[][] matriz, Base matrizdados, ACOClustering x_) {
-        x = x_;
+      //  x = x_;
         string3 = new StringBuffer();
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
@@ -56,8 +54,6 @@ public class LigacaoCompleta {
     }
 
     void liga_completa(int[][] m) {
-
-
         char ch;
         int z = 0, grupo = 0;
         //VERIFICA NUMERO DE GRUPOS
@@ -176,8 +172,6 @@ public class LigacaoCompleta {
             ++q;
         }
 
-
-
         int count = 1;
         for (int j = 0; j < numpad; j++) {
             mpos2[0][j] = count;
@@ -217,8 +211,5 @@ public class LigacaoCompleta {
                 }
             }
         }
-
-
-
     }
 }

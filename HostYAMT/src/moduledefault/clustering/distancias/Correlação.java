@@ -4,10 +4,7 @@
  */
 package moduledefault.clustering.distancias;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Padrao;

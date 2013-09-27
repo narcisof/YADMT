@@ -4,8 +4,6 @@
  */
 package moduledefault.clustering.distancias;
 
-import java.io.IOException;
-
 /**
  *
  * @author Mateus
@@ -26,7 +24,6 @@ public class DistanciaPrincipal {
                     maior = matriz[i][j];
                 }
             }
-
         }
 
         for (int i = 0; i < matriz.length; i++) {
@@ -34,8 +31,6 @@ public class DistanciaPrincipal {
                 matriz[i][j] /= maior;
             }
         }
-
-
     }
 
     public double[][] getMatrizDistancias() {
