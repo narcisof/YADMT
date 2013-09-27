@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.distancias;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
@@ -18,8 +17,6 @@ public class DistanciaEuclidiana extends DistanciaPrincipal {
     public DistanciaEuclidiana(Base teste) {
         setMatrizDistancias(teste.getDataSet().size());
     }
-
-
 
     public void distancia(Base teste) {
         double acumulador = 0;

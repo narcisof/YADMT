@@ -30,7 +30,6 @@ public class OpMath {
     }
 
     public double[][] matrizU(int X, int Y, RedeSOM rede) {
-
         //Calculo matriz-U segundo Costa, J.A.F, 1999 - Tese Unicamp
         OpMath math = new OpMath();
 
@@ -57,12 +56,18 @@ public class OpMath {
                 MatrizU[2 * i][2 * j + y] = dx;
                 MatrizU[2 * i + x][2 * j + y] = dxy;
                 MatrizU[2 * i][2 * j] = du;
-
-               
             }
         }
-
- 
         return MatrizU;
+    }
+    
+    public void printMatriz(double m[][]){
+        System.out.println(m.length+"-"+m[0].length);
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                System.out.print(m[i][j]+" ");
+            }
+            System.out.println("");
+        }
     }
 }

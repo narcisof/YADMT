@@ -4,7 +4,6 @@
  */
 package moduledefault.clustering.uteis;
 
-import moduledefault.clustering.uteis.Cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -317,6 +316,7 @@ public class AvaliacaoAgrupamento {
         }
     }
 
+    //TROCAR POR MERGE SORT!!!!
     public void SelectionSort(ArrayList<Cluster> clusters) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Cluster aux;

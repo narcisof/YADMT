@@ -7,6 +7,9 @@ package moduledefault.clustering.som;
 import moduledefault.clustering.uteis.Cluster;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import moduledefault.clustering.hierarquicos.LigaçãoCompletaAgrupamento;
+import moduledefault.clustering.uteis.Padrao;
 
 /**
  *
@@ -26,6 +29,49 @@ public class ClusteringSOM {
                 }
             }
         }
+
+    }
+
+    public ArrayList<Cluster> completa() {
+        ArrayList<Cluster> aux;
+
+        List<Padrao> pad = new ArrayList<>();
+        for (int i = 0; i < neuronios.size(); i++) {
+            Padrao p = new Padrao();
+            p.setAtributos(neuronios.get(i).getPesos());
+            p.setNumero(i);
+            pad.add(p);
+        }
+
+        LigaçãoCompletaAgrupamento complete = new LigaçãoCompletaAgrupamento(pad, 1);
+        complete.ligacaoCompleta();
+        complete.clustering(3); //MUDAR DPS
+        aux = complete.getClusters();
+
+        ArrayList<Cluster> clusters = new ArrayList<>();
+        for (int i = 0; i < aux.size(); i++) {
+            Cluster c = new Cluster();
+            for (int j = 0; j < aux.get(i).getGrupo().size(); j++) {
+                int size = neuronios.get(aux.get(i).getGrupo().get(j).getNumero()).getPadroes().size();
+
+                for (int k = 0; k < size; k++) {
+                    c.addPadrao(neuronios.get(aux.get(i).getGrupo().get(j).getNumero()).getPadroes().get(k));
+                }
+
+            }
+            clusters.add(c);
+        }
+        return clusters;
+    }
+
+    public ArrayList<Cluster> clustering1DSOM() {
+        ArrayList<Cluster> clusters = new ArrayList<>();
+        for (int i = 0; i < neuronios.size(); i++) {
+            Cluster cl = new Cluster();
+            addPadroes(neuronios.get(i), cl);
+            clusters.add(cl);
+        }
+        return clusters;
     }
 
     public ArrayList<Cluster> clusteringDensidade(double e) {
@@ -36,7 +82,7 @@ public class ClusteringSOM {
 
         ArrayList<Cluster> clusters = new ArrayList<>();
 
-        for (int i = 0; i < neuronios.size() - 1; i++) {
+        for (int i = 0; i < neuronios.size(); i++) {
             if (neuronios.get(i) != null) {
                 Cluster cl = new Cluster();
                 addPadroes(neuronios.get(i), cl);
@@ -55,9 +101,8 @@ public class ClusteringSOM {
 
         return clusters;
     }
-    
-    public void addPadroes(Neuronio n, Cluster c){
-        
+
+    public void addPadroes(Neuronio n, Cluster c) {
         for (int i = 0; i < n.getPadroes().size(); i++) {
             c.addPadrao(n.getPadroes().get(i));
         }
@@ -82,6 +127,4 @@ public class ClusteringSOM {
         }
         Collections.reverse(neuronios);
     }
-    
-    
 }

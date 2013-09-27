@@ -4,21 +4,11 @@
  */
 package moduledefault.clustering.hierarquicos;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import moduledefault.clustering.aco.ACOClustering;
-import moduledefault.clustering.distancias.Chebyshev;
-import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.Correlação;
-import moduledefault.clustering.distancias.Cosseno;
-import moduledefault.clustering.distancias.DistanciaEuclidiana;
-import moduledefault.clustering.distancias.Mahalanobis;
-import moduledefault.clustering.uteis.Base;
-import view.jpanel.JPanelClustering;
+import java.util.ArrayList;
+import java.util.List;
+import moduledefault.clustering.som.OpMath;
+import moduledefault.clustering.uteis.Cluster;
+import moduledefault.clustering.uteis.Padrao;
 
 /**
  *
@@ -26,96 +16,48 @@ import view.jpanel.JPanelClustering;
  */
 public class LigaçãoCompletaAgrupamento {
 
-    int[][] m;// = new int[matriz.length][matriz.length];
-    int linhas;
-    Base mdados;
-    int numpad, numgrupo = 1;
-    int[][] mpos;
-    int[][] mpos2;
-    int q = 1;
-    double[][] matrizDistancia;
-    String nomeArquivoEntrada;
-    Base teste;
-    int[][] mdend;
-
-    public LigaçãoCompletaAgrupamento(int[][] matriz, Base matrizdados, int opcaoDistancia) {
-        linhas = matriz.length;
-        m = new int[matriz.length][matriz.length];
-        m = matriz;
-        mdados = matrizdados;
-        numpad = mdados.getDataSet().size();
-        mpos = new int[2][numpad];
-        mpos2 = new int[2][numpad];
-        setMatrizDistancia(opcaoDistancia, matrizdados);
+    private List<Padrao> padroes;
+    private int numeroPadroes;
+    private int[][] matrizDendograma;
+    private double[][] matrizDistancia;
+    private ArrayList<Cluster> clusters;
+    
+    public LigaçãoCompletaAgrupamento(List<Padrao> padroes, int opcaoDistancia) {
+        this.padroes = padroes;
+        this.numeroPadroes = padroes.size();
     }
+    
+    public void ligacaoCompleta() {
+        calcMatrizDistancia();
+        matrizDendograma = new int[numeroPadroes][numeroPadroes];
 
-    public void inicio() {
-        liga_completa(m);
-
-    }
-
-    int[][] get_mpos() {
-        return mpos2;
-
-    }
-
-    void liga_completa(int[][] m) {
-
-
-        char ch;
-        int z = 0, grupo = 0;
-        //VERIFICA NUMERO DE GRUPOS
-        numgrupo = mdados.getClasses().size();
-        mdend = new int[numpad][numpad];
-
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < numpad; j++) {
-                mdend[i][j] = 0;
+        for (int i = 0; i < numeroPadroes; i++) {
+            for (int j = 0; j < numeroPadroes; j++) {
+                matrizDendograma[i][j] = 0;
             }
         }
-        for (int i = 0; i < numpad; i++) {
-            mdend[0][i] = i + 1;
+        for (int i = 0; i < numeroPadroes; i++) {
+            matrizDendograma[0][i] = i + 1;
         }
-
-        for (int x = 0; x < numpad; x++) {
-            for (int i = 0; i < linhas; i++) {
-                for (int j = 0; j < linhas; j++) {
-                    if (m[i][j] == x + 1) {
-                        mpos[0][x] = i;
-                        mpos[1][x] = j;
-                    }
-                }
-            }
-        }
-
-        double min = 1000000, d = 0;
-        int pad1 = 0, pad2 = 0;
-        int[] parada = new int[numpad];
-        int cont = 0, para = 0;
-
+        
         /////////////////
-        while (para != 1) {
-            for (int i = 0; i < numpad; i++) {
-                parada[i] = 0;
-            }
-            cont = 0;
-            min = 1000000;
-            d = 0;
-            pad1 = 0;
-            pad2 = 0;
-            for (int i = 0; i < numpad; i++) {
-                for (int j = i + 1; j < numpad; j++) {
-                    if ((mdend[q - 1][i] == mdend[q - 1][j])) {
+        int q = 1;
+        for (int y = 0; y < numeroPadroes - 1; y++) {
+            double min = Double.MAX_VALUE;
+            for (int i = 0; i < numeroPadroes; i++) {
+                for (int j = i + 1; j < numeroPadroes; j++) {
+                    if ((matrizDendograma[q - 1][i] == matrizDendograma[q - 1][j])) {
                         matrizDistancia[i][j] = 0;
                         matrizDistancia[j][i] = 0;
                     }
                 }
             }
             //maior distancia entre um padrão e os padrões de um mesmo grupo
-            for (int i = 0; i < numpad; i++) {
-                for (int j = i + 1; j < numpad; j++) {
-                    if ((mdend[q - 1][i] == mdend[q - 1][j])) {
-                        for (int k = 0; k < numpad; k++) {
+            double d;
+            for (int i = 0; i < numeroPadroes; i++) {
+                for (int j = i + 1; j < numeroPadroes; j++) {
+                    if ((matrizDendograma[q - 1][i] == matrizDendograma[q - 1][j])) {
+                        for (int k = 0; k < numeroPadroes; k++) {
                             if ((k != i) && (k != j)) {
                                 if (matrizDistancia[k][j] > matrizDistancia[k][i]) {
                                     d = matrizDistancia[k][j];
@@ -132,8 +74,10 @@ public class LigaçãoCompletaAgrupamento {
                 }
             }
             //menor distancia
-            for (int i = 0; i < numpad; i++) {
-                for (int j = 0; j < numpad; j++) {
+            int pad1 = 0;
+            int pad2 = 0;
+            for (int i = 0; i < numeroPadroes; i++) {
+                for (int j = 0; j < numeroPadroes; j++) {
                     if ((matrizDistancia[i][j] < min) && (matrizDistancia[i][j] > 0)) {
                         min = matrizDistancia[i][j];
                         pad1 = i + 1;
@@ -142,129 +86,59 @@ public class LigaçãoCompletaAgrupamento {
                     }
                 }
             }
-            for (int i = 0; i < numpad; i++) {
-                if ((mdend[q - 1][i] == pad1) || (mdend[q - 1][i] == pad2)) {
-                    mdend[q][i] = mdend[q - 1][pad1 - 1];
+            for (int i = 0; i < numeroPadroes; i++) {
+                if ((matrizDendograma[q - 1][i] == pad1) || (matrizDendograma[q - 1][i] == pad2)) {
+                    matrizDendograma[q][i] = matrizDendograma[q - 1][pad1 - 1];
 
                 } else {
-                    mdend[q][i] = mdend[q - 1][i];
-
+                    matrizDendograma[q][i] = matrizDendograma[q - 1][i];
                 }
-            }
-            //////
-            int aux = 0, aux2 = 0;
-            for (int i = 0; i < numpad; i++) {
-                aux = mdend[q][i];
-                for (int j = 0; j < numpad; j++) {
-                    if (aux == parada[j]) {
-                        aux2 = 1;
-                    }
-                }
-                if (aux2 == 0) {
-                    parada[cont] = aux;
-                    ++cont;
-                }
-                aux2 = 0;
-            }
-            if (cont == numgrupo) {
-                para = 1;
-            } else {
-                para = 0;
             }
             ++q;
         }
-
-
-
-        int count = 1;
-        for (int j = 0; j < numpad; j++) {
-            mpos2[0][j] = count;
-            mpos2[1][j] = mdend[q - 1][j];
-            count++;
+    }
+    
+    public void clustering(int grupos){
+        int lineCluster = numeroPadroes - grupos;
+        ArrayList<Integer> g = new ArrayList<>();
+        for (int i = 0; i < numeroPadroes; i++) {
+            if(!g.contains(matrizDendograma[lineCluster][i])){
+                g.add(matrizDendograma[lineCluster][i]);
+            }
         }
-
-        count = 1;
-        int[] pertence = new int[numgrupo];
-        boolean teste = false;
-        pertence[0] = mpos2[1][0];
-        for (int i = 1; i < numpad; i++) {
-            for (int j = 0; j < count; j++) {
-                if (mpos2[1][i] == pertence[j]) {
-                    teste = false;
-                    break;
-                } else {
-                    teste = true;
-
+        
+        clusters = new ArrayList<>();
+        
+        for (int i = 0; i < g.size(); i++) {
+            Cluster c = new Cluster();
+            c.setNomeGrupo(""+(i+1));
+            for (int j = 0; j < numeroPadroes; j++) {
+                if (matrizDendograma[lineCluster][j] == g.get(i)) {
+                    c.addPadrao(padroes.get(j));
                 }
             }
-            if (teste) {
-                pertence[count] = mpos2[1][i];
-                count++;
-            }
-            teste = false;
-
+            clusters.add(c);
         }
-
-        cont = 0;
-        for (int i = 0; i < numpad; i++) {
-            for (int j = 0; j < numgrupo; j++) {
-                if (mpos2[1][i] == pertence[j]) {
-                    mpos2[1][i] = j + 1;
-                    break;
-                }
+        
+    }
+    
+    public void calcMatrizDistancia() {
+        OpMath math = new OpMath();
+        matrizDistancia = new double[padroes.size()][padroes.size()];
+        for (int i = 0; i < padroes.size(); i++) {
+            for (int j = 0; j < padroes.size(); j++) {
+                matrizDistancia[i][j] = math.euclidiana(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
             }
         }
-
-
-
+        //PADRONIZAR 
     }
 
-    public int[][] getMdend() {
-        return mdend;
+    public int[][] getMatrizDendograma() {
+        return matrizDendograma;
     }
 
-    private void setMatrizDistancia(int opcaoDistancia, Base teste) {
-        if (opcaoDistancia == 5) {
-            DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
-            distância.distancia(teste);
-            matrizDistancia = distância.getMatrizDistancias();
-        } else {
-            if (opcaoDistancia == 4) {
-                Cosseno distância = new Cosseno(teste);
-                distância.distancia(teste);
-                matrizDistancia = distância.getMatrizDistancias();
-            } else {
-                if (opcaoDistancia == 3) {
-                    Correlação distância = new Correlação(teste);
-                    distância.distancia(teste);
-                    matrizDistancia = distância.getMatrizDistancias();
-                } else {
-                    if (opcaoDistancia == 6) {
-                        Mahalanobis distância = new Mahalanobis(teste);
-                        distância.distancia(teste);
-                        matrizDistancia = distância.getMatrizDistancias();
-                    } else {
-                        if (opcaoDistancia == 2) {
-                            CityBlock distancia = new CityBlock(teste);
-                            distancia.distancia(teste);
-                            matrizDistancia = distancia.getMatrizDistancias();
-                        } else if (opcaoDistancia == 1) {
-                            Chebyshev ch = new Chebyshev(teste);
-                            ch.distancia(teste);
-                            matrizDistancia = ch.getMatrizDistancias();
-                        }
-                    }
-                }
-
-            }
-        }
+    public ArrayList<Cluster> getClusters() {
+        return clusters;
     }
-
-    public int getNumpad() {
-        return numpad;
-    }
-
-    public int getNumgrupo() {
-        return numgrupo;
-    }
+    
 }

@@ -12,14 +12,14 @@ import java.util.List;
  * @author Thiago
  */
 public class Padrao {
-    
+
     String classe;
     int numero;
-    List<Double> atributos = new ArrayList<Double>();
+    List<Double> atributos;
 
     public Padrao() {
         classe = "";
-        atributos.clear();
+        atributos = new ArrayList<>();        
     }
 
     public List<Double> getAtributos() {
@@ -33,7 +33,7 @@ public class Padrao {
     public void addAtributos(Double add) {
         this.atributos.add(add);
     }
-    
+
     public String getClasse() {
         return classe;
     }
@@ -48,5 +48,5 @@ public class Padrao {
 
     public void setNumero(int numero) {
         this.numero = numero;
-    }  
+    }
 }

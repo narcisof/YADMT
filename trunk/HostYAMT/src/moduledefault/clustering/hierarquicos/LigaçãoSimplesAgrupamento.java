@@ -4,8 +4,6 @@
  */
 package moduledefault.clustering.hierarquicos;
 
-import java.io.IOException;
-import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
 import moduledefault.clustering.distancias.Correlação;
