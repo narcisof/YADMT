@@ -5,6 +5,7 @@
 package moduledefault.clustering.distancias;
 
 import java.util.ArrayList;
+import java.util.List;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Padrao;
@@ -13,16 +14,20 @@ import moduledefault.clustering.uteis.Padrao;
  *
  * @author Mateus
  */
-public class Correlação extends DistanciaPrincipal {
+public class CorrelacaoPearson {
 
-    public Correlação(Base teste) {
+    Base base;
+    double[][] matrizDistancias;
+
+    public CorrelacaoPearson(Base teste) {
+        base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
-
-    public Correlação() {
+    public CorrelacaoPearson(){
+        
     }
 
-    public void distancia(Base teste) {
+    public void distancia() {
         double somador1 = 0;
         double somador2 = 0;
         double media1 = 0;
@@ -33,24 +38,24 @@ public class Correlação extends DistanciaPrincipal {
         double raiz;
         double correlacao = 0;
 
-        for (int y = 0; y < teste.getDataSet().size(); y++) {
-            for (int w = 0; w < teste.getDataSet().size(); w++) {
-                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
-                    somador1 += teste.getDataSet().get(y).getAtributos().get(i);
+        for (int y = 0; y < base.getDataSet().size(); y++) {
+            for (int w = 0; w < base.getDataSet().size(); w++) {
+                for (int i = 0; i < base.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador1 += base.getDataSet().get(y).getAtributos().get(i);
                 }
-                media1 = somador1 / (teste.getDataSet().get(0).getAtributos().size() - 1);
-                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
-                    somador2 += teste.getDataSet().get(w).getAtributos().get(i);
+                media1 = somador1 / (base.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < base.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somador2 += base.getDataSet().get(w).getAtributos().get(i);
                 }
-                media2 = somador2 / (teste.getDataSet().get(0).getAtributos().size() - 1);
-                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
-                    somatorio1 += (teste.getDataSet().get(y).getAtributos().get(i) - media1) * (teste.getDataSet().get(w).getAtributos().get(i) - media2);
+                media2 = somador2 / (base.getDataSet().get(0).getAtributos().size() - 1);
+                for (int i = 0; i < base.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio1 += (base.getDataSet().get(y).getAtributos().get(i) - media1) * (base.getDataSet().get(w).getAtributos().get(i) - media2);
                 }
-                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
-                    somatorio2 += Math.pow((teste.getDataSet().get(y).getAtributos().get(i) - media1), 2);
+                for (int i = 0; i < base.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio2 += Math.pow((base.getDataSet().get(y).getAtributos().get(i) - media1), 2);
                 }
-                for (int i = 0; i < teste.getDataSet().get(0).getAtributos().size() - 1; i++) {
-                    somatorio3 += Math.pow((teste.getDataSet().get(w).getAtributos().get(i) - media2), 2);
+                for (int i = 0; i < base.getDataSet().get(0).getAtributos().size() - 1; i++) {
+                    somatorio3 += Math.pow((base.getDataSet().get(w).getAtributos().get(i) - media2), 2);
                 }
                 raiz = Math.sqrt((somatorio2 * somatorio3));
                 correlacao = somatorio1 / raiz;
@@ -68,6 +73,39 @@ public class Correlação extends DistanciaPrincipal {
 
         }
         padronizacaDistancias(matrizDistancias);
+    }
+
+    public double distancia(List<Double> vet1, List<Double> vet2) {
+        double somador1 = 0;
+        double somador2 = 0;
+        double media1 = 0;
+        double media2 = 0;
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        double somatorio3 = 0;
+        double raiz;
+        double correlacao = 0;
+
+        for (int i = 0; i < vet1.size(); i++) {
+            somador1 += vet1.get(i);
+        }
+        media1 = somador1 / (vet1.size());
+        for (int i = 0; i < vet2.size(); i++) {
+            somador2 += vet2.get(i);
+        }
+        media2 = somador2 / (vet2.size());
+        for (int i = 0; i < vet1.size(); i++) {
+            somatorio1 += (vet1.get(i) - media1) * (vet2.get(i) - media2);
+        }
+        for (int i = 0; i < vet1.size(); i++) {
+            somatorio2 += Math.pow((vet1.get(i) - media1), 2);
+        }
+        for (int i = 0; i < vet2.size(); i++) {
+            somatorio3 += Math.pow((vet2.get(i) - media2), 2);
+        }
+        raiz = Math.sqrt((somatorio2 * somatorio3));
+        correlacao = somatorio1 / raiz;
+        return correlacao;
     }
 
     public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
@@ -207,5 +245,34 @@ public class Correlação extends DistanciaPrincipal {
             setMatrizDistancias(auxBase.getDataSet().size());
             distanciaGrupos(auxBase);
         }
+    }
+
+    public void padronizacaDistancias(double[][] matriz) {
+        double menor = 0;
+        double maior = 0;
+        int cont = 0;
+
+        maior = Double.MIN_VALUE;
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz.length; j++) {
+                if (matriz[i][cont] > maior) {
+                    maior = matriz[i][j];
+                }
+            }
+        }
+
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz.length; j++) {
+                matriz[i][j] /= maior;
+            }
+        }
+    }
+
+    public double[][] getMatrizDistancias() {
+        return matrizDistancias;
+    }
+
+    public void setMatrizDistancias(int linhas) {
+        this.matrizDistancias = new double[linhas][linhas];
     }
 }

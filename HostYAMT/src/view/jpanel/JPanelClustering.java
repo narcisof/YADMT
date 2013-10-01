@@ -22,6 +22,7 @@ import moduledefault.clustering.view.jpanel.PanelFormigas;
 import moduledefault.clustering.view.jpanel.PanelHierarquicos;
 import moduledefault.clustering.view.jpanel.PanelKmeans;
 import moduledefault.clustering.view.jpanel.PanelSOM;
+import moduledefault.clustering.view.jpanel.testes;
 
 /**
  *
@@ -152,7 +153,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
         try {
             fundoWidth = panelFundo.getWidth();
             fundoHeight = panelFundo.getHeight();
-
+            testes t = new testes(arrayListBases.get(arrayListBases.size() - 1), frameFormigas);
             FrameSomVisualization.getInstance().setVisible(false);
 
             switch (jComboBoxMetodos.getSelectedIndex()) {
@@ -273,7 +274,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             kohonen.addBase(arrayListBases.get(arrayListBases.size() - 1));
         }
         if (hierarquicos != null) {
-            hierarquicos.addBase(arrayListBases.get(arrayListBases.size() - 1)); 
+            hierarquicos.addBase(arrayListBases.get(arrayListBases.size() - 1));
         }
     }
 

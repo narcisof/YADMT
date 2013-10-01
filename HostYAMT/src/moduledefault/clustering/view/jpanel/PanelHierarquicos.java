@@ -21,6 +21,7 @@ import moduledefault.clustering.hierarquicos.LigaçãoSimplesAgrupamento;
 import moduledefault.clustering.hierarquicos.WardAgrupamento;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 
@@ -367,10 +368,10 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 LM.inicio();
                 matrizDendograma = LM.getMdend();
                 avaliaLigacao(matrizDendograma);
-                imprimiAgrupamento();
-                imprimiRecuperacao();
-                setListaResultados();
-                jTextArea1.setText(getBuffer().toString());
+//                imprimiAgrupamento();
+//                imprimiRecuperacao();
+//                setListaResultados();
+//                jTextArea1.setText(getBuffer().toString());
                 break;
             case 3:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
@@ -379,10 +380,10 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 LS.inicio();
                 matrizDendograma = LS.getMdend();
                 avaliaLigacao(matrizDendograma);
-                imprimiAgrupamento();
-                imprimiRecuperacao();
-                setListaResultados();
-                jTextArea1.setText(getBuffer().toString());
+//                imprimiAgrupamento();
+//                imprimiRecuperacao();
+//                setListaResultados();
+//                jTextArea1.setText(getBuffer().toString());
                 break;
             case 4:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
@@ -391,10 +392,10 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 W.inicio();
                 matrizDendograma = W.getMdend();
                 avaliaLigacao(matrizDendograma);
-                imprimiAgrupamento();
-                imprimiRecuperacao();
-                setListaResultados();
-                jTextArea1.setText(getBuffer().toString());
+//                imprimiAgrupamento();
+//                imprimiRecuperacao();
+//                setListaResultados();
+//                jTextArea1.setText(getBuffer().toString());
                 break;
             default:
                 break;
@@ -486,8 +487,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 
     private void avaliaLigacao(int[][] matrizDendograma) {
         int[] inicial = matrizDendograma[0];
-        ArrayList<Padrao> padroes = new ArrayList<>();
-        for (int i = 1; i < matrizDendograma.length; i++) {
+        ArrayList<Cluster> cl = new ArrayList<>();
+        int posicaoDend = 1;
+        for (int i = matrizDendograma.length - 3; i > 0; i--) {
             for (int j = 0; j < dados.getDataSet().size(); j++) {
                 System.out.print(matrizDendograma[i][j] + " ");
             }

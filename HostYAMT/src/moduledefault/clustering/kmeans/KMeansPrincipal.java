@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.Correlação;
+import moduledefault.clustering.distancias.CorrelacaoPearson;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
@@ -171,7 +171,7 @@ public class KMeansPrincipal {
                 setMatrizDistancia(CityBlock.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 3:
-                setMatrizDistancia(Correlação.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
+                setMatrizDistancia(CorrelacaoPearson.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
             case 4:
                 setMatrizDistancia(Cosseno.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));

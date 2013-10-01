@@ -8,7 +8,7 @@ import java.io.IOException;
 import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.Correlação;
+import moduledefault.clustering.distancias.CorrelacaoPearson;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
@@ -259,31 +259,31 @@ public class LigaçãoMediaAgrupamento {
    private void setMatrizDistancia(int opcaoDistancia, Base teste) {
         if (opcaoDistancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
-            distância.distancia(teste);
+            distância.distancia();
             matrizDistancia = distância.getMatrizDistancias();
         } else {
             if (opcaoDistancia == 4) {
                 Cosseno distância = new Cosseno(teste);
-                distância.distancia(teste);
+                distância.distancia();
                 matrizDistancia = distância.getMatrizDistancias();
             } else {
                 if (opcaoDistancia == 3) {
-                    Correlação distância = new Correlação(teste);
-                    distância.distancia(teste);
+                    CorrelacaoPearson distância = new CorrelacaoPearson(teste);
+                    distância.distancia();
                     matrizDistancia = distância.getMatrizDistancias();
                 } else {
                     if (opcaoDistancia == 6) {
                         Mahalanobis distância = new Mahalanobis(teste);
-                        distância.distancia(teste);
+                        distância.distancia();
                         matrizDistancia = distância.getMatrizDistancias();
                     } else {
                         if (opcaoDistancia == 2) {
                             CityBlock distancia = new CityBlock(teste);
-                            distancia.distancia(teste);
+                            distancia.distancia();
                             matrizDistancia = distancia.getMatrizDistancias();
                         } else if (opcaoDistancia == 1) {
                             Chebyshev ch = new Chebyshev(teste);
-                            ch.distancia(teste);
+                            ch.distancia();
                             matrizDistancia = ch.getMatrizDistancias();
                         }
                     }
