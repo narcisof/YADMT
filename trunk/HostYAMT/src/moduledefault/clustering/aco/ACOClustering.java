@@ -6,7 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.Correlação;
+import moduledefault.clustering.distancias.CorrelacaoPearson;
+import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
@@ -55,36 +56,52 @@ public final class ACOClustering {
                 matriz_padrao[i][j] = _matriz_padrao[i][j];
             }
         }
+        for (int i = 0; i < teste.getDataSet().size(); i++) {
+            for (int j = 0; j < teste.getDataSet().get(i).getAtributos().size(); j++) {
+                System.out.print(teste.getDataSet().get(i).getAtributos().get(j)+" ");
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
         cont = 0;
+        teste_distancia = 7;
         if (teste_distancia == 5) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
-            distância.distancia(teste);
+            distância.distancia();
             matriz_distancias = distância.getMatrizDistancias();
         } else {
             if (teste_distancia == 4) {
                 Cosseno distância = new Cosseno(teste);
-                distância.distancia(teste);
+                distância.distancia();
                 matriz_distancias = distância.getMatrizDistancias();
             } else {
                 if (teste_distancia == 3) {
-                    Correlação distância = new Correlação(teste);
-                    distância.distancia(teste);
+                    CorrelacaoPearson distância = new CorrelacaoPearson(teste);
+                    distância.distancia();
                     matriz_distancias = distância.getMatrizDistancias();
                 } else {
                     if (teste_distancia == 6) {
                         Mahalanobis distância = new Mahalanobis(teste);
-                        distância.distancia(teste);
+                        distância.distancia();
                         matriz_distancias = distância.getMatrizDistancias();
                     } else {
                         if (teste_distancia == 2) {
                             CityBlock distancia = new CityBlock(teste);
-                            distancia.distancia(teste);
+                            distancia.distancia();
                             matriz_distancias = distancia.getMatrizDistancias();
                         } else {
                             if (teste_distancia == 1) {
                                 Chebyshev distancia = new Chebyshev(teste);
-                                distancia.distancia(teste);
+                                distancia.distancia();
                                 matriz_distancias = distancia.getMatrizDistancias();
+                            } else {
+                                if (teste_distancia == 7) {
+                                    CorrelacaoSpearman c = new CorrelacaoSpearman(teste);
+//                                    c.distancia();
+                                    matriz_distancias = c.getMatrizDistancias();
+                                }
                             }
                         }
                     }

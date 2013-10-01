@@ -16,6 +16,8 @@ public class Cluster {
 
     private ArrayList<Padrao> grupo;
     private String nomeGrupo;
+    private int pai;
+    private int posicaoDend;
 
     public Cluster() {
         grupo = new ArrayList<>();
@@ -83,4 +85,24 @@ public class Cluster {
     public int numPadroes() {
         return grupo.size();
     }
+
+    public int getPai() {
+        return pai;
+    }
+
+    public void setPai(int pai) {
+        this.pai = pai;
+    }
+
+    public int getPosicaoDend() {
+        return posicaoDend;
+    }
+
+    public void setPosicaoDend(int posicaoDend) {
+        this.posicaoDend = posicaoDend;
+    }
+    
+    
+    
+    
 }

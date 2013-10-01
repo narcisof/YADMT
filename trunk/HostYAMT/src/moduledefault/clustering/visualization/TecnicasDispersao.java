@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import moduledefault.clustering.distancias.Correlação;
+import moduledefault.clustering.distancias.CorrelacaoPearson;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Padrao;
@@ -1081,7 +1081,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         } else {
             if (grupoEscolhidoMatriz != 0) {
                 if (grupos != null) {
-                    Correlação cor = new Correlação(grupos);
+                    CorrelacaoPearson cor = new CorrelacaoPearson(grupos);
                     cor.distanciaGrupos(grupos);
                     MC.setMatrizGrupos(cor.getMatrizDistancias());
                 } else {
@@ -1454,7 +1454,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }
 
     private void setCorrelacoes() {
-        Correlação cor = new Correlação();
+        CorrelacaoPearson cor = new CorrelacaoPearson(matrizDados);
         cor.trasnpoe(matrizDados);
         double[][] matrizCorrelacaoTransposta = cor.getMatrizDistancias();
         for (int i = 0; i < matrizCorrelacaoTransposta.length; i++) {
