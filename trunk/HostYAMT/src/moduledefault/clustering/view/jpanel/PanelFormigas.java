@@ -19,11 +19,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import moduledefault.clustering.aco.ACOClustering;
-import moduledefault.clustering.recuperacaogrupos.LigacaoCompleta;
-import moduledefault.clustering.recuperacaogrupos.LigacaoMedia;
-import moduledefault.clustering.recuperacaogrupos.LigacaoSimples;
+import moduledefault.clustering.recuperacaogrupos.LigacaoCompletaRec;
+import moduledefault.clustering.recuperacaogrupos.LigacaoMediaRec;
+import moduledefault.clustering.recuperacaogrupos.LigacaoSimplesRec;
 import moduledefault.clustering.recuperacaogrupos.MFaino;
-import moduledefault.clustering.recuperacaogrupos.Ward;
+import moduledefault.clustering.recuperacaogrupos.WardRec;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
@@ -93,10 +93,10 @@ public final class PanelFormigas extends javax.swing.JPanel {
     StringBuffer guarda;
     long tempoinicial_rec;
     long tempofinal_rec;
-    LigacaoCompleta ligaC;
-    LigacaoSimples ligaS;
-    LigacaoMedia ligaM;
-    Ward ward;
+    LigacaoCompletaRec ligaC;
+    LigacaoSimplesRec ligaS;
+    LigacaoMediaRec ligaM;
+    WardRec ward;
     MFaino achagrupos;
     double[][] matrizDados;
     int teste_distancia = 0;
@@ -900,22 +900,22 @@ public final class PanelFormigas extends javax.swing.JPanel {
         tempoinicial_rec = System.currentTimeMillis();
 
         if (teste_recuperação == 3) {
-            ligaS = new LigacaoSimples(getOperar().getMatriz_padrao(), dados, getOperar());
+            ligaS = new LigacaoSimplesRec(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaS.inicio();
             formaClusters(ligaS.get_mpos(), ligaS.get_contgrupos());
             qntGrupos = ligaS.get_contgrupos();
         } else if (teste_recuperação == 2) {
-            ligaM = new LigacaoMedia(getOperar().getMatriz_padrao(), dados, getOperar());
+            ligaM = new LigacaoMediaRec(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaM.inicio();
             formaClusters(ligaM.get_mpos(), ligaM.get_contgrupos());
             qntGrupos = ligaM.get_contgrupos();
         } else if (teste_recuperação == 1) {
-            ligaC = new LigacaoCompleta(getOperar().getMatriz_padrao(), dados, getOperar());
+            ligaC = new LigacaoCompletaRec(getOperar().getMatriz_padrao(), dados, getOperar());
             ligaC.inicio();
             formaClusters(ligaC.get_mpos(), ligaC.get_contgrupos());
             qntGrupos = ligaC.get_contgrupos();
         } else if (teste_recuperação == 5) {
-            ward = new Ward(getOperar().getMatriz_padrao(), dados, getOperar());
+            ward = new WardRec(getOperar().getMatriz_padrao(), dados, getOperar());
             ward.inicio();
             formaClusters(ward.get_mpos(), ward.get_contgrupos());
             qntGrupos = ward.get_contgrupos();

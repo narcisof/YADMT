@@ -22,6 +22,9 @@ public class Cosseno{
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
+
+    public Cosseno() {
+    }
     
 
  

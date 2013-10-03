@@ -23,6 +23,9 @@ public class DistanciaEuclidiana {
         setMatrizDistancias(teste.getDataSet().size());
     }
 
+    public DistanciaEuclidiana() {
+    }
+
     public void distancia() {
         double acumulador = 0;
         for (int i = 0; i < base.getDataSet().size(); i++) {

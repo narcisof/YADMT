@@ -8,7 +8,9 @@ import moduledefault.clustering.uteis.Cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import moduledefault.clustering.hierarquicos.LigaçãoCompletaAgrupamento;
+import moduledefault.clustering.hierarquicos.LigacaoCompleta;
+import moduledefault.clustering.hierarquicos.LigacaoMedia;
+import moduledefault.clustering.hierarquicos.LigacaoSimples;
 import moduledefault.clustering.uteis.Padrao;
 
 /**
@@ -32,8 +34,8 @@ public class ClusteringSOM {
 
     }
 
-    public ArrayList<Cluster> completa() {
-        ArrayList<Cluster> aux;
+    public ArrayList<Cluster> hierarquicos(String op, int grupos) {
+        ArrayList<Cluster> aux = null;
 
         List<Padrao> pad = new ArrayList<>();
         for (int i = 0; i < neuronios.size(); i++) {
@@ -43,10 +45,32 @@ public class ClusteringSOM {
             pad.add(p);
         }
 
-        LigaçãoCompletaAgrupamento complete = new LigaçãoCompletaAgrupamento(pad, 1);
-        complete.ligacaoCompleta();
-        complete.clustering(3); //MUDAR DPS
-        aux = complete.getClusters();
+        switch (op) {
+            case "simples":
+                LigacaoSimples simples = new LigacaoSimples(pad, 5);
+                simples.ligacaoSimples();
+                simples.clustering(grupos);
+                aux = simples.getClusters();
+                break;
+            case "media":
+                LigacaoMedia media = new LigacaoMedia(pad, 5);
+                media.ligacaoMedia();
+                media.clustering(grupos);
+                aux = media.getClusters();
+                break;
+            case "completa":
+                LigacaoCompleta completa = new LigacaoCompleta(pad, 5);
+                completa.ligacaoCompleta();
+                completa.clustering(grupos);
+                aux = completa.getClusters();
+                break;
+            case "ward":
+//                Ward ward = new Ward(pad, 5);
+//                ward.ward();
+//                ward.clustering(grupos);
+//                aux = ward.getClusters();
+                break;
+        }
 
         ArrayList<Cluster> clusters = new ArrayList<>();
         for (int i = 0; i < aux.size(); i++) {
@@ -108,6 +132,7 @@ public class ClusteringSOM {
         }
     }
 
+    //TROCAR POR MERGE SORT
     public void SelectionSort() { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Neuronio aux;
