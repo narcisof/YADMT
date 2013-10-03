@@ -4,7 +4,7 @@ import moduledefault.clustering.aco.ACOClustering;
 import moduledefault.clustering.uteis.Base;
 
 
-public class Ward {
+public class WardRec {
 
     int[][] m;// = new int[matriz.length][matriz.length];
     int linhas;
@@ -16,7 +16,7 @@ public class Ward {
     ACOClustering x;
     StringBuffer string3;
 
-    public Ward(int[][] matriz, Base matrizdados, ACOClustering x_) {
+    public WardRec(int[][] matriz, Base matrizdados, ACOClustering x_) {
         x = x_;
         string3 = new StringBuffer();
         linhas = matriz.length;

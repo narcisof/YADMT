@@ -24,6 +24,9 @@ public class Chebyshev {
         setMatrizDistancias(teste.getDataSet().size());
     }
 
+    public Chebyshev() {
+        
+    }
 
     public double distancia(List<Double> vet1, List<Double> vet2) {
         double acumulador[] = new double[vet1.size()];

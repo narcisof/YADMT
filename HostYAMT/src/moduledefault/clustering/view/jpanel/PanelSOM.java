@@ -83,11 +83,9 @@ public final class PanelSOM extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
-        agrupamentoDensidade = new javax.swing.JRadioButton();
         jButtonConfigDensidade = new javax.swing.JButton();
         jButtonAgrupamento = new javax.swing.JButton();
-        agrupamento1DSOM = new javax.swing.JRadioButton();
-        agrupamentoCompleta = new javax.swing.JRadioButton();
+        boxAlgoritmo = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListResultados = new javax.swing.JList();
@@ -133,15 +131,13 @@ public final class PanelSOM extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel6)
                     .add(campoIteracoes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(inicio)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         jTextArea.setEditable(false);
@@ -150,10 +146,6 @@ public final class PanelSOM extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Agrupamento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
-
-        buttonGroup1.add(agrupamentoDensidade);
-        agrupamentoDensidade.setSelected(true);
-        agrupamentoDensidade.setText("Matriz de Densidade");
 
         jButtonConfigDensidade.setText("Config");
         jButtonConfigDensidade.addActionListener(new java.awt.event.ActionListener() {
@@ -169,44 +161,30 @@ public final class PanelSOM extends javax.swing.JPanel {
             }
         });
 
-        buttonGroup1.add(agrupamento1DSOM);
-        agrupamento1DSOM.setText("1-D SOM");
-
-        buttonGroup1.add(agrupamentoCompleta);
-        agrupamentoCompleta.setText("Completa");
+        boxAlgoritmo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matriz de Densidade", "Ligação Simples", "Ligação Média", "Ligação Completa", "Método de Ward", "1D SOM" }));
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .add(agrupamentoDensidade)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jButtonConfigDensidade, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 71, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                     .add(jButtonAgrupamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanel3Layout.createSequentialGroup()
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(agrupamentoCompleta)
-                            .add(agrupamento1DSOM))
-                        .add(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .add(boxAlgoritmo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jButtonConfigDensidade, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(12, 12, 12))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(agrupamentoDensidade)
-                    .add(jButtonConfigDensidade))
+                    .add(jButtonConfigDensidade)
+                    .add(boxAlgoritmo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(agrupamento1DSOM)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(agrupamentoCompleta)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jButtonAgrupamento)
-                .addContainerGap())
+                .add(jButtonAgrupamento))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
@@ -257,11 +235,9 @@ public final class PanelSOM extends javax.swing.JPanel {
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(bVisualizacao)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(bVisualizacao))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -272,10 +248,10 @@ public final class PanelSOM extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel19, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 222, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -286,11 +262,12 @@ public final class PanelSOM extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(1, 1, 1)
-                        .add(jPanel19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jPanel19, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 115, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -333,26 +310,49 @@ public final class PanelSOM extends javax.swing.JPanel {
     }//GEN-LAST:event_bVisualizacaoActionPerformed
 
     private void jButtonConfigDensidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfigDensidadeActionPerformed
-        if (densidadeConfig == null) {
-            densidadeConfig = new JFrameKohonenConfigDensidade();
+        switch (boxAlgoritmo.getSelectedIndex()) {
+            case 0:
+                agrupamento = "densidade";
+                if (densidadeConfig == null) {
+                    densidadeConfig = new JFrameKohonenConfigDensidade();
+                }
+                densidadeConfig.setVisible(true);
+                break;
+            case 1:
+                agrupamento = "simples";
+                break;
+            case 2:
+                agrupamento = "media";
+                break;
+            case 3:
+                agrupamento = "completa";
+                break;
+            case 4:
+                agrupamento = "ward";
+                break;
         }
-        densidadeConfig.setVisible(true);
     }//GEN-LAST:event_jButtonConfigDensidadeActionPerformed
 
     private void jButtonAgrupamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgrupamentoActionPerformed
-        //AGRUPAMENTO
-        //Agrupamento
-        if (agrupamentoDensidade.isSelected()) {
-            agrupamento = "densidade";
-            if (densidadeConfig == null) {
-                densidadeConfig = new JFrameKohonenConfigDensidade();
-            }
-        }
-        if (agrupamento1DSOM.isSelected()) {
-            agrupamento = "1DSOM";
-        }
-         if (agrupamentoCompleta.isSelected()) {
-            agrupamento = "completa";
+        switch (boxAlgoritmo.getSelectedIndex()) {
+            case 0:
+                agrupamento = "densidade";
+                if (densidadeConfig == null) {
+                    densidadeConfig = new JFrameKohonenConfigDensidade();
+                }
+                break;
+            case 1:
+                agrupamento = "simples";
+                break;
+            case 2:
+                agrupamento = "media";
+                break;
+            case 3:
+                agrupamento = "completa";
+                break;
+            case 4:
+                agrupamento = "ward";
+                break;
         }
         clusterig();
     }//GEN-LAST:event_jButtonAgrupamentoActionPerformed
@@ -361,10 +361,8 @@ public final class PanelSOM extends javax.swing.JPanel {
         jTextArea.setText(resutados.get(jListResultados.getSelectedIndex()));
     }//GEN-LAST:event_jListResultadosMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton agrupamento1DSOM;
-    private javax.swing.JRadioButton agrupamentoCompleta;
-    private javax.swing.JRadioButton agrupamentoDensidade;
     private javax.swing.JButton bVisualizacao;
+    private javax.swing.JComboBox boxAlgoritmo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JSpinner campoIteracoes;
     private javax.swing.ButtonGroup grupoAprendizagem;
@@ -478,9 +476,21 @@ public final class PanelSOM extends javax.swing.JPanel {
                 clusters = cluster.clustering1DSOM();
                 jTextArea.append("\n================== Agrupamento 1-D SOM ==================\n");
                 break;
+            case "simples":
+                clusters = cluster.hierarquicos("simples", 3);
+                jTextArea.append("\n================== Agrupamento Ligação Simples ==================\n");
+                break;
+            case "media":
+                clusters = cluster.hierarquicos("media", 3);
+                jTextArea.append("\n================== Agrupamento Ligação Média ==================\n");
+                break;
             case "completa":
-                clusters = cluster.completa();
+                clusters = cluster.hierarquicos("completa", 3);
                 jTextArea.append("\n================== Agrupamento Ligação Completa ==================\n");
+                break;
+            case "ward":
+                clusters = cluster.hierarquicos("ward", 3);
+                jTextArea.append("\n================== Agrupamento Ligação Ward ==================\n");
                 break;
         }
 
@@ -495,8 +505,6 @@ public final class PanelSOM extends javax.swing.JPanel {
         for (int i = 0; i < dados.getAtributos().size(); i++) {
             jTextArea.append("\t\t" + dados.getAtributos().get(i) + "\n");
         }
-
-
         jTextArea.append("\n=============== Self-Organizing Map - SOM ===============\n");
         jTextArea.append("Erro de Quantização: " + rede.getErroQuantização() + "\n");
         jTextArea.append("Erro Topológico: " + rede.getErroTopologico() + "\n");

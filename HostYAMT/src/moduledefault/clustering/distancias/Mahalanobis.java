@@ -26,6 +26,9 @@ public class Mahalanobis {
         setMatrizDistancias(teste.getDataSet().size());
     }
 
+    public Mahalanobis() {
+    }
+
     public double distancia(List<Double> vet1, List<Double> vet2) {
         double[] medias = new double[vet1.size()];
         double somador = 0;

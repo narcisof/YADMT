@@ -24,6 +24,9 @@ public class CityBlock {
         setMatrizDistancias(teste.getDataSet().size());
     }
 
+    public CityBlock() {
+    }
+
    
     public double distancia(List<Double> vet1, List<Double> vet2) {
         double acumulador = 0;

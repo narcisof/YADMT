@@ -13,7 +13,7 @@ import moduledefault.clustering.uteis.Base;
  *
  * @author Mateus
  */
-public class LigacaoSimples {
+public class LigacaoSimplesRec {
 
     int[][] m;// = new int[matriz.length][matriz.length];
     int linhas;
@@ -24,7 +24,7 @@ public class LigacaoSimples {
     ACOClustering x;
     StringBuffer string3;
 
-  public  LigacaoSimples(int[][] matriz, Base matrizdados, ACOClustering x_) {
+  public  LigacaoSimplesRec(int[][] matriz, Base matrizdados, ACOClustering x_) {
         string3 = new StringBuffer();
         x = x_;
         linhas = matriz.length;
