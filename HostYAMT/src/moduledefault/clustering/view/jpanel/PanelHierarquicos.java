@@ -15,9 +15,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ComponentUI;
+import moduledefault.clustering.hierarquicos.BinTree;
 import moduledefault.clustering.hierarquicos.LigacaoCompleta;
 import moduledefault.clustering.hierarquicos.LigacaoMedia;
 import moduledefault.clustering.hierarquicos.LigacaoSimples;
+import moduledefault.clustering.hierarquicos.NewJFrame;
 import moduledefault.clustering.hierarquicos.WardAgrupamento;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
@@ -291,10 +293,14 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 LC.clustering(3);
                 clusters = LC.getClusters();
                 int[][] matrizDendograma = LC.getMatrizDendograma();
-                //avaliaLigacao(matrizDendograma);
-                imprimiAgrupamento();
+              // avaliaLigacao(matrizDendograma);
+               // imprimiAgrupamento();
+                
+                 System.out.println("===========================================");
+                BinTree dendograma = new BinTree();
+                dendograma.ordena(matrizDendograma);
 //                imprimiRecuperacao();
-                setListaResultados();
+                //setListaResultados();
             case 2:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
@@ -322,6 +328,16 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 //                imprimiRecuperacao();
 //                setListaResultados();
 //                jTextArea1.setText(getBuffer().toString());
+//                System.out.println("===========================================");
+                dendograma = new BinTree();
+                NewJFrame frame = new NewJFrame();
+                int altura = frame.getjPanel1().getHeight();
+                int largura = frame.getjPanel1().getWidth();                
+                dendograma.createTree(matrizDendograma, altura, largura);
+                
+                frame.setDendograma(dendograma);
+                frame.setVisible(true);
+                frame.repaint();
                 break;
             case 4:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
