@@ -920,7 +920,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             formaClusters(ward.get_mpos(), ward.get_contgrupos());
             qntGrupos = ward.get_contgrupos();
         } else if (teste_recuperação == 4) {
-            achagrupos = new MFaino(getOperar().getMatriz_padrao(), getOperar());
+            achagrupos = new MFaino(getOperar().getMatriz_padrao());
             achagrupos.inicio();
             formaClusters(achagrupos.get_mpos(), achagrupos.get_contgrupos());
             qntGrupos = achagrupos.get_contgrupos();

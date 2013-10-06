@@ -6,8 +6,6 @@ package moduledefault.clustering.recuperacaogrupos;
 
 
 import java.io.IOException;
-import java.util.Scanner;
-import moduledefault.clustering.aco.ACOClustering;
 
 /**
  *
@@ -20,30 +18,23 @@ public class MFaino {
     int busca = 0;
     int contgrupo = 0;
     int sizepos;
-    Scanner in = new Scanner(System.in);
     int[][] m;// = new int[matriz.length][matriz.length];
     int[][] maux;// = new int[matriz.length][matriz.length];
     int linhas;
     int[][] mpos;
     int[][] mpos2;
     StringBuffer string3;
-    ACOClustering x;
 
-    public MFaino(int[][] matriz, ACOClustering x_) {
+    public MFaino(int[][] matriz) {
         string3 = new StringBuffer();
-        x = x_;
         linhas = matriz.length;
         m = new int[matriz.length][matriz.length];
         maux = new int[matriz.length][matriz.length];
         for (int i = 0; i < linhas; i++) {
-            for (int j = 0; j < linhas; j++) {
-                m[i][j] = matriz[i][j];
-            }
+            System.arraycopy(matriz[i], 0, m[i], 0, linhas);
         }
         for (int i = 0; i < linhas; i++) {
-            for (int j = 0; j < linhas; j++) {
-                maux[i][j] = m[i][j];
-            }
+            System.arraycopy(m[i], 0, maux[i], 0, linhas);
         }
 
         sizepos = (linhas * linhas) * 2;
@@ -92,18 +83,6 @@ public class MFaino {
             }
         }
 
-    }
-
-    public int get_contgrupos() {
-        return contgrupo;
-    }
-
-    public int[][] get_mpos() {
-        return mpos2;
-    }
-
-    public int getPos() {
-        return pos;
     }
 
     void grupos(int lin, int col, int[][] m, int[][] mpos) { //
@@ -272,4 +251,17 @@ public class MFaino {
             }		//o grupo do isolado deixou de existir, sendo assim -1 grupo no total
         }
     }
+        
+    public int get_contgrupos() {
+        return contgrupo;
+    }
+
+    public int[][] get_mpos() {
+        return mpos2;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
 }
