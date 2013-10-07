@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
+import static moduledefault.clustering.som.visualization.MatrizU2D.getRGB;
 
 /**
  *
@@ -20,6 +21,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
     private int gridMUY;
     double matrizU[][];
     double intervalo;
+    private static boolean grayScale = false;
 
     public MatrizU3D() {
         initComponents();
@@ -184,6 +186,14 @@ public final class MatrizU3D extends javax.swing.JPanel {
         intervalo = (max - min) / 10;
     }
 
+    public boolean isGrayScale() {
+        return grayScale;
+    }
+
+    public static void setGrayScale(boolean grayScale) {
+        MatrizU3D.grayScale = grayScale;
+    }
+
     public Color getColor(int i1, int i2, int j1, int j2) {
         Color cor = null;
         ArrayList<Double> list = new ArrayList<>();
@@ -196,26 +206,95 @@ public final class MatrizU3D extends javax.swing.JPanel {
 
         double media = (list.get(2) + list.get(3)) / 2;
 
+        int rgb;
         if ((media > 0) && (media <= intervalo)) { //Cor 1
-            cor = new Color(25, 25, 112);
+            if (grayScale) {
+                rgb = (int) ((25 * 0.299) + (25 * 0.587) + (112 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(25, 25, 112);
+            }
         } else if ((media > intervalo) && (media <= intervalo * 2)) { //Cor 2
-            cor = new Color(0, 0, 205);
+
+            if (grayScale) {
+                rgb = (int) ((0 * 0.299) + (0 * 0.587) + (205 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(0, 0, 205);
+            }
         } else if ((media > intervalo * 2) && (media <= intervalo * 3)) { //Cor 3
-            cor = new Color(0, 191, 255);
+
+            if (grayScale) {
+                rgb = (int) ((0 * 0.299) + (191 * 0.587) + (255 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(0, 191, 255);
+            }
         } else if ((media > intervalo * 3) && (media <= intervalo * 4)) { //Cor 4
-            cor = new Color(64, 224, 208);
+
+            if (grayScale) {
+                rgb = (int) ((64 * 0.299) + (224 * 0.587) + (208 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(64, 224, 208);
+            }
         } else if ((media > intervalo * 4) && (media <= intervalo * 5)) { //Cor 5
-            cor = new Color(0, 255, 127);
+
+            if (grayScale) {
+                rgb = (int) ((0 * 0.299) + (255 * 0.587) + (127 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(0, 255, 127);
+            }
         } else if ((media > intervalo * 5) && (media <= intervalo * 6)) { //Cor 6
-            cor = new Color(154, 205, 50);
+
+            if (grayScale) {
+                rgb = (int) ((154 * 0.299) + (205 * 0.587) + (50 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(154, 205, 50);
+            }
         } else if ((media > intervalo * 6) && (media <= intervalo * 7)) { //Cor 7
-            cor = new Color(255, 255, 0);
+
+            if (grayScale) {
+                rgb = (int) ((255 * 0.299) + (255 * 0.587) + (0 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(255, 255, 0);
+            }
         } else if ((media > intervalo * 7) && (media <= intervalo * 8)) { //Cor 8
-            cor = new Color(255, 165, 0);
+
+            if (grayScale) {
+                rgb = (int) ((255 * 0.299) + (165 * 0.587) + (0 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(255, 165, 0);
+            }
         } else if ((media > intervalo * 8) && (media <= intervalo * 9)) { //Cor 9
-            cor = new Color(255, 127, 0);
+
+            if (grayScale) {
+                rgb = (int) ((255 * 0.299) + (127 * 0.587) + (0 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(255, 127, 0);
+            }
         } else if ((media > intervalo * 9) && (media <= intervalo * 10)) { //Cor 10
-            cor = new Color(255, 0, 0);
+            if (grayScale) {
+                rgb = (int) ((255 * 0.299) + (0 * 0.587) + (0 * 0.114));
+                rgb = getRGB(rgb, rgb, rgb);
+                cor = new Color(rgb);
+            } else {
+                cor = new Color(255, 0, 0);
+            }
         }
         return cor;
     }

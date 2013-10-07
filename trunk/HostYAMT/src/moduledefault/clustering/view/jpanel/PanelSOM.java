@@ -386,36 +386,6 @@ public final class PanelSOM extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void startSOM() {
-//        gridX = 27;
-//        gridY = 27;
-//        iteracoes = 500;
-//
-//        // int[] vetRaio = {5};
-//        // double[] vetAlfa = {0.3, 0.2, 0.1, 0.05, 0.001};
-//
-//        for (int i = 0; i < 10; i++) {
-//            float f = 0;
-//            float acerto = 0;
-//            System.out.println("Teste " + (i+1));
-//            for (int k = 0; k < 10; k++) {
-//                rede = new RedeSOM(gridX, gridY, 5, iteracoes, (float) 0.05, dados, distancia, atualiza); //cria a Rede
-//                for (int x = 0; x < iteracoes; x++) {
-//                    rede.startRede(x); //inicia o Kohonen
-//                }
-//                rede.carregaPadroes();
-//                ClusteringSOM cluster = new ClusteringSOM(rede);
-//                ArrayList<Cluster> clusters;
-//                clusters = cluster.clusteringDensidade(0.5);
-//                AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados.getDataSet().size());
-//                f += avaliacao.getMedidaF();
-//                acerto += avaliacao.getAcerto();
-//            }
-//            f = f / 10;
-//            acerto = acerto / 10;
-//            System.out.println("F = " + f + "\tAcerto = " + acerto);
-//            System.out.println("----------------------------");
-//        }
-//        inicio.setEnabled(true);
         gridX = Integer.parseInt(frameKohonen.getCampoGridX().getValue().toString());
         gridY = Integer.parseInt(frameKohonen.getCampoGridY().getValue().toString());
 

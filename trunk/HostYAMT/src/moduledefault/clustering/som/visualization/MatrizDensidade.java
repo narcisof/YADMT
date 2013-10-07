@@ -21,6 +21,9 @@ public class MatrizDensidade extends javax.swing.JPanel {
     private HexGrid mCellMetrics;
     private int gridX;
     private int gridY;
+    private static Color cNeuronio = new Color(79, 79, 79);
+    private static Color sNeuronio = Color.WHITE;
+    private static boolean exibePadroes = true;
 
     /**
      * Creates new form Draw2D
@@ -35,7 +38,7 @@ public class MatrizDensidade extends javax.swing.JPanel {
         super.paintComponent(g);
 
         if (FrameSomVisualization.getInstance().getRede() != null) {
-            
+
             gridX = FrameSomVisualization.getGridX();
             gridY = FrameSomVisualization.getGridY();
 
@@ -48,12 +51,14 @@ public class MatrizDensidade extends javax.swing.JPanel {
                     mCellMetrics.setCellIndex(i, j);
                     mCellMetrics.computeCorners(mCornersX, mCornersY);
                     if (!FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().isEmpty()) {
-                        g.setColor(new Color(79, 79, 79));
+                        g.setColor(cNeuronio);
                         g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                        g.setColor(Color.WHITE);
-                        g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", enumera(mCornersY, mCornersX).x, enumera(mCornersY, mCornersX).y);
+                        if (exibePadroes) {
+                            g.setColor(Color.WHITE);
+                            g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", enumera(mCornersY, mCornersX).x, enumera(mCornersY, mCornersX).y);
+                        }
                     } else {
-                        g.setColor(Color.WHITE);
+                        g.setColor(sNeuronio);
                         g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
                     }
                     g.setColor(Color.BLACK);
@@ -82,6 +87,26 @@ public class MatrizDensidade extends javax.swing.JPanel {
 
             }
         }
+    }
+
+    public static void setcNeuronio(Color cNeuronio) {
+        MatrizDensidade.cNeuronio = cNeuronio;
+    }
+
+    public static void setsNeuronio(Color sNeuronio) {
+        MatrizDensidade.sNeuronio = sNeuronio;
+    }
+
+    public static void setExibePadroes(boolean exibePadroes) {
+        MatrizDensidade.exibePadroes = exibePadroes;
+    }
+
+    public Color getcNeuronio() {
+        return cNeuronio;
+    }
+
+    public Color getsNeuronio() {
+        return sNeuronio;
     }
 
     /**
