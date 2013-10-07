@@ -59,7 +59,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i + 1, j + 1).y, FrameSomVisualization.getPontosDraw(i + 1, j).y};
                         g.setColor(getColor(i, i + 1, j, j + 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -73,7 +73,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i + 1, j + 1).y, FrameSomVisualization.getPontosDraw(i + 1, j).y};
                         g.setColor(getColor(i, i + 1, j, j + 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -88,7 +88,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i + 1, j - 1).y, FrameSomVisualization.getPontosDraw(i + 1, j).y};
                         g.setColor(getColor(i, i + 1, j, j - 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -102,7 +102,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i + 1, j - 1).y, FrameSomVisualization.getPontosDraw(i + 1, j).y};
                         g.setColor(getColor(i, i + 1, j, j - 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -117,7 +117,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i - 1, j + 1).y, FrameSomVisualization.getPontosDraw(i - 1, j).y};
                         g.setColor(getColor(i, i - 1, j, j + 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -131,7 +131,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i - 1, j + 1).y, FrameSomVisualization.getPontosDraw(i - 1, j).y};
                         g.setColor(getColor(i, i - 1, j, j + 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -146,7 +146,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i - 1, j - 1).y, FrameSomVisualization.getPontosDraw(i - 1, j).y};
                         g.setColor(getColor(i, i - 1, j, j - 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
@@ -160,7 +160,7 @@ public final class MatrizU3D extends javax.swing.JPanel {
                             FrameSomVisualization.getPontosDraw(i - 1, j - 1).y, FrameSomVisualization.getPontosDraw(i - 1, j).y};
                         g.setColor(getColor(i, i - 1, j, j - 1));
                         g.fillPolygon(xx, yy, 4);
-                        g.setColor(FrameSomVisualization.getCor_linha());
+                        g.setColor(Color.BLACK);
                         g.drawPolygon(xx, yy, 4);
                     }
                 }
