@@ -5,10 +5,19 @@
 package moduledefault.clustering.som.visualization;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 import moduledefault.clustering.uteis.Base;
@@ -30,19 +39,9 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private static ArrayList<Point> eixos = new ArrayList<>();
     private static Point[][] pontosDraw;
     private static Point[][] pontosDrawRede;
-    private static Color cor_fundo = Color.WHITE;
-    private static Color cor_linha = Color.BLACK;
-    private static Color cor_eixo = Color.BLACK;
     private static double VRP[] = {-250, -300, -100, 1};
     private static double P[] = {0, 0, 0, 1};
-    private static int pZ = 0;
-    private static int pX = 0;
-    private static int pY = 0;
     private static int Dvalue = 250;
-    private static int Xminimo = 0;
-    private static int Xmaximo = 0;
-    private static int Yminimo = 0;
-    private static int Ymaximo = 0;
     private static Projetor project;
     private static double Mcartesiano[][] = {{0, 20, 0, 0},
         {0, 0, 20, 0},
@@ -50,7 +49,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         {1, 1, 1, 1}}; //Coordenadas para desenho do eixo
     private static double Mpontos[][]; //Pontos da rede 3D
     private static double Mbase[][];  //Pontos da base  3D
-    private static boolean exibirEixos = true;
     private static double matrizU[][];
     //
     private static int valueDensidade = 15;
@@ -165,7 +163,31 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        config = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        exibirPadroes = new javax.swing.JCheckBoxMenuItem();
+        exibirNeuronios = new javax.swing.JCheckBoxMenuItem();
+        exibirRede = new javax.swing.JCheckBoxMenuItem();
+        exibirEixosSom = new javax.swing.JCheckBoxMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jCheckBoxMenuItem4 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem7 = new javax.swing.JCheckBoxMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        grayScale = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem5 = new javax.swing.JCheckBoxMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem6 = new javax.swing.JCheckBoxMenuItem();
 
         setTitle("SOM - Visualization");
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -204,7 +226,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         );
         panelSOMLayout.setVerticalGroup(
             panelSOMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 378, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -413,7 +435,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Matriz-U 3D", panel3D);
+        jTabbedPane2.addTab("Matriz-U Superfície Topológica", panel3D);
 
         panel2D.setBackground(new java.awt.Color(255, 255, 255));
         panel2D.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -456,7 +478,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         panel2DLayout.setVerticalGroup(
             panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel2DLayout.createSequentialGroup()
-                .addContainerGap(428, Short.MAX_VALUE)
+                .addContainerGap(429, Short.MAX_VALUE)
                 .addGroup(panel2DLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderU2D, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -516,7 +538,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         panelDensidadeLayout.setVerticalGroup(
             panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidadeLayout.createSequentialGroup()
-                .addGap(0, 332, Short.MAX_VALUE)
+                .addGap(0, 333, Short.MAX_VALUE)
                 .addGroup(panelDensidadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(sliderDensidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -527,10 +549,191 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         jTabbedPane2.addTab("Matriz Densidade", panelDensidade);
 
         jMenu1.setText("Arquivo");
+
+        jMenuItem6.setText("Salvar SOM");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
+
+        jMenuItem7.setText("Salvar Matriz-U 3D");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem7);
+
+        jMenuItem8.setText("Salvar Matriz-U 2D");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem8);
+
+        jMenuItem9.setText("Salvar Matriz Densidade");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem9);
+
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        config.setText("Configurações");
+
+        jMenu3.setText("SOM");
+
+        jMenuItem3.setText("Cor dos Padrões ");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        jMenuItem1.setText("Cor dos Neurônios");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuItem2.setText("Cor da Rede ");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem2);
+
+        jMenuItem10.setText("Cor dos Eixos");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem10);
+
+        exibirPadroes.setSelected(true);
+        exibirPadroes.setText("Exibir Padrões");
+        exibirPadroes.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                exibirPadroesStateChanged(evt);
+            }
+        });
+        exibirPadroes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exibirPadroesActionPerformed(evt);
+            }
+        });
+        jMenu3.add(exibirPadroes);
+
+        exibirNeuronios.setSelected(true);
+        exibirNeuronios.setText("Exibir Neurônios");
+        exibirNeuronios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exibirNeuroniosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(exibirNeuronios);
+
+        exibirRede.setSelected(true);
+        exibirRede.setText("Exibir Rede");
+        exibirRede.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exibirRedeActionPerformed(evt);
+            }
+        });
+        jMenu3.add(exibirRede);
+
+        exibirEixosSom.setSelected(true);
+        exibirEixosSom.setText("Exibir Eixos");
+        exibirEixosSom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exibirEixosSomActionPerformed(evt);
+            }
+        });
+        jMenu3.add(exibirEixosSom);
+
+        config.add(jMenu3);
+
+        jMenu4.setText("Matriz-U Superfície Topológica");
+
+        jCheckBoxMenuItem4.setText("Tons de Cinza");
+        jCheckBoxMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jCheckBoxMenuItem4);
+
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("Exibir Eixos");
+        jMenu4.add(jCheckBoxMenuItem2);
+
+        jCheckBoxMenuItem7.setSelected(true);
+        jCheckBoxMenuItem7.setText("Exibir Legenda");
+        jMenu4.add(jCheckBoxMenuItem7);
+
+        config.add(jMenu4);
+
+        jMenu6.setText("Matriz-U 2D");
+
+        grayScale.setText("Tons de Cinza");
+        grayScale.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                grayScaleStateChanged(evt);
+            }
+        });
+        grayScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grayScaleActionPerformed(evt);
+            }
+        });
+        jMenu6.add(grayScale);
+
+        jCheckBoxMenuItem5.setSelected(true);
+        jCheckBoxMenuItem5.setText("Exibir Legenda");
+        jMenu6.add(jCheckBoxMenuItem5);
+
+        config.add(jMenu6);
+
+        jMenu5.setText("Matriz Densidade");
+
+        jMenuItem4.setText("Cor dos Neurônios com Padrões");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem4);
+
+        jMenuItem5.setText("Cor dos Neurônios sem Padrões");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem5);
+
+        jCheckBoxMenuItem6.setSelected(true);
+        jCheckBoxMenuItem6.setText("Exibir Número de Padrões Associados");
+        jCheckBoxMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jCheckBoxMenuItem6);
+
+        config.add(jMenu5);
+
+        jMenuBar1.add(config);
 
         setJMenuBar(jMenuBar1);
 
@@ -711,9 +914,208 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private void jComboBoxEixoYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEixoYActionPerformed
         repaint();
     }//GEN-LAST:event_jComboBoxEixoYActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        if (den != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", den.getcNeuronio());
+            MatrizDensidade.setcNeuronio(newColor);
+            den.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        BufferedImage imagem = new BufferedImage(panel2D.getWidth(), panel2D.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = imagem.createGraphics();
+        panel2D.paint(graphics);
+        graphics.dispose();
+        try {
+            String arqSaida;
+            JFileChooser arquivo = new JFileChooser();
+            if (arquivo.showSaveDialog(arquivo) == JFileChooser.APPROVE_OPTION) {
+                arqSaida = arquivo.getSelectedFile().getPath();
+                ImageIO.write(imagem, "png", new File(arqSaida+".png"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FrameSomVisualization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void exibirPadroesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirPadroesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exibirPadroesActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        if (som != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", som.getPadraoColor());
+            som.setPadraoColor(newColor);
+            som.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (som != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", som.getNeuronioColor());
+            som.setNeuronioColor(newColor);
+            som.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (som != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", som.getRedeLineColor());
+            som.setRedeLineColor(newColor);
+            som.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        if (som != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", som.getEixosColor());
+            som.setEixosColor(newColor);
+            som.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void exibirPadroesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_exibirPadroesStateChanged
+        if (exibirPadroes.isSelected()) {
+            som.setBase(true);
+        } else {
+            som.setBase(false);
+        }
+        som.repaint();
+    }//GEN-LAST:event_exibirPadroesStateChanged
+
+    private void exibirNeuroniosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirNeuroniosActionPerformed
+        if (exibirNeuronios.isSelected()) {
+            som.setNeuronios(true);
+        } else {
+            som.setNeuronios(false);
+        }
+        som.repaint();
+    }//GEN-LAST:event_exibirNeuroniosActionPerformed
+
+    private void exibirRedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirRedeActionPerformed
+        if (exibirRede.isSelected()) {
+            som.setSom(true);
+        } else {
+            som.setSom(false);
+        }
+        som.repaint();
+    }//GEN-LAST:event_exibirRedeActionPerformed
+
+    private void exibirEixosSomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exibirEixosSomActionPerformed
+        if (exibirEixosSom.isSelected()) {
+            som.setEixos(true);
+        } else {
+            som.setEixos(false);
+        }
+        som.repaint();
+    }//GEN-LAST:event_exibirEixosSomActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        BufferedImage imagem = new BufferedImage(panelSOM.getWidth(), panelSOM.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = imagem.createGraphics();
+        panelSOM.paint(graphics);
+        graphics.dispose();
+        try {
+            String arqSaida;
+            JFileChooser arquivo = new JFileChooser();
+            if (arquivo.showSaveDialog(arquivo) == JFileChooser.APPROVE_OPTION) {
+                arqSaida = arquivo.getSelectedFile().getPath();
+                ImageIO.write(imagem, "png", new File(arqSaida+".png"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FrameSomVisualization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        BufferedImage imagem = new BufferedImage(panel3D.getWidth(), panel3D.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = imagem.createGraphics();
+        panel3D.paint(graphics);
+        graphics.dispose();
+        try {
+            String arqSaida;
+            JFileChooser arquivo = new JFileChooser();
+            if (arquivo.showSaveDialog(arquivo) == JFileChooser.APPROVE_OPTION) {
+                arqSaida = arquivo.getSelectedFile().getPath();
+                ImageIO.write(imagem, "png", new File(arqSaida+".png"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FrameSomVisualization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        BufferedImage imagem = new BufferedImage(panelDensidade.getWidth(), panelDensidade.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = imagem.createGraphics();
+        panelDensidade.paint(graphics);
+        graphics.dispose();
+        try {
+            String arqSaida;
+            JFileChooser arquivo = new JFileChooser();
+            if (arquivo.showSaveDialog(arquivo) == JFileChooser.APPROVE_OPTION) {
+                arqSaida = arquivo.getSelectedFile().getPath();
+                ImageIO.write(imagem, "png", new File(arqSaida+".png"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FrameSomVisualization.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void grayScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_grayScaleStateChanged
+        
+    }//GEN-LAST:event_grayScaleStateChanged
+
+    private void grayScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayScaleActionPerformed
+        if (grayScale.isSelected()) {
+            MatrizU2D.setGrayScale(true);
+        } else {
+            MatrizU2D.setGrayScale(false);
+        }
+        u2d.repaint();
+    }//GEN-LAST:event_grayScaleActionPerformed
+
+    private void jCheckBoxMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem4ActionPerformed
+        if (jCheckBoxMenuItem4.isSelected()) {
+            MatrizU3D.setGrayScale(true);
+        } else {
+            MatrizU3D.setGrayScale(false);
+        }
+        u3d.repaint();
+    }//GEN-LAST:event_jCheckBoxMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        if (den != null) {
+            Color newColor = JColorChooser.showDialog(null, "Selecione sua Cor", den.getsNeuronio());
+            MatrizDensidade.setsNeuronio(newColor);
+            den.repaint();
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jCheckBoxMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem6ActionPerformed
+       if(jCheckBoxMenuItem6.isSelected()){
+           MatrizDensidade.setExibePadroes(true);
+       }else{
+           MatrizDensidade.setExibePadroes(false);
+       }
+       den.repaint();
+    }//GEN-LAST:event_jCheckBoxMenuItem6ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu config;
+    private javax.swing.JCheckBoxMenuItem exibirEixosSom;
+    private javax.swing.JCheckBoxMenuItem exibirNeuronios;
+    private javax.swing.JCheckBoxMenuItem exibirPadroes;
+    private javax.swing.JCheckBoxMenuItem exibirRede;
+    private javax.swing.JCheckBoxMenuItem grayScale;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem4;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem5;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem6;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem7;
     private static javax.swing.JComboBox jComboBoxEixoX;
     private static javax.swing.JComboBox jComboBoxEixoY;
     private static javax.swing.JComboBox jComboBoxEixoZ;
@@ -726,8 +1128,21 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1106,10 +1521,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
 
     public static Point getPontosDrawRede(int i, int j) {
         return pontosDrawRede[i][j];
-    }
-
-    public static Color getCor_linha() {
-        return cor_linha;
     }
 
     public static int getValueDensidade() {
