@@ -4,8 +4,11 @@
  */
 package moduledefault.clustering.distancias;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
 
@@ -19,6 +22,7 @@ public class DistanciaEuclidiana {
     double[][] matrizDistancias;
 
     public DistanciaEuclidiana(Base teste) {
+        System.out.println("euclidiana");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
@@ -52,12 +56,12 @@ public class DistanciaEuclidiana {
         return Math.sqrt(acumulador);
     }
 
-    public static float[][] distanciaKmeans(ArrayList<Centroide> centroides, int numK, double[][] matrizAtributos, int linhas) {
-        float[][] resultado = new float[linhas][numK];
+    public static double[][] distanciaKmeans(ArrayList<Centroide> centroides, int numK, double[][] matrizAtributos, int linhas) {
+        double[][] resultado = new double[linhas][numK];
         for (int i = 0; i < linhas; i++) {
             for (int w = 0; w < numK; w++) {
                 double acumulador = 0;
-                for (int j = 0; j < centroides.get(w).getAtributos().size() - 1; j++) {
+                for (int j = 0; j < centroides.get(w).getAtributos().size(); j++) {
                     acumulador += Math.pow(matrizAtributos[i][j] - centroides.get(w).getAtributos().get(j), 2);
                 }
                 resultado[i][w] = ((float) Math.sqrt((acumulador)));
@@ -74,7 +78,7 @@ public class DistanciaEuclidiana {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

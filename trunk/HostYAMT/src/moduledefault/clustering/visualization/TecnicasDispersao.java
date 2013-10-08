@@ -42,15 +42,12 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static int grupoEscolhidoMatriz = 0;
     static boolean setou = false;
     static StringBuffer bufferLogGrupos;
-    JPanel[][] quadroPanels;
+    static JPanel[][] quadroPanels;
     JPanel[][] quadroPanelsPixels;
-    private static double dvrpX;
-    private static double dvrpY;
-    private static double dvrpZ;
-    private static double dpontoX;
-    private static double dpontoY;
-    private static double dpontoZ;
-    private static double ddistancia;
+    static int tamanhoOriginalCorrelacaoX;
+    static int tamanhoOriginalCorrelacaoY;
+    static int tamanhoOriginalParalelaX;
+    static int tamanhoOriginalParalelaY;
 
     public boolean isSetou() {
         return setou;
@@ -83,15 +80,12 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.setResizable(false);
+        tamanhoOriginalCorrelacaoX = this.getFundoCorrelacao().getWidth();
+        tamanhoOriginalCorrelacaoY = this.getFundoCorrelacao().getHeight();
+        tamanhoOriginalParalelaX = this.getFundoParalelas().getWidth();
+        tamanhoOriginalParalelaY = this.getFundoParalelas().getHeight();
 //        repaint();
 
-        dvrpX = 1;
-        dvrpY = 1;
-        dvrpZ = 1;
-        dpontoX = 0;
-        dpontoY = 0;
-        dpontoZ = 0;
-        ddistancia = 10;
     }
 
     public static synchronized TecnicasDispersao getInstance() {
@@ -101,6 +95,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             INSTANCE.repaint();
         }
         bufferLogGrupos = new StringBuffer();
+
         return INSTANCE;
     }
 
@@ -121,15 +116,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         comboBoxEixoY = new javax.swing.JComboBox();
         comboBoxEixoZ = new javax.swing.JComboBox();
         jPanel10 = new javax.swing.JPanel();
-        campoTexto = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        vrpX = new javax.swing.JSpinner();
-        vrpY = new javax.swing.JSpinner();
-        vrpZ = new javax.swing.JSpinner();
-        pontoX = new javax.swing.JSpinner();
-        pontoY = new javax.swing.JSpinner();
-        pontoZ = new javax.swing.JSpinner();
-        distancia = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
         fundoMatrizCorrelacao = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -193,7 +179,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         fundoDispersaoGeral.setLayout(fundoDispersaoGeralLayout);
         fundoDispersaoGeralLayout.setHorizontalGroup(
             fundoDispersaoGeralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 615, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         fundoDispersaoGeralLayout.setVerticalGroup(
             fundoDispersaoGeralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +230,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboBoxEixoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(535, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,125 +259,23 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             .addGap(0, 84, Short.MAX_VALUE)
         );
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        vrpX.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                vrpXStateChanged(evt);
-            }
-        });
-
-        vrpY.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                vrpYStateChanged(evt);
-            }
-        });
-
-        vrpZ.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                vrpZStateChanged(evt);
-            }
-        });
-
-        pontoX.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pontoXStateChanged(evt);
-            }
-        });
-
-        pontoY.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pontoYStateChanged(evt);
-            }
-        });
-
-        pontoZ.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pontoZStateChanged(evt);
-            }
-        });
-
-        distancia.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                distanciaStateChanged(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(64, 64, 64)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(distancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(campoTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(vrpX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(vrpY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(36, 36, 36)))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(pontoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(pontoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(708, 708, 708)
-                                .addComponent(vrpZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pontoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(78, 78, 78))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(708, 708, 708)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(campoTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(vrpX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pontoX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addComponent(distancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(pontoY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(vrpY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(pontoZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(vrpZ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(5, 5, 5)
+                .addComponent(fundoDispersaoGeral, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -851,13 +735,13 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tabsComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tabsComponentResized
-        dispersaoGeral();
-        dispersaoGrupos();
+//        dispersaoGeral();
+//        dispersaoGrupos();
 //        setQuadroPanels();
-//        setQuadroPanelsOrientadaPixels();
-        setCoordenadasParalelas();
-        setRadviz();
-        setCirculares();
+////        setQuadroPanelsOrientadaPixels();
+//        setCoordenadasParalelas();
+//        setRadviz();
+//        setCirculares();
     }//GEN-LAST:event_tabsComponentResized
 
     private void comboBoxGruposMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposMatrizActionPerformed
@@ -930,61 +814,20 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }//GEN-LAST:event_fundoCorrelacaoComponentResized
 
     private void tabCorrelacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tabCorrelacaoComponentResized
-        setQuadroPanels();
-        repaint();
+//        setQuadroPanels();
+//        repaint();
     }//GEN-LAST:event_tabCorrelacaoComponentResized
 
     private void tabsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabsMouseClicked
 //        setQuadroPanels();
     }//GEN-LAST:event_tabsMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void vrpXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_vrpXStateChanged
-        dvrpX = (Double.valueOf(vrpX.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_vrpXStateChanged
-
-    private void vrpYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_vrpYStateChanged
-        dvrpY = (Double.valueOf(vrpY.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_vrpYStateChanged
-
-    private void vrpZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_vrpZStateChanged
-        dvrpY = (Double.valueOf(vrpZ.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_vrpZStateChanged
-
-    private void pontoXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pontoXStateChanged
-        dpontoX = (Double.valueOf(pontoX.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_pontoXStateChanged
-
-    private void pontoYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pontoYStateChanged
-        dpontoY = (Double.valueOf(pontoY.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_pontoYStateChanged
-
-    private void pontoZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pontoZStateChanged
-        dpontoZ = (Double.valueOf(pontoZ.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_pontoZStateChanged
-
-    private void distanciaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_distanciaStateChanged
-        ddistancia = (Double.valueOf(distancia.getValue().toString()));
-        repaint();
-    }//GEN-LAST:event_distanciaStateChanged
-
     private void fundoOrientedPixelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoOrientedPixelComponentResized
         // TODO add your handling code here:
     }//GEN-LAST:event_fundoOrientedPixelComponentResized
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JTextField campoTexto;
     private static javax.swing.JComboBox comboBoxEixoX;
     private static javax.swing.JComboBox comboBoxEixoXGrupos;
     private static javax.swing.JComboBox comboBoxEixoY;
@@ -993,7 +836,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static javax.swing.JComboBox comboBoxEixoZGrupos;
     private static javax.swing.JComboBox comboBoxGrupos;
     private static javax.swing.JComboBox comboBoxGruposMatriz;
-    private javax.swing.JSpinner distancia;
     private static javax.swing.JPanel fundoCirculares;
     private static javax.swing.JPanel fundoCorrelacao;
     private static javax.swing.JPanel fundoDispersaoGeral;
@@ -1003,7 +845,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static javax.swing.JPanel fundoParalelas;
     private javax.swing.JPanel fundoPixelOriented;
     private static javax.swing.JPanel fundoRadviz;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1024,21 +865,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private static javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private static javax.swing.JTextArea logDispersaoGrupos;
-    private javax.swing.JSpinner pontoX;
-    private javax.swing.JSpinner pontoY;
-    private javax.swing.JSpinner pontoZ;
     private javax.swing.JPanel tabCorrelacao;
     private javax.swing.JPanel tabParalelas;
-    private javax.swing.JTable tabelaBase;
+    private static javax.swing.JTable tabelaBase;
     private static javax.swing.JTabbedPane tabs;
-    private javax.swing.JSpinner vrpX;
-    private javax.swing.JSpinner vrpY;
-    private javax.swing.JSpinner vrpZ;
     // End of variables declaration//GEN-END:variables
 
     public static Base getMatrizDados() {
@@ -1057,7 +892,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         TecnicasDispersao.clusters = cl;
     }
 
-    private void dispersaoGeral() {
+    private static void dispersaoGeral() {
         if (GDG == null) {
             GDG = new GraficoDispersaoGeral();
         }
@@ -1208,7 +1043,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         setSetou(true);
     }
 
-    private void dispersaoGrupos() {
+    private static void dispersaoGrupos() {
         if (GDGr == null) {
             GDGr = new GraficoDispersaoGrupo();
         }
@@ -1367,9 +1202,11 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         this.logDispersaoGrupos = new JTextArea();
     }
 
-    public void setQuadroPanels() {
+    public static void setQuadroPanels() {
 
         if (matrizDados != null) {
+//            fundoCorrelacao.setSize(tamanhoOriginalCorrelacaoX, tamanhoOriginalCorrelacaoY);
+//            fundoCorrelacao.setPreferredSize(new Dimension(tamanhoOriginalCorrelacaoX, tamanhoOriginalCorrelacaoY));
             quadroPanels = new JPanel[matrizDados.getDataSet().get(0).getAtributos().size()][matrizDados.getDataSet().get(0).getAtributos().size()];
             int inicioX = 50;
             int inicioY = 50;
@@ -1403,6 +1240,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             setCorrelacoes();
         }
     }
+
     public void setQuadroPanelsOrientadaPixels() {
 
         if (matrizDados != null) {
@@ -1413,7 +1251,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 inicioX = 50;
                 for (int j = 0; j < quadroPanelsPixels[0].length; j++) {
                     OrientedPixels aux = null;
-                    
+
                     aux.setLocation(inicioX, inicioY);
                     aux.setSize(150, 150);
                     quadroPanelsPixels[i][j] = aux;
@@ -1435,25 +1273,31 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         }
     }
 
-    public void setCoordenadasParalelas() {
-        if (CP == null) {
-            CP = new CoordenadasParalelas();
+    public static void setCoordenadasParalelas() {
+        if (matrizDados != null) {
+            if (CP == null) {
+                CP = new CoordenadasParalelas();
+            }
+            System.out.println("tamanhoX = " + tamanhoOriginalParalelaX);
+            System.out.println("tamanhoX = " + tamanhoOriginalParalelaY);
+            fundoParalelas.setSize(tamanhoOriginalParalelaX, tamanhoOriginalParalelaY);
+            fundoParalelas.setPreferredSize(new Dimension(tamanhoOriginalParalelaX, tamanhoOriginalParalelaY));
+            CP.setSize(tamanhoOriginalParalelaX, tamanhoOriginalParalelaY);
+            int numEixos = matrizDados.getDataSet().get(0).getAtributos().size();
+            int inicioX = 50;
+            int distanciaEixos = 350;
+            fundoParalelas.setSize((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight());
+            fundoParalelas.setPreferredSize(new Dimension((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight()));
+            CP.setSize(fundoParalelas.getWidth(), fundoParalelas.getHeight());
+            fundoParalelas.add(CP);
         }
-        CP.setSize(fundoParalelas.getWidth(), fundoParalelas.getHeight());
-        fundoParalelas.add(CP);
-        int numEixos = matrizDados.getDataSet().get(0).getAtributos().size();
-        int inicioX = 50;
-        int distanciaEixos = 350;
-        fundoParalelas.setSize((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight());
-        fundoParalelas.setPreferredSize(new Dimension((distanciaEixos * (numEixos) + inicioX) - 300, fundoParalelas.getHeight()));
-
     }
 
     public static JPanel getFundoCorrelacao() {
         return fundoCorrelacao;
     }
 
-    private void setCorrelacoes() {
+    private static void setCorrelacoes() {
         CorrelacaoPearson cor = new CorrelacaoPearson(matrizDados);
         cor.trasnpoe(matrizDados);
         double[][] matrizCorrelacaoTransposta = cor.getMatrizDistancias();
@@ -1485,34 +1329,6 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     }
 
-    public static double getDvrpX() {
-        return dvrpX;
-    }
-
-    public static double getDvrpY() {
-        return dvrpY;
-    }
-
-    public static double getDvrpZ() {
-        return dvrpZ;
-    }
-
-    public static double getDpontoX() {
-        return dpontoX;
-    }
-
-    public static double getDpontoY() {
-        return dpontoY;
-    }
-
-    public static double getDpontoZ() {
-        return dpontoZ;
-    }
-
-    public static double getDdistancia() {
-        return ddistancia;
-    }
-
     public static JPanel getFundoParalelas() {
         return fundoParalelas;
     }
@@ -1525,7 +1341,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         fundoRadviz.add(RV);
     }
 
-    private void setCirculares() {
+    private static void setCirculares() {
         if (CPC == null) {
             CPC = new CoordenadasParalelasCirculares();
         }
@@ -1539,5 +1355,15 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
 
     public static JPanel getFundoCirculares() {
         return fundoCirculares;
+    }
+
+    public void inicia() {
+        dispersaoGeral();
+        dispersaoGrupos();
+        setQuadroPanels();
+//        setQuadroPanelsOrientadaPixels();
+        setCoordenadasParalelas();
+//        setRadviz();
+        setCirculares();
     }
 }

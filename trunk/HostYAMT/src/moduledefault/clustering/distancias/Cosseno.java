@@ -19,6 +19,7 @@ public class Cosseno{
     double[][] matrizDistancias;
     
     public Cosseno(Base teste) {
+        System.out.println("cosseno");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
@@ -80,7 +81,7 @@ public class Cosseno{
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
+    public static double[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         double vetorial = 0;
         double compvetor1 = 0;
         double compvetor2 = 0;
@@ -88,7 +89,7 @@ public class Cosseno{
         double compvetor21 = 0;
         double resultado = 0;
         //d1 * d2
-        float[][] re = new float[linhas][k];
+        double[][] re = new double[linhas][k];
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < k; j++) {
                 for (int w = 0; w < k; w++) {
@@ -117,7 +118,7 @@ public class Cosseno{
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

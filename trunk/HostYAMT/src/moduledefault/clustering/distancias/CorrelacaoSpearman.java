@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
+import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
 
 /**
@@ -16,10 +17,28 @@ import moduledefault.clustering.uteis.Base;
  */
 public class CorrelacaoSpearman {
 
+    public static double[][] distanciaKmeans(int size, int numK, double[][] matrizAtributos, ArrayList<Centroide> centroides) {
+        double[][] resultado = new double[size][numK];
+        for (int i = 0; i < size; i++) {
+            List<Double> l1 = new ArrayList<>();
+            List<Double> l2 = new ArrayList<>();
+            for (int j = 0; j < numK; j++) {
+                for (int k = 0; k < matrizAtributos[0].length; k++) {
+                    l1.add(matrizAtributos[i][k]);
+                }
+                for (int k = 0; k < numK; k++) {
+                    l2.add(centroides.get(j).getAtributos().get(k));
+                }
+                resultado[i][j] = spearman(l1,l2);
+            }
+        }
+        return resultado;
+    }
     Base base;
     double[][] matrizDistancias;
 
     public CorrelacaoSpearman(Base b) {
+        System.out.println("spearman");
         base = b.copy();
         setMatrizDistancias(b.getDataSet().size());
     }
@@ -91,7 +110,7 @@ public class CorrelacaoSpearman {
             }
         }
         CorrelacaoPearson cP = new CorrelacaoPearson();
-   
+
         return cP.distancia(x_rank, y_rank);
     }
 
@@ -103,7 +122,7 @@ public class CorrelacaoSpearman {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

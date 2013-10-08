@@ -20,11 +20,12 @@ public class CorrelacaoPearson {
     double[][] matrizDistancias;
 
     public CorrelacaoPearson(Base teste) {
+        System.out.println("pearson");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
-    public CorrelacaoPearson(){
-        
+
+    public CorrelacaoPearson() {
     }
 
     public void distancia() {
@@ -108,7 +109,7 @@ public class CorrelacaoPearson {
         return correlacao;
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
+    public static double[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         double somador1 = 0;
         double somador2 = 0;
         double media1 = 0;
@@ -118,10 +119,8 @@ public class CorrelacaoPearson {
         double somatorio3 = 0;
         double raiz;
         double correlacao;
-        float[][] resultado = new float[linhas][k];
-        for (int y = 0;
-                y < linhas;
-                y++) {
+        double[][] resultado = new double[linhas][k];
+        for (int y = 0; y < linhas; y++) {
             for (int w = 0; w < k; w++) {
                 for (int i = 0; i < k; i++) {
                     somador1 += matriz[y][i];
@@ -255,7 +254,7 @@ public class CorrelacaoPearson {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

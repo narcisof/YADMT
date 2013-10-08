@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
+import moduledefault.clustering.distancias.CorrelacaoKendallTau;
 import moduledefault.clustering.distancias.CorrelacaoPearson;
 import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.distancias.Cosseno;
@@ -56,33 +57,23 @@ public final class ACOClustering {
                 matriz_padrao[i][j] = _matriz_padrao[i][j];
             }
         }
-        for (int i = 0; i < teste.getDataSet().size(); i++) {
-            for (int j = 0; j < teste.getDataSet().get(i).getAtributos().size(); j++) {
-                System.out.print(teste.getDataSet().get(i).getAtributos().get(j)+" ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
         cont = 0;
-        teste_distancia = 7;
-        if (teste_distancia == 5) {
+        if (teste_distancia == 7) {
             DistanciaEuclidiana distância = new DistanciaEuclidiana(teste);
             distância.distancia();
             matriz_distancias = distância.getMatrizDistancias();
         } else {
-            if (teste_distancia == 4) {
+            if (teste_distancia == 6) {
                 Cosseno distância = new Cosseno(teste);
                 distância.distancia();
                 matriz_distancias = distância.getMatrizDistancias();
             } else {
-                if (teste_distancia == 3) {
+                if (teste_distancia == 4) {
                     CorrelacaoPearson distância = new CorrelacaoPearson(teste);
                     distância.distancia();
                     matriz_distancias = distância.getMatrizDistancias();
                 } else {
-                    if (teste_distancia == 6) {
+                    if (teste_distancia == 8) {
                         Mahalanobis distância = new Mahalanobis(teste);
                         distância.distancia();
                         matriz_distancias = distância.getMatrizDistancias();
@@ -97,10 +88,15 @@ public final class ACOClustering {
                                 distancia.distancia();
                                 matriz_distancias = distancia.getMatrizDistancias();
                             } else {
-                                if (teste_distancia == 7) {
+                                if (teste_distancia == 5) {
                                     CorrelacaoSpearman c = new CorrelacaoSpearman(teste);
 //                                    c.distancia();
                                     matriz_distancias = c.getMatrizDistancias();
+                                } else{
+                                    if(teste_distancia == 3){
+                                        CorrelacaoKendallTau c = new CorrelacaoKendallTau(teste);
+                                        matriz_distancias = c.getMatrizDistancias();
+                                    }
                                 }
                             }
                         }

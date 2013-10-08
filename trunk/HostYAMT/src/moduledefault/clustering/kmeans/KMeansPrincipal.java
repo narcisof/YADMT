@@ -4,11 +4,16 @@
  */
 package moduledefault.clustering.kmeans;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
+import moduledefault.clustering.distancias.CorrelacaoKendallTau;
 import moduledefault.clustering.distancias.CorrelacaoPearson;
+import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
@@ -27,7 +32,7 @@ public class KMeansPrincipal {
     ArrayList<Double> maximoAtributo;
     int numK;
     ArrayList<Centroide> centroides;
-    float[][] matrizDistancia;
+    double[][] matrizDistancia;
     int[] padroesClusters;
     private boolean lock = true;
     private ArrayList<Historico> historico;
@@ -91,19 +96,20 @@ public class KMeansPrincipal {
     }
 
     private void setMatrizAtributos() {
-        this.matrizAtributos = new double[this.dados.getDataSet().size()][(this.dados.getAtributos().size() - 1)];
+        this.matrizAtributos = new double[this.dados.getDataSet().size()][(this.dados.getDataSet().get(0).getAtributos().size())];
         for (int i = 0; i < this.dados.getDataSet().size(); i++) {
-            for (int j = 0; j < this.dados.getAtributos().size() - 1; j++) {
+            for (int j = 0; j < this.dados.getDataSet().get(0).getAtributos().size(); j++) {
                 this.matrizAtributos[i][j] = (this.dados.getDataSet().get(i).getAtributos().get(j));
             }
         }
+
     }
 
     private void setMinMax() {
         this.minimoAtributo = new ArrayList<Double>();
         this.maximoAtributo = new ArrayList<Double>();
 
-        for (int i = 0; i < this.dados.getAtributos().size() - 1; i++) {
+        for (int i = 0; i < this.dados.getDataSet().get(0).getAtributos().size(); i++) {
             double minimo = Float.MAX_VALUE;
             double maximo = Float.MIN_VALUE;
             for (int j = 0; j < this.dados.getDataSet().size(); j++) {
@@ -122,7 +128,7 @@ public class KMeansPrincipal {
     private void setCentroidesInicialAleatorio() {
         this.centroides = new ArrayList<Centroide>();
         for (int i = 0; i < this.numK; i++) {
-            Centroide newCentroide = new Centroide(this.dados.getAtributos().size() - 1);
+            Centroide newCentroide = new Centroide(this.dados.getDataSet().get(0).getAtributos().size());
             for (int j = 0; j < newCentroide.getNumAtributos(); j++) {
                 newCentroide.setAtributos(j, sorteia(minimoAtributo.get(j), maximoAtributo.get(j)));
             }
@@ -170,30 +176,36 @@ public class KMeansPrincipal {
             case 2:
                 setMatrizDistancia(CityBlock.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
-            case 3:
+            case 4:
                 setMatrizDistancia(CorrelacaoPearson.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
-            case 4:
+            case 6:
                 setMatrizDistancia(Cosseno.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
-            case 5:
+            case 7:
                 setMatrizDistancia(DistanciaEuclidiana.distanciaKmeans(centroides, numK, matrizAtributos, dados.getDataSet().size()));
                 break;
-            case 6:
+            case 8:
                 setMatrizDistancia(Mahalanobis.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
+                break;
+            case 3:
+                setMatrizDistancia(CorrelacaoKendallTau.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
+                break;
+            case 5:
+                setMatrizDistancia(CorrelacaoSpearman.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
                 break;
         }
 
     }
 
-    private void setMatrizDistancia(float[][] resultado) {
+    private void setMatrizDistancia(double[][] resultado) {
         this.matrizDistancia = resultado;
     }
 
     private void atribuiCentroides() {
         for (int i = 0; i < this.dados.getDataSet().size(); i++) {
             int indexCentroide = -1;
-            float menor = Float.MAX_VALUE;
+            double menor = Double.MAX_VALUE;
             for (int j = 0; j < this.numK; j++) {
                 if (this.matrizDistancia[i][j] < menor) {
                     menor = this.matrizDistancia[i][j];
@@ -205,7 +217,7 @@ public class KMeansPrincipal {
     }
 
     private ArrayList<Centroide> calcularNewCentroides() {
-        double[][] vetorMedias = new double[this.numK][this.dados.getAtributos().size() - 1];
+        double[][] vetorMedias = new double[this.numK][this.dados.getDataSet().get(0).getAtributos().size()];
         int[] vetorSomatoria = new int[this.numK];
 
         for (int i = 0; i < this.padroesClusters.length; i++) {
@@ -271,37 +283,37 @@ public class KMeansPrincipal {
 //                }
 //            }
 
-          ArrayList<Integer> grupo;
+            ArrayList<Integer> grupo;
 
-        //imprime em tela o agrupamento realizado
-        String padrao;
-        for (int w = 0; w < clusters.size(); w++) {
+            //imprime em tela o agrupamento realizado
+            String padrao;
+            for (int w = 0; w < clusters.size(); w++) {
 ////            clusters.get(i).setNomeGrupo(dados.getClasses());
 //            clusters.get(w).setNomeGrupo("Grupo " + (w + 1));
-            buffer.append("\nGrupo " + (w + 1) + ":");
-            grupo = clusters.get(w).getSortGrupo();
-            for (int j = 0; j < grupo.size(); j++) {
-                padrao = grupo.get(j) + "";
-                switch (padrao.length()) {
-                    case 1:
-                        padrao += "   ";
-                        break;
-                    case 2:
-                        padrao += "  ";
-                        break;
-                    case 3:
-                        padrao += " ";
-                        break;
+                buffer.append("\nGrupo " + (w + 1) + ":");
+                grupo = clusters.get(w).getSortGrupo();
+                for (int j = 0; j < grupo.size(); j++) {
+                    padrao = grupo.get(j) + "";
+                    switch (padrao.length()) {
+                        case 1:
+                            padrao += "   ";
+                            break;
+                        case 2:
+                            padrao += "  ";
+                            break;
+                        case 3:
+                            padrao += " ";
+                            break;
+                    }
+                    if (j % 10 == 0) {
+                        buffer.append("\n");
+                    }
+                    buffer.append(padrao);
                 }
-                if (j % 10 == 0) {
-                    buffer.append("\n");
-                }
-                buffer.append(padrao);
-            }
-            buffer.append("\n");
-            buffer.append("\n\n-------------------------------------------------------\n\n");
+                buffer.append("\n");
+                buffer.append("\n\n-------------------------------------------------------\n\n");
 
-        }
+            }
             int[] vetorGruposFinal = new int[this.numK];
             for (int w = 0; w < this.padroesClusters.length; w++) {
                 for (int j = 0; j < this.numK; j++) {
@@ -357,7 +369,7 @@ public class KMeansPrincipal {
 //            }
 //        }
 
-    ArrayList<Integer> grupo;
+        ArrayList<Integer> grupo;
 
         //imprime em tela o agrupamento realizado
         String padrao;
@@ -474,7 +486,7 @@ public class KMeansPrincipal {
     }
 
     public int[][] getM() {
-         m = new int[2][historico.get(historico.size() - 1).historicoPadroes.length];
+        m = new int[2][historico.get(historico.size() - 1).historicoPadroes.length];
         for (int j = 0; j < historico.get(historico.size() - 1).historicoPadroes.length; j++) {
             m[0][j] = j;
         }
@@ -484,7 +496,6 @@ public class KMeansPrincipal {
 
         return m;
     }
-
 
     private int getQntiaClasses(String get, Base dados, int grupo) {
         int aux = 0;
