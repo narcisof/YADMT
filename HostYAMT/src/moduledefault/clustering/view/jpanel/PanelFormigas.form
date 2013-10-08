@@ -482,7 +482,7 @@
         <Component class="javax.swing.JComboBox" name="jComboBoxDistancias">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;&quot;, &quot;Chebyshev&quot;,&quot;CityBlock&quot;,&quot;Correla&#xe7;&#xe3;o&quot; ,&quot;Cosseno&quot;, &quot;Euclidiana&quot;, &quot;Mahalanobis&quot; })" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;&quot;, &quot;Chebyshev&quot;,&quot;CityBlock&quot;,&quot;Correla&#xe7;&#xe3;o de Kendall&quot;,&quot;Correla&#xe7;&#xe3;o de Pearson&quot;,&quot;Correla&#xe7;&#xe3;o de Spearman&quot; ,&quot;Cosseno&quot;, &quot;Euclidiana&quot;, &quot;Mahalanobis&quot; })" type="code"/>
             </Property>
           </Properties>
           <AuxValues>

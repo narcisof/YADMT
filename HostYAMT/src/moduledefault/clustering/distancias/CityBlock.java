@@ -20,6 +20,7 @@ public class CityBlock {
     double[][] matrizDistancias;
 
     public CityBlock(Base teste) {
+        System.out.println("city");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
@@ -52,9 +53,9 @@ public class CityBlock {
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
+    public static double[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
         double acumulador = 0;
-        float[][] resultado = new float[linhas][k];
+        double[][] resultado = new double[linhas][k];
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < k; j++) {
                 if (i != j) {
@@ -77,7 +78,7 @@ public class CityBlock {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

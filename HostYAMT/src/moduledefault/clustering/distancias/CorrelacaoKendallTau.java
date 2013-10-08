@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
 
 /**
@@ -18,15 +19,39 @@ import moduledefault.clustering.uteis.Base;
  */
 public class CorrelacaoKendallTau {
 
+    public static double[][] distanciaKmeans(int size, int numK, double[][] matrizAtributos, ArrayList<Centroide> centroides) {
+        double[][] resultado = new double[size][numK];
+        for (int i = 0; i < size; i++) {
+            List<Double> l1 = new ArrayList<>();
+            List<Double> l2 = new ArrayList<>();
+            for (int j = 0; j < numK; j++) {
+                for (int k = 0; k < matrizAtributos[0].length; k++) {
+                    l1.add(matrizAtributos[i][k]);
+                }
+                for (int k = 0; k < numK; k++) {
+                    l2.add(centroides.get(j).getAtributos().get(k));
+                }
+                resultado[i][j] = rankKendallTauBeta(l1,l2);
+            }
+        }
+        return resultado;
+    }
+
     Base base;
     double[][] matrizDistancias;
 
     public CorrelacaoKendallTau(Base teste) {
-
+        System.out.println("kendall");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
-
+        public void distancia() {
+        for (int i = 0; i < base.getDataSet().size(); i++) {
+            for (int j = 0; j < base.getDataSet().size(); j++) {
+                matrizDistancias[i][j] = rankKendallTauBeta(base.getDataSet().get(i).getAtributos(), base.getDataSet().get(j).getAtributos());
+            }
+        }
+    }
     public static double rankKendallTauBeta(List<Double> x, List<Double> y) {
         int x_n = x.size();
         int y_n = y.size();
@@ -160,7 +185,7 @@ public class CorrelacaoKendallTau {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

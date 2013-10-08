@@ -22,6 +22,7 @@ public class Mahalanobis {
     double[][] matrizDistancias;
 
     public Mahalanobis(Base teste) {
+        System.out.println("maha");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
@@ -143,8 +144,8 @@ public class Mahalanobis {
         }
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
-        float[][] r = new float[linhas][k];
+    public static double[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
+        double[][] r = new double[linhas][k];
         double[] medias = new double[k];
         double somador = 0;
         for (int i = 0; i < k; i++) {
@@ -213,7 +214,7 @@ public class Mahalanobis {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

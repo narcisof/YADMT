@@ -22,6 +22,7 @@ public class Chebyshev {
     public Chebyshev(Base teste) {
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
+        System.out.println("Cheb");
     }
 
     public Chebyshev() {
@@ -51,8 +52,8 @@ public class Chebyshev {
         padronizacaDistancias(matrizDistancias);
     }
 
-    public static float[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
-        float[][] resultado = new float[linhas][k];
+    public static double[][] distanciaKmeans(int linhas, int k, double[][] matriz, ArrayList<Centroide> centroide) {
+        double[][] resultado = new double[linhas][k];
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < k; j++) {
                 if (i != j) {
@@ -93,7 +94,7 @@ public class Chebyshev {
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][cont] > maior) {
+                if (matriz[i][j] > maior) {
                     maior = matriz[i][j];
                 }
             }

@@ -115,7 +115,7 @@ public class PanelKmeans extends javax.swing.JPanel {
 
         jLabel1.setText("Função de Distância:");
 
-        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação de Kendall","Correlação de Pearson","Correlação de Spearman" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -239,6 +239,12 @@ public class PanelKmeans extends javax.swing.JPanel {
                 break;
             case 6:
                 teste_distancia = 6;
+                break;
+            case 7:
+                teste_distancia = 7;
+                break;
+            case 8:
+                teste_distancia = 8;
                 break;
             default:
                 break;
