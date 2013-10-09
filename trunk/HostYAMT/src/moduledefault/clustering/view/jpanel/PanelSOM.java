@@ -17,9 +17,11 @@ import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.som.ClusteringSOM;
+import moduledefault.clustering.som.MarcadoresWaterShed;
 import moduledefault.clustering.som.OpMath;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.som.RedeSOM;
+import moduledefault.clustering.som.Watershed;
 import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.view.frames.JFrameKohonenConfig;
 import moduledefault.clustering.view.frames.JFrameKohonenConfigDensidade;
@@ -161,7 +163,9 @@ public final class PanelSOM extends javax.swing.JPanel {
             }
         });
 
-        boxAlgoritmo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matriz de Densidade", "Ligação Simples", "Ligação Média", "Ligação Completa", "Método de Ward", "1D SOM" }));
+        boxAlgoritmo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matriz de Densidade", "Ligação Simples", "Ligação Média", "Ligação Completa", "Método de Ward", "1D SOM", "SL-SOM" }));
+        boxAlgoritmo.setSelectedIndex(6);
+        boxAlgoritmo.setToolTipText("");
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -330,6 +334,14 @@ public final class PanelSOM extends javax.swing.JPanel {
             case 4:
                 agrupamento = "ward";
                 break;
+            case 5:
+                agrupamento = "1DSOM";
+                break;
+            case 6:
+                MarcadoresWaterShed frame = new MarcadoresWaterShed();
+                frame.setVisible(true);
+                agrupamento = "slsom";
+                break;
         }
     }//GEN-LAST:event_jButtonConfigDensidadeActionPerformed
 
@@ -352,6 +364,12 @@ public final class PanelSOM extends javax.swing.JPanel {
                 break;
             case 4:
                 agrupamento = "ward";
+                break;
+            case 5:
+                agrupamento = "1DSOM";
+                break;
+            case 6:
+                agrupamento = "slsom";
                 break;
         }
         clusterig();
@@ -426,6 +444,8 @@ public final class PanelSOM extends javax.swing.JPanel {
                 //
                 FrameSomVisualization.getInstance().setVisualization(rede, matrizU);
                 inicio.setEnabled(true);
+                //
+
             }
         };
         t.start();
@@ -461,6 +481,12 @@ public final class PanelSOM extends javax.swing.JPanel {
             case "ward":
                 clusters = cluster.hierarquicos("ward", 3);
                 jTextArea.append("\n================== Agrupamento Ligação Ward ==================\n");
+                break;
+            case "slsom":
+//                MarcadoresWaterShed frame = new MarcadoresWaterShed();
+//                frame.setVisible(true);
+                clusters = cluster.clusterungSLSOM(matrizU, null);
+                jTextArea.append("\n================== Agrupamento SL-SOM ==================\n");
                 break;
         }
 
@@ -508,8 +534,8 @@ public final class PanelSOM extends javax.swing.JPanel {
                 }
                 jTextArea.append(padrao);
             }
-            jTextArea.append("\n");
-            jTextArea.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
+            jTextArea.append("\n\n");
+            // jTextArea.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
         }
 
         //Medidas de avaliaxao do agrupamento

@@ -714,7 +714,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         ACOClustering c = null;
         try {
             c = new ACOClustering(dados, teste_distancia, matriz_padrao);
-
         } catch (IOException ex) {
             Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -732,9 +731,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         getOperar().set_controlealfa(frameFormigas.getAlfaControle());
         getOperar().opera_inicial(dados);
 
-
         while (getOperar().getCont() < getOperar().getCont2()) {
-
             try {
                 getOperar().iteracao();
                 setDispersao(getOperar().getMatriz_padrao());

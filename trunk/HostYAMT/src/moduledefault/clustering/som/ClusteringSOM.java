@@ -31,7 +31,6 @@ public class ClusteringSOM {
                 }
             }
         }
-
     }
 
     public ArrayList<Cluster> hierarquicos(String op, int grupos) {
@@ -88,6 +87,39 @@ public class ClusteringSOM {
         return clusters;
     }
 
+    public ArrayList<Cluster> clusterungSLSOM(double[][] matrizU, int[][] marcadores){
+        ArrayList<Cluster> clusters = new ArrayList<>();
+        Watershed water = new Watershed();
+        ArrayList<ArrayList<Elemento>> result = water.watershed(matrizU, marcadores);
+        
+        //Rotular Os Neuronios
+        for (int i = 0; i < result.size(); i++) {
+            Cluster cl = new Cluster();
+            ArrayList<Neuronio> ne = new ArrayList<>();
+            for (int j = 0; j < result.get(i).size(); j++) {
+                int x = result.get(i).get(j).getI();
+                int y = result.get(i).get(j).getJ();
+                if (x % 2 != 0) {
+                    x -= 1;
+                }
+                x /= 2;
+                if (y % 2 != 0) {
+                    y -= 1;
+                    
+                }
+                y /= 2;
+                if (!ne.contains(rede.getNeuronio(x, y))) {
+                    ne.add(rede.getNeuronio(x, y));
+                }
+            }
+            for (int j = 0; j < ne.size(); j++) {
+                addPadroes(ne.get(j), cl);
+            }
+            clusters.add(cl);
+        }
+       
+        return clusters;
+    }
     public ArrayList<Cluster> clustering1DSOM() {
         ArrayList<Cluster> clusters = new ArrayList<>();
         for (int i = 0; i < neuronios.size(); i++) {

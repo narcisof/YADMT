@@ -382,8 +382,8 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                     }
                     jTextArea1.append(padrao);
                 }
-                jTextArea1.append("\n");
-                jTextArea1.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
+                jTextArea1.append("\n\n");
+                //jTextArea1.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
             }
 
             //Medidas de avaliaxao do agrupamento
