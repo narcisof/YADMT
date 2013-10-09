@@ -23,6 +23,7 @@ public final class MatrizU2D extends javax.swing.JPanel {
     private int gridMUY;
     double intervalo;
     private static boolean grayScale = false;
+    public static ArrayList<Polygon> p = new ArrayList<>();
 
     /**
      * Creates new form Draw2D
@@ -40,16 +41,22 @@ public final class MatrizU2D extends javax.swing.JPanel {
             gridMUY = FrameSomVisualization.getGridMUY();
             calcIntervalo();
 
-            ArrayList<Polygon> poligonos = new ArrayList<>();
             mCellMetrics = new HexGrid(FrameSomVisualization.getValueU2D());
             for (int i = 0; i < gridMUX; i++) {
                 for (int j = 0; j < gridMUY; j++) {
                     mCellMetrics.setCellIndex(i, j);
                     mCellMetrics.computeCorners(mCornersX, mCornersY);
                     g.setColor(getColor(i, j));
-                    g.drawPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                    g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                    poligonos.add(new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS));
+                    g.drawPolygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
+                    g.fillPolygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
+                }
+            }
+            
+            if (!p.isEmpty()) {
+                g.setColor(Color.BLACK);
+                for (int i = 0; i < p.size(); i++) {
+                    g.fillPolygon(p.get(i));
+                    g.drawPolygon(p.get(i));
                 }
             }
         }
@@ -57,6 +64,14 @@ public final class MatrizU2D extends javax.swing.JPanel {
 
     public static void setGrayScale(boolean grayScale) {
         MatrizU2D.grayScale = grayScale;
+    }
+
+    public static void addP(Polygon p) {
+        MatrizU2D.p.add(p);
+    }
+
+    public static ArrayList<Polygon> getP() {
+        return p;
     }
 
     @SuppressWarnings("unchecked")
@@ -111,7 +126,6 @@ public final class MatrizU2D extends javax.swing.JPanel {
                 cor = new Color(25, 25, 112);
             }
         } else if ((FrameSomVisualization.getMatrizU()[i][j] > intervalo) && (FrameSomVisualization.getMatrizU()[i][j] <= intervalo * 2)) { //Cor 2
-
             if (grayScale) {
                 rgb = (int) ((0 * 0.299) + (0 * 0.587) + (205 * 0.114));
                 rgb = getRGB(rgb, rgb, rgb);
