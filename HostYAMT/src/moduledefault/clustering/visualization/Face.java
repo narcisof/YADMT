@@ -57,10 +57,10 @@ public class Face implements java.io.Serializable {
 
        
         if (D < 0) {
-            System.out.println("a frente");
+//            System.out.println("a frente");
             return false;
         } else {
-            System.out.println("atras");
+//            System.out.println("atras");
             return true;
         }
     }
@@ -197,9 +197,9 @@ public class Face implements java.io.Serializable {
 
         Vetor normal = Vetor.produtoVetorial(v1, v2);
         normal.normalizar();
-        if (normal.get(0) == 0 && normal.get(1) == 0 && normal.get(2) == 0) {
-            normal.print("norma = ");
-        }
+//        if (normal.get(0) == 0 && normal.get(1) == 0 && normal.get(2) == 0) {
+////            normal.print("norma = ");
+//        }
         Vetor vcentro = Vetor.subtracao(new Vetor(centrO.getX(), centrO.getY(),
                 centrO.getZ()),
                 new Vetor(a.getX(), a.getY(), a.getZ()));

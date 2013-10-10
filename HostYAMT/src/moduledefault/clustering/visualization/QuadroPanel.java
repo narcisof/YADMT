@@ -36,8 +36,8 @@ public class QuadroPanel extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (base != null) {
-            if (opcao == 2) {
-                System.out.println("aqui");
+          
+//                System.out.println("aqui");
                 int width = this.getWidth();
                 int height = this.getHeight();
                 float m = width /base.getDataSet().size() + 2;
@@ -48,7 +48,7 @@ public class QuadroPanel extends javax.swing.JPanel {
                     g.fillOval(x, y, tamPixel, tamPixel);
                 }
 
-            }
+            
         }
     }
 

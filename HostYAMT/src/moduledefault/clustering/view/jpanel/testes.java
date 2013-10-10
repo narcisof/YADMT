@@ -26,61 +26,61 @@ public class testes {
     public testes(interfaces.Base b, JFrameFormigas j) {
 
         base = b;
-        startMatrizDados();
-        Operações_Mat mat = new Operações_Mat();
-        mat.Padronização(dados);
-        CorrelacaoSpearman c = new CorrelacaoSpearman(dados);
-        double []dados1 = new double[10];
-        double []dados2 = new double[10];
-           dados1[0] = 106;
-                dados1[1] = 86;
-                dados1[2] = 100;
-                dados1[3] = 101;
-                dados1[4] = 99;
-                dados1[5] = 103;
-                dados1[6] = 97;
-                dados1[7] = 113;
-                dados1[8] = 112;
-                dados1[9] = 110;
-
-                dados2[0] = 7;
-                dados2[1] = 0;
-                dados2[2] = 27;
-                dados2[3] = 50;
-                dados2[4] = 28;
-                dados2[5] = 29;
-                dados2[6] = 20;
-                dados2[7] = 12;
-                dados2[8] = 6;
-                dados2[9] = 17;
-                List<Double> l1 = new ArrayList<>();
-                List<Double> l2 = new ArrayList<>();
-                l1.add(dados1[0]);
-                l1.add(dados1[1]);
-                l1.add(dados1[2]);
-                l1.add(dados1[3]);
-                l1.add(dados1[4]);
-                l1.add(dados1[5]);
-                l1.add(dados1[6]);
-                l1.add(dados1[7]);
-                l1.add(dados1[8]);
-                l1.add(dados1[9]);
-                
-                
-                l2.add(dados2[0]);
-                l2.add(dados2[1]);
-                l2.add(dados2[2]);
-                l2.add(dados2[3]);
-                l2.add(dados2[4]);
-                l2.add(dados2[5]);
-                l2.add(dados2[6]);
-                l2.add(dados2[7]);
-                l2.add(dados2[8]);
-                l2.add(dados2[9]);
-                
-                
-                
-        System.out.println("c = "+c.spearman(l1, l2));
+//        startMatrizDados();
+//        Operações_Mat mat = new Operações_Mat();
+//        mat.Padronização(dados);
+//        CorrelacaoSpearman c = new CorrelacaoSpearman(dados);
+//        double []dados1 = new double[10];
+//        double []dados2 = new double[10];
+//           dados1[0] = 106;
+//                dados1[1] = 86;
+//                dados1[2] = 100;
+//                dados1[3] = 101;
+//                dados1[4] = 99;
+//                dados1[5] = 103;
+//                dados1[6] = 97;
+//                dados1[7] = 113;
+//                dados1[8] = 112;
+//                dados1[9] = 110;
+//
+//                dados2[0] = 7;
+//                dados2[1] = 0;
+//                dados2[2] = 27;
+//                dados2[3] = 50;
+//                dados2[4] = 28;
+//                dados2[5] = 29;
+//                dados2[6] = 20;
+//                dados2[7] = 12;
+//                dados2[8] = 6;
+//                dados2[9] = 17;
+//                List<Double> l1 = new ArrayList<>();
+//                List<Double> l2 = new ArrayList<>();
+//                l1.add(dados1[0]);
+//                l1.add(dados1[1]);
+//                l1.add(dados1[2]);
+//                l1.add(dados1[3]);
+//                l1.add(dados1[4]);
+//                l1.add(dados1[5]);
+//                l1.add(dados1[6]);
+//                l1.add(dados1[7]);
+//                l1.add(dados1[8]);
+//                l1.add(dados1[9]);
+//                
+//                
+//                l2.add(dados2[0]);
+//                l2.add(dados2[1]);
+//                l2.add(dados2[2]);
+//                l2.add(dados2[3]);
+//                l2.add(dados2[4]);
+//                l2.add(dados2[5]);
+//                l2.add(dados2[6]);
+//                l2.add(dados2[7]);
+//                l2.add(dados2[8]);
+//                l2.add(dados2[9]);
+//                
+//                
+//                
+//        System.out.println("c = "+c.spearman(l1, l2));
     }
 
     public void startMatrizDados() {

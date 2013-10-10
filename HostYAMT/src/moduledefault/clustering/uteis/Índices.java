@@ -57,7 +57,7 @@ public class Índices {
         sizepos = (linhas * linhas) * 2;
 
         mpos = new int[2][mpos_par[0].length];
-        System.out.println("tamanho mpos = "+mpos[0].length);
+//        System.out.println("tamanho mpos = "+mpos[0].length);
         for (int i = 0; i < mpos_par.length; i++) {
             for (int j = 0; j < mpos_par[0].length; j++) {
                 mpos[i][j] = mpos_par[i][j];

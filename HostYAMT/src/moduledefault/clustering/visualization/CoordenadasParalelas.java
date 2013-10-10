@@ -6,6 +6,7 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,12 +33,13 @@ public class CoordenadasParalelas extends javax.swing.JPanel {
         int inicioX = 50;
         int inicioY = 50;
         int numEixos = TecnicasDispersao.getMatrizDados().getDataSet().get(0).getAtributos().size();
-        int distanciaEixos = 350;
+        int distanciaEixos = TecnicasDispersao.getDistanciaEixos();
         int fimY = height - 50;
+        ArrayList<Ponto> pontos = new ArrayList<>();
         int[] coordX = new int[numEixos];
         for (int i = 0; i < numEixos; i++) {
             g.drawLine(inicioX, inicioY, inicioX, fimY);
-            System.out.println(inicioX);
+//            System.out.println(inicioX);
             coordX[i] = inicioX;
             inicioX += distanciaEixos;
         }
@@ -45,8 +47,6 @@ public class CoordenadasParalelas extends javax.swing.JPanel {
             int[] coordY = new int[TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size()];
             for (int j = 0; j < TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size(); j++) {
                 int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().get((j)) * (height - 120));
-//                y += 1;
-//                coordY[j] = y / 2;
                 coordY[j] = y;
             }
             for (int l = 0; l < TecnicasDispersao.getMatrizDados().getClasses().size(); l++) {
@@ -56,8 +56,35 @@ public class CoordenadasParalelas extends javax.swing.JPanel {
                     g.setColor(cores[l]);
                 }
             }
-            for (int j = 0; j < coordY.length - 1; j++) {
-                g.drawLine(coordX[j], coordY[j], coordX[j + 1], coordY[j + 1]);
+            Ponto p = new Ponto(TecnicasDispersao.getMatrizDados().getDataSet().get(i).getNumero() + "", coordX, coordY, Color.black);
+            pontos.add(p);
+            int expessuraLinha = TecnicasDispersao.getExpessuraLinha();
+            for (int k = 0; k < expessuraLinha; k++) {
+                for (int j = 0; j < coordY.length - 1; j++) {
+                    g.drawLine(coordX[j], coordY[j]+k, coordX[j + 1], coordY[j + 1]+k);
+                    Color aux = g.getColor();
+                    if (TecnicasDispersao.isDesenharPontos()) {
+                        g.setColor(Color.black);
+                        g.fillRect(coordX[j] - 2, coordY[j] - 2, 4, 4);
+                        g.fillRect(coordX[j + 1] - 2, coordY[j + 1] - 2, 4, 4);
+                    }
+                    g.setColor(aux);
+                }
+
+            }
+        }
+        TecnicasDispersao.setPontosCoordParalelas(pontos);
+        if (TecnicasDispersao.isPintarPontoParalela()) {
+            int expessuraLinha = TecnicasDispersao.getExpessuraLinha() + 2;
+//            System.out.println("entrou aqui no panel");
+            g.setColor(Color.black);
+            for (int k = 0; k < expessuraLinha; k++) {
+                for (int i = 0; i < TecnicasDispersao.getPontosPintarParalela().size(); i++) {
+                    for (int j = 0; j < TecnicasDispersao.getPontosPintarParalela().get(i).getYs().length - 1; j++) {
+                        g.drawLine(TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j]+k, TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j + 1], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j + 1]+k);
+                    }
+                }
+
             }
         }
     }

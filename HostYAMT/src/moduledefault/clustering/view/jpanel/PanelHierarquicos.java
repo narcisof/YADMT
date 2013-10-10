@@ -296,7 +296,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
               // avaliaLigacao(matrizDendograma);
                // imprimiAgrupamento();
                 
-                 System.out.println("===========================================");
+//                 System.out.println("===========================================");
                 BinTree dendograma = new BinTree();
                 dendograma.ordena(matrizDendograma);
 //                imprimiRecuperacao();
@@ -505,12 +505,12 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         int[] inicial = matrizDendograma[0];
         ArrayList<Cluster> cl = new ArrayList<>();
         int posicaoDend = 1;
-        for (int i = matrizDendograma.length - 3; i > 0; i--) {
-            for (int j = 0; j < dados.getDataSet().size(); j++) {
-                System.out.print(matrizDendograma[i][j] + " ");
-            }
-            System.out.println("");
-        }
+//        for (int i = matrizDendograma.length - 3; i > 0; i--) {
+//            for (int j = 0; j < dados.getDataSet().size(); j++) {
+////                System.out.print(matrizDendograma[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
     }
 
     synchronized void imprimiAgrupamento() {

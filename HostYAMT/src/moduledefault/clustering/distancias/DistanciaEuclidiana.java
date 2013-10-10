@@ -22,7 +22,7 @@ public class DistanciaEuclidiana {
     double[][] matrizDistancias;
 
     public DistanciaEuclidiana(Base teste) {
-        System.out.println("euclidiana");
+//        System.out.println("euclidiana");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

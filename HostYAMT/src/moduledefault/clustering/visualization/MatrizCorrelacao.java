@@ -44,35 +44,74 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                 if (TecnicasDispersao.getGrupoEscolhidoMatriz() != 0) {
                     int tamPixelY = (y1 - y0) / grupos.length;
                     int tamPixelX = (x1 - x0) / grupos.length;
+
+//                    System.out.println("tamX = " + tamPixelX);
+//                    System.out.println("tamY = " + tamPixelY);
+                    if (tamPixelX == 0) {
+                        tamPixelX++;
+                    }
+                    if (tamPixelY == 0) {
+                        tamPixelY++;
+                    }
+                    if (tamPixelX == 1) {
+                        tamPixelX++;
+                    }
+                    if (tamPixelY == 1) {
+                        tamPixelY++;
+                    }
                     int pontoInicialX = grupos.length / 2;
                     int pontoInicialY = grupos.length / 2;
-                    inicioX = meioX - pontoInicialX * tamPixelX+20;
-                    inicioY = meioY - pontoInicialY * tamPixelY+20;
+                    inicioX = meioX - pontoInicialX * tamPixelX + 20;
+                    inicioY = meioY - pontoInicialY * tamPixelY + 20;
                     if (this.grupos != null) {
                         for (int i = 0; i < grupos.length; i++) {
-                            inicioX = meioX - pontoInicialX * tamPixelX+20;
+                            inicioX = meioX - pontoInicialX * tamPixelX + 20;
                             for (int j = 0; j < grupos.length; j++) {
                                 int x = inicioX;
                                 int y = inicioY;
                                 if (i == j) {
                                     g.setColor(Color.black);
                                 } else {
-                                    if (grupos[i][j] >= -1 && grupos[i][j] < -0.75) {
-                                        g.setColor(new Color(0, 44, 163));
-                                    } else if (grupos[i][j] >= -0.75 && grupos[i][j] < -0.5) {
-                                        g.setColor(new Color(0, 210, 253));
-                                    } else if (grupos[i][j] >= -0.5 && grupos[i][j] < -0.25) {
-                                        g.setColor(new Color(1, 202, 132));
-                                    } else if (grupos[i][j] >= -0.25 && grupos[i][j] < 0) {
-                                        g.setColor(new Color(0, 186, 39));
-                                    } else if (grupos[i][j] >= 0 && grupos[i][j] < 0.25) {
-                                        g.setColor(new Color(1, 180, 162));
-                                    } else if (grupos[i][j] >= 0.25 && grupos[i][j] < 0.5) {
-                                        g.setColor(new Color(81, 209, 64));
-                                    } else if (grupos[i][j] >= 0.5 && grupos[i][j] < 0.75) {
-                                        g.setColor(new Color(216, 252, 6));
-                                    } else if (grupos[i][j] >= 0.75 && grupos[i][j] <= 1) {
-                                        g.setColor(new Color(255, 6, 0));
+                                    if (grupos[i][j] >= -1 && grupos[i][j] < -0.90) {
+                                        g.setColor(new Color(0, 0, 128));
+                                    } else if (grupos[i][j] >= -0.90 && grupos[i][j] < -0.8) {
+                                        g.setColor(new Color(0, 0, 205));
+                                    } else if (grupos[i][j] >= -0.8 && grupos[i][j] < -0.70) {
+                                        g.setColor(new Color(0, 0, 255));
+                                    } else if (grupos[i][j] >= -0.70 && grupos[i][j] < -0.6) {
+                                        g.setColor(new Color(65, 105, 255));
+                                    } else if (grupos[i][j] >= -0.6 && grupos[i][j] < -0.5) {
+                                        g.setColor(new Color(100, 149, 237));
+                                    } else if (grupos[i][j] >= -0.5 && grupos[i][j] < -0.4) {
+                                        g.setColor(new Color(30, 144, 255));
+                                    } else if (grupos[i][j] >= -0.4 && grupos[i][j] < -0.3) {
+                                        g.setColor(new Color(0, 191, 255));
+                                    } else if (grupos[i][j] >= -0.3 && grupos[i][j] < -0.2) {
+                                        g.setColor(new Color(135, 206, 250));
+                                    } else if (grupos[i][j] >= -0.2 && grupos[i][j] < -0.1) {
+                                        g.setColor(new Color(176, 224, 230));
+                                    } else if (grupos[i][j] >= -0.1 && grupos[i][j] < 0) {
+                                        g.setColor(new Color(224, 255, 255));
+                                    } else if (grupos[i][j] >= 0 && grupos[i][j] < 0.1) {
+                                        g.setColor(new Color(255, 255, 255));
+                                    } else if (grupos[i][j] >= 0.1 && grupos[i][j] < 0.2) {
+                                        g.setColor(new Color(255, 160, 122));
+                                    } else if (grupos[i][j] >= 0.2 && grupos[i][j] < 0.3) {
+                                        g.setColor(new Color(233, 150, 122));
+                                    } else if (grupos[i][j] >= 0.3 && grupos[i][j] < 0.4) {
+                                        g.setColor(new Color(255, 127, 80));
+                                    } else if (grupos[i][j] >= 0.4 && grupos[i][j] < 0.5) {
+                                        g.setColor(new Color(255, 99, 71));
+                                    } else if (grupos[i][j] >= 0.5 && grupos[i][j] < 0.6) {
+                                        g.setColor(new Color(255, 80, 70));
+                                    } else if (grupos[i][j] >= 0.6 && grupos[i][j] < 0.7) {
+                                        g.setColor(new Color(255, 165, 0));
+                                    } else if (grupos[i][j] >= 0.7 && grupos[i][j] < 0.8) {
+                                        g.setColor(new Color(255, 140, 0));
+                                    } else if (grupos[i][j] >= 0.8 && grupos[i][j] < 0.9) {
+                                        g.setColor(new Color(255, 69, 0));
+                                    } else if (grupos[i][j] >= 0.9 && grupos[i][j] <= 1) {
+                                        g.setColor(new Color(255, 0, 0));
                                     }
                                 }
                                 g.fillOval(x, y, tamPixelY, tamPixelY);

@@ -375,7 +375,7 @@ public class KMeansPrincipal {
         String padrao;
         for (int i = 0; i < clusters.size(); i++) {
 //            clusters.get(i).setNomeGrupo(dados.getClasses());
-            clusters.get(i).setNomeGrupo("Grupo " + (i + 1));
+            clusters.get(i).setNomeGrupo("Cluster_" + (i + 1));
             buffer.append("\nGrupo " + (i + 1) + ":");
             grupo = clusters.get(i).getSortGrupo();
             for (int j = 0; j < grupo.size(); j++) {

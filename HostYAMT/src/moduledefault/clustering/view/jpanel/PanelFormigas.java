@@ -846,8 +846,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         String padrao;
         for (int i = 0; i < clusters.size(); i++) {
 //            clusters.get(i).setNomeGrupo(dados.getClasses());
-            clusters.get(i).setNomeGrupo("Grupo " + (i + 1));
-            System.out.println("Grupo = " + (i + 1) + " clusters.getNome() = " + clusters.get(i).getNomeGrupo());
+            clusters.get(i).setNomeGrupo("Cluster_"+(i+1));
+//            System.out.println("Grupo = " + (i + 1) + " clusters.getNome() = " + clusters.get(i).getNomeGrupo());
             getBuffer().append("Grupo " + (i + 1) + ":");
             grupo = clusters.get(i).getSortGrupo();
             for (int j = 0; j < grupo.size(); j++) {
@@ -1044,25 +1044,25 @@ public final class PanelFormigas extends javax.swing.JPanel {
         startMatrizDados();
     }
 
-    private void imprimiBase() {
-        System.out.println("Nome = " + dados.getNome());
-        System.out.println("Atributos = ");
-        for (int i = 0; i < dados.getAtributos().size(); i++) {
-            System.out.print(dados.getAtributos().get(i) + " ");
-        }
-        System.out.println("\nClasses = ");
-        for (int i = 0; i < dados.getClasses().size(); i++) {
-            System.out.print(dados.getClasses().get(i) + " ");
-        }
-        System.out.println("\ndimensao = " + dados.getDimensaoMatriz());
-        System.out.println("Dados: ");
-        for (int i = 0; i < dados.getDataSet().size(); i++) {
-            for (int j = 0; j < dados.getDataSet().get(i).getAtributos().size(); j++) {
-                System.out.print(dados.getDataSet().get(i).getAtributos().get(j) + " ");
-            }
-            System.out.println("");
-        }
-    }
+//    private void imprimiBase() {
+////        System.out.println("Nome = " + dados.getNome());
+////        System.out.println("Atributos = ");
+////        for (int i = 0; i < dados.getAtributos().size(); i++) {
+//////            System.out.print(dados.getAtributos().get(i) + " ");
+////        }
+////        System.out.println("\nClasses = ");
+////        for (int i = 0; i < dados.getClasses().size(); i++) {
+////            System.out.print(dados.getClasses().get(i) + " ");
+////        }
+////        System.out.println("\ndimensao = " + dados.getDimensaoMatriz());
+////        System.out.println("Dados: ");
+//        for (int i = 0; i < dados.getDataSet().size(); i++) {
+//            for (int j = 0; j < dados.getDataSet().get(i).getAtributos().size(); j++) {
+//                System.out.print(dados.getDataSet().get(i).getAtributos().get(j) + " ");
+//            }
+//            System.out.println("");
+//        }
+//    }
 
     private void formaClusters(int[][] mpos, int numGrupos) {
         clusters = new ArrayList<Cluster>();
@@ -1082,13 +1082,13 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 }
             }
         }
-        System.out.println("mpos = ");
-        for (int i = 0; i < mpos.length; i++) {
-            for (int j = 0; j < mpos[0].length; j++) {
-                System.out.print(mpos[i][j] + " ");
-            }
-            System.out.println("");
-        }
+//        System.out.println("mpos = ");
+//        for (int i = 0; i < mpos.length; i++) {
+//            for (int j = 0; j < mpos[0].length; j++) {
+//                System.out.print(mpos[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
         int grupoInicial = mpos[1][0];
         int iterator = 0;
         int cont = 0;
