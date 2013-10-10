@@ -115,6 +115,8 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                                     }
                                 }
                                 g.fillOval(x, y, tamPixelY, tamPixelY);
+                                g.setColor(Color.black);
+                                g.drawOval(x, y, tamPixelY, tamPixelY);
                                 inicioX += tamPixelX;
                             }
                             inicioY += tamPixelY;

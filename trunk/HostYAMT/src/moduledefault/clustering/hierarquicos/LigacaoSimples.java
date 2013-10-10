@@ -52,7 +52,7 @@ public class LigacaoSimples {
         int pad1 = 0, pad2 = 0, q = 1;
         int cont = 0, para = 0;
         /////////////////
-        for (int y = 0; y < numeroPadroes - 1; y++){
+        for (int y = 0; y < numeroPadroes - 1; y++) {
             cont = 0;
             min = 1000000;
             d = 0;
@@ -106,10 +106,18 @@ public class LigacaoSimples {
             }
             ++q;
         }
-       
+
+        System.out.println("Matriz Dendograma:");
+        for (int i = 0; i < matrizDendograma.length; i++) {
+            for (int j = 0; j < matrizDendograma[0].length; j++) {
+                System.out.print(" " + matrizDendograma[i][j]);
+            }
+            System.out.println("");
+        }
+        System.out.println("\n");
     }
-    
-  public void clustering(int grupos) {
+
+    public void clustering(int grupos) {
         int lineCluster = numeroPadroes - grupos;
         ArrayList<Integer> g = new ArrayList<>();
         for (int i = 0; i < numeroPadroes; i++) {

@@ -29,7 +29,7 @@ public class CorrelacaoSpearman {
                 for (int k = 0; k < numK; k++) {
                     l2.add(centroides.get(j).getAtributos().get(k));
                 }
-                resultado[i][j] = spearman(l1,l2);
+                resultado[i][j] = spearman(l1, l2);
             }
         }
         return resultado;
@@ -41,6 +41,9 @@ public class CorrelacaoSpearman {
 //        System.out.println("spearman");
         base = b.copy();
         setMatrizDistancias(b.getDataSet().size());
+    }
+
+    public CorrelacaoSpearman() {
     }
 
     public void distancia() {
