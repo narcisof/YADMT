@@ -15,7 +15,9 @@ import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import moduledefault.clustering.distancias.CorrelacaoKendallTau;
 import moduledefault.clustering.distancias.CorrelacaoPearson;
+import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Padrao;
@@ -160,6 +162,8 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         comboBoxGruposMatriz = new javax.swing.JComboBox();
+        jLabel12 = new javax.swing.JLabel();
+        comboCorrelacoes = new javax.swing.JComboBox();
         jScrollPane7 = new javax.swing.JScrollPane();
         fundoMatrizCorrelacao = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -516,6 +520,16 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             }
         });
 
+        jLabel12.setText("Coeficiente de Correlação:");
+
+        comboCorrelacoes.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"", "Kendall Tau", "Pearson", "Spearman"}));
+        comboCorrelacoes.setSelectedIndex(1);
+        comboCorrelacoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboCorrelacoesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -525,14 +539,20 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(955, Short.MAX_VALUE))
+                .addGap(101, 101, 101)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboCorrelacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboBoxGruposMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(comboCorrelacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 15, Short.MAX_VALUE))
         );
 
@@ -1135,25 +1155,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     }//GEN-LAST:event_comboBoxEixoXGruposActionPerformed
 
     private void comboBoxGruposMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxGruposMatrizActionPerformed
-        if (setou) {
-            matrizCorrelacao();
-            grupoEscolhidoMatriz = comboBoxGruposMatriz.getSelectedIndex();
-            if (grupoEscolhidoMatriz != 0) {
-                Base aux = getMatrizDadosCorrelacao();
-                if (aux != null) {
-                    setMatrizGruposCorrelacao(aux);
-                    MC.setRepinta(false);
-                    repaint();
-                    System.out.println("repaint aux!=null matrizcorrelacao");
-                } else {
-                    MC.setRepinta(true);
-                    repaint();
-                    System.out.println("repaint aux==null matrizcorrelacao");
-                }
-            }
-        } else {
-            setMatrizGruposCorrelacao(null);
-        }
+        setMatrizCorrelacao();
     }//GEN-LAST:event_comboBoxGruposMatrizActionPerformed
 
     private void comboBoxEixoZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEixoZActionPerformed
@@ -1369,6 +1371,10 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private void zoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutActionPerformed
         GDG.setDistancia(-1);
     }//GEN-LAST:event_zoomOutActionPerformed
+
+    private void comboCorrelacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCorrelacoesActionPerformed
+        setMatrizCorrelacao();
+    }//GEN-LAST:event_comboCorrelacoesActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adicionar;
     private javax.swing.JTextArea areaTextGeral;
@@ -1381,6 +1387,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private static javax.swing.JComboBox comboBoxEixoZ;
     private static javax.swing.JComboBox comboBoxEixoZGrupos;
     private static javax.swing.JComboBox comboBoxGruposMatriz;
+    private javax.swing.JComboBox comboCorrelacoes;
     private javax.swing.JButton deletar;
     private static javax.swing.JPanel fundoCircular;
     private javax.swing.JPanel fundoCirculares;
@@ -1395,6 +1402,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1497,9 +1505,25 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
         } else {
             if (grupoEscolhidoMatriz != 0) {
                 if (grupos != null) {
-                    CorrelacaoPearson cor = new CorrelacaoPearson(grupos);
-                    cor.distanciaGrupos(grupos);
-                    MC.setMatrizGrupos(cor.getMatrizDistancias());
+                    switch (comboCorrelacoes.getSelectedIndex()) {
+                        case 1:
+                            CorrelacaoKendallTau ckt = new CorrelacaoKendallTau(grupos);
+                            ckt.distancia();
+                            MC.setMatrizGrupos(ckt.getMatrizDistancias());
+                            break;
+                        case 2:
+                            CorrelacaoPearson cor = new CorrelacaoPearson(grupos);
+                            cor.distanciaGrupos(grupos);
+                            MC.setMatrizGrupos(cor.getMatrizDistancias());
+                            break;
+                        case 3:
+                            CorrelacaoSpearman cs = new CorrelacaoSpearman(grupos);
+                            cs.distancia();
+                            MC.setMatrizGrupos(cs.getMatrizDistancias());
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
                     MC.setMatrizGrupos(null);
                 }
@@ -2039,5 +2063,27 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
             }
         }
         return false;
+    }
+
+    private void setMatrizCorrelacao() {
+        if (setou) {
+            matrizCorrelacao();
+            grupoEscolhidoMatriz = comboBoxGruposMatriz.getSelectedIndex();
+            if (grupoEscolhidoMatriz != 0) {
+                Base aux = getMatrizDadosCorrelacao();
+                if (aux != null) {
+                    setMatrizGruposCorrelacao(aux);
+                    MC.setRepinta(false);
+                    repaint();
+                    System.out.println("repaint aux!=null matrizcorrelacao");
+                } else {
+                    MC.setRepinta(true);
+                    repaint();
+                    System.out.println("repaint aux==null matrizcorrelacao");
+                }
+            }
+        } else {
+            setMatrizGruposCorrelacao(null);
+        }
     }
 }

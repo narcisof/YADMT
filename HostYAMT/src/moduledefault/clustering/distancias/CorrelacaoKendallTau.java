@@ -31,12 +31,11 @@ public class CorrelacaoKendallTau {
                 for (int k = 0; k < numK; k++) {
                     l2.add(centroides.get(j).getAtributos().get(k));
                 }
-                resultado[i][j] = rankKendallTauBeta(l1,l2);
+                resultado[i][j] = rankKendallTauBeta(l1, l2);
             }
         }
         return resultado;
     }
-
     Base base;
     double[][] matrizDistancias;
 
@@ -45,13 +44,18 @@ public class CorrelacaoKendallTau {
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
-        public void distancia() {
+
+    public CorrelacaoKendallTau() {
+    }
+
+    public void distancia() {
         for (int i = 0; i < base.getDataSet().size(); i++) {
             for (int j = 0; j < base.getDataSet().size(); j++) {
                 matrizDistancias[i][j] = rankKendallTauBeta(base.getDataSet().get(i).getAtributos(), base.getDataSet().get(j).getAtributos());
             }
         }
     }
+
     public static double rankKendallTauBeta(List<Double> x, List<Double> y) {
         int x_n = x.size();
         int y_n = y.size();

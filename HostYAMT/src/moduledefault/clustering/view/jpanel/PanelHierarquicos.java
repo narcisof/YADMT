@@ -11,15 +11,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ComponentUI;
-import moduledefault.clustering.hierarquicos.BinTree;
+import moduledefault.clustering.hierarquicos.visualization.BinTree;
 import moduledefault.clustering.hierarquicos.LigacaoCompleta;
 import moduledefault.clustering.hierarquicos.LigacaoMedia;
 import moduledefault.clustering.hierarquicos.LigacaoSimples;
-import moduledefault.clustering.hierarquicos.NewJFrame;
+import moduledefault.clustering.hierarquicos.visualization.TreeView;
 import moduledefault.clustering.hierarquicos.WardAgrupamento;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Base;
@@ -276,6 +278,12 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             case 6:
                 teste_distancia = 6;
                 break;
+            case 7:
+                teste_distancia = 7;
+                break;
+            case 8:
+                teste_distancia = 8;
+                break;
             default:
                 break;
         }
@@ -293,14 +301,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 LC.clustering(3);
                 clusters = LC.getClusters();
                 int[][] matrizDendograma = LC.getMatrizDendograma();
-              // avaliaLigacao(matrizDendograma);
-               // imprimiAgrupamento();
-                
-//                 System.out.println("===========================================");
+//               avaliaLigacao(matrizDendograma);
+                // imprimiAgrupamento();
+
+                System.out.println("===========================================");
                 BinTree dendograma = new BinTree();
-                dendograma.ordena(matrizDendograma);
 //                imprimiRecuperacao();
-                //setListaResultados();
+            //setListaResultados();
             case 2:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
                 m = pmat(m);
@@ -323,21 +330,26 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 LS.clustering(3); //Definir numero de grupos
                 clusters = LS.getClusters();
                 matrizDendograma = LS.getMatrizDendograma();
-                avaliaLigacao(matrizDendograma);
+//                avaliaLigacao(matrizDendograma);
 //                imprimiAgrupamento();
 //                imprimiRecuperacao();
 //                setListaResultados();
 //                jTextArea1.setText(getBuffer().toString());
 //                System.out.println("===========================================");
                 dendograma = new BinTree();
-                NewJFrame frame = new NewJFrame();
-                int altura = frame.getjPanel1().getHeight();
-                int largura = frame.getjPanel1().getWidth();                
-                dendograma.createTree(matrizDendograma, altura, largura);
-                
-                frame.setDendograma(dendograma);
-                frame.setVisible(true);
-                frame.repaint();
+                dendograma.createTree(matrizDendograma);
+                dendograma.showEmOrdem(dendograma.getRoot());
+                dendograma.treeAnalysis(dendograma.getRoot());
+                TreeView.newTreeXML(dendograma.getXml());
+                JComponent treeview = TreeView.demo("tree.xml", "name");
+//                frame.setDendograma(dendograma);
+//                frame.setVisible(true);
+//                frame.repaint();
+                JFrame frame1 = new JFrame("Dendograma");
+                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame1.setContentPane(treeview);
+                frame1.pack();
+                frame1.setVisible(true);
                 break;
             case 4:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
@@ -345,7 +357,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 WardAgrupamento W = new WardAgrupamento(m, dados, teste_distancia);
                 W.inicio();
                 matrizDendograma = W.getMdend();
-                avaliaLigacao(matrizDendograma);
+//                avaliaLigacao(matrizDendograma);
 //                imprimiAgrupamento();
 //                imprimiRecuperacao();
 //                setListaResultados();
@@ -452,7 +464,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 matriz[i][j] = Double.valueOf(base.getInput()[i][j] + "").doubleValue();
             }
         }
-//        padronizacao(base);
+
 
         int grupo = 0;
         for (int i = 0; i < matriz.length; i++) {
@@ -505,12 +517,12 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         int[] inicial = matrizDendograma[0];
         ArrayList<Cluster> cl = new ArrayList<>();
         int posicaoDend = 1;
-//        for (int i = matrizDendograma.length - 3; i > 0; i--) {
-//            for (int j = 0; j < dados.getDataSet().size(); j++) {
-////                System.out.print(matrizDendograma[i][j] + " ");
-//            }
-//            System.out.println("");
-//        }
+        for (int i = matrizDendograma.length - 3; i > 0; i--) {
+            for (int j = 0; j < dados.getDataSet().size(); j++) {
+                System.out.print(matrizDendograma[i][j] + " ");
+            }
+            System.out.println("");
+        }
     }
 
     synchronized void imprimiAgrupamento() {
