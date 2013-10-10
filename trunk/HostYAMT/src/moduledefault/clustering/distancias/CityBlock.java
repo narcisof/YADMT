@@ -20,7 +20,7 @@ public class CityBlock {
     double[][] matrizDistancias;
 
     public CityBlock(Base teste) {
-        System.out.println("city");
+//        System.out.println("city");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

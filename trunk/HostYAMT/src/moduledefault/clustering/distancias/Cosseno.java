@@ -19,7 +19,7 @@ public class Cosseno{
     double[][] matrizDistancias;
     
     public Cosseno(Base teste) {
-        System.out.println("cosseno");
+//        System.out.println("cosseno");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

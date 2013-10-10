@@ -22,7 +22,7 @@ public class Mahalanobis {
     double[][] matrizDistancias;
 
     public Mahalanobis(Base teste) {
-        System.out.println("maha");
+//        System.out.println("maha");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

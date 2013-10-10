@@ -38,7 +38,7 @@ public class CorrelacaoSpearman {
     double[][] matrizDistancias;
 
     public CorrelacaoSpearman(Base b) {
-        System.out.println("spearman");
+//        System.out.println("spearman");
         base = b.copy();
         setMatrizDistancias(b.getDataSet().size());
     }

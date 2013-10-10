@@ -327,6 +327,7 @@ public class PanelKmeans extends javax.swing.JPanel {
         TecnicasDispersao.getInstance().setQntGrupos(numK);
         TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
+        TecnicasDispersao.getInstance().inicia();
     }//GEN-LAST:event_visualizacaoActionPerformed
 
     private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
@@ -385,8 +386,8 @@ public class PanelKmeans extends javax.swing.JPanel {
 
         Operações_Mat m = new Operações_Mat();
         m.Padronização(dados);
-        System.out.println("linhas = " + dados.getDataSet().size());
-        System.out.println("colunas = " + (dados.getAtributos().size() - 1));
+//        System.out.println("linhas = " + dados.getDataSet().size());
+//        System.out.println("colunas = " + (dados.getAtributos().size() - 1));
         TecnicasDispersao.getInstance().setSetou(false);
         TecnicasDispersao.getInstance().setMatrizDados(dados);
         TecnicasDispersao.getInstance().setQntGrupos(numK);
@@ -482,13 +483,13 @@ public class PanelKmeans extends javax.swing.JPanel {
                 }
             }
         }
-        System.out.println("mpos = ");
-        for (int i = 0; i < mpos.length; i++) {
-            for (int j = 0; j < mpos[0].length; j++) {
-                System.out.print(mpos[i][j] + " ");
-            }
-            System.out.println("");
-        }
+//        System.out.println("mpos = ");
+//        for (int i = 0; i < mpos.length; i++) {
+//            for (int j = 0; j < mpos[0].length; j++) {
+//                System.out.print(mpos[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
         int grupoInicial = mpos[1][0];
         int iterator = 0;
         int cont = 0;

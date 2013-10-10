@@ -102,7 +102,7 @@ public class AvaliacaoAgrupamento {
             for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
                 centro1 += clusters.get(i).getGrupo().get(j).getNumero();
             }
-            System.out.println("qpadrao1 = " + qpadrao1);
+//            System.out.println("qpadrao1 = " + qpadrao1);
             centro1 = centro1 / qpadrao1;//calcula o centroide/média
             for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
                 qdesvio1 = clusters.get(i).getGrupo().get(j).getNumero() - centro1;
@@ -116,7 +116,7 @@ public class AvaliacaoAgrupamento {
             for (int x = i + 1; x < clusters.size(); x++) {
                 qpadrao2 = clusters.get(x).getGrupo().size();
 
-                System.out.println("qpadrao2 = " + qpadrao2);
+//                System.out.println("qpadrao2 = " + qpadrao2);
                 for (int j = 0; j < clusters.get(x).getGrupo().size(); j++) {
                     centro1 += clusters.get(x).getGrupo().get(j).getNumero();
                 }

@@ -72,7 +72,7 @@ public class BinTree {
             for (int j = 0; j < dendograma[0].length; j++) {
                 aux.clear();
                 if (dendograma[i][j] != dendograma[i + 1][j]) {
-                    System.out.println("");
+//                    System.out.println("");
                     for (int k = 0; k < dendograma[0].length; k++) {
                         if (dendograma[i][k] == dendograma[i][j]) {
                             aux.add(k);

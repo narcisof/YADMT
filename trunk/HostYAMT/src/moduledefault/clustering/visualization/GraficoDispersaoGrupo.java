@@ -38,8 +38,7 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int height = TecnicasDispersao.getFundoDispersaoGrupos().getHeight();
         float w = width / 2;
         float h = height / 2;
-        float m = width / TecnicasDispersao.getMatrizDados().getDataSet().size() + 2;
-        int tamPixel = (int) m;
+        int tamPixel = TecnicasDispersao.getTamanhoPontoGrupos();
         int x0 = 50 + (int) 0 * (width - 120);
         int y0 = (height - 70) - (int) 0 * (height - 120) + tamPixel;
         int x1 = 50 + (int) 1 * (width - 120) + tamPixel;
@@ -78,8 +77,8 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
         int atributo2 = TecnicasDispersao.getComboBoxEixoYGrupos().getSelectedIndex();
         int atributo3 = TecnicasDispersao.getComboBoxEixoZGrupos().getSelectedIndex();
         if (TecnicasDispersao.getClusters() != null) {
-            for (int j = 0; j < TecnicasDispersao.getVetorGrupos().length; j++) {
-                String grupo = "Grupo " + TecnicasDispersao.getVetorGrupos()[j];
+            for (int j = 0; j < TecnicasDispersao.getVetorGrupos().size(); j++) {
+                String grupo = TecnicasDispersao.getVetorGrupos().get(j);
                 for (int l = 0; l < TecnicasDispersao.getClusters().size(); l++) {
                     if (TecnicasDispersao.getClusters().get(l).getNomeGrupo().equals(grupo)) {
                         for (int i = 0; i < TecnicasDispersao.getClusters().get(l).getGrupo().size(); i++) {

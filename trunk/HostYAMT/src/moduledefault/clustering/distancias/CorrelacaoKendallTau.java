@@ -41,7 +41,7 @@ public class CorrelacaoKendallTau {
     double[][] matrizDistancias;
 
     public CorrelacaoKendallTau(Base teste) {
-        System.out.println("kendall");
+//        System.out.println("kendall");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

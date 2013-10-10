@@ -274,7 +274,7 @@ public class Ward {
 
         for (int i = 0; i < g.size(); i++) {
             Cluster c = new Cluster();
-            c.setNomeGrupo("" + (i + 1));
+            c.setNomeGrupo("Cluster_" + (i + 1));
             for (int j = 0; j < numeroPadroes; j++) {
                 if (matrizDendograma[lineCluster][j] == g.get(i)) {
                     c.addPadrao(padroes.get(j));

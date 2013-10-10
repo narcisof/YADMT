@@ -22,7 +22,7 @@ public class Chebyshev {
     public Chebyshev(Base teste) {
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
-        System.out.println("Cheb");
+//        System.out.println("Cheb");
     }
 
     public Chebyshev() {

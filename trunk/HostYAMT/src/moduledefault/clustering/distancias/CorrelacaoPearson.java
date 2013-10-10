@@ -20,7 +20,7 @@ public class CorrelacaoPearson {
     double[][] matrizDistancias;
 
     public CorrelacaoPearson(Base teste) {
-        System.out.println("pearson");
+//        System.out.println("pearson");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }

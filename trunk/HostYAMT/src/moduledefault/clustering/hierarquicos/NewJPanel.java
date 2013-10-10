@@ -30,14 +30,14 @@ public class NewJPanel extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("print");
+//        System.out.println("print");
         g.setColor(Color.red);
         
         if(dendograma != null){
             g.drawOval(460, 794, 20, 20);
             for (int i = 0; i < dendograma.getBase().size(); i++) {
                 g.drawOval(dendograma.getBase().get(i).getX(), dendograma.getBase().get(i).getY(), 10, 10);
-                System.out.println(dendograma.getBase().get(i).getX()+" "+dendograma.getBase().get(i).getY());
+//                System.out.println(dendograma.getBase().get(i).getX()+" "+dendograma.getBase().get(i).getY());
             }
         }
 
