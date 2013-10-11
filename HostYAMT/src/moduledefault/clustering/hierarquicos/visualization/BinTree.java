@@ -33,39 +33,26 @@ public class BinTree {
         ArrayList<Integer> baseAux = ordena(dendograma);
         base = new ArrayList<>();
 
+        for (int i = 0; i < baseAux.size(); i++) {
+            base.add(new NodeD(baseAux.get(i), 0, 0));
+        }
         for (int i = 0; i < dendograma.length - 1; i++) {
             int analisado = -1;
             for (int j = 0; j < dendograma[0].length; j++) {
                 if (dendograma[i][j] != dendograma[i + 1][j] && dendograma[i][j] != analisado) {
                     analisado = dendograma[i][j];
-//                    System.out.println("\n=======================================");
-//                    System.out.println("Pai = " + dendograma[i + 1][j]);
                     NodeD n = new NodeD(dendograma[i + 1][j], 0, 0); //pai
-//                    System.out.println("dendograma[i+1][j] = " + dendograma[i + 1][j]);
                     int indexLeft = indexOf(dendograma[i + 1][j]);
                     int indexPai = indexLeft;
                     int indexRight = indexOf(dendograma[i][j]);
-//                    System.out.println("indexLeft = " + indexLeft);
                     if (indexLeft != -1) {
                         n.setLeft(base.get(indexLeft));
                     }
-//                    System.out.println("dendograma[i][j] = " + dendograma[i][j]);
-//                    System.out.println("indexRight = " + indexRight);
                     if (indexRight != -1) {
                         n.setRight(base.get(indexRight));
                         base.remove(indexRight);
                     }
-                    // base.remove(indexLeft);
                     base.set(indexPai, n);
-//                    System.out.println("Base:");
-//                    for (Node nd : base) {
-//                        System.out.print(nd.getPadrao() + " ");
-//                    }
-//                    try {
-//                        System.in.read();
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(BinTree.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
                 }
             }
         }
