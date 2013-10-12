@@ -6,7 +6,7 @@ package moduledefault.clustering.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  *
@@ -64,6 +64,7 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                     inicioX = meioX - pontoInicialX * tamPixelX + 20;
                     inicioY = meioY - pontoInicialY * tamPixelY + 20;
                     if (this.grupos != null) {
+                        ArrayList<Ponto> pontos = new ArrayList<>();
                         for (int i = 0; i < grupos.length; i++) {
                             inicioX = meioX - pontoInicialX * tamPixelX + 20;
                             for (int j = 0; j < grupos.length; j++) {
@@ -114,6 +115,8 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                                         g.setColor(new Color(255, 0, 0));
                                     }
                                 }
+                                Ponto p = new Ponto(i, j, x, y, grupos[i][j], Color.black);
+                                pontos.add(p);
                                 g.fillOval(x, y, tamPixelY, tamPixelY);
                                 g.setColor(Color.black);
                                 g.drawOval(x, y, tamPixelY, tamPixelY);
@@ -121,6 +124,7 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                             }
                             inicioY += tamPixelY;
                         }
+                        TecnicasDispersao.setMatrizPontos(pontos);
                     }
                 }
             } else {

@@ -19,6 +19,8 @@ public class Ponto implements java.io.Serializable {
     private Color cor;
     private int[] ys;
     private int[] xs;
+    private int i;
+    private int j;
 
     public Ponto() {
         nome = "";
@@ -26,6 +28,15 @@ public class Ponto implements java.io.Serializable {
 
     public Ponto(String nome, double X, double Y, double Z, Color _cor) {
         this.nome = nome;
+        this.X = X;
+        this.Y = Y;
+        this.Z = Z;
+        this.cor = _cor;
+    }
+
+    public Ponto(int i, int j, double X, double Y, double Z, Color _cor) {
+        this.i = i;
+        this.j = j;
         this.X = X;
         this.Y = Y;
         this.Z = Z;
