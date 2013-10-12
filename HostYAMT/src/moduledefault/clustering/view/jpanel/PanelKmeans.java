@@ -4,22 +4,25 @@
  */
 package moduledefault.clustering.view.jpanel;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Padrao;
-import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.view.frames.JFrameHistoricoKmeans;
@@ -46,6 +49,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     ArrayList<StringBuffer> listaBuffer;
     interfaces.Base base;
     static moduledefault.clustering.uteis.Base dados;
+    static moduledefault.clustering.uteis.Base dadosOriginal;
     ArrayList<Cluster> clusters;
     AvaliacaoAgrupamento avaliacao;
 
@@ -198,15 +202,15 @@ public class PanelKmeans extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addComponent(jButtonExecuta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addComponent(visualizacao)
-                .addGap(40, 40, 40)
+                .addGap(34, 34, 34)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3)
@@ -341,6 +345,7 @@ public class PanelKmeans extends javax.swing.JPanel {
 
     private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
     }//GEN-LAST:event_listResultadosActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonExecuta;
@@ -383,9 +388,10 @@ public class PanelKmeans extends javax.swing.JPanel {
         dados.setClasses((List) base.getClasses());
         dados.setNome((String) base.getName());
         dados.setDimensaoMatriz();
-
+        dadosOriginal = dados;
         Operações_Mat m = new Operações_Mat();
         m.Padronização(dados);
+
 //        System.out.println("linhas = " + dados.getDataSet().size());
 //        System.out.println("colunas = " + (dados.getAtributos().size() - 1));
         TecnicasDispersao.getInstance().setSetou(false);
@@ -553,3 +559,36 @@ public class PanelKmeans extends javax.swing.JPanel {
         }
     }
 }
+//     String[] nomesColunas = new String[dados.getAtributos().size() + 2];
+//        nomesColunas[0] = "ID";
+//        for (int i = 0; i < dados.getAtributos().size(); i++) {
+//            nomesColunas[i + 1] = dados.getAtributos().get(i);
+//        }
+//        nomesColunas[dados.getAtributos().size() + 2] = "Cluster";
+//        DefaultTableModel modelo = new DefaultTableModel(nomesColunas, dados.getDataSet().size());
+//        modelo.setNumRows(0);
+//        JTable tabelaBase = new JTable();
+//        tabelaBase.setModel(modelo);
+//        String[] temp = new String[nomesColunas.length];
+//        for (int i = 0; i < clusters.size(); i++) {
+//            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+//                temp[0] = clusters.get(i).getGrupo().get(j).getNumero() + "";
+//                for (int l = 0; l < clusters.get(i).getGrupo().get(j).getAtributos().size(); l++) {
+//                    temp[l + 1] = clusters.get(i).getGrupo().get(j).getAtributos().get(l) + "";
+//                }
+//                temp[clusters.get(i).getGrupo().get(j).getAtributos().size() + 1] = clusters.get(i).getGrupo().get(j).getClasse();
+//                temp[clusters.get(i).getGrupo().get(j).getAtributos().size() + 2] = clusters.get(i).getNomeGrupo();
+//                modelo.addRow(temp);
+//            }
+//        }
+//        JFrame frameTabela = new JFrame("Tabela de Resultados");
+//        frameTabela.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+//        JPanel panel = new JPanel();
+//        JScrollPane scroll = new JScrollPane();
+//        scroll.setSize(tabelaBase.getWidth(), 700);
+//        scroll.setViewportView(tabelaBase);
+//        panel.add(scroll);
+//        frameTabela.add(panel);
+//        frameTabela.pack();
+//        frameTabela.setLocationRelativeTo(null);
+//        frameTabela.setVisible(true);

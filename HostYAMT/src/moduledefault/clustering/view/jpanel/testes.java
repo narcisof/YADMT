@@ -6,6 +6,7 @@ package moduledefault.clustering.view.jpanel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
@@ -81,6 +82,15 @@ public class testes {
 //                
 //                
 //        System.out.println("c = "+c.spearman(l1, l2));
+//        Random ra = new Random();
+//        for (int i = 0; i < 300; i++) {
+//            int r = ra.nextInt(255);
+//            int g = ra.nextInt(255);
+//            int bl = ra.nextInt(255);
+//            
+//            
+//            System.out.println("cores.add(new Color("+r+","+g+","+bl+"));");
+//        }
     }
 
     public void startMatrizDados() {

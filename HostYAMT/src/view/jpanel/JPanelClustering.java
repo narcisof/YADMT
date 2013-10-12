@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.view.frames.JFrameFormigas;
+import moduledefault.clustering.view.frames.JFrameHierarquicos;
 import moduledefault.clustering.view.frames.JFrameKmeans;
 import moduledefault.clustering.view.frames.JFrameKohonenConfig;
 import moduledefault.clustering.view.jpanel.PanelFormigas;
@@ -43,6 +44,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
     //
     JFrameFormigas frameFormigas;
     JFrameKmeans frameKmeans;
+    JFrameHierarquicos frameHierarquicos;
     JFrameKohonenConfig frameKohonen;
 
     /**
@@ -200,8 +202,9 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
                     break;
                 case 4: //Hierarquicos
                     jButtonConfiguracao.setEnabled(true);
+                    frameHierarquicos = new JFrameHierarquicos();
                     panelFundo.removeAll();
-                    hierarquicos = new PanelHierarquicos(arrayListBases.get(arrayListBases.size() - 1));
+                    hierarquicos = new PanelHierarquicos(arrayListBases.get(arrayListBases.size() - 1),frameHierarquicos);
                     hierarquicos.setSize(panelFundo.getSize());
                     hierarquicos.setPreferredSize(panelFundo.getPreferredSize());
                     panelFundo.add(hierarquicos);
@@ -235,6 +238,8 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             case 3:
                 frameKohonen.setVisible(true);
                 break;
+            case 4:
+                frameHierarquicos.setVisible(true);
         }
     }//GEN-LAST:event_jButtonConfiguracaoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

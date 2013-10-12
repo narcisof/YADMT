@@ -28,6 +28,7 @@ import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
+import moduledefault.clustering.view.frames.JFrameHierarquicos;
 
 /**
  *
@@ -46,13 +47,17 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     ArrayList<StringBuffer> listaText;
     interfaces.Base base;
     Base dados;
+    JFrameHierarquicos frameHierarquicos;
+    BinTree dendograma = new BinTree();
 
-    public PanelHierarquicos(interfaces.Base b) {
+    public PanelHierarquicos(interfaces.Base b, JFrameHierarquicos f) {
         initComponents();
+        frameHierarquicos = f;
         base = b;
         listaText = new ArrayList<>();
         startMatrizDados();
         buttonVisualizacao.setEnabled(false);
+        jButton1.setEnabled(false);
     }
 
     public int[][] getMatrizGrupos() {
@@ -108,6 +113,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         jComboBoxMetodos = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
+        jButton1 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
 
@@ -122,7 +128,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             }
         });
 
-        buttonVisualizacao.setText("Visualizar");
+        buttonVisualizacao.setText("Visualização");
         buttonVisualizacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonVisualizacaoActionPerformed(evt);
@@ -133,7 +139,12 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 
         jLabel1.setText("Função de Distância:");
 
-        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+        jComboBoxDistancias.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Chebyshev","CityBlock","Correlação de Kendall","Correlação Pearson","Correlação de Spearman" ,"Cosseno", "Euclidiana", "Mahalanobis" }));
+        jComboBoxDistancias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxDistanciasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -208,6 +219,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jButton1.setText("Visualizar Dendograma");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -219,7 +237,8 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                     .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
                 .addContainerGap())
@@ -231,13 +250,15 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(5, 5, 5)
                         .addComponent(buttonExecutar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonVisualizacao)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 61, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
@@ -255,6 +276,8 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 
     private void buttonExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExecutarActionPerformed
 
+        buttonVisualizacao.setEnabled(false);
+        jButton1.setEnabled(false);
 
         switch (this.jComboBoxDistancias.getSelectedIndex()) {
             case 0:
@@ -298,14 +321,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 m = pmat(m);
                 LigacaoCompleta LC = new LigacaoCompleta(dados.getDataSet(), teste_distancia);
                 LC.ligacaoCompleta();
-                LC.clustering(3);
+                LC.clustering(frameHierarquicos.getNumK());
                 clusters = LC.getClusters();
                 int[][] matrizDendograma = LC.getMatrizDendograma();
-//               avaliaLigacao(matrizDendograma);
                 // imprimiAgrupamento();
 
                 System.out.println("===========================================");
-                BinTree dendograma = new BinTree();
+
 //                imprimiRecuperacao();
             //setListaResultados();
             case 2:
@@ -313,7 +335,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 m = pmat(m);
                 LigacaoMedia LM = new LigacaoMedia(dados.getDataSet(), teste_distancia);
                 LM.ligacaoMedia();
-                LM.clustering(3); //Definir numero de grupos
+                LM.clustering(frameHierarquicos.getNumK()); //Definir numero de grupos
                 clusters = LM.getClusters();
                 matrizDendograma = LM.getMatrizDendograma();
                 //avaliaLigacao(matrizDendograma);
@@ -327,7 +349,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 m = pmat(m);
                 LigacaoSimples LS = new LigacaoSimples(dados.getDataSet(), teste_distancia);
                 LS.ligacaoSimples();
-                LS.clustering(3); //Definir numero de grupos
+                LS.clustering(frameHierarquicos.getNumK()); //Definir numero de grupos
                 clusters = LS.getClusters();
                 matrizDendograma = LS.getMatrizDendograma();
 //                avaliaLigacao(matrizDendograma);
@@ -338,18 +360,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 //                System.out.println("===========================================");
                 dendograma = new BinTree();
                 dendograma.createTree(matrizDendograma);
-                dendograma.showEmOrdem(dendograma.getRoot());
-                dendograma.treeAnalysis(dendograma.getRoot());
-                TreeView.newTreeXML(dendograma.getXml());
-                JComponent treeview = TreeView.demo("tree.xml", "name");
-//                frame.setDendograma(dendograma);
-//                frame.setVisible(true);
-//                frame.repaint();
-                JFrame frame1 = new JFrame("Dendograma");
-                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame1.setContentPane(treeview);
-                frame1.pack();
-                frame1.setVisible(true);
+
                 break;
             case 4:
                 m = new int[dados.getDimensaoMatriz()][dados.getDimensaoMatriz()];
@@ -428,6 +439,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 jTextArea1.append("\n");
             }
         }
+
+        buttonVisualizacao.setEnabled(true);
+        jButton1.setEnabled(true);
     }//GEN-LAST:event_buttonExecutarActionPerformed
 
     private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
@@ -441,9 +455,29 @@ public class PanelHierarquicos extends javax.swing.JPanel {
 
     private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
     }//GEN-LAST:event_listResultadosActionPerformed
+
+    private void jComboBoxDistanciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxDistanciasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxDistanciasActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dendograma.treeAnalysis(dendograma.getRoot());
+        TreeView.newTreeXML(dendograma.getXml());
+        JComponent treeview = TreeView.demo("tree.xml", "name");
+//                frame.setDendograma(dendograma);
+//                frame.setVisible(true);
+//                frame.repaint();
+        JFrame frame1 = new JFrame("Dendograma");
+        frame1.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame1.setContentPane(treeview);
+        frame1.pack();
+        frame1.setLocationRelativeTo(null);
+        frame1.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonExecutar;
     private javax.swing.JButton buttonVisualizacao;
+    private javax.swing.JButton jButton1;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private static javax.swing.JComboBox jComboBoxMetodos;
     private javax.swing.JLabel jLabel1;

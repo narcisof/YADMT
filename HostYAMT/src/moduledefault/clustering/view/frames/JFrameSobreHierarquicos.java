@@ -4,20 +4,33 @@
  */
 package moduledefault.clustering.view.frames;
 
+import java.awt.Point;
+
 /**
  *
  * @author Mateus
  */
-public class JFrameHistoricoKmeans extends javax.swing.JFrame {
+public class JFrameSobreHierarquicos extends javax.swing.JFrame {
 
     /**
-     * Creates new form JFrameHistoricoKmeans
+     * Creates new form JFrameSobreHierarquicos
      */
-   
-    public JFrameHistoricoKmeans(StringBuffer buffer) {
+    public JFrameSobreHierarquicos(Point _p, int l) {
         initComponents();
-        jTextArea1.setText(buffer.toString());
-        jTextArea1.setCaretPosition(0);
+        setName("Metodos Hierarquicos");
+        setLocation(_p.x + l + 20, _p.y);
+        this.setSize(520, this.getHeight());
+        jTextArea2.setText("Os métodos de agrupamento de dados hierárquicos\n"
+                + "procuram formar grupos de forma hierárquica, admitindo\n"
+                + "assim vários níveis de agrupamento. Estes níveis podem\n"
+                + "ser representados por árvores, que são formadas durante\n"
+                + "o processo de agrupamento."
+                + "\n\n"
+                + "Parâmetros:\n"
+                + "- Número de Clusters: número desejado de clusters a ser\n"
+                + "formado pelo método");
+        jTextArea2.setEditable(false);
+        jTextArea2.setCaretPosition(0);
     }
 
     /**
@@ -29,46 +42,41 @@ public class JFrameHistoricoKmeans extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /**
      * @param args the command line arguments
      */
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
 }
