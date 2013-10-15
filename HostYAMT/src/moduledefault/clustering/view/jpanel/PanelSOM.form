@@ -41,7 +41,7 @@
                   <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="506" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="493" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -172,14 +172,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jButtonAgrupamento" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="boxAlgoritmo" min="-2" pref="122" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButtonConfigDensidade" min="-2" pref="63" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="boxAlgoritmo" min="-2" pref="137" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButtonConfigDensidade" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButtonAgrupamento" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -217,17 +217,17 @@
         <Component class="javax.swing.JComboBox" name="boxAlgoritmo">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="7">
-                <StringItem index="0" value="Matriz de Densidade"/>
-                <StringItem index="1" value="Liga&#xe7;&#xe3;o Simples"/>
-                <StringItem index="2" value="Liga&#xe7;&#xe3;o M&#xe9;dia"/>
-                <StringItem index="3" value="Liga&#xe7;&#xe3;o Completa"/>
-                <StringItem index="4" value="M&#xe9;todo de Ward"/>
-                <StringItem index="5" value="1D SOM"/>
-                <StringItem index="6" value="SL-SOM"/>
+              <StringArray count="8">
+                <StringItem index="0" value="1D SOM"/>
+                <StringItem index="1" value="SL-SOM"/>
+                <StringItem index="2" value="Matriz de Densidade"/>
+                <StringItem index="3" value="Liga&#xe7;&#xe3;o Simples"/>
+                <StringItem index="4" value="Liga&#xe7;&#xe3;o M&#xe9;dia"/>
+                <StringItem index="5" value="Liga&#xe7;&#xe3;o Completa"/>
+                <StringItem index="6" value="M&#xe9;todo de Ward"/>
+                <StringItem index="7" value="Componentes Conectados"/>
               </StringArray>
             </Property>
-            <Property name="selectedIndex" type="int" value="6"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>

@@ -7,6 +7,7 @@ package moduledefault.clustering.uteis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import moduledefault.clustering.som.Neuronio;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Cluster {
     private String nomeGrupo;
     private int pai;
     private int posicaoDend;
+    private ArrayList<Neuronio> neuronios;
 
     public Cluster() {
         grupo = new ArrayList<>();
@@ -101,8 +103,19 @@ public class Cluster {
     public void setPosicaoDend(int posicaoDend) {
         this.posicaoDend = posicaoDend;
     }
+
+    public ArrayList<Neuronio> getNeuronios() {
+        return neuronios;
+    }
+
+    public void setNeuronios(ArrayList<Neuronio> neuronios) {
+        this.neuronios = neuronios;
+    }   
     
-    
-    
-    
+    public void addNeuronio(Neuronio neuronio) {
+        if (this.neuronios == null) {
+            this.neuronios = new ArrayList<>();
+        }
+        this.neuronios.add(neuronio);
+    }
 }

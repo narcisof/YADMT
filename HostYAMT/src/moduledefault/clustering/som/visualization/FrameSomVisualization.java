@@ -23,6 +23,7 @@ import javax.vecmath.Point3d;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.som.Neuronio;
 import moduledefault.clustering.som.RedeSOM;
+import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.view.jpanel.PanelSOM;
 
 /**
@@ -53,6 +54,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     //
     private static int valueDensidade = 15;
     private static int valueU2D = 10;
+    private static int valueClustering = 10;
     private static int neuronioX;
     private static int neuronioY;
     //
@@ -81,13 +83,14 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private static MatrizDensidade den;
     private static SOMVisualization som;
     //
+    private static ArrayList<Cluster> clusters = new ArrayList<>();
+    //
     private static FrameSomVisualization INSTANCE;
 
     public FrameSomVisualization() {
         initComponents();
         setLocationRelativeTo(null);
         repaint();
-
     }
 
     public static synchronized FrameSomVisualization getInstance() {
@@ -161,6 +164,12 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         textNeuronio = new javax.swing.JTextArea();
         sliderDensidade = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
+        panelDensidade1 = new Clustering();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textNeuronio1 = new javax.swing.JTextArea();
+        sliderClustering = new javax.swing.JSlider();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -450,7 +459,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         });
 
         sliderU2D.setBackground(new java.awt.Color(255, 255, 255));
-        sliderU2D.setMinimum(10);
         sliderU2D.setPaintLabels(true);
         sliderU2D.setPaintTicks(true);
         sliderU2D.setSnapToTicks(true);
@@ -488,12 +496,13 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         jTabbedPane2.addTab("Matriz-U 2D", panel2D);
 
         panelDensidade.setBackground(new java.awt.Color(255, 255, 255));
+        panelDensidade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelDensidade.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelDensidadeMouseClicked(evt);
-            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 panelDensidadeMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelDensidadeMouseClicked(evt);
             }
         });
         panelDensidade.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -509,7 +518,6 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         jScrollPane1.setViewportView(textNeuronio);
 
         sliderDensidade.setBackground(new java.awt.Color(255, 255, 255));
-        sliderDensidade.setMinimum(10);
         sliderDensidade.setPaintLabels(true);
         sliderDensidade.setPaintTicks(true);
         sliderDensidade.setSnapToTicks(true);
@@ -547,6 +555,83 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Matriz Densidade", panelDensidade);
+
+        panelDensidade1.setBackground(new java.awt.Color(255, 255, 255));
+        panelDensidade1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panelDensidade1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                panelDensidade1MouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelDensidade1MouseClicked(evt);
+            }
+        });
+        panelDensidade1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                panelDensidade1ComponentResized(evt);
+            }
+        });
+
+        textNeuronio1.setEditable(false);
+        textNeuronio1.setColumns(20);
+        textNeuronio1.setRows(5);
+        textNeuronio1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jScrollPane2.setViewportView(textNeuronio1);
+
+        sliderClustering.setBackground(new java.awt.Color(255, 255, 255));
+        sliderClustering.setPaintLabels(true);
+        sliderClustering.setPaintTicks(true);
+        sliderClustering.setSnapToTicks(true);
+        sliderClustering.setValue(20);
+        sliderClustering.setFocusable(false);
+        sliderClustering.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderClusteringStateChanged(evt);
+            }
+        });
+
+        jLabel10.setText("Zoom:");
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 325, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelDensidade1Layout = new javax.swing.GroupLayout(panelDensidade1);
+        panelDensidade1.setLayout(panelDensidade1Layout);
+        panelDensidade1Layout.setHorizontalGroup(
+            panelDensidade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidade1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelDensidade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sliderClustering, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelDensidade1Layout.setVerticalGroup(
+            panelDensidade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDensidade1Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelDensidade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sliderClustering, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane2.addTab("Clustering", panelDensidade1);
 
         jMenu1.setText("Arquivo");
 
@@ -745,7 +830,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
 
         pack();
@@ -791,14 +876,12 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
         int[] mCornersX = new int[NUM_HEX_CORNERS];
         int[] mCornersY = new int[NUM_HEX_CORNERS];
         HexGrid mCellMetrics = new HexGrid(valueDensidade);
-
         boolean aux = false;
-
         for (int i = 0; i < gridX; i++) {
             for (int j = 0; j < gridY; j++) {
                 mCellMetrics.setCellIndex(i, j);
                 mCellMetrics.computeCorners(mCornersX, mCornersY);
-                Polygon p = new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                Polygon p = new Polygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                 if (p.contains(x1, y1)) {
                     neuronioX = i;
                     neuronioY = j;
@@ -1102,6 +1185,62 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
        den.repaint();
     }//GEN-LAST:event_jCheckBoxMenuItem6ActionPerformed
 
+    private void sliderClusteringStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderClusteringStateChanged
+        valueClustering = sliderClustering.getValue();
+        repaint();
+    }//GEN-LAST:event_sliderClusteringStateChanged
+
+    private void panelDensidade1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDensidade1MouseReleased
+         int x1 = evt.getX();
+        int y1 = evt.getY();
+
+        int NUM_HEX_CORNERS = 6;
+        int[] mCornersX = new int[NUM_HEX_CORNERS];
+        int[] mCornersY = new int[NUM_HEX_CORNERS];
+        HexGrid mCellMetrics = new HexGrid(valueClustering);
+
+        boolean aux = false;
+
+        for (int i = 0; i < gridX; i++) {
+            for (int j = 0; j < gridY; j++) {
+                mCellMetrics.setCellIndex(i, j);
+                mCellMetrics.computeCorners(mCornersX, mCornersY);
+                Polygon p = new Polygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
+                if (p.contains(x1, y1)) {
+                    neuronioX = i;
+                    neuronioY = j;
+                    click = true;
+                    aux = true;
+                    textNeuronio1.setText("");
+                    textNeuronio1.append("Neurônio: " + i + " - " + j);
+                    textNeuronio1.append("\nPesos:\n");
+                    for (int k = 0; k < rede.getNeuronio(i, j).getNumPesos(); k++) {
+                        textNeuronio1.append(String.valueOf("[" + rede.getNeuronio(i, j).getPesos().get(k)) + "] ");
+                    }
+                    textNeuronio1.append("\nPadrões Carregados:\n[ ");
+                    for (int k = 0; k < rede.getNeuronio(i, j).getPadroes().size(); k++) {
+                        textNeuronio1.append(String.valueOf(rede.getNeuronio(i, j).getPadroes().get(k).getNumero()) + " ");
+                    }
+                    textNeuronio1.append("]");
+                }
+            }
+        }
+
+        if (!aux) {
+            neuronioX = -1;
+            neuronioY = -1;
+        }
+        repaint();
+    }//GEN-LAST:event_panelDensidade1MouseReleased
+
+    private void panelDensidade1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDensidade1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelDensidade1MouseClicked
+
+    private void panelDensidade1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelDensidade1ComponentResized
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelDensidade1ComponentResized
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu config;
     private javax.swing.JCheckBoxMenuItem exibirEixosSom;
@@ -1120,6 +1259,7 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private static javax.swing.JComboBox jComboBoxEixoY;
     private static javax.swing.JComboBox jComboBoxEixoZ;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1145,20 +1285,25 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
     private static javax.swing.JLabel labelStatus;
     private static javax.swing.JPanel panel2D;
     private static javax.swing.JPanel panel3D;
     private static javax.swing.JPanel panelDensidade;
+    private static javax.swing.JPanel panelDensidade1;
     private static javax.swing.JPanel panelFundoSom;
     private static javax.swing.JPanel panelSOM;
+    private javax.swing.JSlider sliderClustering;
     private javax.swing.JSlider sliderDensidade;
     private javax.swing.JSlider sliderU2D;
     private javax.swing.JSlider sliderU3D;
     private javax.swing.JSlider sliderVelocidade;
     private static javax.swing.JProgressBar statusProgesso;
     private javax.swing.JTextArea textNeuronio;
+    private javax.swing.JTextArea textNeuronio1;
     // End of variables declaration//GEN-END:variables
 
     public static void som() {
@@ -1578,4 +1723,22 @@ public final class FrameSomVisualization extends javax.swing.JFrame {
     public static ArrayList<Point> getEixos() {
         return eixos;
     }
+
+    public static ArrayList<Cluster> getClusters() {
+        return clusters;
+    }
+
+    public static void setClusters(ArrayList<Cluster> clusters) {
+        FrameSomVisualization.clusters = clusters;
+        INSTANCE.repaint();
+    }
+
+    public static int getValueClustering() {
+        return valueClustering;
+    }
+
+    public static void setValueClustering(int valueClustering) {
+        FrameSomVisualization.valueClustering = valueClustering;
+    }
+    
 }

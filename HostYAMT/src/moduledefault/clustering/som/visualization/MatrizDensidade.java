@@ -52,18 +52,18 @@ public class MatrizDensidade extends javax.swing.JPanel {
                     mCellMetrics.computeCorners(mCornersX, mCornersY);
                     if (!FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().isEmpty()) {
                         g.setColor(cNeuronio);
-                        g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                        g.fillPolygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                         if (exibePadroes) {
                             g.setColor(Color.WHITE);
-                            g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", enumera(mCornersY, mCornersX).x, enumera(mCornersY, mCornersX).y);
+                            g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", center(mCornersX, mCornersY).x, center(mCornersX, mCornersY).y);
                         }
                     } else {
                         g.setColor(sNeuronio);
-                        g.fillPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                        g.fillPolygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                     }
                     g.setColor(Color.BLACK);
-                    g.drawPolygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
-                    Polygon p = new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                    g.drawPolygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
+                    Polygon p = new Polygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                     poligonos[i][j] = p;
                 }
             }
@@ -74,13 +74,13 @@ public class MatrizDensidade extends javax.swing.JPanel {
                         if ((FrameSomVisualization.getNeuronioX() == i) && (FrameSomVisualization.getNeuronioY() == j)) {
                             mCellMetrics.setCellIndex(i, j);
                             mCellMetrics.computeCorners(mCornersX, mCornersY);
-                            Polygon p = new Polygon(mCornersY, mCornersX, NUM_HEX_CORNERS);
+                            Polygon p = new Polygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                             g.setColor(Color.red);
                             g.fillPolygon(p);
                             g.setColor(Color.WHITE);
                             g.drawPolygon(p);
                             g.setColor(Color.YELLOW);
-                            g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", enumera(mCornersY, mCornersX).x, enumera(mCornersY, mCornersX).y);
+                            g.drawString(FrameSomVisualization.getRede().getNeuronio(i, j).getPadroes().size() + "", center(mCornersX, mCornersY).x, center(mCornersX, mCornersY).y);
                         }
                     }
                 }
@@ -134,7 +134,7 @@ public class MatrizDensidade extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    private Point enumera(int[] mX, int[] mY) {
+    private Point center(int[] mX, int[] mY) {
         int x = 0;
         int y = 0;
         for (int i = 0; i < mX.length; i++) {
@@ -143,8 +143,6 @@ public class MatrizDensidade extends javax.swing.JPanel {
         }
         x = (int) x / mX.length;
         y = (int) y / mX.length;
-
         return new Point(x, y);
-
     }
 }

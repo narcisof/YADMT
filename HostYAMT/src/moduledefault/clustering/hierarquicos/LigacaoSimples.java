@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.CorrelacaoKendallTau;
 import moduledefault.clustering.distancias.CorrelacaoPearson;
-import moduledefault.clustering.distancias.CorrelacaoSpearman;
 import moduledefault.clustering.distancias.Cosseno;
 import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
@@ -54,7 +52,7 @@ public class LigacaoSimples {
         int pad1 = 0, pad2 = 0, q = 1;
         int cont = 0, para = 0;
         /////////////////
-        for (int y = 0; y < numeroPadroes - 1; y++) {
+        for (int y = 0; y < numeroPadroes - 1; y++){
             cont = 0;
             min = 1000000;
             d = 0;
@@ -108,18 +106,10 @@ public class LigacaoSimples {
             }
             ++q;
         }
-
-        System.out.println("Matriz Dendograma:");
-        for (int i = 0; i < matrizDendograma.length; i++) {
-            for (int j = 0; j < matrizDendograma[0].length; j++) {
-                System.out.print(" " + matrizDendograma[i][j]);
-            }
-            System.out.println("");
-        }
-        System.out.println("\n");
+       
     }
-
-    public void clustering(int grupos) {
+    
+  public void clustering(int grupos) {
         int lineCluster = numeroPadroes - grupos;
         ArrayList<Integer> g = new ArrayList<>();
         for (int i = 0; i < numeroPadroes; i++) {
@@ -132,7 +122,7 @@ public class LigacaoSimples {
 
         for (int i = 0; i < g.size(); i++) {
             Cluster c = new Cluster();
-            c.setNomeGrupo("Cluster_" + (i + 1));
+            c.setNomeGrupo("" + (i + 1));
             for (int j = 0; j < numeroPadroes; j++) {
                 if (matrizDendograma[lineCluster][j] == g.get(i)) {
                     c.addPadrao(padroes.get(j));
@@ -163,7 +153,7 @@ public class LigacaoSimples {
                     }
                 }
                 break;
-            case 4:
+            case 3:
                 CorrelacaoPearson pea = new CorrelacaoPearson();
                 matrizDistancia = new double[padroes.size()][padroes.size()];
                 for (int i = 0; i < padroes.size(); i++) {
@@ -172,7 +162,7 @@ public class LigacaoSimples {
                     }
                 }
                 break;
-            case 6:
+            case 4:
                 Cosseno cos = new Cosseno();
                 matrizDistancia = new double[padroes.size()][padroes.size()];
                 for (int i = 0; i < padroes.size(); i++) {
@@ -181,7 +171,7 @@ public class LigacaoSimples {
                     }
                 }
                 break;
-            case 7:
+            case 5:
                 DistanciaEuclidiana eu = new DistanciaEuclidiana();
                 matrizDistancia = new double[padroes.size()][padroes.size()];
                 for (int i = 0; i < padroes.size(); i++) {
@@ -190,30 +180,12 @@ public class LigacaoSimples {
                     }
                 }
                 break;
-            case 8:
+            case 6:
                 Mahalanobis ma = new Mahalanobis();
                 matrizDistancia = new double[padroes.size()][padroes.size()];
                 for (int i = 0; i < padroes.size(); i++) {
                     for (int j = 0; j < padroes.size(); j++) {
                         matrizDistancia[i][j] = ma.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
-                    }
-                }
-                break;
-            case 3:
-                CorrelacaoKendallTau ck = new CorrelacaoKendallTau();
-                matrizDistancia = new double[padroes.size()][padroes.size()];
-                for (int i = 0; i < padroes.size(); i++) {
-                    for (int j = 0; j < padroes.size(); j++) {
-                        matrizDistancia[i][j] = ck.rankKendallTauBeta(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
-                    }
-                }
-                break;
-            case 5:
-                CorrelacaoSpearman cs = new CorrelacaoSpearman();
-                matrizDistancia = new double[padroes.size()][padroes.size()];
-                for (int i = 0; i < padroes.size(); i++) {
-                    for (int j = 0; j < padroes.size(); j++) {
-                        matrizDistancia[i][j] = cs.spearman(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
                     }
                 }
                 break;

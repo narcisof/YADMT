@@ -7,7 +7,7 @@ package moduledefault.clustering.som;
 import java.awt.Polygon;
 import moduledefault.clustering.som.visualization.FrameSomVisualization;
 import moduledefault.clustering.som.visualization.HexGrid;
-import moduledefault.clustering.som.visualization.MatrizU2D;
+import moduledefault.clustering.view.jpanel.PanelSOM;
 
 /**
  *
@@ -24,12 +24,7 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
     public MarcadoresWaterShed() {
         initComponents();
         setLocationRelativeTo(null);
-        L = new int[FrameSomVisualization.getGridMUX()][FrameSomVisualization.getGridMUY()];
-        for (int i = 0; i < L.length; i++) {
-            for (int j = 0; j < L[0].length; j++) {
-                L[i][j] = 0;
-            }
-        }
+        iniciaMatriz();
     }
 
     public int[][] getL() {
@@ -45,8 +40,9 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new MatrizU2D();
+        jPanel1 = new PanelMarcadores();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -54,10 +50,17 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Segmentar");
+        jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Remover Marcadores");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -66,7 +69,9 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(628, Short.MAX_VALUE)
+                .addContainerGap(525, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -74,7 +79,9 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(471, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -93,6 +100,9 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
+        if(L == null){
+            iniciaMatriz();
+        }
         int x1 = evt.getX();
         int y1 = evt.getY();
 
@@ -109,12 +119,11 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
                 mCellMetrics.computeCorners(mCornersX, mCornersY);
                 Polygon p = new Polygon(mCornersX, mCornersY, NUM_HEX_CORNERS);
                 if (p.contains(x1, y1)) {
-                    if (MatrizU2D.getP().contains(p)) {
-                        MatrizU2D.getP().remove(p);
+                    if (PanelMarcadores.getP().contains(p)) {
+                        PanelMarcadores.getP().remove(p);
                     } else {
-                        MatrizU2D.addP(p);
-                        L[i][j] = cont;
-                        ++cont;
+                        PanelMarcadores.addP(p);
+                        L[i][j] = 1;
                     }
                 }
             }
@@ -123,12 +132,31 @@ public class MarcadoresWaterShed extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Watershed watershed = new Watershed();
-        watershed.watershed(FrameSomVisualization.getMatrizU(), L);
+        if(!PanelMarcadores.getP().isEmpty()){
+            PanelSOM.setMarcadores(L);
+        }        
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        PanelMarcadores.getP().clear();
+        L = null;
+        PanelSOM.setMarcadores(L);
+        repaint();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
+    public void iniciaMatriz(){
+        L = new int[FrameSomVisualization.getGridMUX()][FrameSomVisualization.getGridMUY()];
+        for (int i = 0; i < L.length; i++) {
+            for (int j = 0; j < L[0].length; j++) {
+                L[i][j] = 0;
+            }
+        }
+    }
 }

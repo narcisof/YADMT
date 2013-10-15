@@ -50,7 +50,6 @@ public class DistanciaEuclidiana {
 
     public double distancia(List<Double> vet1, List<Double> vet2) {
         double acumulador = 0;
-
         for (int w = 0; w < vet1.size(); w++) {
             acumulador += Math.pow(vet1.get(w) - vet2.get(w), 2);
         }
