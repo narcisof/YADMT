@@ -131,7 +131,6 @@ public class LigacaoMedia {
             for (int i = 0; i < numeroPadroes; i++) {
                 if ((matrizDendograma[q - 1][i] == g2)) {
                     matrizDendograma[q][i] = g1;
-
                 } else {
                     matrizDendograma[q][i] = matrizDendograma[q - 1][i];
                 }
@@ -139,22 +138,22 @@ public class LigacaoMedia {
             ////////////////////
             ++q;
         }
-//        System.out.println("Matriz Dendograma:");
-//        for (int i = 0; i < matrizDendograma.length; i++) {
-//            for (int j = 0; j < matrizDendograma[0].length; j++) {
-//                System.out.print(" "+matrizDendograma[i][j]);
-//            }
-//            System.out.println("");
-//        }
+        System.out.println("Matriz Dendograma:");
+        for (int i = 0; i < matrizDendograma.length; i++) {
+            for (int j = 0; j < matrizDendograma[0].length; j++) {
+                System.out.print(" "+matrizDendograma[i][j]);
+            }
+            System.out.println("");
+        }
     }
 
     public void clustering(int grupos) {
-//        for (int i = 0; i < matrizDendograma.length; i++) {
-//            for (int j = 0; j < matrizDendograma[0].length; j++) {
-//                System.out.print(" "+matrizDendograma[i][j]);
-//            }
-//            System.out.println("");
-//        }
+        for (int i = 0; i < matrizDendograma.length; i++) {
+            for (int j = 0; j < matrizDendograma[0].length; j++) {
+                System.out.print(" "+matrizDendograma[i][j]);
+            }
+            System.out.println("");
+        }
         
         int lineCluster = numeroPadroes - grupos;
         ArrayList<Integer> g = new ArrayList<>();
@@ -168,7 +167,7 @@ public class LigacaoMedia {
 
         for (int i = 0; i < g.size(); i++) {
             Cluster c = new Cluster();
-            c.setNomeGrupo("Cluster_" + (i + 1));
+            c.setNomeGrupo("" + (i + 1));
             for (int j = 0; j < numeroPadroes; j++) {
                 if (matrizDendograma[lineCluster][j] == g.get(i)) {
                     c.addPadrao(padroes.get(j));

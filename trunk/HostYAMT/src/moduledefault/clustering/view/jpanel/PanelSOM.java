@@ -19,10 +19,11 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.som.ClusteringSOM;
 import moduledefault.clustering.som.MarcadoresWaterShed;
 import moduledefault.clustering.som.OpMath;
+import moduledefault.clustering.som.PanelMarcadores;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.som.RedeSOM;
-import moduledefault.clustering.som.Watershed;
 import moduledefault.clustering.som.visualization.FrameSomVisualization;
+import moduledefault.clustering.view.frames.JFrameHierarquicos;
 import moduledefault.clustering.view.frames.JFrameKohonenConfig;
 import moduledefault.clustering.view.frames.JFrameKohonenConfigDensidade;
 
@@ -46,7 +47,7 @@ public final class PanelSOM extends javax.swing.JPanel {
     private float alfa;
     //
     private double[][] matrizU;
-    private static RedeSOM redeaux;
+    private static int[][] marcadores = null;
     //
     Thread t;
     private static int sleep = 0;
@@ -54,6 +55,8 @@ public final class PanelSOM extends javax.swing.JPanel {
     JFrameKohonenConfig frameKohonen;
     //
     JFrameKohonenConfigDensidade densidadeConfig = null;
+    JFrameHierarquicos hierarquicosConfig = null;
+    private static int numGrupos = 3;
     //
     ArrayList<String> resutados = new ArrayList<>();
     DefaultListModel listaResultados = new DefaultListModel();
@@ -62,6 +65,7 @@ public final class PanelSOM extends javax.swing.JPanel {
 
     public PanelSOM(interfaces.Base b, JFrameKohonenConfig fk) {
         initComponents();
+
         frameKohonen = fk;
         Base = b;
         carregaBase();
@@ -163,8 +167,7 @@ public final class PanelSOM extends javax.swing.JPanel {
             }
         });
 
-        boxAlgoritmo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Matriz de Densidade", "Ligação Simples", "Ligação Média", "Ligação Completa", "Método de Ward", "1D SOM", "SL-SOM" }));
-        boxAlgoritmo.setSelectedIndex(6);
+        boxAlgoritmo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1D SOM", "SL-SOM", "Matriz de Densidade", "Ligação Simples", "Ligação Média", "Ligação Completa", "Método de Ward", "Componentes Conectados" }));
         boxAlgoritmo.setToolTipText("");
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
@@ -173,12 +176,13 @@ public final class PanelSOM extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(jButtonAgrupamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(boxAlgoritmo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jButtonConfigDensidade, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 63, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(boxAlgoritmo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 137, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButtonConfigDensidade)
+                .addContainerGap())
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jButtonAgrupamento, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(12, 12, 12))
         );
         jPanel3Layout.setVerticalGroup(
@@ -255,7 +259,7 @@ public final class PanelSOM extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -316,60 +320,82 @@ public final class PanelSOM extends javax.swing.JPanel {
     private void jButtonConfigDensidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfigDensidadeActionPerformed
         switch (boxAlgoritmo.getSelectedIndex()) {
             case 0:
+                agrupamento = "1DSOM";
+                break;
+            case 1:
+                MarcadoresWaterShed frame = new MarcadoresWaterShed();
+                frame.setVisible(true);
+                agrupamento = "slsom";
+                break;
+            case 2:
                 agrupamento = "densidade";
                 if (densidadeConfig == null) {
                     densidadeConfig = new JFrameKohonenConfigDensidade();
                 }
                 densidadeConfig.setVisible(true);
                 break;
-            case 1:
-                agrupamento = "simples";
-                break;
-            case 2:
-                agrupamento = "media";
-                break;
             case 3:
-                agrupamento = "completa";
+                agrupamento = "simples";
+                if (hierarquicosConfig == null) {
+                    hierarquicosConfig = new JFrameHierarquicos();
+                }
+                hierarquicosConfig.setVisible(true);
                 break;
             case 4:
-                agrupamento = "ward";
+                agrupamento = "media";
+                if (hierarquicosConfig == null) {
+                    hierarquicosConfig = new JFrameHierarquicos();
+                }
+                hierarquicosConfig.setVisible(true);
                 break;
             case 5:
-                agrupamento = "1DSOM";
+                agrupamento = "completa";
+                if (hierarquicosConfig == null) {
+                    hierarquicosConfig = new JFrameHierarquicos();
+                }
+                hierarquicosConfig.setVisible(true);
                 break;
             case 6:
-                MarcadoresWaterShed frame = new MarcadoresWaterShed();
-                frame.setVisible(true);
-                agrupamento = "slsom";
+                agrupamento = "ward";
+                if (hierarquicosConfig == null) {
+                    hierarquicosConfig = new JFrameHierarquicos();
+                }
+                hierarquicosConfig.setVisible(true);
+            case 7:
+                agrupamento = "faino";
                 break;
         }
     }//GEN-LAST:event_jButtonConfigDensidadeActionPerformed
 
     private void jButtonAgrupamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgrupamentoActionPerformed
+        System.out.println(numGrupos);
         switch (boxAlgoritmo.getSelectedIndex()) {
             case 0:
+                agrupamento = "1DSOM";
+                break;
+            case 1:
+                agrupamento = "slsom";
+                break;
+            case 2:
                 agrupamento = "densidade";
                 if (densidadeConfig == null) {
                     densidadeConfig = new JFrameKohonenConfigDensidade();
                 }
                 break;
-            case 1:
+            case 3:
                 agrupamento = "simples";
                 break;
-            case 2:
+            case 4:
                 agrupamento = "media";
                 break;
-            case 3:
+            case 5:
                 agrupamento = "completa";
                 break;
-            case 4:
+            case 6:
                 agrupamento = "ward";
                 break;
-            case 5:
-                agrupamento = "1DSOM";
-                break;
-            case 6:
-                agrupamento = "slsom";
+            case 7:
+                agrupamento = "faino";
                 break;
         }
         clusterig();
@@ -418,6 +444,9 @@ public final class PanelSOM extends javax.swing.JPanel {
         FrameSomVisualization.getInstance().setLabel("Executando");
 
         FrameSomVisualization.getInstance().setRede(rede);
+
+        PanelMarcadores.getP().clear();
+
         t = new Thread() {
             @Override
             public void run() {
@@ -467,29 +496,31 @@ public final class PanelSOM extends javax.swing.JPanel {
                 jTextArea.append("\n================== Agrupamento 1-D SOM ==================\n");
                 break;
             case "simples":
-                clusters = cluster.hierarquicos("simples", 3);
+                clusters = cluster.hierarquicos("simples", numGrupos);
                 jTextArea.append("\n================== Agrupamento Ligação Simples ==================\n");
                 break;
             case "media":
-                clusters = cluster.hierarquicos("media", 3);
+                clusters = cluster.hierarquicos("media", numGrupos);
                 jTextArea.append("\n================== Agrupamento Ligação Média ==================\n");
                 break;
             case "completa":
-                clusters = cluster.hierarquicos("completa", 3);
+                clusters = cluster.hierarquicos("completa", numGrupos);
                 jTextArea.append("\n================== Agrupamento Ligação Completa ==================\n");
                 break;
             case "ward":
-                clusters = cluster.hierarquicos("ward", 3);
+                clusters = cluster.hierarquicos("ward", numGrupos);
                 jTextArea.append("\n================== Agrupamento Ligação Ward ==================\n");
                 break;
             case "slsom":
-//                MarcadoresWaterShed frame = new MarcadoresWaterShed();
-//                frame.setVisible(true);
-                clusters = cluster.clusterungSLSOM(matrizU, null);
+                clusters = cluster.clusterungSLSOM(matrizU, marcadores);
                 jTextArea.append("\n================== Agrupamento SL-SOM ==================\n");
                 break;
+            case "faino":
+                clusters = cluster.faino();
+                jTextArea.append("\n================== Agrupamento Componentes Conectados ==================\n");
+                break;
         }
-
+        FrameSomVisualization.getInstance().setClusters(clusters);
         setTextClustering(clusters, agrupamento);
     }
 
@@ -543,6 +574,8 @@ public final class PanelSOM extends javax.swing.JPanel {
         jTextArea.append("Grupos Formados:\t" + clusters.size() + "\n");
         jTextArea.append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
         jTextArea.append("Medida F:\t\t" + avaliacao.getMedidaF() + "\n");
+        jTextArea.append("Medida R:\t\t" + avaliacao.getIndiceAleatorio() + "\n");
+        jTextArea.append("Índice Dunn:\t\t" + avaliacao.getIndiceDunn() + "\n");
 
         float acertos = avaliacao.getAcerto();
         jTextArea.append("Porcentagem de Acerto:\t" + acertos + "%\n");
@@ -580,6 +613,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         date = new Date();
         listaResultados.addElement(formatter.format(date) + " SOM - " + metodo);
         jListResultados.setModel(listaResultados);
+
     }
 
     public void atualizaStatus(final int i) {
@@ -662,5 +696,17 @@ public final class PanelSOM extends javax.swing.JPanel {
 
     public static void setSleep(int sleep) {
         PanelSOM.sleep = sleep;
+    }
+
+    public static int[][] getMarcadores() {
+        return marcadores;
+    }
+
+    public static void setMarcadores(int[][] marcadores) {
+        PanelSOM.marcadores = marcadores;
+    }
+
+    public static void setNumGrupos(int numGrupos) {
+        PanelSOM.numGrupos = numGrupos;
     }
 }

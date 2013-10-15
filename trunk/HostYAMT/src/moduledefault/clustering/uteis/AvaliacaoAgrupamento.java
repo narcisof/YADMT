@@ -16,6 +16,7 @@ public class AvaliacaoAgrupamento {
 
     private List<String> classes;
     private ArrayList<Cluster> clusters;
+    private ArrayList<Double> centroides;
     private int tamanhoBase;
     private Base base;
     //
@@ -36,61 +37,73 @@ public class AvaliacaoAgrupamento {
         matrizConfusao();
         acerto();
         medidaF();
+        indiceAleatorio();
         dunn();
     }
 
-    void indiceAleatorio() {
-//        int[] classepad = new int[tamanhoBase];
-//        int z = 0;
-//        for (int i = 0; i < tamanhoBase; i++) {
-//            classepad[i] = 0;
-//        }
-//        int col2 = 0, col1 = 0;
-//
-//        col1 = clusters.get(0).getGrupo().get(0).getAtributos().size();
-//
-//        for (int i = 0; i < tamanhoBase; i++) {
-//            for (int j = 0; j < col1; j++) {
-//                if (j == 0) {
-//                    classepad[i] = base.getDataSet().get(i).getAtributos().get(j).intValue();
-//                }
-//            }
-//        }
-//        int[][] newvet = new int[2][tamanhoBase]; //
-//        float a = 0, b = 0, c = 0, d = 0;
-//
-//
-//        for (int i = 0; i < tamanhoBase; i++) {
-//            for (int j = 0; j < tamanhoBase; j++) {
-//                if (mpos[0][j] == (i + 1)) {
-//                    newvet[0][i] = mpos[0][j];
-//                    newvet[1][i] = mpos[1][j];
-//                }
-//            }
-//        }
-//
-//        for (int i = 0; i < tamanhoBase; i++) {
-//            for (int j = 0; j < tamanhoBase; j++) {
-//                if ((i != j) && (j > i)) {
-//                    if ((classepad[i] == classepad[j]) && (newvet[1][i] == newvet[1][j])) {
-//                        ++a;
-//                    }
-//                    if ((classepad[i] == classepad[j]) && (newvet[1][i] != newvet[1][j])) {
-//                        ++b;
-//                    }
-//                    if ((classepad[i] != classepad[j]) && (newvet[1][i] == newvet[1][j])) {
-//                        ++c;
-//                    }
-//                    if ((classepad[i] != classepad[j]) && (newvet[1][i] != newvet[1][j])) {
-//                        ++d;
-//                    }
-//                }
-//            }
-//        }
-//        indiceAleatorio = (a + d) / (a + b + c + d);
+    public void centroids(){
+        centroides = new ArrayList<>();
+        
+    }
+    public final void indiceAleatorio() {
+        String[] classepad = new String[tamanhoBase];
+        String[] agrupados = new String[tamanhoBase];
+        ArrayList<Integer> pos = new ArrayList<>();
+
+        for (int j = 0; j < clusters.size(); j++) {
+            clusters.get(j).setNomeGrupo("-1");
+        }
+
+        for (int i = 0; i < mconfusao.length; i++) {
+            for (int j = 0; j < mconfusao[0].length; j++) {
+                if (i == j) {
+                    for (int k = 0; k < clusters.size(); k++) {
+                        if (clusters.get(k).getNumClasse(classes.get(i)) == mconfusao[i][j]) {
+                            clusters.get(k).setNomeGrupo(classes.get(i));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                classepad[count] = clusters.get(i).getGrupo().get(j).getClasse();
+                agrupados[count] = clusters.get(i).getNomeGrupo();
+                ++count;
+                if (count >= tamanhoBase) { //Parada por causa do watershed - ARRUMAR
+                    break;
+                }
+            }
+            if (count >= tamanhoBase) {//Parada por causa do watershed - ARRUMAR
+                break;
+            }
+        }
+
+        float a = 0, b = 0, c = 0, d = 0;
+
+        for (int i = 0; i < tamanhoBase; i++) {
+            for (int j = i + 1; j < tamanhoBase; j++) {
+                if ((classepad[i].equals(classepad[j])) && (agrupados[i].equals(agrupados[j]))) {
+                    ++a;
+                }
+                if ((classepad[i].equals(classepad[j])) && (!agrupados[i].equals(agrupados[j]))) {
+                    ++b;
+                }
+                if ((!classepad[i].equals(classepad[j])) && (agrupados[i].equals(agrupados[j]))) {
+                    ++c;
+                }
+                if ((!classepad[i].equals(classepad[j])) && (!agrupados[i].equals(agrupados[j]))) {
+                    ++d;
+                }
+            }
+        }
+        indiceAleatorio = (a + d) / (a + b + c + d);
     }
 
-    void dunn() {
+    public final void dunn() {
         float centro1 = 0, qdesvio1 = 0, diam1 = 0;
         float centro2 = 0, qdesvio2 = 0, diam2 = 0;
         float mdistancia = 0, fdistancia = 0, diamfinal = 0;
@@ -102,7 +115,7 @@ public class AvaliacaoAgrupamento {
             for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
                 centro1 += clusters.get(i).getGrupo().get(j).getNumero();
             }
-//            System.out.println("qpadrao1 = " + qpadrao1);
+            //System.out.println("qpadrao1 = " + qpadrao1);
             centro1 = centro1 / qpadrao1;//calcula o centroide/média
             for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
                 qdesvio1 = clusters.get(i).getGrupo().get(j).getNumero() - centro1;
@@ -116,7 +129,7 @@ public class AvaliacaoAgrupamento {
             for (int x = i + 1; x < clusters.size(); x++) {
                 qpadrao2 = clusters.get(x).getGrupo().size();
 
-//                System.out.println("qpadrao2 = " + qpadrao2);
+                //System.out.println("qpadrao2 = " + qpadrao2);
                 for (int j = 0; j < clusters.get(x).getGrupo().size(); j++) {
                     centro1 += clusters.get(x).getGrupo().get(j).getNumero();
                 }
@@ -367,5 +380,9 @@ public class AvaliacaoAgrupamento {
 
     public float getIndiceDunn() {
         return indiceDunn;
+    }
+
+    public float getIndiceAleatorio() {
+        return indiceAleatorio;
     }
 }

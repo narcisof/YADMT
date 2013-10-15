@@ -4,10 +4,7 @@
  */
 package moduledefault.clustering.hierarquicos.visualization;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

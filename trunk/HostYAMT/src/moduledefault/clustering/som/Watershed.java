@@ -17,7 +17,6 @@ public class Watershed {
     ArrayList<ArrayList<Elemento>> grupos;
 
     public Watershed() {
-        
     }
 
     public ArrayList<ArrayList<Elemento>> watershed(double[][] matrizU, int[][] Lentrada) {
@@ -47,9 +46,17 @@ public class Watershed {
             L = marcadores(matrizU); //imagem com os marcadores - Saida do algoritmo
         } else {
             L = new int[Lentrada.length][Lentrada[0].length];
-            for (int i = 0; i < Lentrada.length; i++) {
-                System.arraycopy(Lentrada[i], 0, L[i], 0, Lentrada[0].length);
+            ArrayList<ArrayList<Elemento>> marcadores = componentesList(Lentrada);
+            int cont = 1;
+            for (int i = 0; i < marcadores.size(); i++) {
+                for (int j = 0; j < marcadores.get(i).size(); j++) {
+                    L[marcadores.get(i).get(j).getI()][marcadores.get(i).get(j).getJ()] = cont;
+                }
+                ++cont;
             }
+//            for (int i = 0; i < Lentrada.length; i++) {
+//                System.arraycopy(Lentrada[i], 0, L[i], 0, Lentrada[0].length);
+//            }
         }
 
         int[][] ws = new int[largura][altura]; //linhas de watershed
@@ -101,14 +108,12 @@ public class Watershed {
             for (int j = 0; j < water[0].length; j++) {
                 if (ws[i][j] == 0) {
                     water[i][j] = 1;
-                }else{
+                } else {
                     water[i][j] = 0;
                 }
             }
         }
         ArrayList<ArrayList<Elemento>> result = componentesList(water);
-        FrameWatershed frame = new FrameWatershed(ws, result);
-        frame.setVisible(true);
         return result;
     }
 
@@ -201,7 +206,7 @@ public class Watershed {
         dilation(aux, 1);
         ArrayList<ArrayList<Elemento>> marcadores = componentesList(aux);
         int cont = 1;
-        
+
         for (int i = 0; i < marcadores.size(); i++) {
             for (int j = 0; j < marcadores.get(i).size(); j++) {
                 aux[marcadores.get(i).get(j).getI()][marcadores.get(i).get(j).getJ()] = cont;
@@ -257,10 +262,14 @@ public class Watershed {
                 }
                 if (matriz[i][j] != 0 && !contains(elementos, i, j)) {
                     elementos.add(new Elemento(i, j));
-                    ++cont;
-                    analise(elementos, matriz, cont);
+//                    ++cont;
+//                    analise(elementos, matriz, cont);
                 }
             }
+        }
+        if (cont + 1 < elementos.size()) {
+            ++cont;
+            analise(elementos, matriz, cont);
         }
     }
 
@@ -360,8 +369,8 @@ public class Watershed {
             }
         }
     }
-    
-     //TROCAR POR MERGE SORT
+
+    //TROCAR POR MERGE SORT
     public void SelectionSort(ArrayList<Pixel> pixel) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Pixel aux;
