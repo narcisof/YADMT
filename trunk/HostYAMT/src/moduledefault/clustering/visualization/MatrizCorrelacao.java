@@ -32,7 +32,7 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
 
         int x0 = 20;
         int y0 = 20;
-        int x1 = width - 100;
+        int x1 = width - 150;
         int y1 = height - 10;
         int meioX = (x1 - x0) / 2;
         int meioY = (y1 - y0) / 2;
@@ -149,19 +149,19 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createTitledBorder("Visualização"));
         setPreferredSize(new java.awt.Dimension(400, 300));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Mateus\\Dropbox\\TCC - Mateus\\Imagens\\escalarCerta.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/escalaFinal.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 299, Short.MAX_VALUE)
+                .addContainerGap(264, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -116,12 +116,13 @@ public class CoordenadasParalelasCirculares extends javax.swing.JPanel {
 
     private void iniciaVetorCores() {
         cores = new ArrayList<>();
-        cores.add(new Color(27, 235, 31));
-        cores.add(new Color(156, 22, 13));
-        cores.add(new Color(215, 186, 236));
-        cores.add(new Color(73, 69, 168));
-        cores.add(new Color(109, 114, 184));
-        cores.add(new Color(78, 223, 84));
+      
+        cores.add(Color.RED);
+        cores.add(Color.BLUE);
+        cores.add(Color.GREEN);
+        cores.add(Color.YELLOW);
+        cores.add(Color.ORANGE);
+        cores.add(Color.MAGENTA);
         cores.add(new Color(130, 232, 163));
         cores.add(new Color(213, 22, 183));
         cores.add(new Color(169, 180, 52));

@@ -4,6 +4,7 @@
  */
 package moduledefault.clustering.view.jpanel;
 
+import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -33,6 +34,7 @@ import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
 import moduledefault.clustering.visualization.TecnicasDispersao;
 import moduledefault.clustering.visualization.GraficoDispersaoSimulacao;
+import moduledefault.clustering.visualization.JDialogData;
 import view.jpanel.JPanelClustering;
 
 /**
@@ -46,6 +48,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
      */
     interfaces.Base base;
     static Base dados;
+    static Base dadosOriginal;
 
     public PanelFormigas(interfaces.Base b, JFrameFormigas j) {
         initComponents();
@@ -59,7 +62,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         listaText = new ArrayList<>();
         frameFormigas = j;
         this.objetoAtual = 0;
-        buttonVisualizacao.setEnabled(false);
+//        buttonVisualizacao.setEnabled(false);
+        jButton1.setEnabled(false);
     }
 
     public JFrameFormigas getFrameFormigas() {
@@ -159,6 +163,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         statusProgresso = new javax.swing.JProgressBar();
         jSlider1 = new javax.swing.JSlider();
+        jButton1 = new javax.swing.JButton();
 
         Panel_medidas1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Medidas"));
 
@@ -365,7 +370,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listResultados, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+            .addComponent(listResultados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,7 +402,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         fundoSimulacao.setLayout(fundoSimulacaoLayout);
         fundoSimulacaoLayout.setHorizontalGroup(
             fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
+            .addGap(0, 491, Short.MAX_VALUE)
         );
         fundoSimulacaoLayout.setVerticalGroup(
             fundoSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,7 +423,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 44, Short.MAX_VALUE))
+                .addGap(0, 84, Short.MAX_VALUE))
             .addComponent(jComboBoxDistancias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
@@ -427,7 +432,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Recuperação de Grupos"));
@@ -442,14 +447,14 @@ public final class PanelFormigas extends javax.swing.JPanel {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel2)
-                .addGap(0, 104, Short.MAX_VALUE))
-            .addComponent(jComboBoxMetodos, 0, 144, Short.MAX_VALUE)
+                .addGap(0, 144, Short.MAX_VALUE))
+            .addComponent(jComboBoxMetodos, 0, 184, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jComboBoxMetodos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -468,7 +473,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(statusProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
             .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
@@ -480,6 +485,13 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jButton1.setText("Visualizar Dados");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -487,12 +499,13 @@ public final class PanelFormigas extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Executar_formigas, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Executar_formigas, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                     .addComponent(buttonVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
@@ -501,21 +514,23 @@ public final class PanelFormigas extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(4, 4, 4)
                         .addComponent(Executar_formigas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonVisualizacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -667,6 +682,34 @@ public final class PanelFormigas extends javax.swing.JPanel {
             }
         }.start();
     }//GEN-LAST:event_jSlider1StateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String[] atributos = new String[dadosOriginal.getAtributos().size() + 2];
+        atributos[0] = "ID";
+        for (int j = 0; j < dadosOriginal.getAtributos().size(); j++) {
+            atributos[j + 1] = dadosOriginal.getAtributos().get(j);
+        }
+        atributos[atributos.length - 1] = "Cluster_ID";
+
+        Object[][] data = new Object[dadosOriginal.getDataSet().size()][dadosOriginal.getDataSet().get(0).getAtributos().size() + 3];
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][0] = dadosOriginal.getDataSet().get(i).getNumero();
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            for (int j = 0; j < dadosOriginal.getDataSet().get(0).getAtributos().size(); j++) {
+                data[i][j + 1] = dadosOriginal.getDataSet().get(i).getAtributos().get(j);
+            }
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][dadosOriginal.getDataSet().get(0).getAtributos().size() + 1] = dadosOriginal.getDataSet().get(i).getClasse();
+        }
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                data[clusters.get(i).getGrupo().get(j).getNumero()][data[0].length - 1] = clusters.get(i).getNomeGrupo();
+            }
+        }
+        new JDialogData((Frame) frameFormigas, true, data, atributos).setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Correlacao1;
     private javax.swing.JRadioButton Cosseno1;
@@ -680,6 +723,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     private javax.swing.JFrame fMetodos;
     private static javax.swing.JPanel fundoSimulacao;
     private javax.swing.JTextField iteracoes;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private static javax.swing.JComboBox jComboBoxDistancias;
@@ -824,7 +868,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         getBuffer().append("\n\tÍndice R: ALEATÓRIO");
         getBuffer().append("\n\tÍndice F: " + String.valueOf(avaliacao.getMedidaF()));
         getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
-        getBuffer().append("\n\tÍndice Idunn: "+String.valueOf(avaliacao.getIndiceDunn()));
+        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
         getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
         getBuffer().append("\n\nGrupos Formados:\n\n");
 //        for (int j = listaGrupos.get(getObjetoAtual())[0].length - 1; j >= 1; j--) {
@@ -846,7 +890,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         String padrao;
         for (int i = 0; i < clusters.size(); i++) {
 //            clusters.get(i).setNomeGrupo(dados.getClasses());
-            clusters.get(i).setNomeGrupo("Cluster_"+(i+1));
+            clusters.get(i).setNomeGrupo("Cluster_" + (i + 1));
 //            System.out.println("Grupo = " + (i + 1) + " clusters.getNome() = " + clusters.get(i).getNomeGrupo());
             getBuffer().append("Grupo " + (i + 1) + ":");
             grupo = clusters.get(i).getSortGrupo();
@@ -869,7 +913,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 getBuffer().append(padrao);
             }
             getBuffer().append("\n");
-            getBuffer().append("\n\nCentróide: "+avaliacao.centroide(clusters.get(i)));
+            getBuffer().append("\n\nCentróide: " + avaliacao.centroide(clusters.get(i)));
             getBuffer().append("\n\n-------------------------------------------------------\n\n");
 
         }
@@ -1022,6 +1066,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         dados.setClasses((List) base.getClasses());
         dados.setNome((String) base.getName());
         dados.setDimensaoMatriz();
+        dadosOriginal = dados;
 
 //        imprimiBase();
         TecnicasDispersao.getInstance().setSetou(false);
@@ -1063,7 +1108,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
 //            System.out.println("");
 //        }
 //    }
-
     private void formaClusters(int[][] mpos, int numGrupos) {
         clusters = new ArrayList<Cluster>();
         for (int i = 0; i < numGrupos; i++) {
