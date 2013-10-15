@@ -327,22 +327,28 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             default:
                 break;
         }
+        System.out.println("indice = " + jComboBoxMetodos.getSelectedIndex());
         switch (this.jComboBoxMetodos.getSelectedIndex()) {
             case 0:
                 JOptionPane.showMessageDialog(null, "Selecione um Método.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 return;
             case 1:
-                LigacaoCompleta LC = new LigacaoCompleta(dados.getDataSet(), 5);
+                LigacaoCompleta LC = new LigacaoCompleta(dados.getDataSet(), teste_distancia);
                 LC.ligacaoCompleta();
                 LC.clustering(frameHierarquicos.getNumK());
                 clusters = LC.getClusters();
                 int[][] matrizDendograma = LC.getMatrizDendograma();
+                dendograma = new BinTree();
+                dendograma.createTree(matrizDendograma);
+                break;
             case 2:
                 LigacaoMedia LM = new LigacaoMedia(dados.getDataSet(), teste_distancia);
                 LM.ligacaoMedia();
                 LM.clustering(frameHierarquicos.getNumK()); //Definir numero de grupos
                 clusters = LM.getClusters();
                 matrizDendograma = LM.getMatrizDendograma();
+                dendograma = new BinTree();
+                dendograma.createTree(matrizDendograma);
                 break;
             case 3:
                 LigacaoSimples LS = new LigacaoSimples(dados.getDataSet(), teste_distancia);
@@ -354,11 +360,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 dendograma.createTree(matrizDendograma);
                 break;
             case 4:
-                  Ward ward = new Ward(dados.getDataSet());
-                  ward.ward();
-                  ward.clustering(frameHierarquicos.getNumK());
-                  clusters = ward.getClusters();
-                  matrizDendograma = ward.getMatrizDendograma();
+                Ward ward = new Ward(dados.getDataSet());
+                ward.ward();
+                ward.clustering(frameHierarquicos.getNumK());
+                clusters = ward.getClusters();
+                matrizDendograma = ward.getMatrizDendograma();
+                dendograma = new BinTree();
+                dendograma.createTree(matrizDendograma);
                 break;
             default:
                 break;
@@ -398,12 +406,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             //Medidas de avaliaxao do agrupamento
             jTextArea1.append("\n================ Avaliação do Agrupamento ===============\n");
             jTextArea1.append("Grupos Formados:\t" + clusters.size() + "\n");
-            jTextArea1.append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
             jTextArea1.append("Medida F:\t\t" + avaliacao.getMedidaF() + "\n");
             jTextArea1.append("Medida R:\t\t" + avaliacao.getIndiceAleatorio() + "\n");
-
             float acertos = avaliacao.getAcerto();
             jTextArea1.append("Porcentagem de Acerto:\t" + acertos + "%\n");
+            jTextArea1.append("Medida Idunn:\t" + avaliacao.getIndiceDunn() + "\n");
+            jTextArea1.append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
+
 
             jTextArea1.append("\nMatriz Confusão:\n");
             int[][] mconfusao = avaliacao.getMconfusao();

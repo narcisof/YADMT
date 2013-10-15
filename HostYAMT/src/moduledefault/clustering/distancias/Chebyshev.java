@@ -26,7 +26,7 @@ public class Chebyshev {
     }
 
     public Chebyshev() {
-        
+         System.out.println("Cheb");
     }
 
     public double distancia(List<Double> vet1, List<Double> vet2) {
