@@ -2,6 +2,14 @@ package moduledefault.clustering.hierarquicos;
 
 import java.util.ArrayList;
 import java.util.List;
+import moduledefault.clustering.distancias.Chebyshev;
+import moduledefault.clustering.distancias.CityBlock;
+import moduledefault.clustering.distancias.CorrelacaoKendallTau;
+import moduledefault.clustering.distancias.CorrelacaoPearson;
+import moduledefault.clustering.distancias.CorrelacaoSpearman;
+import moduledefault.clustering.distancias.Cosseno;
+import moduledefault.clustering.distancias.DistanciaEuclidiana;
+import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Padrao;
 
@@ -191,6 +199,83 @@ public class Ward {
         }
 
     }
+//       public void calcMatrizDistancia() {
+//        switch (opcaoDistancia) {
+//            case 1:
+//                Chebyshev ch = new Chebyshev();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = ch.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 2:
+//                CityBlock ci = new CityBlock();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = ci.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 4:
+//                CorrelacaoPearson pea = new CorrelacaoPearson();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = pea.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 6:
+//                Cosseno cos = new Cosseno();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = cos.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 7:
+//                DistanciaEuclidiana eu = new DistanciaEuclidiana();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = eu.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 8:
+//                Mahalanobis ma = new Mahalanobis();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = ma.distancia(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 3:
+//                CorrelacaoKendallTau kt = new CorrelacaoKendallTau();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = kt.kendallTauBeta(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//            case 5:
+//                CorrelacaoSpearman sp = new CorrelacaoSpearman();
+//                matrizDistancia = new double[padroes.size()][padroes.size()];
+//                for (int i = 0; i < padroes.size(); i++) {
+//                    for (int j = 0; j < padroes.size(); j++) {
+//                        matrizDistancia[i][j] = sp.spearman(padroes.get(i).getAtributos(), padroes.get(j).getAtributos());
+//                    }
+//                }
+//                break;
+//        }
+//    }
+
 
     public int[][] getMatrizDendograma() {
         return matrizDendograma;

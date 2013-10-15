@@ -480,9 +480,10 @@ public class PanelKmeans extends javax.swing.JPanel {
             default:
                 break;
         }
+        getBuffer().append("\n");
         avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
-        getBuffer().append("\n\tÍndice R: ALEATÓRIO");
-        getBuffer().append("\n\tÍndice F: " + String.valueOf(avaliacao.getMedidaF()));
+        getBuffer().append("\n\tMedida R: "+avaliacao.getIndiceAleatorio());
+        getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacao.getMedidaF()));
         getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
         getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
         getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));

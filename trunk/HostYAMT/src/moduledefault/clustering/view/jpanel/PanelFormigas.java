@@ -535,6 +535,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Executar_formigasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Executar_formigasActionPerformed
+        long inicial = System.currentTimeMillis();
         this.Executar_formigas.setEnabled(false);
 
         switch (this.jComboBoxDistancias.getSelectedIndex()) {
@@ -627,7 +628,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         }.start();//inicia a thread.
         numeroExecucoes++;
 
-
+        long tFinal = System.currentTimeMillis();
+        System.out.println("Tempo final = " + (tFinal - inicial));
     }//GEN-LAST:event_Executar_formigasActionPerformed
 
     private void Executar_testeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Executar_testeActionPerformed
@@ -865,8 +867,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
         getBuffer().append("\n\n\n==================== " + m + " ====================");
         getBuffer().append("\n\tGrupos Formados: " + String.valueOf(clusters.size()));
-        getBuffer().append("\n\tÍndice R: ALEATÓRIO");
-        getBuffer().append("\n\tÍndice F: " + String.valueOf(avaliacao.getMedidaF()));
+        getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacao.getMedidaF()));
+        getBuffer().append("\n\tMedida R: "+String.valueOf(avaliacao.getIndiceAleatorio()));
         getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
         getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
         getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
