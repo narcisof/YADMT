@@ -4,22 +4,18 @@
  */
 package moduledefault.clustering.view.jpanel;
 
+import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Padrao;
@@ -27,6 +23,7 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.view.frames.JFrameHistoricoKmeans;
 import moduledefault.clustering.view.frames.JFrameKmeans;
+import moduledefault.clustering.visualization.JDialogData;
 import moduledefault.clustering.visualization.TecnicasDispersao;
 
 /**
@@ -60,6 +57,9 @@ public class PanelKmeans extends javax.swing.JPanel {
         frameKmeans = k;
         listaObjetos = new ArrayList<>();
         listaBuffer = new ArrayList<>();
+//        visualizacao.setEnabled(false);
+//        jButton2.setEnabled(false);
+//        jButton1.setEnabled(false);
     }
 
     public void setNomeClasses(String[] a) {
@@ -101,6 +101,7 @@ public class PanelKmeans extends javax.swing.JPanel {
         visualizacao = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
+        jButton2 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
 
@@ -181,6 +182,13 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jButton2.setText("Visualizar Dados");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -192,7 +200,8 @@ public class PanelKmeans extends javax.swing.JPanel {
                     .addComponent(jButtonExecuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                     .addComponent(visualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -208,9 +217,11 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addGap(11, 11, 11)
                 .addComponent(visualizacao)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addGap(12, 12, 12)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3)
@@ -346,8 +357,36 @@ public class PanelKmeans extends javax.swing.JPanel {
     private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
     }//GEN-LAST:event_listResultadosActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String[] atributos = new String[dadosOriginal.getAtributos().size() + 2];
+        atributos[0] = "ID";
+        for (int j = 0; j < dadosOriginal.getAtributos().size(); j++) {
+            atributos[j + 1] = dadosOriginal.getAtributos().get(j);
+        }
+        atributos[atributos.length - 1] = "Cluster_ID";
+
+        Object[][] data = new Object[dadosOriginal.getDataSet().size()][dadosOriginal.getDataSet().get(0).getAtributos().size() + 3];
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][0] = dadosOriginal.getDataSet().get(i).getNumero();
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            for (int j = 0; j < dadosOriginal.getDataSet().get(0).getAtributos().size(); j++) {
+                data[i][j + 1] = dadosOriginal.getDataSet().get(i).getAtributos().get(j);
+            }
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][dadosOriginal.getDataSet().get(0).getAtributos().size() + 1] = dadosOriginal.getDataSet().get(i).getClasse();
+        }
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                data[clusters.get(i).getGrupo().get(j).getNumero()][data[0].length - 1] = clusters.get(i).getNomeGrupo();
+            }
+        }
+        new JDialogData((Frame) frameKmeans, true, data, atributos).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonExecuta;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private javax.swing.JLabel jLabel1;
@@ -388,7 +427,7 @@ public class PanelKmeans extends javax.swing.JPanel {
         dados.setClasses((List) base.getClasses());
         dados.setNome((String) base.getName());
         dados.setDimensaoMatriz();
-        dadosOriginal = dados;
+        dadosOriginal = dados.copy();
         Operações_Mat m = new Operações_Mat();
         m.Padronização(dados);
 
@@ -592,3 +631,4 @@ public class PanelKmeans extends javax.swing.JPanel {
 //        frameTabela.pack();
 //        frameTabela.setLocationRelativeTo(null);
 //        frameTabela.setVisible(true);
+

@@ -4,6 +4,7 @@
  */
 package moduledefault.clustering.view.jpanel;
 
+import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.view.frames.JFrameHierarquicos;
+import moduledefault.clustering.visualization.JDialogData;
 
 /**
  *
@@ -47,8 +49,10 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     ArrayList<StringBuffer> listaText;
     interfaces.Base base;
     Base dados;
+    Base dadosOriginal;
     JFrameHierarquicos frameHierarquicos;
     BinTree dendograma = new BinTree();
+    ArrayList<Cluster> clusters = null;
 
     public PanelHierarquicos(interfaces.Base b, JFrameHierarquicos f) {
         initComponents();
@@ -58,6 +62,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         startMatrizDados();
         buttonVisualizacao.setEnabled(false);
         jButton1.setEnabled(false);
+        jButton2.setEnabled(false);
     }
 
     public int[][] getMatrizGrupos() {
@@ -114,6 +119,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
 
@@ -226,6 +232,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             }
         });
 
+        jButton2.setText("Visualizar Dados");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,7 +251,8 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
                 .addContainerGap())
@@ -249,6 +263,9 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,11 +275,11 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                         .addComponent(buttonVisualizacao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 61, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+                        .addGap(28, 28, 28))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -311,7 +328,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 break;
         }
 
-        ArrayList<Cluster> clusters = null;
+
         switch (this.jComboBoxMetodos.getSelectedIndex()) {
             case 0:
                 JOptionPane.showMessageDialog(null, "Selecione um Método.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -474,10 +491,39 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         frame1.setLocationRelativeTo(null);
         frame1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String[] atributos = new String[dadosOriginal.getAtributos().size() + 2];
+        atributos[0] = "ID";
+        for (int j = 0; j < dadosOriginal.getAtributos().size(); j++) {
+            atributos[j + 1] = dadosOriginal.getAtributos().get(j);
+        }
+        atributos[atributos.length - 1] = "Cluster_ID";
+
+        Object[][] data = new Object[dadosOriginal.getDataSet().size()][dadosOriginal.getDataSet().get(0).getAtributos().size() + 3];
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][0] = dadosOriginal.getDataSet().get(i).getNumero();
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            for (int j = 0; j < dadosOriginal.getDataSet().get(0).getAtributos().size(); j++) {
+                data[i][j + 1] = dadosOriginal.getDataSet().get(i).getAtributos().get(j);
+            }
+        }
+        for (int i = 0; i < dadosOriginal.getDataSet().size(); i++) {
+            data[i][dadosOriginal.getDataSet().get(0).getAtributos().size() + 1] = dadosOriginal.getDataSet().get(i).getClasse();
+        }
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
+                data[clusters.get(i).getGrupo().get(j).getNumero()][data[0].length - 1] = clusters.get(i).getNomeGrupo();
+            }
+        }
+        new JDialogData((Frame) frameHierarquicos, true, data, atributos).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonExecutar;
     private javax.swing.JButton buttonVisualizacao;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private static javax.swing.JComboBox jComboBoxMetodos;
     private javax.swing.JLabel jLabel1;
@@ -520,7 +566,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         dados.setClasses((List) base.getClasses());
         dados.setNome((String) base.getName());
         dados.setDimensaoMatriz();
-
+        dadosOriginal = dados;
         Operações_Mat m = new Operações_Mat();
         m.Padronização(dados);
 
