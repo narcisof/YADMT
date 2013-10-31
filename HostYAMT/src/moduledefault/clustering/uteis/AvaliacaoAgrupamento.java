@@ -16,7 +16,6 @@ public class AvaliacaoAgrupamento {
 
     private List<String> classes;
     private ArrayList<Cluster> clusters;
-    private ArrayList<Double> centroides;
     private int tamanhoBase;
     private Base base;
     //
@@ -41,10 +40,6 @@ public class AvaliacaoAgrupamento {
         dunn();
     }
 
-    public void centroids(){
-        centroides = new ArrayList<>();
-        
-    }
     public final void indiceAleatorio() {
         String[] classepad = new String[tamanhoBase];
         String[] agrupados = new String[tamanhoBase];
