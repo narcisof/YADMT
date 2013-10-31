@@ -11,11 +11,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import moduledefault.clustering.kmeans.Historico;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Padrao;
@@ -23,8 +26,9 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.view.frames.JFrameHistoricoKmeans;
 import moduledefault.clustering.view.frames.JFrameKmeans;
-import moduledefault.clustering.visualization.JDialogData;
-import moduledefault.clustering.visualization.TecnicasDispersao;
+import moduledefault.clustering.visualization.panels.JDialogData;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
+import moduledefault.clustering.visualization.panels.KmeansSimulacao;
 
 /**
  *
@@ -49,6 +53,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     static moduledefault.clustering.uteis.Base dadosOriginal;
     ArrayList<Cluster> clusters;
     AvaliacaoAgrupamento avaliacao;
+    boolean block;
 
     public PanelKmeans(interfaces.Base b, JFrameKmeans k) throws IOException {
         initComponents();
@@ -57,7 +62,9 @@ public class PanelKmeans extends javax.swing.JPanel {
         frameKmeans = k;
         listaObjetos = new ArrayList<>();
         listaBuffer = new ArrayList<>();
-//        visualizacao.setEnabled(false);
+        bVisualizacao.setEnabled(false);
+        bHistorico.setEnabled(false);
+        bTabela.setEnabled(false);
 //        jButton2.setEnabled(false);
 //        jButton1.setEnabled(false);
     }
@@ -91,23 +98,21 @@ public class PanelKmeans extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
         jButtonExecuta = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBoxDistancias = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        visualizacao = new javax.swing.JButton();
+        bHistorico = new javax.swing.JButton();
+        bVisualizacao = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         listResultados = new java.awt.List();
-        jButton2 = new javax.swing.JButton();
+        bTabela = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
+        panelSimulacao = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
-
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane3.setViewportView(jTextArea3);
 
         jButtonExecuta.setText("Executar");
         jButtonExecuta.addActionListener(new java.awt.event.ActionListener() {
@@ -142,17 +147,17 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addComponent(jComboBoxDistancias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jButton1.setText("Imprimir Histórico");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bHistorico.setText("Imprimir Histórico");
+        bHistorico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bHistoricoActionPerformed(evt);
             }
         });
 
-        visualizacao.setText("Visualização");
-        visualizacao.addActionListener(new java.awt.event.ActionListener() {
+        bVisualizacao.setText("Visualização");
+        bVisualizacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                visualizacaoActionPerformed(evt);
+                bVisualizacaoActionPerformed(evt);
             }
         });
 
@@ -182,12 +187,37 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Visualizar Dados");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        bTabela.setText("Visualizar Dados");
+        bTabela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                bTabelaActionPerformed(evt);
             }
         });
+
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jScrollPane3.setViewportView(jTextArea3);
+
+        jTabbedPane1.addTab("Resultados", jScrollPane3);
+
+        panelSimulacao.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                panelSimulacaoComponentResized(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelSimulacaoLayout = new javax.swing.GroupLayout(panelSimulacao);
+        panelSimulacao.setLayout(panelSimulacaoLayout);
+        panelSimulacaoLayout.setHorizontalGroup(
+            panelSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 508, Short.MAX_VALUE)
+        );
+        panelSimulacaoLayout.setVerticalGroup(
+            panelSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 408, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Simulação", panelSimulacao);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -198,12 +228,12 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonExecuta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                    .addComponent(visualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(bVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -214,17 +244,17 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addGap(25, 25, 25)
                 .addComponent(jButtonExecuta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(bHistorico)
                 .addGap(11, 11, 11)
-                .addComponent(visualizacao)
+                .addComponent(bVisualizacao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(bTabela)
                 .addGap(12, 12, 12)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -264,46 +294,86 @@ public class PanelKmeans extends javax.swing.JPanel {
             default:
                 break;
         }
-        this.numK = frameKmeans.getK();
-        boolean paradaAutomatica = frameKmeans.isParadaAutomatica();
-        boolean seedAleatorios = frameKmeans.isSeedAleatorios();
-        int seeds = 0;
-        if (!seedAleatorios) {
-            seeds = frameKmeans.getSeeds();
-        }
-        int maxIteracoes = frameKmeans.getMaxIteracoes();
-        int iteracoesParada = frameKmeans.getIteracoes();
-        k = new KMeansPrincipal(dados, numK, paradaAutomatica, seedAleatorios, seeds, maxIteracoes, iteracoesParada, teste_distancia);
-        k.start();
-        formaClusters(k.getM(), numK);
-        imprimiAgrupamento();
-        getBuffer().append(k.imprimi(clusters));
-        getBuffer().append("\n\nMatriz Confusão:\n");
-        int[][] mconfusao = avaliacao.getMconfusao();
-        char classe = 'a';
-        for (int i = 0; i < mconfusao[0].length; i++) {
-            getBuffer().append(classe + "\t");
-            ++classe;
-        }
-        getBuffer().append("\n");
-        classe = 'a';
-        for (int i = 0; i < mconfusao.length; i++) {
-            for (int j = 0; j < mconfusao[0].length; j++) {
-                getBuffer().append(mconfusao[i][j] + "\t");
-                if (j == mconfusao[0].length - 1) {
-                    getBuffer().append("\t" + classe + " = " + dados.getClasses().get(i));
+
+        new Thread() {
+            @Override
+            public void run() {
+                numK = frameKmeans.getK();
+                boolean paradaAutomatica = frameKmeans.isParadaAutomatica();
+                boolean seedAleatorios = frameKmeans.isSeedAleatorios();
+                int seeds = 0;
+                if (!seedAleatorios) {
+                    seeds = frameKmeans.getSeeds();
+                }
+                int maxIteracoes = frameKmeans.getMaxIteracoes();
+                int iteracoesParada = frameKmeans.getIteracoes();
+                SK = new KmeansSimulacao();
+                SK.setSize(panelSimulacao.getWidth(), panelSimulacao.getHeight());
+                panelSimulacao.add(SK);
+                SK.setVisible(true);
+                SK.setDados(dados);
+                k = new KMeansPrincipal(dados, numK, paradaAutomatica, seedAleatorios, seeds, maxIteracoes, iteracoesParada, teste_distancia, SK);
+                int cont = 0;
+                do {
+                    k.start();
+
+                    try {
+                        SK.setCentroides(k.centroides);
+                        SK.setPadroesClusters(k.getPadroesClusters());
+                        SK.repaint();
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PanelKmeans.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if ((!k.paradaAutomatica) && (cont > k.it)) {
+                        break;
+                    }
+                    if (cont >= k.maxI) {
+                        break;
+                    }
+
+                    if (((!k.lock) && (k.paradaAutomatica))) {
+                        break;
+                    }
+                    System.out.println("cont = " + cont);
+                    cont++;
+                } while ((true));
+
+
+                formaClusters(k.getM(), numK);
+                imprimiAgrupamento();
+                getBuffer().append(k.imprimi(clusters));
+                getBuffer().append("\n\nMatriz Confusão:\n");
+                int[][] mconfusao = avaliacao.getMconfusao();
+                char classe = 'a';
+                for (int i = 0; i < mconfusao[0].length; i++) {
+                    getBuffer().append(classe + "\t");
                     ++classe;
                 }
+                getBuffer().append("\n");
+                classe = 'a';
+                for (int i = 0; i < mconfusao.length; i++) {
+                    for (int j = 0; j < mconfusao[0].length; j++) {
+                        getBuffer().append(mconfusao[i][j] + "\t");
+                        if (j == mconfusao[0].length - 1) {
+                            getBuffer().append("\t" + classe + " = " + dados.getClasses().get(i));
+                            ++classe;
+                        }
+                    }
+                    getBuffer().append("\n");
+                }
+                jTextArea3.setText(getBuffer().toString());
+                listaObjetos.add(k);
+                setListaResultados();
+                jButtonExecuta.setEnabled(true);
+                bHistorico.setEnabled(true);
+                bTabela.setEnabled(true);
+                bVisualizacao.setEnabled(true);
             }
-            getBuffer().append("\n");
-        }
-        jTextArea3.setText(getBuffer().toString());
-        listaObjetos.add(k);
-        setListaResultados();
-        this.jButtonExecuta.setEnabled(true);
+        }.start();
     }//GEN-LAST:event_jButtonExecutaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bHistoricoActionPerformed
         imprimiAgrupamento();
         getBuffer().append(k.imprimiHistorico(clusters));
         getBuffer().append("\n\nMatriz Confusão:\n\n");
@@ -327,14 +397,9 @@ public class PanelKmeans extends javax.swing.JPanel {
         }
         JFrameHistoricoKmeans hK = new JFrameHistoricoKmeans(getBuffer());
         hK.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bHistoricoActionPerformed
 
-    private void visualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizacaoActionPerformed
-//        for (int i = 0; i < dados.getDataSet().size(); i++) {
-//            for (int j = 0; j < dados.getAtributos().size()-1; j++) {
-//                System.out.print("");
-//            }
-//        }
+    private void bVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVisualizacaoActionPerformed
 
         TecnicasDispersao.getInstance().setSetou(false);
         TecnicasDispersao.getInstance().setMatrizDados(dados);
@@ -343,7 +408,7 @@ public class PanelKmeans extends javax.swing.JPanel {
         TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
         TecnicasDispersao.getInstance().inicia();
-    }//GEN-LAST:event_visualizacaoActionPerformed
+    }//GEN-LAST:event_bVisualizacaoActionPerformed
 
     private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1) {
@@ -357,7 +422,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     private void listResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listResultadosActionPerformed
     }//GEN-LAST:event_listResultadosActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void bTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTabelaActionPerformed
         String[] atributos = new String[dadosOriginal.getAtributos().size() + 2];
         atributos[0] = "ID";
         for (int j = 0; j < dadosOriginal.getAtributos().size(); j++) {
@@ -383,19 +448,24 @@ public class PanelKmeans extends javax.swing.JPanel {
             }
         }
         new JDialogData((Frame) frameKmeans, true, data, atributos).setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_bTabelaActionPerformed
+    KmeansSimulacao SK;
+    private void panelSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelSimulacaoComponentResized
+    }//GEN-LAST:event_panelSimulacaoComponentResized
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton bHistorico;
+    private javax.swing.JButton bTabela;
+    private javax.swing.JButton bVisualizacao;
     private javax.swing.JButton jButtonExecuta;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea3;
     private java.awt.List listResultados;
-    private javax.swing.JButton visualizacao;
+    private static javax.swing.JPanel panelSimulacao;
     // End of variables declaration//GEN-END:variables
 
     public void startMatrizDados() {
@@ -482,10 +552,9 @@ public class PanelKmeans extends javax.swing.JPanel {
         }
         getBuffer().append("\n");
         avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
-        getBuffer().append("\n\tMedida R: "+avaliacao.getIndiceAleatorio());
+        getBuffer().append("\n\tMedida R: " + avaliacao.getIndiceAleatorio());
         getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacao.getMedidaF()));
         getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
-        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
         getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
 
     }
@@ -597,6 +666,14 @@ public class PanelKmeans extends javax.swing.JPanel {
             return formatter.format(date) + " - K-means";
 
         }
+    }
+
+    public static JPanel getPanelSimulacao() {
+        return panelSimulacao;
+    }
+
+    public static void setPanelSimulacao(JPanel panelSimulacao) {
+        PanelKmeans.panelSimulacao = panelSimulacao;
     }
 }
 //     String[] nomesColunas = new String[dados.getAtributos().size() + 2];

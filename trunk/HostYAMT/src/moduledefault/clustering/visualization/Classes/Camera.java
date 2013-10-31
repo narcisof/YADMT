@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.Classes;
 
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;

@@ -2,111 +2,121 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import moduledefault.clustering.kmeans.Centroide;
+import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.view.jpanel.PanelKmeans;
 
 /**
  *
  * @author Mateus
  */
-public class CoordenadasParalelas extends javax.swing.JPanel {
+public class KmeansSimulacao extends javax.swing.JPanel {
 
     /**
-     * Creates new form CoordenadasParalelas
+     * Creates new form KmeansSimulacao
      */
-    private static ArrayList<Color> cores;
+    ArrayList<Centroide> centroides;
+    int[] padroesClusters;
+    Base dados;
+    private ArrayList<Color> cores;
 
-    public CoordenadasParalelas() {
+    public KmeansSimulacao() {
         initComponents();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int width = TecnicasDispersao.getFundoParalelas().getWidth();
-        int height = TecnicasDispersao.getFundoParalelas().getHeight();
+        System.out.println("chamou");
+        int width = PanelKmeans.getPanelSimulacao().getWidth();
+        int height = PanelKmeans.getPanelSimulacao().getHeight();
+        float w = width / 2;
+        float h = height / 2;
+        int x2 = 50 + (int) 0 * (width - 120);
+        int x0 = 50 + (int) 0 * (width - 120);
+        int x1 = 50 + (int) 1 * (width - 120) + 3;
+        int tamPixel = (x1 - x0) / dados.getDataSet().size();
+        int y0 = (height - 70) - (int) 0 * (height - 120) + tamPixel;
+        int y1 = (height - 70) - (int) 0 * (height - 120) + tamPixel;
+        int y2 = (height - 70) - (int) 1 * (height - 120) - tamPixel;
         iniciaVetorCores();
-        int inicioX = 50;
-        int inicioY = 50;
-        int numEixos = TecnicasDispersao.getMatrizDados().getDataSet().get(0).getAtributos().size();
-        int distanciaEixos = TecnicasDispersao.getDistanciaEixos();
-        int fimY = height - 50;
-        ArrayList<Ponto> pontos = new ArrayList<>();
-        int[] coordX = new int[numEixos];
-        int aux = 0;
-        int escala = (int) (fimY - inicioY) / 10;
-        int soma = inicioY;
-        String[] valores1 = {"1", "0.9", "0.8", "0.7", "0.6", "0.5", "0.4", "0.3", "0.2", "0.1", "0"};
-        while (soma <= fimY) {
-            if (valores1[aux] != "0") {
-                g.drawLine(inicioX - 5, soma, inicioX + 5, soma);
-            }
-            g.drawString(valores1[aux], inicioX - 25, soma + 5);
-            aux++;
-            soma += escala;
-        }
-        for (int i = 0; i < numEixos; i++) {
-            g.drawLine(inicioX, inicioY, inicioX, fimY);
-//            System.out.println(inicioX);
-            coordX[i] = inicioX;
-            inicioX += distanciaEixos;
-        }
-        for (int i = 0; i < numEixos; i++) {
-            String s = TecnicasDispersao.getMatrizDados().getAtributos().get(i);
-            g.drawString(s, coordX[i] - 25, inicioY - 20);
-        }
-        for (int i = 0; i < TecnicasDispersao.getMatrizDados().getDataSet().size(); i++) {
-            int[] coordY = new int[TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size()];
-            for (int j = 0; j < TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size(); j++) {
-                int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().get((j)) * (height - 120));
-                coordY[j] = y;
-            }
-            for (int l = 0; l < TecnicasDispersao.getMatrizDados().getClasses().size(); l++) {
-                String classePadrao = TecnicasDispersao.getMatrizDados().getDataSet().get(i).getClasse();
-                String classeMomento = TecnicasDispersao.getMatrizDados().getClasses().get(l);
-                if (classeMomento.equals(classePadrao)) {
-                    g.setColor(cores.get(l));
-                }
-            }
-            Ponto p = new Ponto(TecnicasDispersao.getMatrizDados().getDataSet().get(i).getNumero() + "", coordX, coordY, Color.black);
-            pontos.add(p);
-            int expessuraLinha = TecnicasDispersao.getExpessuraLinha();
-            for (int k = 0; k < expessuraLinha; k++) {
-                for (int j = 0; j < coordY.length - 1; j++) {
-                    g.drawLine(coordX[j], coordY[j] + k, coordX[j + 1], coordY[j + 1] + k);
-                    Color auxC = g.getColor();
-                    if (TecnicasDispersao.isDesenharPontos()) {
-                        g.setColor(Color.black);
-                        g.fillRect(coordX[j] - 2, coordY[j] - 2, 4, 4);
-                        g.fillRect(coordX[j + 1] - 2, coordY[j + 1] - 2, 4, 4);
+        if (dados != null) {
+            if (padroesClusters != null && centroides != null) {
+                g.setColor(Color.black);
+                g.drawLine(x0, y0, x1, y1);//x
+                g.drawLine(x0, y0, x2, y2);//y
+                //escala para y
+                int aux = 0;
+                int escala = (int) (y0 - y2) / 10;
+                int soma = y2;
+                String[] valores1 = {"1", "0.9", "0.8", "0.7", "0.6", "0.5", "0.4", "0.3", "0.2", "0.1", "0"};
+                while (soma <= y0) {
+                    if (valores1[aux] != "0") {
+                        g.drawLine(x0 - 5, soma, x0 + 5, soma);
                     }
-                    g.setColor(auxC);
+                    g.drawString(valores1[aux], x0 - 25, soma + 5);
+                    aux++;
+                    soma += escala;
+                }
+                //escala para x
+                aux = 0;
+                escala = (int) (x1 - x0) / 10;
+                soma = x0;
+                String[] valores2 = {"0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1"};
+                while (soma <= x1) {
+                    g.drawLine(soma, y0 - 5, soma, y0 + 5);
+                    g.drawString(valores2[aux], soma - 7, y0 + 20);
+                    aux++;
+                    soma += escala;
                 }
 
-            }
-        }
-        TecnicasDispersao.setPontosCoordParalelas(pontos);
-        if (TecnicasDispersao.isPintarPontoParalela()) {
-            int expessuraLinha = TecnicasDispersao.getExpessuraLinha() + 2;
-//            System.out.println("entrou aqui no panel");
-            g.setColor(Color.black);
-            for (int k = 0; k < expessuraLinha; k++) {
-                for (int i = 0; i < TecnicasDispersao.getPontosPintarParalela().size(); i++) {
-                    for (int j = 0; j < TecnicasDispersao.getPontosPintarParalela().get(i).getYs().length - 1; j++) {
-                        g.drawLine(TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j] + k, TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j + 1], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j + 1] + k);
+
+                /////////////////////////////////////////////////////////////////
+
+                //ploto pontos
+                for (int i = 0; i < dados.getDataSet().size(); i++) {
+                    int x = 50 + (int) (dados.getDataSet().get(i).getAtributos().get((0)) * (width - 120));
+                    int y = (height - 70) - (int) (dados.getDataSet().get(i).getAtributos().get((1)) * (height - 120));
+                    for (int l = 0; l < dados.getClasses().size(); l++) {
+                        String classePadrao = dados.getDataSet().get(i).getClasse();
+                        String classeMomento = dados.getClasses().get(l);
+                        if (classeMomento.equals(classePadrao)) {
+                            g.setColor(cores.get(l));
+                        }
                     }
+                    g.fillOval(x, y, tamPixel, tamPixel);
+                    g.setColor(Color.black);
+                    g.drawOval(x, y, tamPixel, tamPixel);
+
                 }
 
+                for (int i = 0; i < centroides.size(); i++) {
+                    //pintar Centroide
+                    int x = 50 + (int) (centroides.get(i).getAtributos().get(0) * (width - 120));
+                    int y = (height - 70) - (int) (centroides.get(i).getAtributos().get(1) * (height - 120));
+                    g.setColor(Color.black);
+                    g.fillOval(x, y, tamPixel + 2, tamPixel + 2);
+                    for (int j = 0; j < padroesClusters.length; j++) {
+//                        System.out.println(centroides.get(i).getGrupo() + " " + padroesClusters[j]);
+                        if (centroides.get(i).getGrupo() == padroesClusters[j]) {
+                            int x3 = 50 + (int) (dados.getDataSet().get(j).getAtributos().get((0)) * (width - 120));
+                            int y3 = (height - 70) - (int) (dados.getDataSet().get(j).getAtributos().get((1)) * (height - 120));
+                            g.drawLine(x, y, x3, y3);
+                        }
+                    }
+
+                }
             }
         }
     }
 
     private void iniciaVetorCores() {
         cores = new ArrayList<>();
-       
         cores.add(Color.RED);
         cores.add(Color.BLUE);
         cores.add(Color.GREEN);
@@ -409,6 +419,28 @@ public class CoordenadasParalelas extends javax.swing.JPanel {
         cores.add(new Color(78, 98, 137));
     }
 
+    public ArrayList<Centroide> getCentroides() {
+        return centroides;
+    }
+
+    public void setCentroides(ArrayList<Centroide> _centroides) {
+        centroides = _centroides;
+    }
+
+    public int[] getPadroesClusters() {
+        return padroesClusters;
+    }
+
+    public void setPadroesClusters(int[] _padroesClusters) {
+        padroesClusters = _padroesClusters;
+        System.out.println("setou");
+        this.repaint();
+    }
+
+    public  void setDados(Base d) {
+        dados = d;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -418,18 +450,15 @@ public class CoordenadasParalelas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createTitledBorder("Coordenadas Paralelas"));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

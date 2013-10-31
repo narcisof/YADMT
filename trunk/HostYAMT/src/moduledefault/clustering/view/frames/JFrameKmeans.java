@@ -87,8 +87,6 @@ public class JFrameKmeans extends javax.swing.JFrame {
         buttonOK = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "YADMT.Clustering.K-Means"));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Sobre"));

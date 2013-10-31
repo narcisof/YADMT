@@ -2,8 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.FramePrincipal;
 
+import moduledefault.clustering.visualization.panels.LinePlot;
+import moduledefault.clustering.visualization.Classes.Ponto;
+import moduledefault.clustering.visualization.panels.MatrizCorrelacao;
+import moduledefault.clustering.visualization.panels.QuadroPanel;
+import moduledefault.clustering.visualization.panels.GraficoDispersaoGrupo;
+import moduledefault.clustering.visualization.panels.GraficoDispersaoGeral;
+import moduledefault.clustering.visualization.panels.CoordenadasParalelasCirculares;
+import moduledefault.clustering.visualization.panels.CoordenadasParalelas;
 import java.awt.Dimension;
 import java.text.DecimalFormat;
 import java.util.ArrayList;

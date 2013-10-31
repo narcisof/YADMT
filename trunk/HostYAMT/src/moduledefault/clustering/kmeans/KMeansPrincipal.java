@@ -19,6 +19,7 @@ import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Cluster;
+import moduledefault.clustering.visualization.panels.KmeansSimulacao;
 
 /**
  *
@@ -31,15 +32,16 @@ public class KMeansPrincipal {
     ArrayList<Double> minimoAtributo;
     ArrayList<Double> maximoAtributo;
     int numK;
-    ArrayList<Centroide> centroides;
+    public ArrayList<Centroide> centroides;
     double[][] matrizDistancia;
     int[] padroesClusters;
-    private boolean lock = true;
+    public boolean lock = true;
     private ArrayList<Historico> historico;
     private float perct;
     int[][] m;
+    KmeansSimulacao SK;
 
-    public KMeansPrincipal(Base teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia) {
+    public KMeansPrincipal(Base teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia, KmeansSimulacao sk) {
         this.dados = teste;
         this.numK = numK;
         this.distancia = distancia;
@@ -59,37 +61,26 @@ public class KMeansPrincipal {
         for (int i = 0; i < this.padroesClusters.length; i++) {
             this.padroesClusters[i] = -1;
         }
+        SK = sk;
     }
-    boolean paradaAutomatica;
-    int maxI;
-    int it;
-    int distancia;
+    public boolean paradaAutomatica;
+    public int maxI;
+    public int it;
+    public int distancia;
 
     public void start() {
-        int cont = 0;
-        do {
-            calculaMatrizDistancia();
-            int[] auxMatrizCluster = new int[this.padroesClusters.length];
-            for (int i = 0; i < auxMatrizCluster.length; i++) {
-                auxMatrizCluster[i] = this.padroesClusters[i];
-            }
-            atribuiCentroides();
-            Historico hist = new Historico(this.centroides, this.padroesClusters);
-            this.historico.add(hist);
-            avaliaMudanca(auxMatrizCluster);
-            this.centroides = calcularNewCentroides();
-            if ((!this.paradaAutomatica) && (cont > it)) {
-                break;
-            }
-            if (cont >= maxI) {
-                break;
-            }
 
-            if (((!this.lock) && (this.paradaAutomatica))) {
-                break;
-            }
-            cont++;
-        } while ((true));
+        calculaMatrizDistancia();
+        int[] auxMatrizCluster = new int[this.padroesClusters.length];
+        for (int i = 0; i < auxMatrizCluster.length; i++) {
+            auxMatrizCluster[i] = this.padroesClusters[i];
+        }
+        atribuiCentroides();
+        Historico hist = new Historico(this.centroides, this.padroesClusters);
+        this.historico.add(hist);
+        avaliaMudanca(auxMatrizCluster);
+        this.centroides = calcularNewCentroides();
+
 //        mConfusao();
 //        imprimiHistorico();
 
