@@ -16,6 +16,7 @@ import moduledefault.clustering.som.Neuronio;
 public class Cluster {
 
     private ArrayList<Padrao> grupo;
+    private ArrayList<Double> centroides;
     private String nomeGrupo;
     private int pai;
     private int posicaoDend;
@@ -36,6 +37,38 @@ public class Cluster {
 
     public void setGrupo(ArrayList<Padrao> grupo) {
         this.grupo = grupo;
+    }
+    
+    public void centroids(){
+        centroides = new ArrayList<>();
+        
+        
+        for (int i = 0; i < grupo.get(0).getAtributos().size(); i++) {
+            centroides.add(0.0);
+        }
+        
+        for (int i = 0; i < grupo.size(); i++) {
+            for (int j = 0; j < grupo.get(i).getAtributos().size(); j++) {
+                if (grupo.get(i).getNumero() == 94) {
+                    System.out.println(grupo.get(i).getAtributos().get(j));
+                }
+                Double aux = centroides.get(j) + grupo.get(i).getAtributos().get(j);                
+                centroides.set(j, aux);
+            }
+        }
+        
+        for (int i = 0; i < centroides.size(); i++) {
+            Double aux = centroides.get(i)/grupo.size();      
+            centroides.set(i, aux);
+        }
+    }
+
+    public ArrayList<Double> getCentroides() {
+        return centroides;
+    }
+
+    public void setCentroides(ArrayList<Double> centroides) {
+        this.centroides = centroides;
     }
 
     public ArrayList<Integer> getSortGrupo() {

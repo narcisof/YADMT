@@ -342,7 +342,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 dendograma.createTree(matrizDendograma);
                 break;
             case 2:
-                LigacaoMedia LM = new LigacaoMedia(dados.getDataSet(), teste_distancia);
+                LigacaoMedia LM = new LigacaoMedia(dados.getDataSet(), 5);
                 LM.ligacaoMedia();
                 LM.clustering(frameHierarquicos.getNumK()); //Definir numero de grupos
                 clusters = LM.getClusters();
@@ -351,7 +351,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                 dendograma.createTree(matrizDendograma);
                 break;
             case 3:
-                LigacaoSimples LS = new LigacaoSimples(dados.getDataSet(), teste_distancia);
+                LigacaoSimples LS = new LigacaoSimples(dados.getDataSet(), 5);
                 LS.ligacaoSimples();
                 LS.clustering(frameHierarquicos.getNumK()); //Definir numero de grupos
                 clusters = LS.getClusters();

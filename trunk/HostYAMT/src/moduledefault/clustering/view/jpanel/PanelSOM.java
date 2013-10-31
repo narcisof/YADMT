@@ -4,11 +4,13 @@
  */
 package moduledefault.clustering.view.jpanel;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -446,7 +448,8 @@ public final class PanelSOM extends javax.swing.JPanel {
         FrameSomVisualization.getInstance().setRede(rede);
 
         PanelMarcadores.getP().clear();
-
+   
+        
         t = new Thread() {
             @Override
             public void run() {
@@ -460,6 +463,8 @@ public final class PanelSOM extends javax.swing.JPanel {
                     rede.startRede(i); //inicia o Kohonen
                     FrameSomVisualization.getInstance().setRede(rede);
                     repaint();
+                    
+                    
                 }
                 //Calcula o Erro
                 rede.calcErro();
@@ -544,6 +549,7 @@ public final class PanelSOM extends javax.swing.JPanel {
         //imprime em tela o agrupamento realizado
         String padrao;
         for (int i = 0; i < clusters.size(); i++) {
+            
             clusters.get(i).setNomeGrupo(dados.getClasses());
             jTextArea.append("Grupo " + (i + 1) + ":");
             grupo = clusters.get(i).getSortGrupo();
@@ -564,6 +570,12 @@ public final class PanelSOM extends javax.swing.JPanel {
                     jTextArea.append("\n");
                 }
                 jTextArea.append(padrao);
+            }
+            jTextArea.append("\n\n");
+            clusters.get(i).centroids();
+            jTextArea.append("Centróides: ");
+            for (int j = 0; j < clusters.get(i).getCentroides().size(); j++) {
+                jTextArea.append(clusters.get(i).getCentroides().get(j)+" ");
             }
             jTextArea.append("\n\n");
             // jTextArea.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
@@ -601,7 +613,6 @@ public final class PanelSOM extends javax.swing.JPanel {
             jTextArea.append("\n");
         }
         resutados.add(jTextArea.getText());
-
 
         //Adiciona na Lista de Resultados
         String metodo = null;
