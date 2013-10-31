@@ -12,7 +12,7 @@ import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.view.frames.JFrameFormigas;
-import moduledefault.clustering.visualization.TecnicasDispersao;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 
 /**
  *

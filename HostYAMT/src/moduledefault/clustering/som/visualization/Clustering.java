@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import moduledefault.clustering.uteis.Cluster;
-import moduledefault.clustering.visualization.Poligono;
+import moduledefault.clustering.visualization.Classes.Poligono;
 
 /**
  *

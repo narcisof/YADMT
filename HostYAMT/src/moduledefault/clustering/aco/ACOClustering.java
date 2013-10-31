@@ -14,7 +14,7 @@ import moduledefault.clustering.distancias.DistanciaEuclidiana;
 import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.Base;
 import moduledefault.clustering.uteis.Operações_Mat;
-import moduledefault.clustering.visualization.TecnicasDispersao;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 
 /**
  *

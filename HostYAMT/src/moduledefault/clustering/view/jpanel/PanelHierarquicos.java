@@ -30,7 +30,7 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.view.frames.JFrameHierarquicos;
-import moduledefault.clustering.visualization.JDialogData;
+import moduledefault.clustering.visualization.panels.JDialogData;
 
 /**
  *
@@ -373,71 +373,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         }
 
         //imprime em tela o agrupamento realizado
-        if (clusters != null) {
-            AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
-            ArrayList<Integer> grupo;
-            String padrao;
-            for (int i = 0; i < clusters.size(); i++) {
-                clusters.get(i).setNomeGrupo(dados.getClasses());
-                jTextArea1.append("Grupo " + (i + 1) + ":");
-                grupo = clusters.get(i).getSortGrupo();
-                for (int j = 0; j < grupo.size(); j++) {
-                    padrao = grupo.get(j) + "";
-                    switch (padrao.length()) {
-                        case 1:
-                            padrao += "   ";
-                            break;
-                        case 2:
-                            padrao += "  ";
-                            break;
-                        case 3:
-                            padrao += " ";
-                            break;
-                    }
-                    if (j % 10 == 0) {
-                        jTextArea1.append("\n");
-                    }
-                    jTextArea1.append(padrao);
-                }
-                jTextArea1.append("\n\n");
-                //jTextArea1.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
-            }
-
-            //Medidas de avaliaxao do agrupamento
-            jTextArea1.append("\n================ Avaliação do Agrupamento ===============\n");
-            jTextArea1.append("Grupos Formados:\t" + clusters.size() + "\n");
-            jTextArea1.append("Medida F:\t\t" + avaliacao.getMedidaF() + "\n");
-            jTextArea1.append("Medida R:\t\t" + avaliacao.getIndiceAleatorio() + "\n");
-            float acertos = avaliacao.getAcerto();
-            jTextArea1.append("Porcentagem de Acerto:\t" + acertos + "%\n");
-            jTextArea1.append("Medida Idunn:\t" + avaliacao.getIndiceDunn() + "\n");
-            jTextArea1.append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
-
-
-            jTextArea1.append("\nMatriz Confusão:\n");
-            int[][] mconfusao = avaliacao.getMconfusao();
-
-            char classe = 'a';
-            for (int i = 0; i < mconfusao[0].length; i++) {
-                jTextArea1.append(classe + "\t");
-                ++classe;
-            }
-            jTextArea1.append("\n");
-            classe = 'a';
-            for (int i = 0; i < mconfusao.length; i++) {
-                for (int j = 0; j < mconfusao[0].length; j++) {
-                    jTextArea1.append(mconfusao[i][j] + "\t");
-                    if (j == mconfusao[0].length - 1) {
-                        jTextArea1.append("\t" + classe + " = " + dados.getClasses().get(i));
-                        ++classe;
-                    }
-                }
-                jTextArea1.append("\n");
-            }
-        }
+        imprimiAgrupamento();
+        imprimiRecuperacao();
+        jTextArea1.setText(getBuffer().toString());
 
         buttonVisualizacao.setEnabled(true);
         jButton1.setEnabled(true);
+        jButton2.setEnabled(true);
     }//GEN-LAST:event_buttonExecutarActionPerformed
 
     private void listResultadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listResultadosMouseClicked
@@ -572,27 +514,17 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         return matriz;
     }
 
-    private void avaliaLigacao(int[][] matrizDendograma) {
-        int[] inicial = matrizDendograma[0];
-        ArrayList<Cluster> cl = new ArrayList<>();
-        int posicaoDend = 1;
-        for (int i = matrizDendograma.length - 3; i > 0; i--) {
-            for (int j = 0; j < dados.getDataSet().size(); j++) {
-                System.out.print(matrizDendograma[i][j] + " ");
-            }
-            System.out.println("");
-        }
-    }
+
 
     synchronized void imprimiAgrupamento() {
         StringBuffer buffer = new StringBuffer();
         setBuffer(buffer);
         getBuffer().append("===================== Informações =====================");
         getBuffer().append("\n\t\t\tYADMT.Clustering.Hierárquicos");
-        getBuffer().append("\n\t Base: " + dados.getNome());
+        getBuffer().append("\n\tBase: " + dados.getNome());
 //        getBuffer().append("\n\t Número de Instâncias: " + teste.getLinhas());
 //        getBuffer().append("\n\t Atributos: " + (teste.getColunas() - 1));
-        getBuffer().append("\n\t Classes:");
+        getBuffer().append("\n\tClasses:");
         for (int i = 0; i < dados.getClasses().size(); i++) {
             getBuffer().append("\n\t\t" + dados.getClasses().get(i));
         }
@@ -633,32 +565,51 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             default:
                 break;
         }
+        getBuffer().append("\n\n");
     }
 
     synchronized void imprimiRecuperacao() {
 
-        getBuffer().append("\n\nGrupos Formados:\n\n");
-        for (int j = matrizGrupos[0].length - 1; j >= 1; j--) {
-            for (int i = 0; i < j; i++) {
-                if (matrizGrupos[0][i] > matrizGrupos[0][i + 1]) {
-                    int auxLinha = matrizGrupos[0][i];
-                    int auxColuna = matrizGrupos[1][i];
-                    matrizGrupos[0][i] = matrizGrupos[0][i + 1];
-                    matrizGrupos[1][i] = matrizGrupos[1][i + 1];
-                    matrizGrupos[0][i + 1] = auxLinha;
-                    matrizGrupos[1][i + 1] = auxColuna;
-                }
+        if (clusters != null) {
+            AvaliacaoAgrupamento avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
+            getBuffer().append("\n================ Avaliação do Agrupamento ===============\n");
+            getBuffer().append("Grupos Formados:\t" + clusters.size() + "\n");
+            getBuffer().append("Medida F:\t\t" + avaliacao.getMedidaF() + "\n");
+            getBuffer().append("Medida R:\t\t" + avaliacao.getIndiceAleatorio() + "\n");
+            float acertos = avaliacao.getAcerto();
+            getBuffer().append("Porcentagem de Acerto:\t" + acertos + "%\n");
+            getBuffer().append("Viariância Total:\t" + avaliacao.getVariancia() + "\n");
+
+
+            getBuffer().append("\nMatriz Confusão:\n");
+            int[][] mconfusao = avaliacao.getMconfusao();
+
+            char classe = 'a';
+            for (int i = 0; i < mconfusao[0].length; i++) {
+                getBuffer().append(classe + "\t");
+                ++classe;
             }
-        }
-
-        String padrao;
-        for (int k = 0; k < this.numeroGrupos; k++) {
-            int cont = 1;
-            getBuffer().append("Grupo: " + (k + 1) + " Padrão: [" + elementoPrincipal.get(k) + "]" + "\n\n");
-            for (int j = 0; j < matrizGrupos[0].length; j++) {
-                if (matrizGrupos[1][j] == (k + 1)) {
-
-                    padrao = matrizGrupos[0][j] + "";
+            getBuffer().append("\n");
+            classe = 'a';
+            for (int i = 0; i < mconfusao.length; i++) {
+                for (int j = 0; j < mconfusao[0].length; j++) {
+                    getBuffer().append(mconfusao[i][j] + "\t");
+                    if (j == mconfusao[0].length - 1) {
+                        getBuffer().append("\t" + classe + " = " + dados.getClasses().get(i));
+                        ++classe;
+                    }
+                }
+                getBuffer().append("\n");
+            }
+            getBuffer().append("\n\n");
+            ArrayList<Integer> grupo;
+            String padrao;
+            for (int i = 0; i < clusters.size(); i++) {
+                clusters.get(i).setNomeGrupo(dados.getClasses());
+                getBuffer().append("Grupo " + (i + 1) + ":");
+                grupo = clusters.get(i).getSortGrupo();
+                for (int j = 0; j < grupo.size(); j++) {
+                    padrao = grupo.get(j) + "";
                     switch (padrao.length()) {
                         case 1:
                             padrao += "   ";
@@ -670,16 +621,17 @@ public class PanelHierarquicos extends javax.swing.JPanel {
                             padrao += " ";
                             break;
                     }
-
-                    getBuffer().append(padrao);
-                    if (cont % 10 == 0) {
+                    if (j % 10 == 0) {
                         getBuffer().append("\n");
-                        cont = 0;
                     }
-                    cont++;
+                    getBuffer().append(padrao);
                 }
+                getBuffer().append("\n\n");
+                //jTextArea1.append("Centróide: " + avaliacao.centroide(clusters.get(i)) + "\n\n");
             }
-            getBuffer().append("\n\n-------------------------------------------------------\n\n");
+
+            //Medidas de avaliaxao do agrupamento
+
         }
     }
 

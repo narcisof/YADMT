@@ -2,11 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import moduledefault.clustering.visualization.Classes.Camera;
+import moduledefault.clustering.visualization.Classes.Poligono;
+import moduledefault.clustering.visualization.Classes.Ponto;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 
 /**
  *

@@ -1,64 +1,114 @@
-package moduledefault.clustering.visualization;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import moduledefault.clustering.view.jpanel.PanelFormigas;
+import moduledefault.clustering.visualization.Classes.Ponto;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 
 /**
  *
  * @author Mateus
  */
-public class GraficoDispersaoSimulacao extends javax.swing.JPanel {
+public class CoordenadasParalelas extends javax.swing.JPanel {
 
-    private static int[][] matrizPadroes;
+    /**
+     * Creates new form CoordenadasParalelas
+     */
     private static ArrayList<Color> cores;
 
-    public GraficoDispersaoSimulacao() {
+    public CoordenadasParalelas() {
         initComponents();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int width = PanelFormigas.getFundoSimulacao().getWidth();
-        int height = PanelFormigas.getFundoSimulacao().getHeight();
-
-        int x0 = width - (width - 50);
-        int y0 = height - (height - 50);
-        int x2 = width - 50;
-        int y2 = height - 50;
-        g.setColor(Color.black);
+        int width = TecnicasDispersao.getFundoParalelas().getWidth();
+        int height = TecnicasDispersao.getFundoParalelas().getHeight();
         iniciaVetorCores();
-        float m = (x2 - x0) / PanelFormigas.getDados().getDataSet().size();
-        int tamPixelX = (int) m + 4;
-        int tamPixelY = (int) ((y2 - y0) / PanelFormigas.getDados().getDataSet().size()) + 4;
-        for (int i = 0; i < PanelFormigas.getDados().getDimensaoMatriz(); i++) {
-            for (int j = 0; j < PanelFormigas.getDados().getDimensaoMatriz(); j++) {
-                if (matrizPadroes[i][j] != 0) {
-                    int x = x0 + j * ((((width - 100) / PanelFormigas.getDados().getDimensaoMatriz())));
-                    int y = y0 + i * ((((height - 100) / PanelFormigas.getDados().getDimensaoMatriz())));
-                    for (int k = 0; k < PanelFormigas.getDados().getClasses().size(); k++) {
-                        if (PanelFormigas.getDados().getDataSet().get(matrizPadroes[i][j] - 1).getClasse().equals(PanelFormigas.getDados().getClasses().get(k))) {
-                            g.setColor(cores.get(k));
-                        }
-                    }
-                    g.fillOval(x, y, tamPixelX, tamPixelY);
+        int inicioX = 50;
+        int inicioY = 50;
+        int numEixos = TecnicasDispersao.getMatrizDados().getDataSet().get(0).getAtributos().size();
+        int distanciaEixos = TecnicasDispersao.getDistanciaEixos();
+        int fimY = height - 50;
+        ArrayList<Ponto> pontos = new ArrayList<>();
+        int[] coordX = new int[numEixos];
+        int aux = 0;
+        int escala = (int) (fimY - inicioY) / 10;
+        int soma = inicioY;
+        String[] valores1 = {"1", "0.9", "0.8", "0.7", "0.6", "0.5", "0.4", "0.3", "0.2", "0.1", "0"};
+        while (soma <= fimY) {
+            if (valores1[aux] != "0") {
+                g.drawLine(inicioX - 5, soma, inicioX + 5, soma);
+            }
+            g.drawString(valores1[aux], inicioX - 25, soma + 5);
+            aux++;
+            soma += escala;
+        }
+        for (int i = 0; i < numEixos; i++) {
+            g.drawLine(inicioX, inicioY, inicioX, fimY);
+//            System.out.println(inicioX);
+            coordX[i] = inicioX;
+            inicioX += distanciaEixos;
+        }
+        for (int i = 0; i < numEixos; i++) {
+            String s = TecnicasDispersao.getMatrizDados().getAtributos().get(i);
+            g.drawString(s, coordX[i] - 25, inicioY - 20);
+        }
+        for (int i = 0; i < TecnicasDispersao.getMatrizDados().getDataSet().size(); i++) {
+            int[] coordY = new int[TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size()];
+            for (int j = 0; j < TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().size(); j++) {
+                int y = (height - 70) - (int) (TecnicasDispersao.getMatrizDados().getDataSet().get(i).getAtributos().get((j)) * (height - 120));
+                coordY[j] = y;
+            }
+            for (int l = 0; l < TecnicasDispersao.getMatrizDados().getClasses().size(); l++) {
+                String classePadrao = TecnicasDispersao.getMatrizDados().getDataSet().get(i).getClasse();
+                String classeMomento = TecnicasDispersao.getMatrizDados().getClasses().get(l);
+                if (classeMomento.equals(classePadrao)) {
+                    g.setColor(cores.get(l));
                 }
             }
-        }
-        g.setColor(Color.black);
-    }
+            Ponto p = new Ponto(TecnicasDispersao.getMatrizDados().getDataSet().get(i).getNumero() + "", coordX, coordY, Color.black);
+            pontos.add(p);
+            int expessuraLinha = TecnicasDispersao.getExpessuraLinha();
+            for (int k = 0; k < expessuraLinha; k++) {
+                for (int j = 0; j < coordY.length - 1; j++) {
+                    g.drawLine(coordX[j], coordY[j] + k, coordX[j + 1], coordY[j + 1] + k);
+                    Color auxC = g.getColor();
+                    if (TecnicasDispersao.isDesenharPontos()) {
+                        g.setColor(Color.black);
+                        g.fillRect(coordX[j] - 2, coordY[j] - 2, 4, 4);
+                        g.fillRect(coordX[j + 1] - 2, coordY[j + 1] - 2, 4, 4);
+                    }
+                    g.setColor(auxC);
+                }
 
-    public void setACO(int[][] a) {
-        matrizPadroes = a;
-        repaint();
+            }
+        }
+        TecnicasDispersao.setPontosCoordParalelas(pontos);
+        if (TecnicasDispersao.isPintarPontoParalela()) {
+            int expessuraLinha = TecnicasDispersao.getExpessuraLinha() + 2;
+//            System.out.println("entrou aqui no panel");
+            g.setColor(Color.black);
+            for (int k = 0; k < expessuraLinha; k++) {
+                for (int i = 0; i < TecnicasDispersao.getPontosPintarParalela().size(); i++) {
+                    for (int j = 0; j < TecnicasDispersao.getPontosPintarParalela().get(i).getYs().length - 1; j++) {
+                        g.drawLine(TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j] + k, TecnicasDispersao.getPontosPintarParalela().get(i).getXs()[j + 1], TecnicasDispersao.getPontosPintarParalela().get(i).getYs()[j + 1] + k);
+                    }
+                }
+
+            }
+        }
     }
 
     private void iniciaVetorCores() {
-
         cores = new ArrayList<>();
-
+       
         cores.add(Color.RED);
         cores.add(Color.BLUE);
         cores.add(Color.GREEN);
@@ -361,12 +411,17 @@ public class GraficoDispersaoSimulacao extends javax.swing.JPanel {
         cores.add(new Color(78, 98, 137));
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createTitledBorder("Simulação"));
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Coordenadas Paralelas"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

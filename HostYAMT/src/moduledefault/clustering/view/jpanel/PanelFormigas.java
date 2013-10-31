@@ -32,9 +32,9 @@ import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.uteis.Índices;
 import moduledefault.clustering.view.frames.JFrameFormigas;
-import moduledefault.clustering.visualization.TecnicasDispersao;
-import moduledefault.clustering.visualization.GraficoDispersaoSimulacao;
-import moduledefault.clustering.visualization.JDialogData;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
+import moduledefault.clustering.visualization.panels.GraficoDispersaoSimulacao;
+import moduledefault.clustering.visualization.panels.JDialogData;
 import view.jpanel.JPanelClustering;
 
 /**
@@ -62,7 +62,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         listaText = new ArrayList<>();
         frameFormigas = j;
         this.objetoAtual = 0;
-//        buttonVisualizacao.setEnabled(false);
+        buttonVisualizacao.setEnabled(false);
         jButton1.setEnabled(false);
     }
 
@@ -542,7 +542,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
             case 0:
                 JOptionPane.showMessageDialog(null, "Selecione uma Medida de Distância.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 this.Executar_formigas.setEnabled(true);
-
                 return;
             case 1:
                 teste_distancia = 1;
@@ -600,7 +599,6 @@ public final class PanelFormigas extends javax.swing.JPanel {
         new Thread() {//instancia nova thread já implementando o método run()
             @Override
             public void run() {//sobrescreve o método run()   
-                long tempo = System.currentTimeMillis();
                 try {
                     // Executa o Agrupamento
                     Agrupamento(); // Executa o Agrupamento
@@ -609,27 +607,22 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                long tempofinal = System.currentTimeMillis();
                 try {
                     Recuperacao(teste_recuperação); //Recuperação
                 } catch (IOException ex) {
                     Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
                 imprimiAgrupamento();
                 imprimiRecuperacao(teste_recuperação);
-
                 setListaResultados();
                 jTextArea1.setText(getBuffer().toString());
                 setObjetoAtual();
                 Executar_formigas.setEnabled(true);
                 buttonVisualizacao.setEnabled(true);
+                jButton1.setEnabled(true);
             }
         }.start();//inicia a thread.
         numeroExecucoes++;
-
-        long tFinal = System.currentTimeMillis();
-        System.out.println("Tempo final = " + (tFinal - inicial));
     }//GEN-LAST:event_Executar_formigasActionPerformed
 
     private void Executar_testeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Executar_testeActionPerformed
@@ -665,6 +658,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         TecnicasDispersao.getInstance().setQntGrupos(qntGrupos);
         TecnicasDispersao.getInstance().setCombos();
         TecnicasDispersao.getInstance().setVisible(true);
+        TecnicasDispersao.getInstance().inicia();
     }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
     private void fundoSimulacaoComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_fundoSimulacaoComponentResized
@@ -868,9 +862,8 @@ public final class PanelFormigas extends javax.swing.JPanel {
         getBuffer().append("\n\n\n==================== " + m + " ====================");
         getBuffer().append("\n\tGrupos Formados: " + String.valueOf(clusters.size()));
         getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacao.getMedidaF()));
-        getBuffer().append("\n\tMedida R: "+String.valueOf(avaliacao.getIndiceAleatorio()));
+        getBuffer().append("\n\tMedida R: " + String.valueOf(avaliacao.getIndiceAleatorio()));
         getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
-        getBuffer().append("\n\tÍndice Idunn: " + String.valueOf(avaliacao.getIndiceDunn()));
         getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
         getBuffer().append("\n\nGrupos Formados:\n\n");
 //        for (int j = listaGrupos.get(getObjetoAtual())[0].length - 1; j >= 1; j--) {

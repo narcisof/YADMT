@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -23,7 +23,7 @@ public class QuadroPanel extends javax.swing.JPanel {
     int att2;
     Base base;
 
-    QuadroPanel(int i, int i0, Base matrizDados, int _att1, int _att2) {
+    public QuadroPanel(int i, int i0, Base matrizDados, int _att1, int _att2) {
         initComponents();
         opcao = i;
         numPanel = i0;
@@ -36,19 +36,19 @@ public class QuadroPanel extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (base != null) {
-          
-//                System.out.println("aqui");
-                int width = this.getWidth();
-                int height = this.getHeight();
-                float m = width /base.getDataSet().size() + 2;
-                int tamPixel = (int) m;
-                for (int i = 0; i < base.getDataSet().size(); i++) {
-                    int x = 50 + (int) (base.getDataSet().get(i).getAtributos().get((att1)) * (width - 120));
-                    int y = (height - 70) - (int) (base.getDataSet().get(i).getAtributos().get((att2)) * (height - 120));
-                    g.fillOval(x, y, tamPixel, tamPixel);
-                }
 
-            
+//                System.out.println("aqui");
+            int width = this.getWidth();
+            int height = this.getHeight();
+            float m = width / base.getDataSet().size() + 2;
+            int tamPixel = (int) m;
+            for (int i = 0; i < base.getDataSet().size(); i++) {
+                int x = 50 + (int) (base.getDataSet().get(i).getAtributos().get((att1)) * (width - 120));
+                int y = (height - 70) - (int) (base.getDataSet().get(i).getAtributos().get((att2)) * (height - 120));
+                g.fillOval(x, y, tamPixel, tamPixel);
+            }
+
+
         }
     }
 

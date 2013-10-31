@@ -8,7 +8,7 @@
  *
  * Created on 02/10/2010, 01:08:02
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

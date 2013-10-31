@@ -2,11 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package moduledefault.clustering.visualization;
+package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import moduledefault.clustering.visualization.Classes.Ponto;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 
 /**
  *
@@ -118,8 +120,8 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
                                 Ponto p = new Ponto(i, j, x, y, grupos[i][j], Color.black);
                                 pontos.add(p);
                                 g.fillOval(x, y, tamPixelY, tamPixelY);
-                                g.setColor(Color.black);
-                                g.drawOval(x, y, tamPixelY, tamPixelY);
+//                                g.setColor(Color.black);
+//                                g.drawOval(x, y, tamPixelY, tamPixelY);
                                 inicioX += tamPixelX;
                             }
                             inicioY += tamPixelY;
@@ -168,7 +170,7 @@ public class MatrizCorrelacao extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
-    void setMatrizGrupos(double[][] grupos) {
+    public void setMatrizGrupos(double[][] grupos) {
         this.grupos = grupos;
     }
 
