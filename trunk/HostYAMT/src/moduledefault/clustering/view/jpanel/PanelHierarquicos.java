@@ -30,6 +30,7 @@ import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Operações_Mat;
 import moduledefault.clustering.uteis.Padrao;
 import moduledefault.clustering.view.frames.JFrameHierarquicos;
+import moduledefault.clustering.visualization.FramePrincipal.TecnicasDispersao;
 import moduledefault.clustering.visualization.panels.JDialogData;
 
 /**
@@ -284,7 +285,13 @@ public class PanelHierarquicos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVisualizacaoActionPerformed
-        // TODO add your handling code here:
+        TecnicasDispersao.getInstance().setSetou(false);
+        TecnicasDispersao.getInstance().setMatrizDados(dados);
+        TecnicasDispersao.getInstance().setCluster(clusters);
+        TecnicasDispersao.getInstance().setQntGrupos(clusters.size());
+        TecnicasDispersao.getInstance().setCombos();
+        TecnicasDispersao.getInstance().setVisible(true);
+        TecnicasDispersao.getInstance().inicia();
     }//GEN-LAST:event_buttonVisualizacaoActionPerformed
 
     private void jComboBoxMetodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMetodosActionPerformed
@@ -514,8 +521,6 @@ public class PanelHierarquicos extends javax.swing.JPanel {
         return matriz;
     }
 
-
-
     synchronized void imprimiAgrupamento() {
         StringBuffer buffer = new StringBuffer();
         setBuffer(buffer);
@@ -605,7 +610,7 @@ public class PanelHierarquicos extends javax.swing.JPanel {
             ArrayList<Integer> grupo;
             String padrao;
             for (int i = 0; i < clusters.size(); i++) {
-                clusters.get(i).setNomeGrupo(dados.getClasses());
+//                clusters.get(i).setNomeGrupo(dados.getClasses());
                 getBuffer().append("Grupo " + (i + 1) + ":");
                 grupo = clusters.get(i).getSortGrupo();
                 for (int j = 0; j < grupo.size(); j++) {

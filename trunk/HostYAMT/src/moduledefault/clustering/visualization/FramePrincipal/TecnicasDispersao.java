@@ -2103,6 +2103,7 @@ public final class TecnicasDispersao extends javax.swing.JFrame {
     private void iniciaListaGrupos() {
         vetorGrupos = new ArrayList<>();
         String[] nomes = new String[qntGrupos];
+        System.out.println("qntGrupos = " + qntGrupos);
         for (int i = 0; i < qntGrupos; i++) {
             nomes[i] = "Cluster_" + (i + 1);
         }

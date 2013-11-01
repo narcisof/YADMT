@@ -32,7 +32,6 @@ public class KmeansSimulacao extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        System.out.println("chamou");
         int width = PanelKmeans.getPanelSimulacao().getWidth();
         int height = PanelKmeans.getPanelSimulacao().getHeight();
         float w = width / 2;
@@ -75,41 +74,22 @@ public class KmeansSimulacao extends javax.swing.JPanel {
                     soma += escala;
                 }
 
-
-                /////////////////////////////////////////////////////////////////
-
-                //ploto pontos
-                for (int i = 0; i < dados.getDataSet().size(); i++) {
-                    int x = 50 + (int) (dados.getDataSet().get(i).getAtributos().get((0)) * (width - 120));
-                    int y = (height - 70) - (int) (dados.getDataSet().get(i).getAtributos().get((1)) * (height - 120));
-                    for (int l = 0; l < dados.getClasses().size(); l++) {
-                        String classePadrao = dados.getDataSet().get(i).getClasse();
-                        String classeMomento = dados.getClasses().get(l);
-                        if (classeMomento.equals(classePadrao)) {
-                            g.setColor(cores.get(l));
-                        }
-                    }
-                    g.fillOval(x, y, tamPixel, tamPixel);
-                    g.setColor(Color.black);
-                    g.drawOval(x, y, tamPixel, tamPixel);
-
-                }
-
                 for (int i = 0; i < centroides.size(); i++) {
                     //pintar Centroide
                     int x = 50 + (int) (centroides.get(i).getAtributos().get(0) * (width - 120));
                     int y = (height - 70) - (int) (centroides.get(i).getAtributos().get(1) * (height - 120));
-                    g.setColor(Color.black);
-                    g.fillOval(x, y, tamPixel + 2, tamPixel + 2);
-                    for (int j = 0; j < padroesClusters.length; j++) {
-//                        System.out.println(centroides.get(i).getGrupo() + " " + padroesClusters[j]);
-                        if (centroides.get(i).getGrupo() == padroesClusters[j]) {
-                            int x3 = 50 + (int) (dados.getDataSet().get(j).getAtributos().get((0)) * (width - 120));
-                            int y3 = (height - 70) - (int) (dados.getDataSet().get(j).getAtributos().get((1)) * (height - 120));
-                            g.drawLine(x, y, x3, y3);
-                        }
-                    }
+                    g.setColor(cores.get(i));
+                    g.fillOval(x, y, tamPixel + 5, tamPixel + 5);
+                }
 
+                /////////////////////////////////////////////////////////////////
+
+                //ploto pontos
+                for (int i = 0; i < padroesClusters.length; i++) {
+                    int x = 50 + (int) (dados.getDataSet().get(i).getAtributos().get((0)) * (width - 120));
+                    int y = (height - 70) - (int) (dados.getDataSet().get(i).getAtributos().get((1)) * (height - 120));
+                    g.setColor(cores.get(padroesClusters[i]));
+                    g.fillOval(x, y, tamPixel + 2, tamPixel + 2);
                 }
             }
         }
@@ -433,11 +413,10 @@ public class KmeansSimulacao extends javax.swing.JPanel {
 
     public void setPadroesClusters(int[] _padroesClusters) {
         padroesClusters = _padroesClusters;
-        System.out.println("setou");
         this.repaint();
     }
 
-    public  void setDados(Base d) {
+    public void setDados(Base d) {
         dados = d;
     }
 

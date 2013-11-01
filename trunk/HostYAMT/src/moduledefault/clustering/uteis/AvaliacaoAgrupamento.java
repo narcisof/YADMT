@@ -46,7 +46,7 @@ public class AvaliacaoAgrupamento {
         ArrayList<Integer> pos = new ArrayList<>();
 
         for (int j = 0; j < clusters.size(); j++) {
-            clusters.get(j).setNomeGrupo("-1");
+            clusters.get(j).setNomeClasse("-1");
         }
 
         for (int i = 0; i < mconfusao.length; i++) {
@@ -54,7 +54,7 @@ public class AvaliacaoAgrupamento {
                 if (i == j) {
                     for (int k = 0; k < clusters.size(); k++) {
                         if (clusters.get(k).getNumClasse(classes.get(i)) == mconfusao[i][j]) {
-                            clusters.get(k).setNomeGrupo(classes.get(i));
+                            clusters.get(k).setNomeClasse(classes.get(i));
                             break;
                         }
                     }
@@ -66,7 +66,7 @@ public class AvaliacaoAgrupamento {
         for (int i = 0; i < clusters.size(); i++) {
             for (int j = 0; j < clusters.get(i).getGrupo().size(); j++) {
                 classepad[count] = clusters.get(i).getGrupo().get(j).getClasse();
-                agrupados[count] = clusters.get(i).getNomeGrupo();
+                agrupados[count] = clusters.get(i).getNomeClasse();
                 ++count;
                 if (count >= tamanhoBase) { //Parada por causa do watershed - ARRUMAR
                     break;

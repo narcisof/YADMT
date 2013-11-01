@@ -111,6 +111,8 @@ public class PanelKmeans extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         panelSimulacao = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jSlider1 = new javax.swing.JSlider();
 
         setPreferredSize(new java.awt.Dimension(718, 458));
 
@@ -214,10 +216,32 @@ public class PanelKmeans extends javax.swing.JPanel {
         );
         panelSimulacaoLayout.setVerticalGroup(
             panelSimulacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGap(0, 429, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Simulação", panelSimulacao);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Velocidade"));
+
+        jSlider1.setMaximum(1000);
+        jSlider1.setValue(1000);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -231,7 +255,8 @@ public class PanelKmeans extends javax.swing.JPanel {
                     .addComponent(bHistorico, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                     .addComponent(bVisualizacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(14, 14, 14)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -251,7 +276,9 @@ public class PanelKmeans extends javax.swing.JPanel {
                 .addComponent(bTabela)
                 .addGap(12, 12, 12)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1)
@@ -321,7 +348,7 @@ public class PanelKmeans extends javax.swing.JPanel {
                         SK.setCentroides(k.centroides);
                         SK.setPadroesClusters(k.getPadroesClusters());
                         SK.repaint();
-                        Thread.sleep(100);
+                        Thread.sleep(jSlider1.getMaximum() - jSlider1.getValue());
                     } catch (InterruptedException ex) {
                         Logger.getLogger(PanelKmeans.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -335,7 +362,6 @@ public class PanelKmeans extends javax.swing.JPanel {
                     if (((!k.lock) && (k.paradaAutomatica))) {
                         break;
                     }
-                    System.out.println("cont = " + cont);
                     cont++;
                 } while ((true));
 
@@ -459,9 +485,11 @@ public class PanelKmeans extends javax.swing.JPanel {
     private javax.swing.JButton jButtonExecuta;
     private static javax.swing.JComboBox jComboBoxDistancias;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane3;
+    private static javax.swing.JSlider jSlider1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea3;
     private java.awt.List listResultados;

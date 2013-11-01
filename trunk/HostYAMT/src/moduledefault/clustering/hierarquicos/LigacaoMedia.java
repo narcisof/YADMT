@@ -143,7 +143,7 @@ public class LigacaoMedia {
         System.out.println("Matriz Dendograma:");
         for (int i = 0; i < matrizDendograma.length; i++) {
             for (int j = 0; j < matrizDendograma[0].length; j++) {
-                System.out.print(" "+matrizDendograma[i][j]);
+                System.out.print(" " + matrizDendograma[i][j]);
             }
             System.out.println("");
         }
@@ -152,11 +152,11 @@ public class LigacaoMedia {
     public void clustering(int grupos) {
         for (int i = 0; i < matrizDendograma.length; i++) {
             for (int j = 0; j < matrizDendograma[0].length; j++) {
-                System.out.print(" "+matrizDendograma[i][j]);
+                System.out.print(" " + matrizDendograma[i][j]);
             }
             System.out.println("");
         }
-        
+
         int lineCluster = numeroPadroes - grupos;
         ArrayList<Integer> g = new ArrayList<>();
         for (int i = 0; i < numeroPadroes; i++) {
@@ -169,7 +169,8 @@ public class LigacaoMedia {
 
         for (int i = 0; i < g.size(); i++) {
             Cluster c = new Cluster();
-            c.setNomeGrupo("" + (i + 1));
+
+            c.setNomeGrupo("Cluster_" + (i + 1));
             for (int j = 0; j < numeroPadroes; j++) {
                 if (matrizDendograma[lineCluster][j] == g.get(i)) {
                     c.addPadrao(padroes.get(j));
@@ -179,7 +180,7 @@ public class LigacaoMedia {
         }
     }
 
-   public void calcMatrizDistancia() {
+    public void calcMatrizDistancia() {
         switch (opcaoDistancia) {
             case 1:
                 Chebyshev ch = new Chebyshev();
@@ -255,7 +256,6 @@ public class LigacaoMedia {
                 break;
         }
     }
-
 
     public int[][] getMatrizDendograma() {
         return matrizDendograma;
