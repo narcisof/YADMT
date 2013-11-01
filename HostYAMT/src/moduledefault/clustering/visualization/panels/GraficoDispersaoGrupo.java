@@ -116,6 +116,8 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
                     for (int j = 0; j < TecnicasDispersao.getVetorGrupos().size(); j++) {
                         String grupo = TecnicasDispersao.getVetorGrupos().get(j);
                         for (int l = 0; l < TecnicasDispersao.getClusters().size(); l++) {
+                            System.out.println("Tecnicasclusters = " + TecnicasDispersao.getClusters().get(l).getNomeGrupo());
+                            System.out.println("grupo = " + grupo);
                             if (TecnicasDispersao.getClusters().get(l).getNomeGrupo().equals(grupo)) {
                                 for (int i = 0; i < TecnicasDispersao.getClusters().get(l).getGrupo().size(); i++) {
                                     int padrao = TecnicasDispersao.getClusters().get(l).getGrupo().get(i).getNumero();
@@ -180,7 +182,7 @@ public class GraficoDispersaoGrupo extends javax.swing.JPanel {
     private void iniciaVetorCores() {
 
         cores = new ArrayList<>();
-      
+
         cores.add(Color.RED);
         cores.add(Color.BLUE);
         cores.add(Color.GREEN);

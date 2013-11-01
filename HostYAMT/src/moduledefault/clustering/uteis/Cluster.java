@@ -21,6 +21,7 @@ public class Cluster {
     private int pai;
     private int posicaoDend;
     private ArrayList<Neuronio> neuronios;
+    private String nomeClasse;
 
     public Cluster() {
         grupo = new ArrayList<>();
@@ -38,27 +39,27 @@ public class Cluster {
     public void setGrupo(ArrayList<Padrao> grupo) {
         this.grupo = grupo;
     }
-    
-    public void centroids(){
+
+    public void centroids() {
         centroides = new ArrayList<>();
-        
-        
+
+
         for (int i = 0; i < grupo.get(0).getAtributos().size(); i++) {
             centroides.add(0.0);
         }
-        
+
         for (int i = 0; i < grupo.size(); i++) {
             for (int j = 0; j < grupo.get(i).getAtributos().size(); j++) {
                 if (grupo.get(i).getNumero() == 94) {
                     System.out.println(grupo.get(i).getAtributos().get(j));
                 }
-                Double aux = centroides.get(j) + grupo.get(i).getAtributos().get(j);                
+                Double aux = centroides.get(j) + grupo.get(i).getAtributos().get(j);
                 centroides.set(j, aux);
             }
         }
-        
+
         for (int i = 0; i < centroides.size(); i++) {
-            Double aux = centroides.get(i)/grupo.size();      
+            Double aux = centroides.get(i) / grupo.size();
             centroides.set(i, aux);
         }
     }
@@ -143,12 +144,20 @@ public class Cluster {
 
     public void setNeuronios(ArrayList<Neuronio> neuronios) {
         this.neuronios = neuronios;
-    }   
-    
+    }
+
     public void addNeuronio(Neuronio neuronio) {
         if (this.neuronios == null) {
             this.neuronios = new ArrayList<>();
         }
         this.neuronios.add(neuronio);
+    }
+
+    public String getNomeClasse() {
+        return nomeClasse;
+    }
+
+    public void setNomeClasse(String nomeClasse) {
+        this.nomeClasse = nomeClasse;
     }
 }

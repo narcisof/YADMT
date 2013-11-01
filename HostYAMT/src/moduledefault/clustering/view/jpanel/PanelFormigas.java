@@ -462,7 +462,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Progresso"));
 
         jSlider1.setMaximum(1000);
-        jSlider1.setValue(500);
+        jSlider1.setValue(1000);
         jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSlider1StateChanged(evt);
@@ -530,7 +530,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -776,7 +776,7 @@ public final class PanelFormigas extends javax.swing.JPanel {
                 getOperar().iteracao();
                 setDispersao(getOperar().getMatriz_padrao());
                 repaint();
-                Thread.sleep(0);
+                Thread.sleep(jSlider1.getMaximum() - jSlider1.getValue());
                 vai((getOperar().getCont() * 100) / getOperar().getCont2());
             } catch (IOException ex) {
                 Logger.getLogger(PanelFormigas.class.getName()).log(Level.SEVERE, null, ex);
