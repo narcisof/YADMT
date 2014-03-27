@@ -100,6 +100,10 @@ public class ConfusionMatrix {
         matrix[classes.indexOf(real)][classes.indexOf(predict)]++;
         updated=true;
     }
+    public void setValue(Object real, Object predict, Integer value){
+        matrix[classes.indexOf(real)][classes.indexOf(predict)] = value;
+        updated=true;
+    }
 
     /**
      * returns the value
@@ -157,18 +161,36 @@ public class ConfusionMatrix {
 
     @Override
     public String toString(){
+        Integer maior = 0;
+        for (int i= 0; i < classes.size(); i++) {
+            for (int j= 0; j < classes.size(); j++) {
+                maior = maior < matrix[i][j] ? matrix[i][j]:maior;
+            }
+        }
+        Integer sp = maior.toString().length();
+        
         String str = "";
         for (int i= 0; i < classes.size(); i++) {
-            str+= new Character((char)('a' + i)) + "\t";
+            str += space(sp);
+            str+= new Character((char)('a' + i));// + "\t";
         }
         str+= "\n";
         for (int i= 0; i < classes.size(); i++) {
             for (int j= 0; j < classes.size(); j++) {
-                str+= matrix[i][j]+"\t";
+                str+= space(sp+1-new Integer(matrix[i][j]).toString().length());
+                str+= matrix[i][j];//+"\t";
             }
-            str+= new Character((char)('a' + i)) + " = " + classes.get(i) + "\n";
+            str+= "  "+new Character((char)('a' + i)) + " = " + classes.get(i) + "\n";
         }
         return str;
+    }
+    
+    private String space(Integer n){
+        String s = "";
+        for (int i = 0; i < n; i++) {
+            s+=" ";
+        }
+        return s;
     }
     
 }
