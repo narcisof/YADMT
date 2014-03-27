@@ -20,7 +20,7 @@ import rna.treinamento.BackPropagationMLP;
 
 @ModuleAnnotation(name = "RNA Multlayer Perceptron - MLP")
 @ClassifierModuleAnnotation
-public class ModuloMLP implements Serializable, ClassifierModuleInterface {
+public abstract class ModuloMLP implements Serializable, ClassifierModuleInterface {
 
     private double taxaAprendizado = 0.8;
     private double momento = 0.5;
