@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -218,6 +219,7 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroup = new javax.swing.ButtonGroup();
         jPanel = new javax.swing.JPanel();
@@ -237,18 +239,34 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
         jScrollPaneResult = new javax.swing.JScrollPane();
         jListResult = new javax.swing.JList();
 
-        jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Técnica de Classificação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 16))); // NOI18N
+        jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Técnica de Classificação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 18))); // NOI18N
+        jPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabelAvailableTechinics.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jLabelAvailableTechinics.setFont(new java.awt.Font("Calibri", 0, 12));
         jLabelAvailableTechinics.setText("Técnica a ser utilizada:"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 27, 0, 0);
+        jPanel.add(jLabelAvailableTechinics, gridBagConstraints);
 
         jComboBoxAvailableTechinics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxAvailableTechinicsActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 300;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(1, 36, 0, 0);
+        jPanel.add(jComboBoxAvailableTechinics, gridBagConstraints);
 
-        jButtonConfiguration.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        jButtonConfiguration.setFont(new java.awt.Font("Calibri", 0, 13));
         jButtonConfiguration.setText("Configurações");
         jButtonConfiguration.setEnabled(false);
         jButtonConfiguration.addActionListener(new java.awt.event.ActionListener() {
@@ -256,6 +274,13 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                 jButtonConfigurationActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 30.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 0, 0);
+        jPanel.add(jButtonConfiguration, gridBagConstraints);
 
         jPanelPartition.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Particionamento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -275,8 +300,19 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
         );
         jPanelPartitionLayout.setVerticalGroup(
             jPanelPartitionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPanePartition, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+            .addComponent(jScrollPanePartition, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 180;
+        gridBagConstraints.ipady = 80;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 35.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        jPanel.add(jPanelPartition, gridBagConstraints);
 
         jPanelMeasures.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avaliação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -291,17 +327,45 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
         jPanelMeasures.setLayout(jPanelMeasuresLayout);
         jPanelMeasuresLayout.setHorizontalGroup(
             jPanelMeasuresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+            .addGap(0, 205, Short.MAX_VALUE)
+            .addGroup(jPanelMeasuresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
         );
         jPanelMeasuresLayout.setVerticalGroup(
             jPanelMeasuresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+            .addGap(0, 123, Short.MAX_VALUE)
+            .addGroup(jPanelMeasuresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 180;
+        gridBagConstraints.ipady = 80;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 35.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        jPanel.add(jPanelMeasures, gridBagConstraints);
 
         jScrollPaneRunning.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPaneRunning.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 363;
+        gridBagConstraints.ipady = 320;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 6, 0, 6);
+        jPanel.add(jScrollPaneRunning, gridBagConstraints);
 
-        jButtonVisualize.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        jButtonVisualize.setFont(new java.awt.Font("Calibri", 0, 13));
         jButtonVisualize.setText("Visualizar Modelo");
         jButtonVisualize.setEnabled(false);
         jButtonVisualize.addActionListener(new java.awt.event.ActionListener() {
@@ -309,8 +373,14 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                 jButtonVisualizeActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 6);
+        jPanel.add(jButtonVisualize, gridBagConstraints);
 
-        jButtonTrain.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        jButtonTrain.setFont(new java.awt.Font("Calibri", 0, 13));
         jButtonTrain.setText("Treinar");
         jButtonTrain.setEnabled(false);
         jButtonTrain.addActionListener(new java.awt.event.ActionListener() {
@@ -318,6 +388,12 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                 jButtonTrainActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
+        jPanel.add(jButtonTrain, gridBagConstraints);
 
         jButtonClassify.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         jButtonClassify.setText("Classificar");
@@ -327,6 +403,12 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                 jButtonClassifyActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 0);
+        jPanel.add(jButtonClassify, gridBagConstraints);
 
         jScrollPaneResult.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
 
@@ -344,77 +426,26 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
         });
         jScrollPaneResult.setViewportView(jListResult);
 
-        javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
-        jPanel.setLayout(jPanelLayout);
-        jPanelLayout.setHorizontalGroup(
-            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jComboBoxAvailableTechinics, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonConfiguration)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanelLayout.createSequentialGroup()
-                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelLayout.createSequentialGroup()
-                                .addComponent(jLabelAvailableTechinics)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanelLayout.createSequentialGroup()
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanelPartition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanelMeasures, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPaneResult, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPaneRunning)
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addComponent(jButtonTrain)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonClassify)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                                        .addComponent(jButtonVisualize)))))
-                        .addContainerGap())))
-        );
-        jPanelLayout.setVerticalGroup(
-            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelLayout.createSequentialGroup()
-                .addComponent(jLabelAvailableTechinics)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxAvailableTechinics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonConfiguration))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelLayout.createSequentialGroup()
-                        .addComponent(jPanelPartition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanelMeasures, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPaneResult, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
-                    .addComponent(jScrollPaneRunning))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonTrain)
-                    .addComponent(jButtonClassify)
-                    .addComponent(jButtonVisualize)))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 30.0;
+        jPanel.add(jScrollPaneResult, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
+            .addGap(0, 666, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 511, Short.MAX_VALUE)
+            .addGap(0, 501, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -529,6 +560,8 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
     private void jButtonConfigurationActionPerformed() {
         JDialogConfig jDialogConfig = new JDialogConfig(FacadeHost.getViewMain(), true);
         jDialogConfig.addPanel(classifierModule.getPainelConfig());
+        jDialogConfig.setTitle("Configurações do Classificador");
+        jDialogConfig.setSize(jDialogConfig.getWidth()<300?300:jDialogConfig.getWidth(), jDialogConfig.getHeight());
         classifierModule.setJDialogConfig(jDialogConfig);
         jDialogConfig.setVisible(true);
     }
@@ -711,7 +744,22 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                     jTextAreaRunning.append(confusionMatrix.toString() + "\n\n");
                     arrayListConfusionMatrixs.add(confusionMatrix);
                 }
-
+                
+                //@tsippert
+                if(baseClassifiers.length>1){
+                    ConfusionMatrix confusionMatrixF = new ConfusionMatrix();
+                    confusionMatrixF.setClasses(base.getClasses());
+                    for (ConfusionMatrix confusionMatrix : arrayListConfusionMatrixs) {
+                        for (Object classI : confusionMatrix.getClasses()) {
+                            for (Object classJ : confusionMatrix.getClasses()) {
+                                confusionMatrixF.setValue(classI, classJ, confusionMatrixF.getValue(classI, classJ) + confusionMatrix.getValue(classI, classJ));
+                            }
+                        }
+                    }
+                    jTextAreaRunning.append("\n============== Matriz de Confusão Consolidada ==============\n");
+                    jTextAreaRunning.append(confusionMatrixF.toString() + "\n\n");
+                }
+                
                 tempo = System.currentTimeMillis() -tempo;
                 jTextAreaRunning.append(util.Util.getHoraMinSegMiliSeg(tempo) + "\n\n");
 
@@ -721,7 +769,7 @@ public class JPanelClassify extends javax.swing.JPanel implements Observer, Pers
                         jTextAreaRunning.append("==============\n");
                         arrayListEvaluationMetricModuleConfigureds.get(i).setTextArea(jTextAreaRunning);
                         arrayListEvaluationMetricModuleConfigureds.get(i).evaluation(arrayListConfusionMatrixs.toArray(new ConfusionMatrix[0]));
-                        jTextAreaRunning.append(" ==============\n\n");
+                        jTextAreaRunning.append("==============\n\n");
                     }
                 }
 
