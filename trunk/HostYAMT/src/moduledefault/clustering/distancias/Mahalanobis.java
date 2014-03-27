@@ -22,33 +22,31 @@ public class Mahalanobis {
     double[][] matrizDistancias;
 
     public Mahalanobis(Base teste) {
-//        System.out.println("maha");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
 
     public Mahalanobis() {
+
     }
 
     public double distancia(List<Double> vet1, List<Double> vet2) {
-        double[] medias = new double[vet1.size()];
-        double somador = 0;
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        double somatorioGeral = 0;
         for (int i = 0; i < vet1.size(); i++) {
-            medias[i] = (vet1.get(i) + vet2.get(i)) / vet1.size();
-            somador = 0;
+            somatorio1 += vet1.get(i);
         }
-        somador = 0;
-        double[][] cov = new double[vet1.size()][vet1.size()];
-        for (int j = 0; j < vet1.size(); j++) {
-            for (int k = 0; k < vet2.size(); k++) {
-                for (int i = 0; i < vet1.size(); i++) {
-                    somador += (vet1.get(j) - medias[j]) * (vet2.get(k) - medias[k]);
-                }
-                cov[j][k] = somador / ((vet1.size()));
-                somador = 0;
-            }
+        for (int i = 0; i < vet2.size(); i++) {
+            somatorio2 += vet2.get(i);
         }
-
+        for (int i = 0; i < vet2.size(); i++) {
+            somatorioGeral += vet2.get(i) * vet1.get(i);
+        }
+        double parte1 = (1.0 / vet1.size()) * somatorio1 * somatorio2;
+        double parte2 = somatorioGeral - parte1;
+        double[][] cov = new double[1][1];
+        cov[0][0] = parte2 / vet1.size();
         Matrix matrix = new Matrix(cov);
         Matrix inversa_matrix;
         inversa_matrix = matrix.inverse();
@@ -85,9 +83,9 @@ public class Mahalanobis {
     }
 
     public void distancia() {
-        double[] medias = new double[base.getAtributos().size() - 1];
+        double[] medias = new double[base.getDataSet().get(0).getAtributos().size()];
         double somador = 0;
-        for (int i = 0; i < base.getAtributos().size() - 1; i++) {
+        for (int i = 0; i < base.getDataSet().get(0).getAtributos().size(); i++) {
             for (int j = 0; j < base.getDataSet().size(); j++) {
                 somador += base.getDataSet().get(j).getAtributos().get(i);
             }
@@ -95,17 +93,16 @@ public class Mahalanobis {
             somador = 0;
         }
         somador = 0;
-        double[][] cov = new double[base.getAtributos().size() - 1][base.getAtributos().size() - 1];
-        for (int j = 0; j < base.getAtributos().size() - 1; j++) {
-            for (int k = 0; k < base.getAtributos().size() - 1; k++) {
-                for (int i = 0; i < base.getAtributos().size() - 1; i++) {
+        double[][] cov = new double[base.getDataSet().get(0).getAtributos().size()][base.getDataSet().get(0).getAtributos().size()];
+        for (int j = 0; j < base.getDataSet().get(0).getAtributos().size(); j++) {
+            for (int k = 0; k < base.getDataSet().get(0).getAtributos().size(); k++) {
+                for (int i = 0; i < base.getDataSet().size(); i++) {
                     somador += (base.getDataSet().get(i).getAtributos().get(j) - medias[j]) * (base.getDataSet().get(i).getAtributos().get(k) - medias[k]);
                 }
-                cov[j][k] = somador / ((base.getAtributos().size()) - 1);
+                cov[j][k] = somador / ((base.getDataSet().size()));
                 somador = 0;
             }
         }
-
         Matrix matrix = new Matrix(cov);
         Matrix inversa_matrix;
         inversa_matrix = matrix.inverse();

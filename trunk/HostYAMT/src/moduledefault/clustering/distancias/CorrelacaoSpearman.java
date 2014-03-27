@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.TreeMap;
 import moduledefault.clustering.kmeans.Centroide;
 import moduledefault.clustering.uteis.Base;
+import moduledefault.clustering.uteis.Padrao;
 
 /**
  *
@@ -38,7 +39,6 @@ public class CorrelacaoSpearman {
     double[][] matrizDistancias;
 
     public CorrelacaoSpearman(Base b) {
-//        System.out.println("spearman");
         base = b.copy();
         setMatrizDistancias(b.getDataSet().size());
     }
@@ -113,7 +113,6 @@ public class CorrelacaoSpearman {
             }
         }
         CorrelacaoPearson cP = new CorrelacaoPearson();
-
         return cP.distancia(x_rank, y_rank);
     }
 
@@ -144,5 +143,41 @@ public class CorrelacaoSpearman {
 
     public void setMatrizDistancias(int linhas) {
         this.matrizDistancias = new double[linhas][linhas];
+    }
+    
+      public double[][] trasnpoe(Base base) {
+        if (base != null) {
+            double[][] resultado = new double[base.getDataSet().get(0).getAtributos().size()][base.getDataSet().size()];
+            double[][] matriz = new double[base.getDataSet().size()][base.getDataSet().get(0).getAtributos().size()];
+
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[0].length; j++) {
+                    matriz[i][j] = base.getDataSet().get(i).getAtributos().get(j);
+                }
+            }
+            for (int i = 0; i < resultado.length; i++) {
+                for (int j = 0; j < resultado[0].length; j++) {
+                    resultado[i][j] = matriz[j][i];
+                }
+            }
+            Base auxBase = base.copy();
+            auxBase.setDataSet();
+            int grupo = 0;
+            for (int i = 0; i < resultado.length; i++) {
+                Padrao p = new Padrao();
+                p.setNumero(grupo);
+                ++grupo;
+                for (int j = 0; j < resultado[0].length; j++) {
+                    p.addAtributos(resultado[i][j]);
+
+                }
+//            p.setClasse(Base.getOutput()[i].toString());
+                auxBase.addDataSet(p);
+            }
+            CorrelacaoSpearman c = new CorrelacaoSpearman(auxBase);
+            c.distancia();
+            return c.getMatrizDistancias();
+        }
+        return null;
     }
 }

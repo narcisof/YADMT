@@ -6,6 +6,7 @@ package moduledefault.clustering.visualization.panels;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import moduledefault.clustering.distancias.PValue;
 import moduledefault.clustering.uteis.Base;
 
 /**
@@ -22,20 +23,25 @@ public class QuadroPanel extends javax.swing.JPanel {
     int att1;
     int att2;
     Base base;
+    String nome1;
+    String nome2;
 
-    public QuadroPanel(int i, int i0, Base matrizDados, int _att1, int _att2) {
+    public QuadroPanel(int i, int i0, Base matrizDados, int _att1, int _att2, String n1, String n2) {
         initComponents();
         opcao = i;
         numPanel = i0;
         base = matrizDados;
         att1 = _att1;
         att2 = _att2;
+        nome1 = n1;
+        nome2 = n2;
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (base != null) {
+            g.drawString(nome1 + "/" + nome2, 10, 10);
 
 //                System.out.println("aqui");
             int width = this.getWidth();
@@ -45,6 +51,11 @@ public class QuadroPanel extends javax.swing.JPanel {
             for (int i = 0; i < base.getDataSet().size(); i++) {
                 int x = 50 + (int) (base.getDataSet().get(i).getAtributos().get((att1)) * (width - 120));
                 int y = (height - 70) - (int) (base.getDataSet().get(i).getAtributos().get((att2)) * (height - 120));
+                if (PValue.getPValue(base.getDataSet().get(i).getAtributos().get((att1)), base.getDataSet().get(i).getAtributos().get((att2)))) {
+                    g.setColor(Color.GREEN);
+                } else {
+                    g.setColor(Color.black);
+                }
                 g.fillOval(x, y, tamPixel, tamPixel);
             }
 

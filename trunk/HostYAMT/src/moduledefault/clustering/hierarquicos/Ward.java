@@ -2,14 +2,6 @@ package moduledefault.clustering.hierarquicos;
 
 import java.util.ArrayList;
 import java.util.List;
-import moduledefault.clustering.distancias.Chebyshev;
-import moduledefault.clustering.distancias.CityBlock;
-import moduledefault.clustering.distancias.CorrelacaoKendallTau;
-import moduledefault.clustering.distancias.CorrelacaoPearson;
-import moduledefault.clustering.distancias.CorrelacaoSpearman;
-import moduledefault.clustering.distancias.Cosseno;
-import moduledefault.clustering.distancias.DistanciaEuclidiana;
-import moduledefault.clustering.distancias.Mahalanobis;
 import moduledefault.clustering.uteis.Cluster;
 import moduledefault.clustering.uteis.Padrao;
 

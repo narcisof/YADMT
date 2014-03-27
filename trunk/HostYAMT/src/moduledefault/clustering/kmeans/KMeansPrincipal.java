@@ -37,11 +37,11 @@ public class KMeansPrincipal {
     int[] padroesClusters;
     public boolean lock = true;
     private ArrayList<Historico> historico;
-    private float perct;
+    private double perct;
     int[][] m;
     KmeansSimulacao SK;
 
-    public KMeansPrincipal(Base teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, int seeds, int maxIteracoes, int iteracoesParada, int distancia, KmeansSimulacao sk) {
+    public KMeansPrincipal(Base teste, int numK, boolean paradaAutomatica, boolean seedAleatorios, double seeds, int maxIteracoes, int iteracoesParada, int distancia, KmeansSimulacao sk) {
         this.dados = teste;
         this.numK = numK;
         this.distancia = distancia;
@@ -50,7 +50,7 @@ public class KMeansPrincipal {
         if (seedAleatorios) {
             setCentroidesInicialAleatorio();
         } else {
-            perct = seeds / 100;
+            perct = seeds / 100.0;
             setCentroidesInicialPorcentagem();
         }
         this.paradaAutomatica = paradaAutomatica;
@@ -83,7 +83,6 @@ public class KMeansPrincipal {
 
 //        mConfusao();
 //        imprimiHistorico();
-
     }
 
     private void setMatrizAtributos() {
@@ -137,7 +136,7 @@ public class KMeansPrincipal {
             for (int w = 0; w < porcentagem; w++) {
                 int padraoSorteado = r.nextInt(150);
                 for (int e = 0; e < this.dados.getAtributos().size() - 1; e++) {
-                    medias[e] += this.dados.getDataSet().get(padraoSorteado).getAtributos().get(e + 1);
+                    medias[e] += this.dados.getDataSet().get(padraoSorteado).getAtributos().get(e);
                 }
             }
             for (int e = 0; e < this.dados.getAtributos().size() - 1; e++) {
@@ -151,7 +150,6 @@ public class KMeansPrincipal {
     }
 
     public double sorteia(double minimo, double maximo) {
-
         Random r = new Random();
         final double H = maximo; // sorteia entre 1 e 60
         final double L = minimo;
@@ -184,6 +182,8 @@ public class KMeansPrincipal {
                 break;
             case 5:
                 setMatrizDistancia(CorrelacaoSpearman.distanciaKmeans(dados.getDataSet().size(), numK, matrizAtributos, centroides));
+                break;
+            default:
                 break;
         }
 
@@ -222,7 +222,12 @@ public class KMeansPrincipal {
         for (int i = 0; i < this.numK; i++) {
             Centroide aux = new Centroide((this.dados.getAtributos().size() - 1));
             for (int j = 0; j < aux.getAtributos().size(); j++) {
-                aux.getAtributos().set(j, (vetorMedias[i][j] / vetorSomatoria[i]));
+                if (vetorSomatoria[i] != 0) {
+                    aux.getAtributos().set(j, (vetorMedias[i][j] / vetorSomatoria[i]));
+                } else {
+                    double zero = 0;
+                    aux.getAtributos().set(j, zero);
+                }
             }
             auxArray.add(aux);
         }
@@ -273,7 +278,6 @@ public class KMeansPrincipal {
 //                    }
 //                }
 //            }
-
             ArrayList<Integer> grupo;
 
             //imprime em tela o agrupamento realizado

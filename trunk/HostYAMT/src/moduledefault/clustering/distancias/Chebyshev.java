@@ -22,11 +22,9 @@ public class Chebyshev {
     public Chebyshev(Base teste) {
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
-//        System.out.println("Cheb");
     }
 
     public Chebyshev() {
-         System.out.println("Cheb");
     }
 
     public double distancia(List<Double> vet1, List<Double> vet2) {
@@ -86,6 +84,7 @@ public class Chebyshev {
     public void setMatrizDistancias(int linhas) {
         this.matrizDistancias = new double[linhas][linhas];
     }
+
     public void padronizacaDistancias(double[][] matriz) {
         double menor = 0;
         double maior = 0;
