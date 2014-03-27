@@ -140,23 +140,10 @@ public class LigacaoMedia {
             ////////////////////
             ++q;
         }
-        System.out.println("Matriz Dendograma:");
-        for (int i = 0; i < matrizDendograma.length; i++) {
-            for (int j = 0; j < matrizDendograma[0].length; j++) {
-                System.out.print(" " + matrizDendograma[i][j]);
-            }
-            System.out.println("");
-        }
+
     }
 
     public void clustering(int grupos) {
-        for (int i = 0; i < matrizDendograma.length; i++) {
-            for (int j = 0; j < matrizDendograma[0].length; j++) {
-                System.out.print(" " + matrizDendograma[i][j]);
-            }
-            System.out.println("");
-        }
-
         int lineCluster = numeroPadroes - grupos;
         ArrayList<Integer> g = new ArrayList<>();
         for (int i = 0; i < numeroPadroes; i++) {

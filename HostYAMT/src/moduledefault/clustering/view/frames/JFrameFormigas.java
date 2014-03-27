@@ -4,7 +4,13 @@
  */
 package moduledefault.clustering.view.frames;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextField;
+import moduledefault.clustering.uteis.ArquivoFormigas;
+import moduledefault.clustering.uteis.Arquivos;
 
 /**
  *
@@ -28,8 +34,8 @@ public class JFrameFormigas extends javax.swing.JFrame {
         setFase(Double.parseDouble(this.textFase.getText()));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        abrir.setEnabled(false);
-        salvar.setEnabled(false);
+        abrir.setEnabled(true);
+        salvar.setEnabled(true);
     }
     int sigma;
     int sigmaMaximo;
@@ -234,8 +240,18 @@ public class JFrameFormigas extends javax.swing.JFrame {
         );
 
         abrir.setText("Abrir");
+        abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirActionPerformed(evt);
+            }
+        });
 
         salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarActionPerformed(evt);
+            }
+        });
 
         buttonOK.setText("OK");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -303,16 +319,7 @@ public class JFrameFormigas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        setSigma(Integer.parseInt(this.textSigma.getText()));
-        setSigmaMaximo(Integer.parseInt(this.textSigmaMaximo.getText()));
-        setSigmaMinimo(Integer.parseInt(this.textSigmaMinimo.getText()));
-        setSigmaControle(Integer.parseInt(this.textControleSigma.getText()));
-        setAlfa(Double.parseDouble(this.textAlfa.getText()));
-        setAlfaMaximo(Double.parseDouble(this.textAlfaMaximo.getText()));
-        setAlfaMinimo(Double.parseDouble(this.textAlfaMinimo.getText()));
-        setAlfaControle(Double.parseDouble(this.textControleAlfa.getText()));
-        setFase(Double.parseDouble(this.textFase.getText()));
-        this.setVisible(false);
+        setValores();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void textFaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFaseActionPerformed
@@ -327,6 +334,40 @@ public class JFrameFormigas extends javax.swing.JFrame {
         JFrameSobreACO aco = new JFrameSobreACO(this.getLocation(), this.getWidth());
         aco.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        setValores();
+        ArquivoFormigas aF = new ArquivoFormigas(sigma, sigmaMaximo, sigmaMinimo, sigmaControle, alfa, alfaMaximo, alfaMinimo, alfaControle, fase);
+        Arquivos fileF = new Arquivos();
+        fileF.salvarFormigas(aF);
+    }//GEN-LAST:event_salvarActionPerformed
+
+    private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
+        Arquivos fileF = new Arquivos();
+        try {
+            ArquivoFormigas aF = fileF.abrirFormigas();
+            setSigma(aF.getSigma());
+            setSigmaMaximo(aF.getSigmaMaximo());
+            setSigmaMinimo(aF.getSigmaMinimo());
+            setSigmaControle(aF.getSigmaControle());
+            setAlfa(aF.getAlfa());
+            setAlfaMaximo(aF.getAlfaMaximo());
+            setAlfaMinimo(aF.getAlfaMinimo());
+            setAlfaControle(aF.getAlfaControle());
+            setFase(aF.getFase());
+            textSigma.setText(String.valueOf(getSigma()));
+            textSigmaMaximo.setText(String.valueOf(getSigmaMaximo()));
+            textSigmaMinimo.setText(String.valueOf(getSigmaMinimo()));
+            textControleSigma.setText(String.valueOf(getSigmaControle()));
+            textAlfa.setText(String.valueOf(getAlfa()));
+            textAlfaMaximo.setText(String.valueOf(getAlfaMaximo()));
+            textAlfaMinimo.setText(String.valueOf(getAlfaMinimo()));
+            textControleAlfa.setText(String.valueOf(getAlfaControle()));
+            textFase.setText(String.valueOf(getFase()));
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameFormigas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_abrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -462,5 +503,18 @@ public class JFrameFormigas extends javax.swing.JFrame {
 
     public void setSigmaControle(int sigmaControle) {
         this.sigmaControle = sigmaControle;
+    }
+
+    private void setValores() {
+        setSigma(Integer.parseInt(this.textSigma.getText()));
+        setSigmaMaximo(Integer.parseInt(this.textSigmaMaximo.getText()));
+        setSigmaMinimo(Integer.parseInt(this.textSigmaMinimo.getText()));
+        setSigmaControle(Integer.parseInt(this.textControleSigma.getText()));
+        setAlfa(Double.parseDouble(this.textAlfa.getText()));
+        setAlfaMaximo(Double.parseDouble(this.textAlfaMaximo.getText()));
+        setAlfaMinimo(Double.parseDouble(this.textAlfaMinimo.getText()));
+        setAlfaControle(Double.parseDouble(this.textControleAlfa.getText()));
+        setFase(Double.parseDouble(this.textFase.getText()));
+        this.setVisible(false);
     }
 }

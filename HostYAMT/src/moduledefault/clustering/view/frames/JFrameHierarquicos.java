@@ -4,6 +4,11 @@
  */
 package moduledefault.clustering.view.frames;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import moduledefault.clustering.uteis.ArquivoHierarquicos;
+import moduledefault.clustering.uteis.Arquivos;
 import moduledefault.clustering.view.jpanel.PanelSOM;
 
 /**
@@ -106,8 +111,18 @@ public class JFrameHierarquicos extends javax.swing.JFrame {
         );
 
         abrir.setText("Abrir");
+        abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirActionPerformed(evt);
+            }
+        });
 
         salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarActionPerformed(evt);
+            }
+        });
 
         buttonOK.setText("OK");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -181,14 +196,31 @@ public class JFrameHierarquicos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        this.numK = Integer.valueOf(numClusters.getText());
-        PanelSOM.setNumGrupos(numK);
-        this.setVisible(false);
+        setValores();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_buttonCancelarActionPerformed
+
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        setValores();
+        ArquivoHierarquicos aH = new ArquivoHierarquicos(this.numK);
+        Arquivos fileF = new Arquivos();
+        fileF.salvarHierarquicos(aH);
+    }//GEN-LAST:event_salvarActionPerformed
+
+    private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
+        Arquivos fileF = new Arquivos();
+        try {
+            ArquivoHierarquicos aH = fileF.abrirHierarquicos();
+            setNumK(aH.getNumK());
+            this.numClusters.setText(String.valueOf(getNumK()));
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameHierarquicos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_abrirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrir;
     private javax.swing.JButton buttonCancelar;
@@ -209,5 +241,11 @@ public class JFrameHierarquicos extends javax.swing.JFrame {
 
     public void setNumK(int k) {
         this.numK = k;
+    }
+
+    private void setValores() {
+        this.numK = Integer.valueOf(numClusters.getText());
+        PanelSOM.setNumGrupos(numK);
+        this.setVisible(false);
     }
 }

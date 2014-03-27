@@ -34,7 +34,6 @@ public class LigacaoCompleta {
         this.padroes = padroes;
         this.numeroPadroes = padroes.size();
         this.opcaoDistancia = _opcaoDistancia;
-        System.out.println("completa");
     }
 
     public void ligacaoCompleta() {
@@ -106,13 +105,6 @@ public class LigacaoCompleta {
             }
             ++q;
         }
-//        System.out.println("Matriz Dendograma:");
-//        for (int i = 0; i < matrizDendograma.length; i++) {
-//            for (int j = 0; j < matrizDendograma[0].length; j++) {
-//                System.out.print(" " + matrizDendograma[i][j]);
-//            }
-//            System.out.println("");
-//        }
     }
 
     public void clustering(int grupos) {
@@ -140,7 +132,7 @@ public class LigacaoCompleta {
     }
 
     public void calcMatrizDistancia() {
-        System.out.println("opcao = "+opcaoDistancia);
+        
         switch (opcaoDistancia) {
             case 1:
                 Chebyshev ch = new Chebyshev();

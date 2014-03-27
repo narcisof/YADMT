@@ -22,13 +22,11 @@ public class DistanciaEuclidiana {
     double[][] matrizDistancias;
 
     public DistanciaEuclidiana(Base teste) {
-        System.out.println("euclidiana");
         base = teste.copy();
         setMatrizDistancias(teste.getDataSet().size());
     }
 
     public DistanciaEuclidiana() {
-        System.out.println("euclidiana");
     }
 
     public void distancia() {
@@ -71,10 +69,7 @@ public class DistanciaEuclidiana {
     }
 
     public void padronizacaDistancias(double[][] matriz) {
-        double menor = 0;
         double maior = 0;
-        int cont = 0;
-
         maior = Double.MIN_VALUE;
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {

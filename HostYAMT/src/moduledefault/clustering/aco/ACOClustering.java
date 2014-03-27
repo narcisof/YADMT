@@ -90,11 +90,12 @@ public final class ACOClustering {
                             } else {
                                 if (teste_distancia == 5) {
                                     CorrelacaoSpearman c = new CorrelacaoSpearman(teste);
-//                                    c.distancia();
+                                    c.distancia();
                                     matriz_distancias = c.getMatrizDistancias();
                                 } else{
                                     if(teste_distancia == 3){
                                         CorrelacaoKendallTau c = new CorrelacaoKendallTau(teste);
+                                        c.distancia();
                                         matriz_distancias = c.getMatrizDistancias();
                                     }
                                 }

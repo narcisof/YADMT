@@ -50,9 +50,6 @@ public class Cluster {
 
         for (int i = 0; i < grupo.size(); i++) {
             for (int j = 0; j < grupo.get(i).getAtributos().size(); j++) {
-                if (grupo.get(i).getNumero() == 94) {
-                    System.out.println(grupo.get(i).getAtributos().get(j));
-                }
                 Double aux = centroides.get(j) + grupo.get(i).getAtributos().get(j);
                 centroides.set(j, aux);
             }

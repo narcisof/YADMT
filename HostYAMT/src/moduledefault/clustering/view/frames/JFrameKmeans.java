@@ -4,6 +4,12 @@
  */
 package moduledefault.clustering.view.frames;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import moduledefault.clustering.uteis.ArquivoKmeans;
+import moduledefault.clustering.uteis.Arquivos;
+
 /**
  *
  * @author Mateus
@@ -29,7 +35,8 @@ public class JFrameKmeans extends javax.swing.JFrame {
             setParadaAutomatica(false);
         }
         setMaxIteracoes(Integer.parseInt(textMaxIteracoes.getText()));
-        if (comboSeeds.getSelectedIndex() == 1) {
+        setIteracoes(Integer.parseInt(textIteracoes.getText()));
+        if (comboSeeds.getSelectedIndex() == 0) {
             setSeedAleatorios(true);
         } else {
             setSeedAleatorios(false);
@@ -52,8 +59,8 @@ public class JFrameKmeans extends javax.swing.JFrame {
         }
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        abrir.setEnabled(false);
-        salvar.setEnabled(false);
+        abrir.setEnabled(true);
+        salvar.setEnabled(true);
     }
 
     /**
@@ -159,6 +166,11 @@ public class JFrameKmeans extends javax.swing.JFrame {
         });
 
         textIteracoes.setText("100");
+        textIteracoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textIteracoesActionPerformed(evt);
+            }
+        });
 
         comboSeeds.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TRUE", "FALSE" }));
         comboSeeds.setSelectedIndex(1);
@@ -222,8 +234,18 @@ public class JFrameKmeans extends javax.swing.JFrame {
         );
 
         abrir.setText("Abrir");
+        abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirActionPerformed(evt);
+            }
+        });
 
         salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarActionPerformed(evt);
+            }
+        });
 
         buttonOK.setText("OK");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -313,20 +335,7 @@ public class JFrameKmeans extends javax.swing.JFrame {
     }//GEN-LAST:event_comboSeedsActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        setK(Integer.parseInt(textKClusters.getText()));
-        if (comboParadaAutomatica.getSelectedIndex() == 0) {
-            setParadaAutomatica(true);
-        } else {
-            setParadaAutomatica(false);
-        }
-        setMaxIteracoes(Integer.parseInt(textMaxIteracoes.getText()));
-        if (comboSeeds.getSelectedIndex() == 1) {
-            setSeedAleatorios(true);
-        } else {
-            setSeedAleatorios(false);
-        }
-        setSeeds(Integer.parseInt(textSeeds.getText()));
-        this.setVisible(false);
+        setValores();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void comboParadaAutomaticaMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_comboParadaAutomaticaMouseWheelMoved
@@ -340,6 +349,55 @@ public class JFrameKmeans extends javax.swing.JFrame {
         JFrameSobreKmeans jf = new JFrameSobreKmeans(this.getLocation(), this.getWidth());
         jf.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void textIteracoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIteracoesActionPerformed
+
+    }//GEN-LAST:event_textIteracoesActionPerformed
+
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        setValores();
+        ArquivoKmeans aK = new ArquivoKmeans(k, paradaAutomatica, iteracoes, maxIteracoes, seedAleatorios, seeds);
+        Arquivos fileK = new Arquivos();
+        fileK.salvarKmeans(aK);
+    }//GEN-LAST:event_salvarActionPerformed
+
+    private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
+
+        Arquivos fileK = new Arquivos();
+        try {
+            ArquivoKmeans aK = fileK.abrirKmeans();
+            setK(aK.getK());
+            setIteracoes(aK.getIteracoes());
+            setMaxIteracoes(aK.getMaxIteracoes());
+            setSeeds(aK.getSeeds());
+            setParadaAutomatica(aK.isParadaAutomatica());
+            setSeedAleatorios(aK.isSeedAleatorios());
+            this.textIteracoes.setText(String.valueOf(getIteracoes()));
+            this.textKClusters.setText(String.valueOf(getK()));
+            this.textMaxIteracoes.setText(String.valueOf(getMaxIteracoes()));
+            this.textSeeds.setText(String.valueOf(getSeeds()));
+            if (isParadaAutomatica()) {
+                this.comboParadaAutomatica.setSelectedIndex(0);
+                labelParadaIteracoes.setEnabled(false);
+                textIteracoes.setEnabled(false);
+            } else {
+                this.comboParadaAutomatica.setSelectedIndex(1);
+                labelParadaIteracoes.setEnabled(true);
+                textIteracoes.setEnabled(true);
+            }
+            if (isSeedAleatorios()) {
+                this.comboSeeds.setSelectedIndex(1);
+                labelSeeds.setEnabled(true);
+                textSeeds.setEnabled(true);
+            } else {
+                this.comboSeeds.setSelectedIndex(0);
+                labelSeeds.setEnabled(false);
+                textSeeds.setEnabled(false);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameKmeans.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_abrirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -445,5 +503,23 @@ public class JFrameKmeans extends javax.swing.JFrame {
 
     public void setSeeds(int seeds) {
         this.seeds = seeds;
+    }
+
+    private void setValores() {
+        setK(Integer.parseInt(textKClusters.getText()));
+        if (comboParadaAutomatica.getSelectedIndex() == 0) {
+            setParadaAutomatica(true);
+        } else {
+            setParadaAutomatica(false);
+        }
+        setMaxIteracoes(Integer.parseInt(textMaxIteracoes.getText()));
+        setIteracoes(Integer.parseInt(textIteracoes.getText()));
+        if (comboSeeds.getSelectedIndex() == 0) {
+            setSeedAleatorios(true);
+        } else {
+            setSeedAleatorios(false);
+        }
+        setSeeds(Integer.parseInt(textSeeds.getText()));
+        this.setVisible(false);
     }
 }

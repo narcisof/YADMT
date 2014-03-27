@@ -93,7 +93,7 @@ public class JDialogData extends javax.swing.JDialog {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int index = jTable1.getSelectedColumnCount();
-        System.out.println("index = "+index);
+//        System.out.println("index = "+index);
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         jTable1.setModel(model);
         jTable1.setAutoCreateRowSorter(true);
@@ -140,7 +140,7 @@ public class JDialogData extends javax.swing.JDialog {
                 RowSorter.SortKey key = sortKeys.get(index);
                 if (key.getColumn() == column) {
                     found = true;
-                    System.out.println("Found existing sort key for column " + column);
+//                    System.out.println("Found existing sort key for column " + column);
                     switch (key.getSortOrder()) {
                         case ASCENDING:
                             order = SortOrder.DESCENDING;
@@ -155,10 +155,10 @@ public class JDialogData extends javax.swing.JDialog {
                 }
             }
             if (!found) {
-                System.out.println("Add new sort key for column " + column);
+//                System.out.println("Add new sort key for column " + column);
                 sortKeys.add(new RowSorter.SortKey(column, order));
             }
-            System.out.println("List contains " + sortKeys.size());
+//            System.out.println("List contains " + sortKeys.size());
             RowSorter newSorter = new TableRowSorter(table.getModel());
             newSorter.setSortKeys(sortKeys);
             table.setRowSorter(newSorter);
