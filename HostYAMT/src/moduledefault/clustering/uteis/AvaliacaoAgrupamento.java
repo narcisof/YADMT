@@ -43,8 +43,7 @@ public class AvaliacaoAgrupamento {
     public final void indiceAleatorio() {
         String[] classepad = new String[tamanhoBase];
         String[] agrupados = new String[tamanhoBase];
-        ArrayList<Integer> pos = new ArrayList<>();
-
+        
         for (int j = 0; j < clusters.size(); j++) {
             clusters.get(j).setNomeClasse("-1");
         }

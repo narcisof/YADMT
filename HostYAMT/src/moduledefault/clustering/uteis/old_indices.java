@@ -5,7 +5,6 @@
 package moduledefault.clustering.uteis;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 import moduledefault.clustering.aco.ACOClustering;
 
@@ -13,7 +12,7 @@ import moduledefault.clustering.aco.ACOClustering;
  *
  * @author Mateus
  */
-public class Índices {
+public class old_indices {
 
     int op = 1;
     int pos = 0;
@@ -36,7 +35,7 @@ public class Índices {
     private float medidaF;
     private int acerto;
 
-    public Índices(int[][] matriz, Base mpadrao, int[][] mpos_par, int contgrupo_par, int pos_par, ACOClustering x_) {
+    public old_indices(int[][] matriz, Base mpadrao, int[][] mpos_par, int contgrupo_par, int pos_par, ACOClustering x_) {
         x = x_;
         string3 = new StringBuffer();
         mpadrao1 = mpadrao;

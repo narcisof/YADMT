@@ -4,11 +4,8 @@
  */
 package moduledefault.clustering.kmeans;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import moduledefault.clustering.distancias.Chebyshev;
 import moduledefault.clustering.distancias.CityBlock;
 import moduledefault.clustering.distancias.CorrelacaoKendallTau;
@@ -134,7 +131,7 @@ public class KMeansPrincipal {
             Centroide newCentroide = new Centroide(this.dados.getAtributos().size() - 1);
             double[] medias = new double[this.dados.getAtributos().size() - 1];
             for (int w = 0; w < porcentagem; w++) {
-                int padraoSorteado = r.nextInt(150);
+                int padraoSorteado = r.nextInt(this.dados.getDataSet().size());
                 for (int e = 0; e < this.dados.getAtributos().size() - 1; e++) {
                     medias[e] += this.dados.getDataSet().get(padraoSorteado).getAtributos().get(e);
                 }

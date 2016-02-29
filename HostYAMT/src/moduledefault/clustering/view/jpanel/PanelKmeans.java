@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import moduledefault.clustering.kmeans.Historico;
 import moduledefault.clustering.kmeans.KMeansPrincipal;
 import moduledefault.clustering.uteis.AvaliacaoAgrupamento;
 import moduledefault.clustering.uteis.Padrao;
