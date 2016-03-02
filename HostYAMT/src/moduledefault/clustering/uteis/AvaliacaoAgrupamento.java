@@ -15,7 +15,7 @@ import java.util.List;
 public class AvaliacaoAgrupamento {
 
     private List<String> classes;
-    private ArrayList<Cluster> clusters;
+    private List<Cluster> clusters;
     private int tamanhoBase;
     private Base base;
     //
@@ -99,7 +99,7 @@ public class AvaliacaoAgrupamento {
 
     public final void dunn() {
         float centro1 = 0, qdesvio1 = 0, diam1 = 0;
-        float centro2 = 0, qdesvio2 = 0, diam2 = 0;
+        float centro2 = 0, diam2 = 0;
         float mdistancia = 0, fdistancia = 0, diamfinal = 0;
         int qpadrao1 = 0, qpadrao2 = 0;
 
@@ -150,7 +150,6 @@ public class AvaliacaoAgrupamento {
                 }
                 ////Zera as variaveis para prox iteração
                 centro2 = 0;
-                qdesvio2 = 0;
                 diam2 = 0;
                 qpadrao2 = 0;
                 mdistancia = 0;
@@ -176,23 +175,19 @@ public class AvaliacaoAgrupamento {
     }
 
     public final void variancia() {
-        float centro = 0, qdesvio = 0, sqdesvio = 0, somaqdesvio = 0;
-        int qpadrao = 0, somapadrao = 0;
+        float centro, qdesvio, sqdesvio = 0, somaqdesvio = 0;
+        int qpadrao, somapadrao = 0;
 
-        for (int i = 0; i < clusters.size(); i++) {
-            qpadrao = clusters.get(i).getGrupo().size(); //numero de padroes no grupo
+        for (Cluster cluster : clusters) {
+            qpadrao = cluster.getGrupo().size(); //numero de padroes no grupo
             somapadrao += qpadrao; //todos os padroes da base
-            centro = centroide(clusters.get(i));
-
+            centro = centroide(cluster);
             for (int j = 0; j < qpadrao; j++) {
-                qdesvio = clusters.get(i).getGrupo().get(j).getNumero() - centro;
+                qdesvio = cluster.getGrupo().get(j).getNumero() - centro;
                 qdesvio = (float) Math.pow(qdesvio, 2);
                 sqdesvio += qdesvio;
             }
-
             somaqdesvio += sqdesvio;//somatorios dos quadrados dos desvios entre todos os padroes de todos os grupos
-
-            centro = 0;
             sqdesvio = 0;
             ////////////Fazer a variancia para todos os grupos
         }
@@ -205,14 +200,13 @@ public class AvaliacaoAgrupamento {
 
         mconfusao = new int[gruposDesejados][gruposFormados];
 
-        SelectionSort(clusters);
+        clusters =  selectionSort(clusters);
 
         for (int j = 0; j < gruposFormados; j++) { //Coluna = formados
             for (int i = 0; i < gruposDesejados; i++) {
                 mconfusao[i][j] = clusters.get(j).getNumClasse(classes.get(i));
             }
         }
-
         //Ajusta as posições da matriz confusao
         for (int i = 0; i < gruposDesejados; i++) {
             int aux = 0;
@@ -324,7 +318,7 @@ public class AvaliacaoAgrupamento {
     }
 
     //TROCAR POR MERGE SORT!!!!
-    public void SelectionSort(ArrayList<Cluster> clusters) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
+    public List<Cluster> selectionSort(List<Cluster> clusters) { //ORDENA EM ORDEM CRESCENTE POR PADRÕES CARREGADOS
         int index_min;
         Cluster aux;
 
@@ -341,7 +335,7 @@ public class AvaliacaoAgrupamento {
                 clusters.set(i, aux);
             }
         }
-        Collections.reverse(clusters);
+        return clusters;
     }
 
     public float getVariancia() {

@@ -51,7 +51,7 @@ public class PanelKmeans extends javax.swing.JPanel {
     static moduledefault.clustering.uteis.Base dados;
     static moduledefault.clustering.uteis.Base dadosOriginal;
     ArrayList<Cluster> clusters;
-    AvaliacaoAgrupamento avaliacao;
+    AvaliacaoAgrupamento avaliacaoAgrupamento;
     boolean block;
 
     public PanelKmeans(interfaces.Base b, JFrameKmeans k) throws IOException {
@@ -370,7 +370,7 @@ public class PanelKmeans extends javax.swing.JPanel {
                 imprimiAgrupamento();
                 getBuffer().append(k.imprimi(clusters));
                 getBuffer().append("\n\nMatriz Confusão:\n");
-                int[][] mconfusao = avaliacao.getMconfusao();
+                int[][] mconfusao = avaliacaoAgrupamento.getMconfusao();
                 char classe = 'a';
                 for (int i = 0; i < mconfusao[0].length; i++) {
                     getBuffer().append(classe + "\t");
@@ -579,11 +579,11 @@ public class PanelKmeans extends javax.swing.JPanel {
                 break;
         }
         getBuffer().append("\n");
-        avaliacao = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
-        getBuffer().append("\n\tMedida R: " + avaliacao.getIndiceAleatorio());
-        getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacao.getMedidaF()));
-        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacao.getAcerto()));
-        getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacao.getVariancia()));
+        avaliacaoAgrupamento = new AvaliacaoAgrupamento(clusters, dados.getClasses(), dados);
+        getBuffer().append("\n\tMedida R: " + avaliacaoAgrupamento.getIndiceAleatorio());
+        getBuffer().append("\n\tMedida F: " + String.valueOf(avaliacaoAgrupamento.getMedidaF()));
+        getBuffer().append("\n\tPorcentagem de Acerto: " + String.valueOf(avaliacaoAgrupamento.getAcerto()));
+        getBuffer().append("\n\tVariância Total: " + String.valueOf(avaliacaoAgrupamento.getVariancia()));
 
     }
 
@@ -635,7 +635,6 @@ public class PanelKmeans extends javax.swing.JPanel {
 //        }
         int grupoInicial = mpos[1][0];
         int iterator = 0;
-        int cont = 0;
         for (int i = 0; i < numGrupos; i++) {
             for (int j = iterator; j < mpos[0].length; j++) {
                 if (mpos[1][j] == grupoInicial) {
