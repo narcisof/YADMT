@@ -9,7 +9,6 @@ import controller.Host;
 import interfaces.Base;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -254,6 +253,7 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
 
     public void carregaBase() { //Carrega a ultima base da lista para a matriz de double...
         base = new double[arrayListBases.get(arrayListBases.size() - 1).getInput().length][arrayListBases.get(arrayListBases.size() - 1).getInput()[0].length];
+        
         for (int i = 0; i < base.length; i++) {
             for (int j = 0; j < base[0].length; j++) {
                 base[i][j] = Double.valueOf(arrayListBases.get(arrayListBases.size() - 1).getInput()[i][j] + "").doubleValue();
