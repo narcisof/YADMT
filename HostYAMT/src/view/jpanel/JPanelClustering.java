@@ -308,7 +308,6 @@ public class JPanelClustering extends javax.swing.JPanel implements Observer {
             }
         }
         
-        
         return base;
     }
 
